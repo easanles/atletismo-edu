@@ -1,0 +1,9 @@
+miembro: #informacion de un miembro
+    path:     /miembro/{id}
+    defaults: {_controller: "EasanlesAtletismoBundle:Miembro:mostrar", id: 1}
+    requirements:
+        id:  \d+ #numeros enteros
+
+easanles_atletismo_homepage: #portada
+    path: /{name}
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}

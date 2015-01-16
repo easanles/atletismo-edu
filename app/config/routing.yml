@@ -1,0 +1,8 @@
+easanles_atletismo:
+    resource: "@EasanlesAtletismoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#acme_hello:
+#    resource: "@AcmeHelloBundle/Resources/config/routing.yml"
+#    prefix:   /
+
