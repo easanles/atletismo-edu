@@ -13,6 +13,10 @@ _configurator:
 _main:
     resource: routing.yml
 
+easanles_atletismo:
+    resource: "@EasanlesAtletismoBundle/Resources/config/routing.yml"
+    prefix:   /
+
 # AcmeDemoBundle routes (to be removed)
 _acme_demo:
     resource: "@AcmeDemoBundle/Resources/config/routing.yml"

@@ -1,0 +1,21 @@
+
+{% extends '::base.html.twig' %}
+
+{% block title %}Miembro {{ id }}{% endblock %}
+{% block body %}
+
+{# Mostrar contenido de una variable {{ dump() }} #}
+
+<h1> Miembro con el ID = {{ id }} </h1>
+
+{{ dump(miembro) }}
+
+<h2> {{ miembro.dni }}</h2>
+{{ miembro.nombre }}
+
+
+{% endblock %}
+
+
+
+

@@ -3,7 +3,12 @@ miembro: #informacion de un miembro
     defaults: {_controller: "EasanlesAtletismoBundle:Miembro:mostrar", id: 1}
     requirements:
         id:  \d+ #numeros enteros
+        
+symfony_demo:
+   path: /demo
+   defaults: {_controller: "AcmeDemoBundle:Demo:index"}
 
 easanles_atletismo_homepage: #portada
     path: /{name}
     defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}
+    
