@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 50px;
+}
+
+h1 {
+	color: blue;
+}

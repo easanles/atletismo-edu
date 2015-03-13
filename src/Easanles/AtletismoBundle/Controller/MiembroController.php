@@ -9,13 +9,13 @@ class MiembroController extends Controller
 {
     public function mostrarAction($id)
     {
-    	$miembro = new Miembro();
-    	$miembro->setDni('38562840G');
-    	$miembro->setNombre('Pablito');
+    	#$miembro = new Miembro();
+    	#$miembro->setDni('38562840G');
+    	#$miembro->setNombre('Pablito');
     	
-    	$em = $this->getDoctrine()->getManager();
-    	$em->persist($miembro);
-    	$em->flush();
+    	#$em = $this->getDoctrine()->getManager();
+    	#$em->persist($miembro);
+    	#$em->flush();
     	
     	$dato = $this->getDoctrine()
            ->getRepository('EasanlesAtletismoBundle:Miembro')
