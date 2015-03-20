@@ -7,7 +7,11 @@ miembro: #informacion de un miembro
 symfony_demo:
    path: /demo
    defaults: {_controller: "AcmeDemoBundle:Demo:index"}
-
+    
+easanles_atletismo_listado_competiciones: #portada
+    path: /competiciones
+    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listado_competiciones"}
+    
 easanles_atletismo_homepage: #portada
     path: /{name}
     defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}

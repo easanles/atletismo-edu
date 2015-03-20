@@ -1,0 +1,77 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Lista de competiciones{% endblock %}
+
+{% block navbar %}
+{# Mostrar contenido de una variable {{ dump() }} #}
+   <ul class="nav navbar-nav">
+      <li><a class="inactive">Atletas</a></li>
+      <li class="active"><a href="#">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a class="inactive">Configuración</a></li>
+   </ul>
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li><a href="./">Portada Admin</a></li>
+  <li class="active">Competiciones</li>
+</ol>
+{% endblock %}
+
+{% block container %}
+   <div id="container_header">
+      <h1 class="col-md-5">Listado de competiciones</h1>
+         <select class="colform-control col-md-3">
+            <option>Todas las temporadas</option>
+            <option>Temporada 2014/2015</option>
+            <option>Temporada 2013/2014</option>
+            <option>Temporada 2012/2013</option>
+         </select>
+      <button type="button" class="btn btn-primary col-md-1 inactive"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
+      <div class="input-group col-md-3">
+         <input type="search" class="form-control" placeholder="Buscar">
+         <div class="input-group-btn"><button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button></div>
+      </div>
+   </div>
+   <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
+      <tbody>
+         <tr>
+            <th>Temporada</th>
+            <th>Tipo</th>
+            <th>Competicion</th>
+            <th>Fecha</th>
+            <th>Lugar</th>
+            <th>Atletas inscritos</th>
+            <th>Edición</th>
+         </tr>
+         <tr><td>2012/2013</td><td>Campo a través</td><td>Competición 1</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
+         <td>
+            <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+         </td></tr>
+         <tr><td>2013/2014</td><td>Ruta</td><td>Competición 2</td><td>xx/xx/xxxx</td><td>Lugar</td><td>12</td>
+         <td>
+            <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+         </td></tr>
+         <tr><td>2013/2014</td><td>Ruta</td><td>Competición 3</td><td>xx/xx/xxxx</td><td>Lugar</td><td>0</td>
+         <td>
+            <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
+         </td></tr>
+         </tbody>
+   </table>
+
+   
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+
+
