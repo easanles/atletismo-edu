@@ -5,7 +5,6 @@
 
 {% block navbar %}
 {# Mostrar contenido de una variable {{ dump() }} #}
-   <ul class="nav navbar-nav">
       <li><a class="inactive">Atletas</a></li>
       <li class="active"><a href="#">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
@@ -23,20 +22,23 @@
 {% endblock %}
 
 {% block container %}
-   <div id="container_header">
-      <h1 class="col-md-5">Listado de competiciones</h1>
-         <select class="colform-control col-md-3">
+   <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
+   <div id="container_header" class="row">
+      <div class="col-xs-4">
+         <select class="form-control">
             <option>Todas las temporadas</option>
             <option>Temporada 2014/2015</option>
             <option>Temporada 2013/2014</option>
             <option>Temporada 2012/2013</option>
          </select>
-      <button type="button" class="btn btn-primary col-md-1 inactive"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
-      <div class="input-group col-md-3">
+      </div>
+      <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
+      <div class="input-group col-xs-4 pull-right">
          <input type="search" class="form-control" placeholder="Buscar">
          <div class="input-group-btn"><button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
+   <div class="row">
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
          <tr>
@@ -46,7 +48,7 @@
             <th>Fecha</th>
             <th>Lugar</th>
             <th>Atletas inscritos</th>
-            <th>Edición</th>
+            <th>Acciones</th>
          </tr>
          <tr><td>2012/2013</td><td>Campo a través</td><td>Competición 1</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
          <td>
@@ -65,6 +67,7 @@
          </td></tr>
          </tbody>
    </table>
+   </div>
 
    
 {% endblock %}
