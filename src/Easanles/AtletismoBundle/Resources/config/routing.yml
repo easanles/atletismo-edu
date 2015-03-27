@@ -8,9 +8,13 @@ symfony_demo:
    path: /demo
    defaults: {_controller: "AcmeDemoBundle:Demo:index"}
     
-easanles_atletismo_listado_competiciones: #portada
+easanles_atletismo_listado_competiciones: #portada_competiciones
     path: /competiciones
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listado_competiciones"}
+    
+easanles_atletismo_configuracion: #configuracion
+    path: /configuracion
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
     
 easanles_atletismo_homepage: #portada
     path: /{name}

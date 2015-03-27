@@ -1,0 +1,39 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Configuración de la aplicación{% endblock %}
+
+{% block navbar %}
+{# Mostrar contenido de una variable {{ dump() }} #}
+      <li><a class="inactive">Atletas</a></li>
+      <li><a href="./competiciones">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li class="active"><a href="#">Configuración</a></li>
+   </ul>
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li><a href="./">Portada Admin</a></li>
+  <li class="active">Configuración</li>
+</ol>
+{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="row page-header">Configuración de la aplicación</h1>
+   <div id="container_header" class="row">
+      <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Poblar BD</button>
+      <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Borrar BD</button>
+   </div>
+
+   
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+
+
