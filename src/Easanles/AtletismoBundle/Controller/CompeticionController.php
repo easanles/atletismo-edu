@@ -8,6 +8,9 @@ class CompeticionController extends Controller
 {
     public function listado_competicionesAction()
     {
-        return $this->render('EasanlesAtletismoBundle:Competicion:listado_competiciones.html.twig');
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$competiciones = $repository->findAll();
+        return $this->render('EasanlesAtletismoBundle:Competicion:listado_competiciones.html.twig',
+           array('competiciones' => $competiciones));
     }
 }

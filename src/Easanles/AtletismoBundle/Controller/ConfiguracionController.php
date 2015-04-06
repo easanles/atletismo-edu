@@ -4,6 +4,7 @@ namespace Easanles\AtletismoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Easanles\AtletismoBundle\Entity\Competicion;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConfiguracionController extends Controller
 {
@@ -20,7 +21,7 @@ class ConfiguracionController extends Controller
     	#return $this->render('EasanlesAtletismoBundle:Miembro:miembro.html.twig',
     	#		array('id' => $id, 'miembro' => $dato));
     	
-        return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig');
+    	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig');		 
     }
     
     public function poblar_bdAction(){
@@ -54,10 +55,19 @@ class ConfiguracionController extends Controller
     	$em->persist($comp);
     	
     	$em->flush();
-    	 
+    	
+    	$response = new Response('Base de datos poblada con datos de prueba <a href="..">Volver</a>');
+    	return $response;	 
     }
     
     public function borrar_bdAction(){
-    	
+    	$em = $this->getDoctrine()->getManager();
+    	$sql = 'DELETE FROM Competicion;';
+    	$connection = $em->getConnection();
+    	$stmt = $connection->prepare($sql);
+    	$stmt->execute();
+    	$stmt->closeCursor();
+    	$response = new Response('Base de datos borrada <a href="..">Volver</a>');
+    	return $response;
     }
 }

@@ -8,15 +8,27 @@ symfony_demo:
    path: /demo
    defaults: {_controller: "AcmeDemoBundle:Demo:index"}
     
-easanles_atletismo_listado_competiciones: #portada_competiciones
+listado_competiciones: #portada competiciones
     path: /competiciones
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listado_competiciones"}
     
-easanles_atletismo_configuracion: #configuracion
+    
+    
+configuracion: #portada configuracion
     path: /configuracion
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
     
-easanles_atletismo_homepage: #portada
+configuracion_poblarbd: #poblar base de datos con datos de prueba
+    path: /configuracion/poblarbd
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:poblar_bd"}
+    
+configuracion_borrarbd: #borrar base de datos
+    path: /configuracion/borrarbd
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:borrar_bd"}
+    
+    
+    
+homepage: #portada
     path: /{name}
     defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}
     

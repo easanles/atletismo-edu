@@ -4,7 +4,6 @@
 {% block title %}Lista de competiciones{% endblock %}
 
 {% block navbar %}
-{# Mostrar contenido de una variable {{ dump() }} #}
       <li><a class="inactive">Atletas</a></li>
       <li class="active"><a href="#">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
@@ -22,6 +21,7 @@
 {% endblock %}
 
 {% block container %}
+{# Mostrar contenido de una variable {{ dump() }} #}
    <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
    <div id="container_header" class="row">
       <div class="col-xs-4">
@@ -44,31 +44,29 @@
          <tr>
             <th>Temporada</th>
             <th>Tipo</th>
-            <th>Competicion</th>
+            <th>Competición</th>
             <th>Fecha</th>
             <th>Lugar</th>
             <th>Atletas inscritos</th>
             <th>Acciones</th>
          </tr>
-         <tr><td>2012/2013</td><td>Campo a través</td><td>Competición 1</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
+         <tr><td>2012/2013</td><td>Campo a través</td><td>FILA DE EJEMPLO</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
          <td>
             <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
             <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
          </td></tr>
-         <tr><td>2013/2014</td><td>Ruta</td><td>Competición 2</td><td>xx/xx/xxxx</td><td>Lugar</td><td>12</td>
+         {% for row in competiciones %}
+         <tr><td>{{ row.temporada }}</td><td>{{ row.tipo }}</td><td>{{ row.nombre }}</td><td>xx/xx/xxxx</td><td>{{ row.provincia }}</td><td>0</td>
          <td>
             <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
             <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
          </td></tr>
-         <tr><td>2013/2014</td><td>Ruta</td><td>Competición 3</td><td>xx/xx/xxxx</td><td>Lugar</td><td>0</td>
-         <td>
-            <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
-            <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-         </td></tr>
+         {% endfor %}
          </tbody>
    </table>
    </div>
 
+   {{ dump(competiciones) }}
    
 {% endblock %}
 
