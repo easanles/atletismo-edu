@@ -22,9 +22,13 @@ configuracion_poblarbd: #poblar base de datos con datos de prueba
     path: /configuracion/poblarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:poblar_bd"}
     
-configuracion_borrarbd: #borrar base de datos
+configuracion_borrarbd: #borrar datos de la base de datos
     path: /configuracion/borrarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:borrar_bd"}
+    
+configuracion_rehacerbd: #drop tables y schema update
+    path: /configuracion/rehacerbd
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:rehacer_bd"}    
     
     
     

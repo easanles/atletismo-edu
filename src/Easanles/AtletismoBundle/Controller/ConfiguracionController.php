@@ -5,6 +5,7 @@ namespace Easanles\AtletismoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Easanles\AtletismoBundle\Entity\Competicion;
 use Symfony\Component\HttpFoundation\Response;
+use \Symfony\Component\Console\Input\ArrayInput;
 
 class ConfiguracionController extends Controller
 {
@@ -57,6 +58,7 @@ class ConfiguracionController extends Controller
     	$em->flush();
     	
     	$response = new Response('Base de datos poblada con datos de prueba <a href="..">Volver</a>');
+    	$response->headers->set('Refresh', '2; url=..');
     	return $response;	 
     }
     
@@ -67,7 +69,32 @@ class ConfiguracionController extends Controller
     	$stmt = $connection->prepare($sql);
     	$stmt->execute();
     	$stmt->closeCursor();
-    	$response = new Response('Base de datos borrada <a href="..">Volver</a>');
+    	$response = new Response('Datos borrados <a href="..">Volver</a>');
+    	$response->headers->set('Refresh', '2; url=..');
+    	return $response;
+    }
+    
+    public function rehacer_bdAction(){
+    	$kernel = $this->get('kernel');
+    	$application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+    	$application->setAutoExit(false);
+    	//Drop tables
+    	$options = array('command' => 'doctrine:database:drop',"--force" => true);
+    	$application->run(new ArrayInput($options))." ";
+    	
+    	$this->getDoctrine()->getManager()->getConnection()->close();
+    	//Create database
+    	$options = array('command' => 'doctrine:database:create');
+    	$application->run(new ArrayInput($options))." ";
+    	//Schema update
+    	$options = array('command' => 'doctrine:schema:update',"--force" => true);
+    	$application->run(new ArrayInput($options))." ";
+    	
+    	$options = array('command' => 'doctrine:fixtures:load','--append' => true);
+    	$application->run(new ArrayInput($options));
+    	
+    	$response = new Response('Base de datos reiniciada <a href="..">Volver</a>');
+    	$response->headers->set('Refresh', '2; url=..');
     	return $response;
     }
 }
