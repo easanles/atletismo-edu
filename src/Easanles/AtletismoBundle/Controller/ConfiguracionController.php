@@ -97,4 +97,19 @@ class ConfiguracionController extends Controller
     	$response->headers->set('Refresh', '2; url=..');
     	return $response;
     }
+    
+    public function limpiar_cacheAction(){
+    	$kernel = $this->get('kernel');
+    	$application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+    	$application->setAutoExit(false);
+    	 
+    	$options = array('command' => 'cache:clear');
+    	$application->run(new ArrayInput($options));
+    	$options = array('command' => 'cache:clear','--env=prod' => true);
+    	$application->run(new ArrayInput($options));
+    	 
+    	$response = new Response('Cache limpia <a href="..">Volver</a>');
+    	$response->headers->set('Refresh', '2; url=..');
+    	return $response;
+    }
 }

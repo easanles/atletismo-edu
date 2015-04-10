@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+body {
+	padding-top: 50px;
+}
+
+h1 {
+	color: blue;
+}
+
+.inactive {
+	cursor: not-allowed;
+	text-decoration: line-through;
+}
+
+#container_header {
+	margin-bottom: 5px;
+}

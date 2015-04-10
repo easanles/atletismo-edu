@@ -25,9 +25,10 @@
    <h1 id="container_title" class="row page-header">Configuración de la aplicación</h1>
    <div id="container_header" class="row">
       <a href="{{ path('configuracion_poblarbd') }}" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Poblar BD</a>
-      <a href="{{ path('configuracion_borrarbd') }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</a>
-      <a href="{{ path('configuracion_rehacerbd') }}" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</a>
-   </div>
+      <a href="{{ path('configuracion_borrarbd') }}" class="btn btn-danger" title="DELETE FROM ;"><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</a>
+      <a href="{{ path('configuracion_rehacerbd') }}" class="btn btn-danger" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</a>
+      <a href="{{ path('configuracion_limpiarcache') }}" class="btn btn-default" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</a>
+      </div>
 
    
 {% endblock %}

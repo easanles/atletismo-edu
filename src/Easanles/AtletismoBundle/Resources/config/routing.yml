@@ -30,6 +30,9 @@ configuracion_rehacerbd: #drop tables y schema update
     path: /configuracion/rehacerbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:rehacer_bd"}    
     
+configuracion_limpiarcache: #Limpiar archivos cache
+    path: /configuracion/limpiarcache
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:limpiar_cache"}    
     
     
 homepage: #portada
