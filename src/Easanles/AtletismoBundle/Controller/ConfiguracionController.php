@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Easanles\AtletismoBundle\Entity\Competicion;
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\VarDumper;
 
 class ConfiguracionController extends Controller
 {
@@ -112,4 +113,18 @@ class ConfiguracionController extends Controller
     	$response->headers->set('Refresh', '2; url=..');
     	return $response;
     }
+    
+    public function assetic_dumpAction(){
+    	$kernel = $this->get('kernel');
+    	$application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+    	$application->setAutoExit(false);
+    
+    	$options = array('command' => 'assetic:dump');
+    	$application->run(new ArrayInput($options));
+    
+    	$response = new Response('Assetic dump OK <a href="..">Volver</a>');
+    	$response->headers->set('Refresh', '2; url=..');
+    	return $response;
+    }
+    
 }

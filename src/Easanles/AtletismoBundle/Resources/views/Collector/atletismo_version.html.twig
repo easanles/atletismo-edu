@@ -1,0 +1,21 @@
+
+
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+   {# the web debug toolbar content #}
+   <div class="sf-toolbar-block"  style="padding: 5px 8px;">
+	   <div class="sf-toolbar-info">
+   	   <div class="sf-toolbar-info-piece">
+      	   <b>App Version</b>
+            <span class="sf-toolbar-status">{{ collector.getVersion }}</span>
+         </div>
+      </div>
+      <div class="sf-toolbar-icon">
+         {#<span class="icon"><img src="data:image/png;base64,..." alt="" /></span>#}
+         <span class="sf-toolbar-status"> {{ collector.getVersion }}</span>
+      </div>
+   </div>
+{% endblock %}
+
+

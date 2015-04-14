@@ -34,3 +34,9 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+services:
+    data_collector.atletismo_version_collector:
+        class: Easanles\AtletismoBundle\Service\AtletismoVersionCollector
+        tags:
+            - { name: data_collector, template: "EasanlesAtletismoBundle:Collector:atletismo_version", id: "App Version"}
