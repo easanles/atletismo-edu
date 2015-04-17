@@ -23,18 +23,20 @@
 {% block container %}
    <h1 id="container_title" class="row page-header">Configuración de la aplicación</h1>
    <div id="container_header" class="row">
-      <a href="{{ path('configuracion_poblarbd') }}" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Poblar BD</a>
-      <a href="{{ path('configuracion_borrarbd') }}" class="btn btn-danger" title="DELETE FROM ;"><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</a>
-      <a href="{{ path('configuracion_rehacerbd') }}" class="btn btn-danger" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</a>
-      <a href="{{ path('configuracion_limpiarcache') }}" class="btn btn-default" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</a>
-      <a href="#" class="btn btn-normal inactive" title="assetic:dump"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</a>
-      </div>
+      <button id="btn_poblarbd" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="INSERT INTO ..."><span class="glyphicon glyphicon-save"></span> Poblar BD</button>
+      <button id="btn_borrarbd" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="DELETE FROM ..."><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</button>
+      <button id="btn_rehacerbd" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</button>
+      <button id="btn_limpiarcache" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</button>
+      <button id="btn_asseticdump" class="btn btn-link inactive" data-toggle="tooltip" data-placement="bottom" title="assetic:dump"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</button>
+   </div>
+   
+   <div id="alert_div"> </div>
 
    
 {% endblock %}
 
 {% block js %}
-
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
 {% endblock %}
 
 

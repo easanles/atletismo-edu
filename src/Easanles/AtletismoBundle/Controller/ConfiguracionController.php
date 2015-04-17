@@ -58,8 +58,7 @@ class ConfiguracionController extends Controller
     	
     	$em->flush();
     	
-    	$response = new Response('Base de datos poblada con datos de prueba <a href="..">Volver</a>');
-    	$response->headers->set('Refresh', '2; url=..');
+    	$response = new Response('Base de datos poblada con datos de prueba');
     	return $response;	 
     }
     
@@ -70,8 +69,7 @@ class ConfiguracionController extends Controller
     	$stmt = $connection->prepare($sql);
     	$stmt->execute();
     	$stmt->closeCursor();
-    	$response = new Response('Datos borrados <a href="..">Volver</a>');
-    	$response->headers->set('Refresh', '2; url=..');
+    	$response = new Response('Datos borrados');
     	return $response;
     }
     
@@ -94,8 +92,7 @@ class ConfiguracionController extends Controller
     	$options = array('command' => 'doctrine:fixtures:load','--append' => true);
     	$application->run(new ArrayInput($options));
     	
-    	$response = new Response('Base de datos reiniciada <a href="..">Volver</a>');
-    	$response->headers->set('Refresh', '2; url=..');
+    	$response = new Response('Base de datos reiniciada');
     	return $response;
     }
     
@@ -109,8 +106,7 @@ class ConfiguracionController extends Controller
     	$options = array('command' => 'cache:clear','--env=prod' => true);
     	$application->run(new ArrayInput($options));
     	 
-    	$response = new Response('Cache limpia <a href="..">Volver</a>');
-    	$response->headers->set('Refresh', '2; url=..');
+    	$response = new Response('Cache limpia');
     	return $response;
     }
     
@@ -122,8 +118,7 @@ class ConfiguracionController extends Controller
     	$options = array('command' => 'assetic:dump');
     	$application->run(new ArrayInput($options));
     
-    	$response = new Response('Assetic dump OK <a href="..">Volver</a>');
-    	$response->headers->set('Refresh', '2; url=..');
+    	$response = new Response('Assetic dump OK');
     	return $response;
     }
     
