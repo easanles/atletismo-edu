@@ -6,15 +6,19 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class AtletismoVersionCollector extends DataCollector{
 
 	/* (non-PHPdoc)
 	 * @see \Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface::collect()
 	 */
 	public function collect(Request $request, Response $response, \Exception $exception = null) {
+		$VERSION = 'dev 3';
+		$ITERATION = '8';
+		
        $this->data = array(
-       		'version' => 'dev 2',
-       		'iteration' => '7',
+       		'version' => $VERSION,
+       		'iteration' => $ITERATION,
        );
 	}
 	
