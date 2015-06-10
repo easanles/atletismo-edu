@@ -43,20 +43,20 @@
       <tbody>
          <tr>
             <th>Temporada</th>
-            <th>Tipo</th>
+            <th>Ubicación</th>
             <th>Competición</th>
             <th>Fecha</th>
-            <th>Lugar</th>
+            <th>Sede</th>
             <th>Atletas inscritos</th>
             <th>Acciones</th>
          </tr>
-         <tr><td>2012/2013</td><td>Campo a través</td><td>FILA DE EJEMPLO</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
+         <tr><td>2012/2013</td><td>Lugar</td><td>FILA DE EJEMPLO</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
          <td>
             <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
             <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
          </td></tr>
          {% for row in competiciones %}
-         <tr><td>{{ row.temporada }}</td><td>{{ row.tipo }}</td><td>{{ row.nombre }}</td><td>xx/xx/xxxx</td><td>{{ row.provincia }}</td><td>0</td>
+         <tr><td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>xx/xx/xxxx</td><td>{{ row.sede }}</td><td>0</td>
          <td>
             <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
             <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
