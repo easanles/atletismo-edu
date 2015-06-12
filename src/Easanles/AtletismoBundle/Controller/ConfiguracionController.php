@@ -3,10 +3,11 @@
 namespace Easanles\AtletismoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Easanles\AtletismoBundle\Entity\Competicion;
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\VarDumper;
+use Easanles\AtletismoBundle\Entity\Prueba;
+use Easanles\AtletismoBundle\Entity\Competicion;
 
 class ConfiguracionController extends Controller
 {
@@ -29,10 +30,26 @@ class ConfiguracionController extends Controller
     public function poblar_bdAction(){
     	$em = $this->getDoctrine()->getManager();
     	    	
-    	$com = new Competicion();
-    	   $com->setNombre("Competicion 1")
-    	       ->setTemp(2015);
-    	$em->persist($com);
+    	$obj = new Competicion();
+    	$obj->setNombre("Competicion 1")
+    	    ->setTemp(2015);
+    	$em->persist($obj);
+
+    	$obj = new Competicion();
+    	$obj->setNombre("Competicion 2")
+    	    ->setTemp(2014);
+    	$em->persist($obj);
+    	 
+    	$obj = new Prueba();
+    	$obj->setId(1234)
+    	    ->setNombreCom("Competicion 1")
+    	    ->setTempCom(2015)
+    	    ->setRonda(1)
+    	    ->setIdCat(1)
+    	    ->setNombreTpr("100 metros lisos")
+    	    ->setSexoTpr(0)
+    	    ->setEntornoTpr("Pista cubierta");
+    	$em->persist($obj);
     	
     	$em->flush();
     	
@@ -42,7 +59,7 @@ class ConfiguracionController extends Controller
     
     public function borrar_bdAction(){
     	$em = $this->getDoctrine()->getManager();
-    	$sql = 'DELETE FROM Competicion;';
+    	$sql = 'DELETE FROM com; DELETE FROM pru';
     	$connection = $em->getConnection();
     	$stmt = $connection->prepare($sql);
     	$stmt->execute();

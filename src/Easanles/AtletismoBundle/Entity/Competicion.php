@@ -3,12 +3,13 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Competicion
  * 
  * @ORM\Table(name="com")
- * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\CompeticionRepository")
+ * @ORM\Entity
  */
 class Competicion {
 
@@ -39,11 +40,13 @@ class Competicion {
    private $sede;
    
    /**
+   * @var \DateTime
    * @ORM\Column(name="fechacom", type="date", nullable=true)
    */
    private $fecha;
    
    /**
+   * @var string
    * @ORM\Column(name="desccom", type="text", nullable=true)
    */
    private $desc;
@@ -89,6 +92,24 @@ class Competicion {
    * @ORM\Column(name="esoficialcom", type="boolean", options={"default":0})
    */
    private $esOficial = 0;
+   
+   /********************* FOREIGN KEYS *****************************/
+     
+   /**
+    * @var array_collection
+    * @ORM\OneToMany(targetEntity="Prueba", mappedBy="id", cascade={"all"})
+    **/
+   private $pruebas;
+   
+   public function __construct() {
+   	$this->pruebas = new ArrayCollection();
+   }
+   
+   public function getPruebas() {
+   	return $this->pruebas;
+   }
+   
+   /******************* GETTERS & SETTERS **************************/
    
 	public function getNombre() {
 		return $this->nombre;
@@ -181,6 +202,7 @@ class Competicion {
 		$this->esOficial = $esOficial;
 		return $this;
 	}
+
 
    
 }

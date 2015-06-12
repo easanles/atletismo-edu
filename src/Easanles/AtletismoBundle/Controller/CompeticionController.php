@@ -11,6 +11,6 @@ class CompeticionController extends Controller
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$competiciones = $repository->findAll();
         return $this->render('EasanlesAtletismoBundle:Competicion:listado_competiciones.html.twig',
-           array('competiciones' => $competiciones));
+           array('competiciones' => $competiciones, 'dato'=>$competiciones[0]->getPruebas()->getValues()));
     }
 }
