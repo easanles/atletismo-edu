@@ -16,6 +16,7 @@ class Participacion
      * @var integer
      * @ORM\Column(name="idatl", type="integer")
      * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones", cascade={"all"})
      */
     private $idAtl;
     

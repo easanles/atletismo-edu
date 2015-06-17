@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Prueba
@@ -16,7 +17,7 @@ class Prueba {
 	 * @var integer
 	 * @ORM\Column(name="idpru", type="integer")
 	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Competicion", inversedBy="pruebas", cascade={"all"})
+	 * ORM\ManyToOne(targetEntity="Competicion", inversedBy="pruebas", cascade={"all"})
 	 */
 	private $id;
 	
@@ -51,6 +52,7 @@ class Prueba {
 	/**
 	 * @var integer
 	 * @ORM\Column(name="idcat", type="integer")
+	 * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="pruebas", cascade={"all"})
 	 */
 	private $idCat;
 	
@@ -71,6 +73,30 @@ class Prueba {
 	 * @ORM\Column(name="entornotpr", type="string", length=255)
 	 */
 	private $entornoTpr;
+	
+	/********************* FOREIGN KEYS *****************************/
+	 
+	/**
+	 * @var array_collection
+	 **/
+	private $inscripciones;
+	 
+	/**
+	 * @var array_collection
+	 **/
+	private $intentos;
+	 
+	public function __construct() {
+		$this->inscripciones = new ArrayCollection();
+		$this->intentos = new ArrayCollection();
+	}
+	 
+	public function getInscripciones() {
+		return $this->inscripciones;
+	}
+	public function getIntentos() {
+		return $this->intentos;
+	}
 	
 	/******************* GETTERS & SETTERS **************************/
 	

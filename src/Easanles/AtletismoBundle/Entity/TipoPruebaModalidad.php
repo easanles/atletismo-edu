@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * TipoPruebaModalidad
@@ -33,6 +34,30 @@ class TipoPruebaModalidad
 	  * @ORM\Id
      */
 	 private $entorno;
+	 
+	 /********************* FOREIGN KEYS *****************************/
+	 
+	 /**
+	  * @var array_collection
+	  **/
+	 private $requisitos;
+	 
+	 /**
+	  * @var array_collection
+	  **/
+	 private $pruebas;
+	 
+	 public function __construct() {
+	 	$this->requisitos = new ArrayCollection();
+	 	$this->pruebas = new ArrayCollection();
+	 }
+	  
+	 public function getRequisitos() {
+	 	return $this->requisitos;
+	 }
+	 public function getPruebas() {
+	 	return $this->pruebas;
+	 }
 	 
 	 /******************* GETTERS & SETTERS **************************/
 	 

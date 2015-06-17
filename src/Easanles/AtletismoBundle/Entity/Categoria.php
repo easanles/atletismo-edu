@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Categoria
@@ -43,6 +44,22 @@ class Categoria
      * @ORM\Column(name="tfinvalcat", type="smallint", nullable=true)
      */
     private $tFinVal;
+    
+    /********************* FOREIGN KEYS *****************************/
+      
+    /**
+     * @var array_collection
+     * @ORM\OneToMany(targetEntity="Prueba", mappedBy="idCat", cascade={"all"})
+     **/
+    private $pruebas;
+      
+    public function __construct() {
+    $this->pruebas = new ArrayCollection();
+    }
+     
+    public function getPruebas() {
+    return $this->pruebas;
+    }
     
     /******************* GETTERS & SETTERS **************************/
     

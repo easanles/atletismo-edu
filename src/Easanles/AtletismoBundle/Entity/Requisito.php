@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Requisito
@@ -50,6 +51,22 @@ class Requisito
      */
     private $entornoTpr;
     
+    /********************* FOREIGN KEYS *****************************/
+    
+    /**
+     * @var array_collection
+     * ORM\OneToMany(targetEntity="ValorRequisito", mappedBy="idReq, ...", cascade={"all"})
+     **/
+    private $valores;
+     
+    public function __construct() {
+    	$this->valores = new ArrayCollection();
+    }
+    
+	public function getValores() {
+		return $this->valores;
+	}
+	    
     /******************* GETTERS & SETTERS **************************/
     
 	public function getId() {

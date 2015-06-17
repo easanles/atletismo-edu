@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * TipoPruebaFormato
@@ -17,6 +18,7 @@ class TipoPruebaFormato
 	 * @var string
 	 * @ORM\Column(name="nombretpr", type="string", length=255)
 	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})
 	 */
 	 private $nombre;
 	 
@@ -31,7 +33,23 @@ class TipoPruebaFormato
 	  * @ORM\Column(name="numinttpr", type="smallint", options={"default":1})
 	  */
 	 private $numInt = 1;
-	
+
+	 /********************* FOREIGN KEYS *****************************/
+	 
+	 /**
+	  * @var array_collection
+	  * @ORM\OneToMany(targetEntity="TipoPruebaModalidad", mappedBy="nombre", cascade={"all"})
+	  **/
+	 private $modalidades;
+	 
+	 public function __construct() {
+	 	$this->modalidades = new ArrayCollection();
+	 }
+	  
+	 public function getModalidades() {
+	 	return $this->modalidades;
+	 }
+	 
 	 /******************* GETTERS & SETTERS **************************/ 
 	 
 	public function getNombre() {

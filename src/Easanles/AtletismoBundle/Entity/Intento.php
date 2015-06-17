@@ -16,6 +16,7 @@ class Intento
      * @var integer
      * @ORM\Column(name="idatl", type="integer")
      * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="intentos", cascade={"all"})
      */
     private $idAtl;
 

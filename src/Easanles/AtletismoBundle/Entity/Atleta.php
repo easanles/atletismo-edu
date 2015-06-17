@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Atleta
@@ -127,6 +128,45 @@ class Atleta
      * @ORM\Column(name="emailatl", type="string", length=255, nullable=true)
      */
     private $email;
+    
+
+    /********************* FOREIGN KEYS *****************************/
+      
+    /**
+     * @var array_collection
+     * ORM\OneToMany(targetEntity="Participacion", mappedBy="idAtl, ...", cascade={"all"})
+     **/
+    private $participaciones;
+    
+    /**
+     * @var array_collection
+     * ORM\OneToMany(targetEntity="Inscripcion", mappedBy="idAtl, ...", cascade={"all"})
+     **/
+    private $inscripciones;
+    
+    /**
+     * @var array_collection
+     * ORM\OneToMany(targetEntity="Intentos", mappedBy="idAtl, ...", cascade={"all"})
+     **/
+    private $intentos;
+     
+    public function __construct() {
+    	$this->participaciones = new ArrayCollection();
+    	$this->inscripciones = new ArrayCollection();
+    	$this->intentos = new ArrayCollection();
+    }
+     
+    public function getParticipaciones() {
+    	return $this->participaciones;
+    }
+    
+    public function getInscripciones() {
+    	return $this->inscripciones;
+    }
+    
+    public function getIntentos() {
+    	return $this->intentos;
+    }
     
     /******************* GETTERS & SETTERS **************************/
     

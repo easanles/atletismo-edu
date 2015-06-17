@@ -97,18 +97,36 @@ class Competicion {
      
    /**
     * @var array_collection
-    * @ORM\OneToMany(targetEntity="Prueba", mappedBy="id", cascade={"all"})
+    * ORM\OneToMany(targetEntity="Prueba", mappedBy="id, ...", cascade={"all"})
     **/
    private $pruebas;
    
+   /**
+    * @var array_collection
+    **/
+   private $participaciones;
+   
+   /**
+    * @var array_collection
+    **/
+   private $valoresRequisitos;
+   
    public function __construct() {
    	$this->pruebas = new ArrayCollection();
+   	$this->participaciones = new ArrayCollection();
+   	$this->valoresRequisitos = new ArrayCollection();
    }
    
    public function getPruebas() {
    	return $this->pruebas;
    }
-   
+	public function getParticipaciones() {
+		return $this->participaciones;
+	}
+	public function getValoresRequisitos() {
+		return $this->valoresRequisitos;
+	}
+	   
    /******************* GETTERS & SETTERS **************************/
    
 	public function getNombre() {

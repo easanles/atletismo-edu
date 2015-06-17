@@ -16,6 +16,7 @@ class ValorRequisito
      * @var integer
      * @ORM\Column(name="idreq", type="smallint")
      * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Requisito", inversedBy="valores", cascade={"all"}) 
      */
     private $idReq;
     
