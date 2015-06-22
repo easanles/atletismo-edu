@@ -1,0 +1,38 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Añadir competición{% endblock %}
+
+{% block navbar %}
+      <li><a class="inactive">Atletas</a></li>
+      <li class="active"><a href="{{ webRootDir }}competiciones/">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ webRootDir }}configuracion">Configuración</a></li>
+   </ul>
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li><a href="{{ webRootDir }}">Portada Admin</a></li>
+  <li><a href="./">Competiciones</a></li>
+  <li class="active">Añadir competición</li>
+</ol>
+{% endblock %}
+
+{% block container %}
+{# Mostrar contenido de una variable {{ dump() }} #}
+   <h1 id="container_title" class="row page-header">Añadir competición</h1>
+   <div id="container_header" class="row">
+      
+   </div>
+   
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+
+

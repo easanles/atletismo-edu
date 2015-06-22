@@ -23,3 +23,7 @@ monolog:
             level: debug
         console:
             type:  console
+
+twig:
+    globals:
+       webRootDir: "/www/web/app.php/"

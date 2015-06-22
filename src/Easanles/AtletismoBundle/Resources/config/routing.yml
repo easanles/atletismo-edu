@@ -9,8 +9,11 @@ symfony_demo:
    defaults: {_controller: "AcmeDemoBundle:Demo:index"}
     
 listado_competiciones: #portada competiciones
-    path: /competiciones
-    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listado_competiciones"}
+    path: /competiciones/
+    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listadoCompeticiones"}
+crear_competicion: #nueva competicion
+    path: /competiciones/new
+    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:crearCompeticion"}
     
     
     

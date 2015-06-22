@@ -35,6 +35,10 @@ assetic:
 #swiftmailer:
 #    delivery_address: me@example.com
 
+twig:
+    globals:
+       webRootDir: "/www/web/app_dev.php/"
+
 services:
     data_collector.atletismo_version_collector:
         class: Easanles\AtletismoBundle\Service\AtletismoVersionCollector

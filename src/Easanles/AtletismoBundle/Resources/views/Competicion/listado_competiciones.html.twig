@@ -9,13 +9,13 @@
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
-      <li><a href="./configuracion">Configuración</a></li>
+      <li><a href="{{ webRootDir }}configuracion">Configuración</a></li>
    </ul>
 {% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
-  <li><a href="./">Portada Admin</a></li>
+  <li><a href="{{ webRootDir }}">Portada Admin</a></li>
   <li class="active">Competiciones</li>
 </ol>
 {% endblock %}
@@ -32,7 +32,7 @@
             <option>Temporada 2012/2013</option>
          </select>
       </div>
-      <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
+      <a class="btn btn-primary" href="./new"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-4 pull-right">
          <input type="search" class="form-control" placeholder="Buscar">
          <div class="input-group-btn"><button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button></div>
@@ -65,9 +65,6 @@
          </tbody>
    </table>
    </div>
-
-   {{ dump(competiciones) }}
-   {{ dump(dato) }}
    
 {% endblock %}
 
