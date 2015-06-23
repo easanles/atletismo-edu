@@ -24,8 +24,10 @@
 {% block container %}
 {# Mostrar contenido de una variable {{ dump() }} #}
    <h1 id="container_title" class="row page-header">Añadir competición</h1>
-   <div id="container_header" class="row">
-      
+   
+   <div id="data_form" class="row">
+{#{{ form(form) }}#}
+      {{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}
    </div>
    
 {% endblock %}

@@ -1,0 +1,8 @@
+
+Easanles\AtletismoBundle\Entity\Competicion:
+    properties:
+        nombre:
+            - NotBlank: ~
+        temp:
+            - NotBlank: ~
+            - Type: integer

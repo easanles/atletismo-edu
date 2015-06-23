@@ -85,13 +85,13 @@ class Competicion {
    * @var boolean
    * @ORM\Column(name="esfedercom", type="boolean", options={"default":0})
    */
-   private $esFeder = 0;
+   private $esFeder = false;
    
    /**
    * @var boolean
    * @ORM\Column(name="esoficialcom", type="boolean", options={"default":0})
    */
-   private $esOficial = 0;
+   private $esOficial = false;
    
    /********************* FOREIGN KEYS *****************************/
      

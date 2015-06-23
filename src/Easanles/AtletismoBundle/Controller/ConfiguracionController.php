@@ -32,18 +32,18 @@ class ConfiguracionController extends Controller
     	    	
     	$obj = new Competicion();
     	$obj->setNombre("Competicion 1")
-    	    ->setTemp(2015);
+    	    ->setTemp(2014);
     	$em->persist($obj);
 
     	$obj = new Competicion();
     	$obj->setNombre("Competicion 2")
-    	    ->setTemp(2014);
+    	    ->setTemp(2015);
     	$em->persist($obj);
     	 
     	$obj = new Prueba();
     	$obj->setId(1234)
     	    ->setNombreCom("Competicion 1")
-    	    ->setTempCom(2015)
+    	    ->setTempCom(2014)
     	    ->setRonda(1)
     	    ->setIdCat(1)
     	    ->setNombreTpr("100 metros lisos")
