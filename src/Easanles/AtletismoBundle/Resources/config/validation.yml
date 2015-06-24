@@ -2,7 +2,9 @@
 Easanles\AtletismoBundle\Entity\Competicion:
     properties:
         nombre:
+            - NotNull: ~
             - NotBlank: ~
         temp:
+            - NotNull: ~
             - NotBlank: ~
             - Type: integer

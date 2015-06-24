@@ -30,18 +30,18 @@ class ConfiguracionController extends Controller
     public function poblar_bdAction(){
     	$em = $this->getDoctrine()->getManager();
     	    	
-    	$obj = new Competicion();
-    	$obj->setNombre("Competicion 1")
+    	$com = new Competicion();
+    	$com->setNombre("Competicion 1")
     	    ->setTemp(2014);
-    	$em->persist($obj);
+    	$em->persist($com);
 
-    	$obj = new Competicion();
-    	$obj->setNombre("Competicion 2")
+    	$com = new Competicion();
+    	$com->setNombre("Competicion 2")
     	    ->setTemp(2015);
-    	$em->persist($obj);
+    	$em->persist($com);
     	 
-    	$obj = new Prueba();
-    	$obj->setId(1234)
+    	$pru = new Prueba();
+    	$pru->setId(1234)
     	    ->setNombreCom("Competicion 1")
     	    ->setTempCom(2014)
     	    ->setRonda(1)
@@ -49,7 +49,7 @@ class ConfiguracionController extends Controller
     	    ->setNombreTpr("100 metros lisos")
     	    ->setSexoTpr(0)
     	    ->setEntornoTpr("Pista cubierta");
-    	$em->persist($obj);
+    	$em->persist($pru);
     	
     	$em->flush();
     	
@@ -59,7 +59,7 @@ class ConfiguracionController extends Controller
     
     public function borrar_bdAction(){
     	$em = $this->getDoctrine()->getManager();
-    	$sql = 'DELETE FROM atl; DELETE FROM cat; DELETE FROM cfg; DELETE FROM com; DELETE FROM ins; DELETE FROM int; DELETE FROM not; DELETE FROM par; DELETE FROM pru; DELETE FROM req; DELETE FROM tprf; DELETE FROM tprm; DELETE FROM vrq;';
+    	$sql = 'DELETE FROM atl; DELETE FROM `cat`; DELETE FROM `cfg`; DELETE FROM `com`; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprf`; DELETE FROM `tprm`; DELETE FROM `vrq`;';
     	$connection = $em->getConnection();
     	$stmt = $connection->prepare($sql);
     	$stmt->execute();

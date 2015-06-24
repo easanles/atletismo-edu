@@ -12,13 +12,13 @@ listado_competiciones: #portada competiciones
     path: /competiciones/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listadoCompeticiones"}
 crear_competicion: #nueva competicion
-    path: /competiciones/new
+    path: /competiciones/new/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:crearCompeticion"}
     
     
     
 configuracion: #portada configuracion
-    path: /configuracion
+    path: /configuracion/
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
     
 configuracion_poblarbd: #poblar base de datos con datos de prueba

@@ -26,31 +26,31 @@ $(document).ready(function(){
 	$("#btn_poblarbd").click(function(){
 	   icon = $(this).find("span");
 	   icon.addClass("spinning");
-   	   sendAction("./configuracion/poblarbd", icon);
+   	   sendAction("./poblarbd", icon);
 	});
 
     $("#btn_borrarbd").click(function(){
  	   icon = $(this).find("span");
 	   icon.addClass("spinning");
-    	sendAction("./configuracion/borrarbd", icon);
+    	sendAction("./borrarbd", icon);
     });
 	
     $("#btn_rehacerbd").click(function(){
  	   icon = $(this).find("span");
 	   icon.addClass("spinning");
-    	sendAction("./configuracion/rehacerbd", icon);
+    	sendAction("./rehacerbd", icon);
     });
     
     $("#btn_limpiarcache").click(function(){
  	   icon = $(this).find("span");
 	   icon.addClass("spinning");
-    	sendAction("./configuracion/limpiarcache", icon);
+    	sendAction("./limpiarcache", icon);
     });
     
     $("#btn_asseticdump").click(function(){
  	   //icon = $(this).find("span");
 	   //icon.addClass("spinning");
-	   //sendAction("./configuracion/asseticdump", icon);
+	   //sendAction("./asseticdump", icon);
     });
 
 });

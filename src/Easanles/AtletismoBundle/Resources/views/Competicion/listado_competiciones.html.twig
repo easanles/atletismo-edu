@@ -5,17 +5,17 @@
 
 {% block navbar %}
       <li><a class="inactive">Atletas</a></li>
-      <li class="active"><a href="#">Competiciones</a></li>
+      <li class="active"><a href="./">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
-      <li><a href="{{ webRootDir }}configuracion">Configuración</a></li>
+      <li><a href="../configuracion/">Configuración</a></li>
    </ul>
 {% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
-  <li><a href="{{ webRootDir }}">Portada Admin</a></li>
+  <li><a href="../">Portada Admin</a></li>
   <li class="active">Competiciones</li>
 </ol>
 {% endblock %}
@@ -32,7 +32,7 @@
             <option>Temporada 2012/2013</option>
          </select>
       </div>
-      <a class="btn btn-primary" href="./new"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
+      <a class="btn btn-primary" href="./new/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-4 pull-right">
          <input type="search" class="form-control" placeholder="Buscar">
          <div class="input-group-btn"><button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button></div>
@@ -50,11 +50,6 @@
             <th>Atletas inscritos</th>
             <th>Acciones</th>
          </tr>
-         <tr><td>2012/2013</td><td>Lugar</td><td>FILA DE EJEMPLO</td><td>xx/xx/xxxx</td><td>Lugar</td><td>55</td>
-         <td>
-            <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
-            <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-         </td></tr>
          {% for row in competiciones %}
          <tr><td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>xx/xx/xxxx</td><td>{{ row.sede }}</td><td>0</td>
          <td>
