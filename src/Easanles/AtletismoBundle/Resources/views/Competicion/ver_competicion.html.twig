@@ -1,0 +1,35 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}{{ com.nombre }} ({{ com.temp }}){% endblock %}
+
+{% block navbar %}
+      <li><a class="inactive">Atletas</a></li>
+      <li class="active"><a href="../">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="../configuracion/">Configuración</a></li>
+   </ul>
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li><a href="../../">Portada Admin</a></li>
+  <li><a href="../">Competiciones</a></li>
+  <li class="active">{{ com.nombre }} ({{ com.temp }})</li>
+</ol>
+{% endblock %}
+
+{% block container %}
+{# Mostrar contenido de una variable {{ dump() }} #}
+   <h1 id="container_title" class="row page-header">{{ com.nombre }} ({{ com.temp }})</h1>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+
+

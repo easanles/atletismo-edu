@@ -11,10 +11,18 @@ symfony_demo:
 listado_competiciones: #portada competiciones
     path: /competiciones/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listadoCompeticiones"}
-crear_competicion: #nueva competicion
-    path: /competiciones/new/
+crear_competicion:
+    path: /competiciones/nuevo/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:crearCompeticion"}
-    
+borrar_competicion:
+    path: /competiciones/borrar
+    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:borrarCompeticion"}
+editar_competicion:
+    path: /competiciones/editar/{temp}/{nombre}
+    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:editarCompeticion"}
+ver_competicion:
+    path: /competiciones/{temp}/{nombre}
+    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
     
     
 configuracion: #portada configuracion

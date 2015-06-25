@@ -25,17 +25,17 @@
    <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
    <div id="container_header" class="row">
       <div class="col-xs-4">
-         <select class="form-control">
+         <select class="form-control" disabled>
             <option>Todas las temporadas</option>
             <option>Temporada 2014/2015</option>
             <option>Temporada 2013/2014</option>
             <option>Temporada 2012/2013</option>
          </select>
       </div>
-      <a class="btn btn-primary" href="./new/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
+      <a class="btn btn-primary" href="./nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-4 pull-right">
-         <input type="search" class="form-control" placeholder="Buscar">
-         <div class="input-group-btn"><button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button></div>
+         <input type="search" class="form-control" placeholder="Buscar" disabled>
+         <div class="input-group-btn"><button class="btn btn-default" type="button" disabled><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
    <div class="row">
@@ -51,11 +51,13 @@
             <th>Acciones</th>
          </tr>
          {% for row in competiciones %}
-         <tr><td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>xx/xx/xxxx</td><td>{{ row.sede }}</td><td>0</td>
-         <td>
-            <button type="button" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-edit"></span></button>
-            <button type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-         </td></tr>
+         <tr class="clickable" onClick="goToUrl('./{{ row.temp }}/{{ row.nombre }}')">
+            <td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>{{ row.fecha|date('d/m/Y') }}</td><td>{{ row.sede }}</td><td>0</td>
+            <td>
+               <a type="button" class="btn btn-xs btn-default" href="./editar/{{ row.temp }}/{{ row.nombre }}"><span class="glyphicon glyphicon-edit"></span></a>
+               <a type="button" class="btn btn-xs btn-danger" href="./borrar?n={{ row.nombre }}&t={{ row.temp }}"><span class="glyphicon glyphicon-remove"></span></a>
+            </td>
+         </tr>
          {% endfor %}
          </tbody>
    </table>
@@ -64,7 +66,7 @@
 {% endblock %}
 
 {% block js %}
-
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
 {% endblock %}
 
 

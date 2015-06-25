@@ -17,6 +17,10 @@ h1 {
 	margin-bottom: 5px;
 }
 
+.clickable{
+   cursor: pointer;
+}
+
 
 /* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state*/
 .glyphicon.spinning {
