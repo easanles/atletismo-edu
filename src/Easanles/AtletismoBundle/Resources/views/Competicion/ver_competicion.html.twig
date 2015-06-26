@@ -9,7 +9,7 @@
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
-      <li><a href="../configuracion/">Configuración</a></li>
+      <li><a href="../../configuracion/">Configuración</a></li>
    </ul>
 {% endblock %}
 
@@ -22,9 +22,23 @@
 {% endblock %}
 
 {% block container %}
-{# Mostrar contenido de una variable {{ dump() }} #}
    <h1 id="container_title" class="row page-header">{{ com.nombre }} ({{ com.temp }})</h1>
-
+   <dl class="dl-horizontal"><dt>Nombre</dt><dd>{{ com.nombre }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Temporada</dt><dd>{{ com.temp }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Ubicación</dt><dd>{{ com.ubicacion }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Sede</dt><dd>{{ com.sede }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Fecha</dt><dd>{{ com.fecha|date('d/m/Y') }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Descripción</dt><dd>{{ com.desc }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Nivel</dt><dd>{{ com.nivel }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Federación</dt><dd>{{ com.feder }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Web</dt><dd><a href="{{ com.web }}">{{ com.web }}</a></dd></dl>
+   <dl class="dl-horizontal"><dt>Email</dt><dd><a href="mailto:{{ com.email }}">{{ com.email }}</a></dd></dl>
+   <dl class="dl-horizontal"><dt>Cartel</dt><dd>{{ com.cartel }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Es federado</dt><dd>{{ com.esfeder }}</dd></dl>
+   <dl class="dl-horizontal"><dt>Es oficial</dt><dd>{{ com.esoficial }}</dd></dl>
+   
+   <a type="button" class="btn btn-m btn-default" href="../"><span class="glyphicon glyphicon-menu-left"></span>Volver</a>
+   
 {% endblock %}
 
 {% block js %}

@@ -1,8 +1,8 @@
-miembro: #informacion de un miembro
-    path:     /miembro/{id}
-    defaults: {_controller: "EasanlesAtletismoBundle:Miembro:mostrar", id: 1}
-    requirements:
-        id:  \d+ #numeros enteros
+#miembro: #informacion de un miembro
+    #path:     /miembro/{id}
+   #defaults: {_controller: "EasanlesAtletismoBundle:Miembro:mostrar", id: 1}
+   # requirements:
+       # id:  \d+ #numeros enteros
         
 symfony_demo:
    path: /demo

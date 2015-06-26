@@ -3,16 +3,20 @@
  */
 
 alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
-alerthtml_preerr = "<div class=\"alert alert-error alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
+alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
 alerthtml_pos = "</span></div>";
 
 
 function sendAction(path, icon){
-   $.get(path, function(data, status){
+   $.getJSON(path, function(data, status){
 	     if (status = "success"){
-			 $("#alert_div").append(alerthtml_preok + data + alerthtml_pos);
+	    	 if (data.success == true){
+				 $("#alert_div").append(alerthtml_preok + data.message + alerthtml_pos);
+	    	 } else {
+				 $("#alert_div").append(alerthtml_preerr + data.message + alerthtml_pos);
+	    	 }
 	     } else {
-			 $("#alert_div").append(alerthtml_preerr + data + alerthtml_pos);
+			 $("#alert_div").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);
 	     }
 		 icon.removeClass("spinning");
    });
