@@ -1,0 +1,129 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Añadir competición{% endblock %}
+
+{% block navbar %}
+      <li><a class="inactive">Atletas</a></li>
+      <li class="active"><a href="../">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="../../configuracion/">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+  <li><a href="../../">Portada Admin</a></li>
+  <li><a href="../">Competiciones</a></li>
+  <li class="active">Añadir competición</li>
+</ol>
+{% endblock %}
+
+{% block container %}
+{# Mostrar contenido de una variable {{ dump() }} #}
+   <h1 id="container_title" class="row page-header">Añadir competición</h1>
+   
+   <div id="data_form" class="row">
+
+{#{{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}#}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class=row">
+       <div class="form_row col-xs-8">
+          {{ form_label(form.nombre) }}
+          {{ form_errors(form.nombre) }}
+          {{ form_widget(form.nombre) }}
+       </div>
+       <div class="form_row col-xs-4">
+          {{ form_label(form.temp) }}
+          {{ form_errors(form.temp) }}
+          {{ form_widget(form.temp) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-4">
+          {{ form_label(form.ubicacion) }}
+          {{ form_errors(form.ubicacion) }}
+          {{ form_widget(form.ubicacion) }}
+    </div>
+       <div class="form_row col-xs-4">
+          {{ form_label(form.sede) }}
+          {{ form_errors(form.sede) }}
+          {{ form_widget(form.sede) }}
+       </div>
+       <div class="form_row col-xs-4">
+          {{ form_label(form.fecha) }}
+          {{ form_errors(form.fecha) }}
+          {{ form_widget(form.fecha) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-12">
+          {{ form_label(form.desc) }}
+          {{ form_errors(form.desc) }}
+          {{ form_widget(form.desc) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-2">
+          {{ form_label(form.nivel) }}
+          {{ form_errors(form.nivel) }}
+          {{ form_widget(form.nivel) }}
+       </div>
+       <div class="form_row col-xs-2">
+          {{ form_label(form.feder) }}
+          {{ form_errors(form.feder) }}
+          {{ form_widget(form.feder) }}
+       </div>
+       <div class="form_row col-xs-4">
+          {{ form_label(form.web) }}
+          {{ form_errors(form.web) }}
+          {{ form_widget(form.web) }}
+       </div>
+       <div class="form_row col-xs-4">
+          {{ form_label(form.email) }}
+          {{ form_errors(form.email) }}
+          {{ form_widget(form.email) }}
+       </div>
+    </div>
+    <div class="row">
+       <div class="form_row col-xs-6">
+          {{ form_label(form.cartel) }}
+          {{ form_errors(form.cartel) }}
+          {{ form_widget(form.cartel) }}
+       </div>
+       <div class="col-xs-6">
+          <div class="row">
+             <div class="form_row col-xs-6">
+                {{ form_errors(form.esfeder) }}
+                {{ form_widget(form.esfeder) }}
+                {{ form_label(form.esfeder) }}
+             </div>
+             <div class="form_row col-xs-6">
+                {{ form_errors(form.esoficial) }}
+                {{ form_widget(form.esoficial) }}
+                {{ form_label(form.esoficial) }}
+             </div>
+          </div>
+          <div class="row">
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="../"><span class="glyphicon glyphicon-menu-left"></span>Cancelar</a>
+              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span>Guardar</button>
+          </div>
+       </div>
+    </div>
+
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>
+   
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
+
+
+

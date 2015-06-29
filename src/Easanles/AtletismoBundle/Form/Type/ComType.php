@@ -11,19 +11,19 @@ class ComType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-    	    ->add('nombre', 'text')
-    	    ->add('temp', 'integer')
-    	    ->add('ubicacion', 'text')
-    	    ->add('sede', 'text')
-    	    ->add('fecha', 'date')
-    	    ->add('desc', 'textarea')
-    	    ->add('nivel', 'text')
-    	    ->add('feder', 'text')
-    	    ->add('web', 'url')
-    	    ->add('email', 'email')
-    	    ->add('cartel', 'file')
-    	    ->add('esfeder', 'checkbox')
-    	    ->add('esoficial', 'checkbox');
+    	    ->add('nombre', 'text', array('label' => 'Nombre de la competición'))
+    	    ->add('temp', 'integer', array('label' => 'Temporada'))
+    	    ->add('ubicacion', 'text', array('label' => 'Ubicación','required' => false))
+    	    ->add('sede', 'text', array('label' => 'Sede','required' => false))
+    	    ->add('fecha', 'date', array('label' => 'Fecha de comienzo','required' => false))
+    	    ->add('desc', 'textarea', array('label' => 'Descripción','required' => false))
+    	    ->add('nivel', 'text', array('label' => 'Nivel','required' => false))
+    	    ->add('feder', 'text', array('label' => 'Federación','required' => false))
+    	    ->add('web', 'url', array('label' => 'Página web','required' => false))
+    	    ->add('email', 'email', array('label' => 'Correo electrónico de contacto','required' => false))
+    	    ->add('cartel', 'file', array('label' => 'Archivo de imagen del cartel','required' => false))
+    	    ->add('esfeder', 'checkbox', array('label' => 'Competición federada','required' => false))
+    	    ->add('esoficial', 'checkbox', array('label' => 'Competición oficial del club','required' => false));
     }
  
     public function getName()

@@ -13,12 +13,25 @@ h1 {
 	text-decoration: line-through;
 }
 
+
+#container_title {
+   padding-left: 0.5em;
+}
+
 #container_header {
 	margin-bottom: 5px;
 }
 
 .clickable{
    cursor: pointer;
+}
+
+#data_form{
+   padding: 1em 0.5em;
+}
+
+.form_row{
+   margin-bottom: 0.5em;
 }
 
 
