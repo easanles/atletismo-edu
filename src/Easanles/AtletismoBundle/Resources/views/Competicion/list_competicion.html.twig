@@ -10,21 +10,18 @@
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
       <li><a href="../configuracion/">Configuración</a></li>
-   </ul>
 {% endblock %}
 
 {% block breadcrumb %}
-<ol class="breadcrumb">
   <li><a href="../">Portada Admin</a></li>
   <li class="active">Competiciones</li>
-</ol>
 {% endblock %}
 
 {% block container %}
 {# Mostrar contenido de una variable {{ dump() }} #}
    <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
    <div id="container_header" class="row">
-      <div class="col-xs-4">
+      <div class="col-xs-8 col-sm-6">
          <select class="form-control" disabled>
             <option>Todas las temporadas</option>
             <option>Temporada 2014/2015</option>
@@ -33,7 +30,7 @@
          </select>
       </div>
       <a class="btn btn-primary" href="./nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
-      <div class="input-group col-xs-4 pull-right">
+      <div class="input-group col-xs-12 col-sm-4 pull-right">
          <input type="search" class="form-control" placeholder="Buscar" disabled>
          <div class="input-group-btn"><button class="btn btn-default" type="button" disabled><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
@@ -52,7 +49,9 @@
          </tr>
          {% for row in competiciones %}
          <tr class="clickable" onClick="goToUrl('./{{ row.temp }}/{{ row.nombre }}')">
-            <td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>{{ row.fecha|date('d/m/Y') }}</td><td>{{ row.sede }}</td><td>0</td>
+            <td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>
+{% if row.fecha is null %} <em>Sin fecha</em> {% else %} {{ row.fecha|date('d/m/Y') }} {% endif %} </td>
+            <td>{{ row.sede }}</td><td>0</td>
             <td>
                <a type="button" class="btn btn-xs btn-default" href="./editar/{{ row.temp }}/{{ row.nombre }}"><span class="glyphicon glyphicon-edit"></span></a>
                <a type="button" class="btn btn-xs btn-danger" href="./borrar?n={{ row.nombre }}&t={{ row.temp }}"><span class="glyphicon glyphicon-remove"></span></a>

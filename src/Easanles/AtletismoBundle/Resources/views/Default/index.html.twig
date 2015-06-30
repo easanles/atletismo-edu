@@ -47,11 +47,11 @@
    </nav>
 
     <div class="container">
-       {% block breadcrumb %}
        <ol class="breadcrumb">
+       {% block breadcrumb %}
           <li class="active">Portada Admin</li>
-       </ol>
        {% endblock %}
+       </ol>
        {% block container %}
        <div class="container-fluid">
           <h1>Hola {{ name }}!</h1>

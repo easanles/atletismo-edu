@@ -13,11 +13,9 @@
 {% endblock %}
 
 {% block breadcrumb %}
-<ol class="breadcrumb">
   <li><a href="../../">Portada Admin</a></li>
   <li><a href="../">Competiciones</a></li>
   <li class="active">Añadir competición</li>
-</ol>
 {% endblock %}
 
 {% block container %}
@@ -32,28 +30,22 @@
     {{ form_errors(form) }}
     <div class=row">
        <div class="form_row col-xs-8">
-          {{ form_label(form.nombre) }}
-          {{ form_errors(form.nombre) }}
-          {{ form_widget(form.nombre) }}
+          {{ form_row(form.nombre) }}
        </div>
        <div class="form_row col-xs-4">
-          {{ form_label(form.temp) }}
-          {{ form_errors(form.temp) }}
-          {{ form_widget(form.temp) }}
+          {{ form_row(form.temp) }}
        </div>
     </div>
     <div class=row">
-       <div class="form_row col-xs-4">
+       <div class="form_row col-xs-12 col-sm-4">
           {{ form_label(form.ubicacion) }}
           {{ form_errors(form.ubicacion) }}
           {{ form_widget(form.ubicacion) }}
     </div>
-       <div class="form_row col-xs-4">
-          {{ form_label(form.sede) }}
-          {{ form_errors(form.sede) }}
-          {{ form_widget(form.sede) }}
+       <div class="form_row col-xs-6 col-sm-4">
+          {{ form_row(form.sede) }}
        </div>
-       <div class="form_row col-xs-4">
+       <div class="form_row col-xs-6 col-sm-4">
           {{ form_label(form.fecha) }}
           {{ form_errors(form.fecha) }}
           {{ form_widget(form.fecha) }}
@@ -61,40 +53,30 @@
     </div>
     <div class=row">
        <div class="form_row col-xs-12">
-          {{ form_label(form.desc) }}
-          {{ form_errors(form.desc) }}
-          {{ form_widget(form.desc) }}
+          {{ form_row(form.desc) }}
        </div>
     </div>
     <div class=row">
-       <div class="form_row col-xs-2">
-          {{ form_label(form.nivel) }}
-          {{ form_errors(form.nivel) }}
-          {{ form_widget(form.nivel) }}
+       <div class="form_row col-xs-6 col-md-2">
+          {{ form_row(form.nivel) }}
        </div>
-       <div class="form_row col-xs-2">
-          {{ form_label(form.feder) }}
-          {{ form_errors(form.feder) }}
-          {{ form_widget(form.feder) }}
+       <div class="form_row col-xs-6 col-md-2">
+          {{ form_row(form.feder) }}
        </div>
-       <div class="form_row col-xs-4">
-          {{ form_label(form.web) }}
-          {{ form_errors(form.web) }}
-          {{ form_widget(form.web) }}
+       <div class="form_row col-xs-6 col-md-4">
+          {{ form_row(form.web) }}
        </div>
-       <div class="form_row col-xs-4">
-          {{ form_label(form.email) }}
-          {{ form_errors(form.email) }}
-          {{ form_widget(form.email) }}
+       <div class="form_row col-xs-6 col-md-4">
+          {{ form_row(form.email) }}
        </div>
     </div>
     <div class="row">
-       <div class="form_row col-xs-6">
+       <div class="form_row col-xs-12 col-sm-6">
           {{ form_label(form.cartel) }}
           {{ form_errors(form.cartel) }}
           {{ form_widget(form.cartel) }}
        </div>
-       <div class="col-xs-6">
+       <div class="col-xs-12 col-sm-6">
           <div class="row">
              <div class="form_row col-xs-6">
                 {{ form_errors(form.esfeder) }}
@@ -122,6 +104,19 @@
 {% endblock %}
 
 {% block js %}
+   <script type="text/javascript">
+      $(document).ready(function(){
+    	    $("#com_esfeder").click(function(){
+     	       cb = document.getElementById('com_esoficial');
+        	    if ($('#com_esfeder').is(':checked') == true){
+        	       cb.checked = true;
+        	       cb.disabled = true;
+             } else {
+                cb.disabled = false;
+             }
+    	    });
+      });
+   </script>
 
 {% endblock %}
 
