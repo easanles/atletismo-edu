@@ -13,7 +13,7 @@ class CompeticionController extends Controller
 {
     public function listadoCompeticionesAction() {
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	$competiciones = $repository->findAll();
+    	$competiciones = $repository->findAllOrdered();
         return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
            array('competiciones' => $competiciones));
     }
@@ -31,13 +31,15 @@ class CompeticionController extends Controller
     	   try {
     	      $em->flush();
     	   } catch (\Exception $e) {
-    	   	return new Response($e->getMessage());
+    	   	$exception = $e->getMessage();
+    	   	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
+    	   			array('form' => $form->createView(), 'mode' => "new", 'exception' => $exception));
     	   }
     	 	return $this->redirect($this->generateUrl('listado_competiciones'));
     	 }
     	 
        return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
-             array('form' => $form->createView()));
+             array('form' => $form->createView(), 'mode' => "new"));
     }
    
     public function borrarCompeticionAction(Request $request){
@@ -56,8 +58,8 @@ class CompeticionController extends Controller
     	   }
     	    return $this->redirect($this->generateUrl('listado_competiciones'));
     	 } else {
-       	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href=".">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=.');
+       	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href="../../">Volver</a>');
+       	$response->headers->set('Refresh', '2; url=../../');
        	return $response;
        }
     }
@@ -76,16 +78,18 @@ class CompeticionController extends Controller
     	   	try {
     	   		$em->flush();
     	   	} catch (\Exception $e) {
-    	   		return new Response($e->getMessage());
+    	   	   $exception = $e->getMessage();
+    	      	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
+    	   			   array('form' => $form->createView(), 'mode' => "edit", 'com' => $com, 'exception' => $exception));
     	   	}
     	   	return $this->redirect($this->generateUrl('listado_competiciones'));
        	}
     	
       	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
-    		   	array('form' => $form->createView()));
+    		   	array('form' => $form->createView(), 'mode' => "edit", 'com' => $com));
        } else {
-       	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href=".">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=.');
+       	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href="../../">Volver</a>');
+       	$response->headers->set('Refresh', '2; url=../../');
        	return $response;
        }
     }
@@ -98,8 +102,8 @@ class CompeticionController extends Controller
           return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
     	          array('com' => $com));
     	 } else {
-    	 	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href=".">Volver</a>');
-    	 	$response->headers->set('Refresh', '2; url=.');
+    	 	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href="../">Volver</a>');
+    	 	$response->headers->set('Refresh', '2; url=../');
     	 	return $response;
     	 }
     }

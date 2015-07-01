@@ -1,10 +1,30 @@
 
+
 Easanles\AtletismoBundle\Entity\Competicion:
-    properties:
-        nombre:
-            - NotNull: ~
-            - NotBlank: ~
-        temp:
-            - NotNull: ~
-            - NotBlank: ~
-            - Type: integer
+  properties:
+     nombre:
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     temp:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     fecha:
+        - Type:
+           type: DateTime
+           message: Este dato no es una fecha válida
+     web:
+        - Url:
+           message: Este dato no es una dirección url válida
+     email:
+        - Email:
+           message: Este dato no es una dirección de correo electrónico válido
+     cartel:
+        - Image: 
+           mimeTypesMessage: El archivo recibido no es un archivo de imagen

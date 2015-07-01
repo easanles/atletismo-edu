@@ -4,12 +4,14 @@ namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Competicion
  * 
  * @ORM\Table(name="com")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\CompeticionRepository")
  */
 class Competicion {
 
@@ -221,6 +223,14 @@ class Competicion {
 		return $this;
 	}
 
-
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+		$this->nombre = strip_tags($this->nombre);
+		if (($this->esFeder == true) && ($this->esOficial == false)) {
+			$this->esOficial = true;
+		}
+	}
    
 }

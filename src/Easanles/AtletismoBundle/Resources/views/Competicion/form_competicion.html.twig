@@ -1,32 +1,59 @@
 
 {% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
 
-{% block title %}Añadir competición{% endblock %}
+{% block title %}
+   {% if mode == "new" %}Añadir competición
+   {% elseif mode == "edit" %}Editar competición
+   {% endif %}
+{% endblock %}
 
 {% block navbar %}
+{% if mode == "new" %}
       <li><a class="inactive">Atletas</a></li>
       <li class="active"><a href="../">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
       <li><a href="../../configuracion/">Configuración</a></li>
+{% elseif mode == "edit" %}
+      <li><a class="inactive">Atletas</a></li>
+      <li class="active"><a href="../../">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="../../../configuracion/">Configuración</a></li>
+{% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
+  {% if mode == "new" %}
   <li><a href="../../">Portada Admin</a></li>
   <li><a href="../">Competiciones</a></li>
   <li class="active">Añadir competición</li>
+  {% elseif mode == "edit" %}
+  <li><a href="../../../">Portada Admin</a></li>
+  <li><a href="../../">Competiciones</a></li>
+  <li class="active">Editar competición</li>
+  {% endif %}
 {% endblock %}
 
 {% block container %}
 {# Mostrar contenido de una variable {{ dump() }} #}
+   {% if mode == "new" %}
    <h1 id="container_title" class="row page-header">Añadir competición</h1>
+   {% elseif mode == "edit" %}
+    <h1 id="container_title" class="row page-header">Editar competición <small>{{ com.nombre }} ({{ com.temp }})</small></h1>
+   {% endif %}
+   
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
    
    <div id="data_form" class="row">
 
-{#{{ form(form, {'attr': {'novalidate': 'novalidate'}}) }}#}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
-{{ form_start(form) }}
+{#{ form_start(form) }#}
     {{ form_errors(form) }}
     <div class=row">
        <div class="form_row col-xs-8">
@@ -38,17 +65,13 @@
     </div>
     <div class=row">
        <div class="form_row col-xs-12 col-sm-4">
-          {{ form_label(form.ubicacion) }}
-          {{ form_errors(form.ubicacion) }}
-          {{ form_widget(form.ubicacion) }}
-    </div>
+          {{ form_row(form.ubicacion) }}
+       </div>
        <div class="form_row col-xs-6 col-sm-4">
           {{ form_row(form.sede) }}
        </div>
        <div class="form_row col-xs-6 col-sm-4">
-          {{ form_label(form.fecha) }}
-          {{ form_errors(form.fecha) }}
-          {{ form_widget(form.fecha) }}
+          {{ form_row(form.fecha) }}
        </div>
     </div>
     <div class=row">
@@ -72,25 +95,23 @@
     </div>
     <div class="row">
        <div class="form_row col-xs-12 col-sm-6">
-          {{ form_label(form.cartel) }}
-          {{ form_errors(form.cartel) }}
-          {{ form_widget(form.cartel) }}
+          {{ form_row(form.cartel) }}
        </div>
        <div class="col-xs-12 col-sm-6">
           <div class="row">
              <div class="form_row col-xs-6">
-                {{ form_errors(form.esfeder) }}
-                {{ form_widget(form.esfeder) }}
-                {{ form_label(form.esfeder) }}
+                {{ form_row(form.esfeder) }}
              </div>
              <div class="form_row col-xs-6">
-                {{ form_errors(form.esoficial) }}
-                {{ form_widget(form.esoficial) }}
-                {{ form_label(form.esoficial) }}
+                {{ form_row(form.esoficial) }}
              </div>
           </div>
           <div class="row">
+              {% if mode == "new" %}
               <a type="button" class="btn btn-m btn-default col-xs-3" href="../"><span class="glyphicon glyphicon-menu-left"></span>Cancelar</a>
+              {% elseif mode == "edit" %}
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="../../"><span class="glyphicon glyphicon-menu-left"></span>Cancelar</a>
+              {% endif %}
               <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span>Guardar</button>
           </div>
        </div>
