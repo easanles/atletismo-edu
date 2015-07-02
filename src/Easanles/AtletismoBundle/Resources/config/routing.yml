@@ -18,10 +18,10 @@ borrar_competicion:
     path: /competiciones/borrar
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:borrarCompeticion"}
 editar_competicion:
-    path: /competiciones/editar/{temp}/{nombre}
+    path: /competiciones/editar/{id}/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:editarCompeticion"}
 ver_competicion:
-    path: /competiciones/{temp}/{nombre}
+    path: /competiciones/{id}/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
     
     

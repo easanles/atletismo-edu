@@ -43,12 +43,11 @@ class CompeticionController extends Controller
     }
    
     public function borrarCompeticionAction(Request $request){
-    	 $nombre = $request->query->get('n');
-    	 $temp = $request->query->get('t');
+    	 $id = $request->query->get('i');
     	 
     	 $em = $this->getDoctrine()->getManager();
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	 $com = $repository->findOneBy(array('nombre' => $nombre, 'temp' => $temp));
+    	 $com = $repository->find($id);
     	 if ($com != null){
     	    $em->remove($com);
     	    try {
@@ -58,16 +57,16 @@ class CompeticionController extends Controller
     	   }
     	    return $this->redirect($this->generateUrl('listado_competiciones'));
     	 } else {
-       	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href="../../">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=../../');
+       	$response = new Response('No existe la competicion con el identificador "'.$id.'" <a href="../">Volver</a>');
+       	$response->headers->set('Refresh', '2; url=../');
        	return $response;
        }
     }
     
-    public function editarCompeticionAction(Request $request, $nombre, $temp){
+    public function editarCompeticionAction(Request $request, $id){
     	$em = $this->getDoctrine()->getManager();
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	$com = $repository->findOneBy(array('nombre' => $nombre, 'temp' => $temp));
+    	$com = $repository->find($id);
 
     	if ($com != null) {
     	   $form = $this->createForm(new ComType(), $com);
@@ -88,21 +87,21 @@ class CompeticionController extends Controller
       	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
     		   	array('form' => $form->createView(), 'mode' => "edit", 'com' => $com));
        } else {
-       	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href="../../">Volver</a>');
+       	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../">Volver</a>');
        	$response->headers->set('Refresh', '2; url=../../');
        	return $response;
        }
     }
     
-    public function verCompeticionAction($nombre, $temp){
+    public function verCompeticionAction($id){
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	 $com = $repository->findOneBy(array('nombre' => $nombre, 'temp' => $temp));
+    	 $com = $repository->find($id);
 
        if ($com != null) {
           return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
     	          array('com' => $com));
     	 } else {
-    	 	$response = new Response('No existe la competicion "'.$nombre.'" en la temporada '.$temp.' <a href="../">Volver</a>');
+    	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../">Volver</a>');
     	 	$response->headers->set('Refresh', '2; url=../');
     	 	return $response;
     	 }

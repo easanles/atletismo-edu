@@ -48,13 +48,13 @@
             <th>Acciones</th>
          </tr>
          {% for row in competiciones %}
-         <tr class="clickable" onClick="goToUrl('./{{ row.temp }}/{{ row.nombre }}')">
+         <tr class="clickable" onClick="goToUrl('./{{ row.sid }}/')">
             <td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>
 {% if row.fecha is null %} <em>Sin fecha</em> {% else %} {{ row.fecha|date('d/m/Y') }} {% endif %} </td>
             <td>{{ row.sede }}</td><td>0</td>
             <td>
-               <a type="button" class="btn btn-xs btn-default" href="./editar/{{ row.temp }}/{{ row.nombre }}"><span class="glyphicon glyphicon-edit"></span></a>
-               <a type="button" class="btn btn-xs btn-danger" href="./borrar?n={{ row.nombre }}&t={{ row.temp }}"><span class="glyphicon glyphicon-remove"></span></a>
+               <a type="button" class="btn btn-xs btn-default" href="./editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
+               <a type="button" class="btn btn-xs btn-danger" href="./borrar?i={{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
          </tr>
          {% endfor %}

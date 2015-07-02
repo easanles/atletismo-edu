@@ -14,18 +14,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\CompeticionRepository")
  */
 class Competicion {
+	
+   /**
+    * @var integer
+    * @ORM\Column(name="sidcom", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+   */
+	private $sid;
 
    /**
    * @var string
    * @ORM\Column(name="nombrecom", type="string", length=255)
-   * @ORM\Id
    */
    private $nombre;
    
    /**
    * @var integer
    * @ORM\Column(name="tempcom", type="smallint")
-   * @ORM\Id
    */
    private $temp;
    
@@ -99,17 +105,19 @@ class Competicion {
      
    /**
     * @var array_collection
-    * ORM\OneToMany(targetEntity="Prueba", mappedBy="id, ...", cascade={"all"})
+    * ORM\OneToMany(targetEntity="Prueba", mappedBy="sid", cascade={"all"})
     **/
    private $pruebas;
    
    /**
     * @var array_collection
+    * ORM\OneToMany(targetEntity="Participacion", mappedBy="sid", cascade={"all"})
     **/
    private $participaciones;
    
    /**
     * @var array_collection
+    * ORM\OneToMany(targetEntity="ValorRequisito", mappedBy="sid", cascade={"all"})
     **/
    private $valoresRequisitos;
    
@@ -131,6 +139,13 @@ class Competicion {
 	   
    /******************* GETTERS & SETTERS **************************/
    
+	public function getSid() {
+		return $this->sid;
+	}
+	public function setSid($sid) {
+		$this->sid = $sid;
+		return $this;
+	}
 	public function getNombre() {
 		return $this->nombre;
 	}
@@ -231,6 +246,6 @@ class Competicion {
 		if (($this->esFeder == true) && ($this->esOficial == false)) {
 			$this->esOficial = true;
 		}
-	}
+	}	
    
 }

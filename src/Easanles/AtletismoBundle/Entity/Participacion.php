@@ -10,29 +10,29 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="par")
  * @ORM\Entity
  */
-class Participacion
-{
+class Participacion {
+	
+   /**
+    * @var integer
+    * @ORM\Column(name="sidpar", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $sid;
+    
     /**
      * @var integer
      * @ORM\Column(name="idatl", type="integer")
-     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones", cascade={"all"})
      */
     private $idAtl;
     
-    /**
-     * @var string
-     * @ORM\Column(name="nombrecom", type="string", length=255)
-     * @ORM\Id
+	 /**
+	  * @var integer
+	  * @ORM\Column(name="sidcom", type="integer")
+	  * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones", cascade={"all"})
      */
-    private $nombreCom;
-    
-    /**
-     * @var integer
-     * @ORM\Column(name="tempcom", type="smallint")
-     * @ORM\Id
-     */
-    private $tempCom;
+    private $sidCom;
     
     /**
      * @var string

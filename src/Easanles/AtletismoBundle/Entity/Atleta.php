@@ -134,19 +134,19 @@ class Atleta
       
     /**
      * @var array_collection
-     * ORM\OneToMany(targetEntity="Participacion", mappedBy="idAtl, ...", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Participacion", mappedBy="sid", cascade={"all"})
      **/
     private $participaciones;
     
     /**
      * @var array_collection
-     * ORM\OneToMany(targetEntity="Inscripcion", mappedBy="idAtl, ...", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="sid", cascade={"all"})
      **/
     private $inscripciones;
     
     /**
      * @var array_collection
-     * ORM\OneToMany(targetEntity="Intentos", mappedBy="idAtl, ...", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Intento", mappedBy="sid", cascade={"all"})
      **/
     private $intentos;
      
