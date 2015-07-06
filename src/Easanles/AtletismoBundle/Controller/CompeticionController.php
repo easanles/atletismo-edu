@@ -7,6 +7,7 @@ use Easanles\AtletismoBundle\Entity\Competicion;
 use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Form\Type\ComType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 
 class CompeticionController extends Controller
@@ -23,12 +24,18 @@ class CompeticionController extends Controller
     	 $form = $this->createForm(new ComType(), $com);
     	 
     	 $form->handleRequest($request);
-    	 
+    	     	    	     	 
     	 if ($form->isValid()) {
-    	 	// guardar la tarea en la base de datos
-    	 	$em = $this->getDoctrine()->getManager();
-    	 	$em->persist($com);
-    	   try {
+    	 	try {
+    	 	   $nombre = $form->getData()->getNombre();
+    	 	   $temp = $form->getData()->getTemp();
+    	 	   $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 	   $testResult = $repository->checkData($nombre, $temp);
+    	 	   if ($testResult) throw new Exception("Ya existe la competición \"".$nombre."\" para la temporada ".$temp);
+    	 	 
+       	 	$em = $this->getDoctrine()->getManager();
+    	 	   $em->persist($com);
+
     	      $em->flush();
     	   } catch (\Exception $e) {
     	   	$exception = $e->getMessage();
@@ -74,6 +81,7 @@ class CompeticionController extends Controller
     	   $form->handleRequest($request);
     	
     	   if ($form->isValid()) {
+    	   	$repository->checkData($com);
     	   	try {
     	   		$em->flush();
     	   	} catch (\Exception $e) {

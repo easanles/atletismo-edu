@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Competicion
@@ -22,7 +24,7 @@ class Competicion {
     * @ORM\GeneratedValue(strategy="AUTO")
    */
 	private $sid;
-
+	
    /**
    * @var string
    * @ORM\Column(name="nombrecom", type="string", length=255)
@@ -245,7 +247,26 @@ class Competicion {
 		$this->nombre = strip_tags($this->nombre);
 		if (($this->esFeder == true) && ($this->esOficial == false)) {
 			$this->esOficial = true;
+		/*   if ($this->unique == null) $texto = "null";
+		   else if ($this->unique == false) $texto = "false";
+		   else if ($this->unique == true) $texto = "true";
+			$context->buildViolation($texto)
+				->atPath('nombre')
+				->addViolation();
+	   if ($this->unique == null) {
+			//throw new Exception("This entity hasn't been checked for unique condition");
+		} else if ($this->unique != false) {
+			$context->buildViolation('Ya existe una competición con este nombre para la temporada '.$this->temp)
+				->atPath('nombre')
+				->addViolation();
+		} else {
+			$this->nombre = strip_tags($this->nombre);
+			if (($this->esFeder == true) && ($this->esOficial == false)) {
+				$this->esOficial = true;
+	   	}
 		}
-	}	
+		*/
+		}
+	}		
    
 }
