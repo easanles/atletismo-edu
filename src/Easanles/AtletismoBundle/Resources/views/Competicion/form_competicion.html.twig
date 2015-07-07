@@ -38,7 +38,6 @@
 {% endblock %}
 
 {% block container %}
-{# Mostrar contenido de una variable {{ dump() }} #}
    {% if mode == "new" %}
    <h1 id="container_title" class="row page-header">Añadir competición</h1>
    {% elseif mode == "edit" %}
@@ -51,9 +50,9 @@
    
    <div id="data_form" class="row">
 
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+{#{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }#}
 
-{#{ form_start(form) }#}
+{{ form_start(form) }}
     {{ form_errors(form) }}
     <div class=row">
        <div class="form_row col-xs-8">
@@ -108,11 +107,12 @@
           </div>
           <div class="row">
               {% if mode == "new" %}
-              <a type="button" class="btn btn-m btn-default col-xs-3" href="../"><span class="glyphicon glyphicon-menu-left"></span>Cancelar</a>
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="../"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
+              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Crear</button>
               {% elseif mode == "edit" %}
-              <a type="button" class="btn btn-m btn-default col-xs-3" href="../../"><span class="glyphicon glyphicon-menu-left"></span>Cancelar</a>
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="../../"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
+              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Guardar</button>
               {% endif %}
-              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span>Guardar</button>
           </div>
        </div>
     </div>

@@ -17,16 +17,22 @@
   <li class="active">Competiciones</li>
 {% endblock %}
 
-{% block container %}
-{# Mostrar contenido de una variable {{ dump() }} #}
+   {% block modallabel %}Confirmar borrado{% endblock %}
+   {% block modalbody %}
+   <p>¿Confirmar borrado de la competición <strong id="data1">***</strong> de la temporada <strong id="data2">***</strong>?</p>
+   {% endblock %}
+   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href="./borrar?i="><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+
+
+{% block container %}   
    <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
    <div id="container_header" class="row">
       <div class="col-xs-8 col-sm-6">
-         <select class="form-control" disabled>
+         <select class="form-control">
             <option>Todas las temporadas</option>
-            <option>Temporada 2014/2015</option>
-            <option>Temporada 2013/2014</option>
-            <option>Temporada 2012/2013</option>
+            {% for row in temporadas %}
+            <option>Temporada {{ row.temp }}</option>
+            {% endfor %}
          </select>
       </div>
       <a class="btn btn-primary" href="./nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
@@ -48,13 +54,17 @@
             <th>Acciones</th>
          </tr>
          {% for row in competiciones %}
-         <tr class="clickable" onClick="goToUrl('./{{ row.sid }}/')">
-            <td>{{ row.temp }}</td><td>{{ row.ubicacion }}</td><td>{{ row.nombre }}</td><td>
+         <tr>
+            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.temp }}</td>
+            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.ubicacion }}</td>
+            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.nombre }}</td>
+            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">
 {% if row.fecha is null %} <em>Sin fecha</em> {% else %} {{ row.fecha|date('d/m/Y') }} {% endif %} </td>
-            <td>{{ row.sede }}</td><td>0</td>
+            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.sede }}</td>
+            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">0</td>
             <td>
                <a type="button" class="btn btn-xs btn-default" href="./editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <a type="button" class="btn btn-xs btn-danger" href="./borrar?i={{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></a>
+               <a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-data3="{{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
          </tr>
          {% endfor %}

@@ -15,8 +15,9 @@ class CompeticionController extends Controller
     public function listadoCompeticionesAction() {
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$competiciones = $repository->findAllOrdered();
-        return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-           array('competiciones' => $competiciones));
+    	$temporadas = $repository->findTemps();
+    	return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+           array('competiciones' => $competiciones, 'temporadas' => $temporadas));
     }
     
     public function crearCompeticionAction(Request $request) {
