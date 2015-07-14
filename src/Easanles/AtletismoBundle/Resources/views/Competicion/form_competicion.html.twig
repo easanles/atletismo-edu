@@ -10,14 +10,14 @@
 {% block navbar %}
 {% if mode == "new" %}
       <li><a class="inactive">Atletas</a></li>
-      <li class="active"><a href="../">Competiciones</a></li>
+      <li class="active"><a href="../../competiciones">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
       <li><a href="../../configuracion/">Configuración</a></li>
 {% elseif mode == "edit" %}
       <li><a class="inactive">Atletas</a></li>
-      <li class="active"><a href="../../">Competiciones</a></li>
+      <li class="active"><a href="../../../competiciones">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
@@ -28,11 +28,11 @@
 {% block breadcrumb %}
   {% if mode == "new" %}
   <li><a href="../../">Portada Admin</a></li>
-  <li><a href="../">Competiciones</a></li>
+  <li><a href="../../competiciones">Competiciones</a></li>
   <li class="active">Añadir competición</li>
   {% elseif mode == "edit" %}
   <li><a href="../../../">Portada Admin</a></li>
-  <li><a href="../../">Competiciones</a></li>
+  <li><a href="../../competiciones">Competiciones</a></li>
   <li class="active">Editar competición</li>
   {% endif %}
 {% endblock %}
@@ -107,10 +107,10 @@
           </div>
           <div class="row">
               {% if mode == "new" %}
-              <a type="button" class="btn btn-m btn-default col-xs-3" href="../"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="../../competiciones"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
               <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Crear</button>
               {% elseif mode == "edit" %}
-              <a type="button" class="btn btn-m btn-default col-xs-3" href="../../"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="../../../competiciones"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
               <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Guardar</button>
               {% endif %}
           </div>

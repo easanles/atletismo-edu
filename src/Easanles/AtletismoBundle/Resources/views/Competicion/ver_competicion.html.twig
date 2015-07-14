@@ -5,7 +5,7 @@
 
 {% block navbar %}
       <li><a class="inactive">Atletas</a></li>
-      <li class="active"><a href="../">Competiciones</a></li>
+      <li class="active"><a href="../../competiciones">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
@@ -14,7 +14,7 @@
 
 {% block breadcrumb %}
   <li><a href="../../">Portada Admin</a></li>
-  <li><a href="../">Competiciones</a></li>
+  <li><a href="../../competiciones">Competiciones</a></li>
   <li class="active">{{ com.nombre }} ({{ com.temp }})</li>
 {% endblock %}
 
@@ -49,7 +49,7 @@
          {% elseif com.esoficial is same as(true) %}
          <p class="text-center"><strong>PRUEBA OFICIAL DEL CLUB</strong></p>
          {% endif %}
-         <a type="button" class="btn btn-m btn-default" href="../"><span class="glyphicon glyphicon-menu-left"></span>Volver</a>
+         <a type="button" class="btn btn-m btn-default" href="../../competiciones"><span class="glyphicon glyphicon-menu-left"></span>Volver</a>
       </div>
    </div>
          

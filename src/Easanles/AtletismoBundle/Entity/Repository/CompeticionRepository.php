@@ -28,7 +28,7 @@ class CompeticionRepository extends EntityRepository {
 		return $this->getEntityManager()
 		->createQuery($query)
 		->setParameter('temp', $temp)
-		->setParameter('string', $string)
+		//->setParameter('string', $string)
 		->getResult();
 	}
 	

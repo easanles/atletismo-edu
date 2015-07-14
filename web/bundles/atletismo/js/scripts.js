@@ -12,5 +12,5 @@ $('#modalDialog').on('show.bs.modal', function (event) {
 	  var modal = $(this)
 	  modal.find('#data1').text(data1)
 	  modal.find('#data2').text(data2)
-	  modal.find('#confirmbutton').attr("href", "./borrar?i=" + data3)
+	  modal.find('#confirmbutton').attr("href", "./competiciones/borrar?i=" + data3)
 	})

@@ -5,11 +5,11 @@
 
 {% block navbar %}
       <li><a class="inactive">Atletas</a></li>
-      <li class="active"><a href="./">Competiciones</a></li>
+      <li class="active"><a href="./competiciones">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>
       <li><a class="inactive">Informes</a></li>
-      <li><a href="../configuracion/">Configuración</a></li>
+      <li><a href="./configuracion/">Configuración</a></li>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -21,7 +21,7 @@
    {% block modalbody %}
    <p>¿Confirmar borrado de la competición <strong id="data1">***</strong> de la temporada <strong id="data2">***</strong>?</p>
    {% endblock %}
-   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href="./borrar?i="><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href="./competiciones/borrar?i="><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
 
 
 {% block container %}   
@@ -29,13 +29,13 @@
    <div id="container_header" class="row">
       <div class="col-xs-8 col-sm-6">
          <select class="form-control">
-            <option>Todas las temporadas</option>
+            <option onClick="goToUrl('./competiciones')">Todas las temporadas</option>
             {% for row in temporadas %}
-            <option>Temporada {{ row.temp }}</option>
+            <option onClick="goToUrl('./competiciones?temp={{ row.temp }}')" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
             {% endfor %}
          </select>
       </div>
-      <a class="btn btn-primary" href="./nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
+      <a class="btn btn-primary" href="./competiciones/nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-12 col-sm-4 pull-right">
          <input type="search" class="form-control" placeholder="Buscar" disabled>
          <div class="input-group-btn"><button class="btn btn-default" type="button" disabled><span class="glyphicon glyphicon-search"></span></button></div>
@@ -55,15 +55,15 @@
          </tr>
          {% for row in competiciones %}
          <tr>
-            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.temp }}</td>
-            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.ubicacion }}</td>
-            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.nombre }}</td>
-            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.temp }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.ubicacion }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.nombre }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">
 {% if row.fecha is null %} <em>Sin fecha</em> {% else %} {{ row.fecha|date('d/m/Y') }} {% endif %} </td>
-            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">{{ row.sede }}</td>
-            <td class="clickable" onClick="goToUrl('./{{ row.sid }}/')">0</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.sede }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0</td>
             <td>
-               <a type="button" class="btn btn-xs btn-default" href="./editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
+               <a type="button" class="btn btn-xs btn-default" href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
                <a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-data3="{{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
          </tr>

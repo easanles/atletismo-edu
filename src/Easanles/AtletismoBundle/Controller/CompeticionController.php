@@ -12,12 +12,21 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class CompeticionController extends Controller
 {
-    public function listadoCompeticionesAction() {
+    public function listadoCompeticionesAction(Request $request) {
+    	$temp = $request->query->get('temp');
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	$competiciones = $repository->findAllOrdered();
     	$temporadas = $repository->findTemps();
-    	return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-           array('competiciones' => $competiciones, 'temporadas' => $temporadas));
+    	 
+    	 
+    	if ($temp != null) {
+    		$competiciones = $repository->searchByParameters($temp, 'test');
+    		return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+    				array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'temp' => $temp));
+    	} else {
+    		$competiciones = $repository->findAllOrdered();
+    		return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+    				array('competiciones' => $competiciones, 'temporadas' => $temporadas));
+    	}
     }
     
     public function crearCompeticionAction(Request $request) {
