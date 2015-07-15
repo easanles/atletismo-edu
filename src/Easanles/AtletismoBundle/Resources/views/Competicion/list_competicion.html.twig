@@ -29,16 +29,16 @@
    <div id="container_header" class="row">
       <div class="col-xs-8 col-sm-6">
          <select class="form-control">
-            <option onClick="goToUrl('./competiciones')">Todas las temporadas</option>
+            <option onClick="comSearch(null, {% if query is defined %}'{{query}}'{% else %}null{% endif %});">Todas las temporadas</option>
             {% for row in temporadas %}
-            <option onClick="goToUrl('./competiciones?temp={{ row.temp }}')" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
+            <option onClick="comSearch({{ row.temp }}, {% if query is defined %}'{{query}}'{% else %}null{% endif %})" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
             {% endfor %}
          </select>
       </div>
       <a class="btn btn-primary" href="./competiciones/nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-12 col-sm-4 pull-right">
-         <input type="search" class="form-control" placeholder="Buscar" disabled>
-         <div class="input-group-btn"><button class="btn btn-default" type="button" disabled><span class="glyphicon glyphicon-search"></span></button></div>
+         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %}) onkeyup="checkEnterKeypress(event)">
+         <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
    <div class="row">

@@ -8,12 +8,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Competicion
  * 
  * @ORM\Table(name="com")
  * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\CompeticionRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Competicion {
 	
@@ -267,6 +269,6 @@ class Competicion {
 		}
 		*/
 		}
-	}		
+	}
    
 }

@@ -14,18 +14,31 @@ class CompeticionController extends Controller
 {
     public function listadoCompeticionesAction(Request $request) {
     	$temp = $request->query->get('temp');
+    	$query = $request->query->get('q');
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$temporadas = $repository->findTemps();
     	 
     	 
     	if ($temp != null) {
-    		$competiciones = $repository->searchByParameters($temp, 'test');
-    		return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-    				array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'temp' => $temp));
+    		if ($query != null){
+    			$competiciones = $repository->searchByParameters($temp, $query);
+    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+    					array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'temp' => $temp, 'query' => $query));
+    		} else {
+    			$competiciones = $repository->searchByParameters($temp, '');
+    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+    					array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'temp' => $temp));
+    		}
     	} else {
-    		$competiciones = $repository->findAllOrdered();
-    		return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-    				array('competiciones' => $competiciones, 'temporadas' => $temporadas));
+    		if ($query != null){
+    			$competiciones = $repository->searchByParameters('', $query);
+    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+    					array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'query' => $query));
+    		} else {
+    			$competiciones = $repository->findAllOrdered();
+    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
+    					array('competiciones' => $competiciones, 'temporadas' => $temporadas));
+    		}
     	}
     }
     
@@ -74,8 +87,8 @@ class CompeticionController extends Controller
     	   }
     	    return $this->redirect($this->generateUrl('listado_competiciones'));
     	 } else {
-       	$response = new Response('No existe la competicion con el identificador "'.$id.'" <a href="../">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=../');
+       	$response = new Response('No existe la competicion con el identificador "'.$id.'" <a href="../competiciones">Volver</a>');
+       	$response->headers->set('Refresh', '2; url=../competiciones');
        	return $response;
        }
     }
@@ -86,27 +99,34 @@ class CompeticionController extends Controller
     	$com = $repository->find($id);
 
     	if ($com != null) {
+    		$prevNombre = $com->getNombre();
+    		$prevTemp = $com->getTemp();
     	   $form = $this->createForm(new ComType(), $com);
     	
     	   $form->handleRequest($request);
     	
     	   if ($form->isValid()) {
-    	   	$repository->checkData($com);
     	   	try {
+    	   		$nombre = $com->getNombre();
+    	   		$temp = $com->getTemp();
+    	   		$testResult = $repository->checkData($nombre, $temp);
+    	      	if ($testResult && !(($prevNombre == $nombre) && ($prevTemp == $temp))) {
+    	      		throw new Exception("Ya existe la competición \"".$nombre."\" para la temporada ".$temp);
+    	      	}
     	   		$em->flush();
     	   	} catch (\Exception $e) {
     	   	   $exception = $e->getMessage();
     	      	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
-    	   			   array('form' => $form->createView(), 'mode' => "edit", 'com' => $com, 'exception' => $exception));
+    	   			   array('form' => $form->createView(), 'mode' => "edit", 'nombre' => $prevNombre, 'temp' => $prevTemp, 'exception' => $exception));
     	   	}
     	   	return $this->redirect($this->generateUrl('listado_competiciones'));
        	}
     	
       	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
-    		   	array('form' => $form->createView(), 'mode' => "edit", 'com' => $com));
+    		   	array('form' => $form->createView(), 'mode' => "edit", 'nombre' => $prevNombre, 'temp' => $prevTemp));
        } else {
-       	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=../../');
+       	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../../competiciones">Volver</a>');
+       	$response->headers->set('Refresh', '2; url=../../../competiciones');
        	return $response;
        }
     }
@@ -119,8 +139,8 @@ class CompeticionController extends Controller
           return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
     	          array('com' => $com));
     	 } else {
-    	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../">Volver</a>');
-    	 	$response->headers->set('Refresh', '2; url=../');
+    	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../competiciones">Volver</a>');
+    	 	$response->headers->set('Refresh', '2; url=../../competiciones');
     	 	return $response;
     	 }
     }

@@ -32,7 +32,7 @@
   <li class="active">Añadir competición</li>
   {% elseif mode == "edit" %}
   <li><a href="../../../">Portada Admin</a></li>
-  <li><a href="../../competiciones">Competiciones</a></li>
+  <li><a href="../../../competiciones">Competiciones</a></li>
   <li class="active">Editar competición</li>
   {% endif %}
 {% endblock %}
@@ -41,7 +41,7 @@
    {% if mode == "new" %}
    <h1 id="container_title" class="row page-header">Añadir competición</h1>
    {% elseif mode == "edit" %}
-    <h1 id="container_title" class="row page-header">Editar competición <small>{{ com.nombre }} ({{ com.temp }})</small></h1>
+    <h1 id="container_title" class="row page-header">Editar competición <small>{{ nombre }} ({{ temp }})</small></h1>
    {% endif %}
    
    {% if exception is defined %}
