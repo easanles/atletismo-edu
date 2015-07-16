@@ -22,6 +22,10 @@ h1 {
 	margin-bottom: 5px;
 }
 
+.config-content {
+   margin: 1em 0.5em;
+}
+
 .clickable{
    cursor: pointer;
 }

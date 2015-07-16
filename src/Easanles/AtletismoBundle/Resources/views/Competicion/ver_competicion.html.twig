@@ -23,7 +23,7 @@
     
    <div class="row">
       <div class="col-xs-12 col-sm-4">
-         <img src="/www/web/bundles/atletismo/images/ejemplo.jpg" alt="{{ com.nombre }}" class="img-responsive">
+         <img src="/www/web/bundles/atletismo/images/ejemplo.jpg" alt="{{ com.nombre }}" class="img-responsive thumbnail">
       </div>
       <div class="col-xs-12 col-sm-8">
          <table class="table table-responsive">
@@ -33,7 +33,7 @@
                <tr><td colspan="2"><strong>Descripción:</strong></td></tr>
                <tr><td colspan="2"><p>{{ com.desc }}</p></td></tr>
                <tr><td><strong>Fecha de comienzo:</strong></td><td>{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %}</td></tr>
-               <tr><td><strong>Página web:</strong></td><td><strong>Correo electónico de contacto:</strong></td></tr>
+               <tr><td><strong>Página web:</strong></td><td><strong>Correo electrónico de contacto:</strong></td></tr>
                <tr><td><a href="{{ com.web }}">{{ com.web }}</a></td><td><a href="mailto:{{ com.email }}">{{ com.email }}</a></td></tr>
             </tbody>
          </table>

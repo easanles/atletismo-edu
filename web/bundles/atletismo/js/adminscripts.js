@@ -2,6 +2,26 @@
  * 
  */
 
+
+function loadConfigContent(tab){
+    $("#navtab-tp").removeClass("active");
+    $("#tabcontent-tp").css("display", "none");
+    $("#navtab-oa").removeClass("active");
+    $("#tabcontent-oa").css("display", "none");
+	switch (tab){
+	   case ('tp'): {
+		    $("#navtab-tp").addClass("active");
+		    $("#tabcontent-tp").css("display", "inline");
+	   }; break;
+       case ('oa'): {
+			$("#navtab-oa").addClass("active");
+			$("#tabcontent-oa").css("display", "inline");
+	   }; break;
+	   default:;
+	}
+}
+
+
 alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
 alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
 alerthtml_pos = "</span></div>";

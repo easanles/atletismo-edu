@@ -12,19 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ConfiguracionController extends Controller
 {
-    public function menu_configuracionAction()
-    {
-    	#$dato = $this->getDoctrine()
-    	#->getRepository('EasanlesAtletismoBundle:Competicion')
-    	#->find($id);
-    	
-    	#if (!$dato) {
-    	#	throw $this->createNotFoundException('No existe el miembro con id '.$id);
-    	#}
-    	
-    	#return $this->render('EasanlesAtletismoBundle:Miembro:miembro.html.twig',
-    	#		array('id' => $id, 'miembro' => $dato));
-    	
+    public function menu_configuracionAction() {
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig');		 
     }
     

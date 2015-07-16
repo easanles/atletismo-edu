@@ -9,7 +9,7 @@
         {% block css %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body>
+    <body onLoad="{% block onload %}{% endblock %}">
         {% block body %}{% endblock %}
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
