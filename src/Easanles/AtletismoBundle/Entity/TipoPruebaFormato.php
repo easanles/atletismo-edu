@@ -9,10 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  * TipoPruebaFormato
  *
  * @ORM\Table(name="tprf")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\TipoPruebaFormatoRepository")
  */
-class TipoPruebaFormato
-{
+class TipoPruebaFormato {
 	
 	 /**
 	 * @var string
@@ -32,7 +31,7 @@ class TipoPruebaFormato
 	  * @var integer
 	  * @ORM\Column(name="numinttpr", type="smallint", options={"default":1})
 	  */
-	 private $numInt = 1;
+	 private $numint = 1;
 
 	 /********************* FOREIGN KEYS *****************************/
 	 

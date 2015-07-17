@@ -28,10 +28,10 @@
    <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
    <div id="container_header" class="row">
       <div class="col-xs-8 col-sm-6">
-         <select class="form-control">
-            <option onClick="comSearch(null, {% if query is defined %}'{{query}}'{% else %}null{% endif %});">Todas las temporadas</option>
+         <select class="form-control" onChange="comSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
+            <option value="" {% if temp is not defined %}selected{% endif %}>Todas las temporadas</option>
             {% for row in temporadas %}
-            <option onClick="comSearch({{ row.temp }}, {% if query is defined %}'{{query}}'{% else %}null{% endif %})" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
+            <option value="{{ row.temp }}"{% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
             {% endfor %}
          </select>
       </div>
@@ -63,8 +63,8 @@
             <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.sede }}</td>
             <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0</td>
             <td>
-               <a type="button" class="btn btn-xs btn-default" href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-data3="{{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></a>
+               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
+               <span data-toggle="tooltip" data-placement="top" title="Borrar"><a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-data3="{{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></span></a>
             </td>
          </tr>
          {% endfor %}

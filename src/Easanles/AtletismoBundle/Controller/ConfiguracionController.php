@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\VarDumper;
-use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Entity\Competicion;
+use Easanles\AtletismoBundle\Entity\TipoPruebaFormato;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ConfiguracionController extends Controller
@@ -30,18 +30,33 @@ class ConfiguracionController extends Controller
     	      ->setTemp(2015);
     	   $em->persist($com);
     	 
-    	   $pru = new Prueba();
-    	   $pru->setId(1234)
-    	      ->setNombreCom("Competicion 1")
-    	      ->setTempCom(2014)
-    	      ->setRonda(1)
-    	      ->setIdCat(1)
-    	      ->setNombreTpr("100 metros lisos")
-    	      ->setSexoTpr(0)
-    	      ->setEntornoTpr("Pista cubierta");
-    	   $em->persist($pru);
+    	   $tprf = new TipoPruebaFormato();
+    	   $tprf->setNombre("50 metros lisos")
+    	      ->setUnidades("Segundos")
+    	      ->setNumInt(1);
+    	   $em->persist($tprf);
     	
-       	$em->flush();
+    	   $tprf = new TipoPruebaFormato();
+    	   $tprf->setNombre("Salto de altura")
+    	      ->setUnidades("Metros")
+    	      ->setNumInt("3");
+    	   $em->persist($tprf);
+    	   
+    	   $tprf = new TipoPruebaFormato();
+    	   $tprf->setNombre("Maratón")
+    	      ->setUnidades("Segundos")
+    	      ->setNumInt(1);
+    	   $em->persist($tprf);
+    	   
+    	   $tprf = new TipoPruebaFormato();
+    	   $tprf->setNombre("Prueba por puntos")
+    	     ->setUnidades("Puntos")
+    	     ->setNumInt(1);
+    	   $em->persist($tprf);
+    	   
+    	   
+    	   
+    	   $em->flush();
        	$response = new JsonResponse([
        			'success' => true,
        			'message' => 'Base de datos poblada con datos de prueba',

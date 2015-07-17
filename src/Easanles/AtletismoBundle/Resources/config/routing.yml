@@ -25,6 +25,10 @@ ver_competicion:
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
     
     
+listado_tipopruebaformato:
+   path: /configuracion/tipoprueba
+   defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:listadoTipoPruebaFormato"}
+    
 configuracion: #portada configuracion
     path: /configuracion/
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}

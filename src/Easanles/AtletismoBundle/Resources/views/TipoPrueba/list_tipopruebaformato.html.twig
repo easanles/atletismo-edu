@@ -1,0 +1,19 @@
+               <tbody>
+                  <tr>
+                     <th>Nombre</th>
+                     <th>Unidades</th>
+                     <th>Intentos por prueba</th>
+                     <th>Acciones</th>
+                  </tr>
+                  {% for row in tiposprueba %}
+                  <tr>
+                     <td>{{ row.nombre }}</td><td>{{ row.unidades }}</td><td>{{ row.numint }}</td>
+                     <td>
+                        <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Modalidades"><span class="glyphicon glyphicon-collapse-down"></span></a>
+                        <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-edit"></span></a>
+                        <span data-toggle="tooltip" data-placement="top" title="Borrar"><a type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></span></a>
+                        </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+

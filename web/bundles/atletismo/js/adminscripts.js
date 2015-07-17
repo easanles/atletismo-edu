@@ -3,7 +3,7 @@
  */
 
 
-function loadConfigContent(tab){
+function toggleContent(tab){
     $("#navtab-tp").removeClass("active");
     $("#tabcontent-tp").css("display", "none");
     $("#navtab-oa").removeClass("active");
@@ -20,7 +20,6 @@ function loadConfigContent(tab){
 	   default:;
 	}
 }
-
 
 alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
 alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
@@ -40,6 +39,22 @@ function sendAction(path, icon){
 	     }
 		 icon.removeClass("spinning");
    });
+}
+
+function loadViews(){
+	icon = $("#btn_tprf-refresh").find("span");
+	icon.addClass("spinning");
+	
+	$.get("./tipoprueba", function(data, status){
+		if (status = "success"){
+			 $("#tprf-table").html(data);
+		} else {
+			 $("#tabcontent-tp").html("Error al cargar datos");
+		}
+		
+    });
+	
+    icon.removeClass("spinning");
 }
 
 $(document).ready(function(){
@@ -76,5 +91,7 @@ $(document).ready(function(){
 	   //icon.addClass("spinning");
 	   //sendAction("./asseticdump", icon);
     });
+    
+    loadViews();
 
 });

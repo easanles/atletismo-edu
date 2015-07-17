@@ -40,3 +40,9 @@ $('#modalDialog').on('show.bs.modal', function (event) {
 	  modal.find('#data2').text(data2)
 	  modal.find('#confirmbutton').attr("href", "./competiciones/borrar?i=" + data3)
 	})
+	
+$(document).ready(function(){
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+    });
+})

@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\File\File;
  * 
  * @ORM\Table(name="com")
  * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\CompeticionRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Competicion {
 	
