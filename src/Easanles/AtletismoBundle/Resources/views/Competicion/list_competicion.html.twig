@@ -21,7 +21,7 @@
    {% block modalbody %}
    <p>¿Confirmar borrado de la competición <strong id="data1">***</strong> de la temporada <strong id="data2">***</strong>?</p>
    {% endblock %}
-   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href="./competiciones/borrar?i="><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
 
 
 {% block container %}   
@@ -64,7 +64,7 @@
             <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0</td>
             <td>
                <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <span data-toggle="tooltip" data-placement="top" title="Borrar"><a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-data3="{{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></span></a>
+               <span data-toggle="tooltip" data-placement="top" title="Borrar"><a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-okbtn="./competiciones/borrar?i={{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></span></a>
             </td>
          </tr>
          {% endfor %}

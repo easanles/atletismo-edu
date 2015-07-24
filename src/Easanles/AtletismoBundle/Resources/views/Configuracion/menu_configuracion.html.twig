@@ -17,6 +17,12 @@
   <li class="active">Configuración</li>
 {% endblock %}
 
+   {% block modallabel %}<div id="data1"></div><div id="data2"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}
+      <a class="btn btn-primary" onClick="submitDialogForm()"><span class="glyphicon glyphicon-save"></span> Crear</a>
+   {% endblock %}
+
 {% block container %}
    <h1 id="container_title" class="row page-header">Configuración de la aplicación</h1>
    <ul class="nav nav-tabs">
@@ -26,7 +32,7 @@
    <div class="row config-content">
       <div id="tabcontent-tp" style="display:none">
          <div class="row">
-            <a class="btn btn-primary" href="#"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalDialog" data-data1="Nuevo tipo de prueba" data-data2="" data-okbtn="#" data-action="./tipoprueba/nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
             <a id="btn_tprf-refresh" class="btn btn-default" onClick="loadViews()"><span class="glyphicon glyphicon-refresh"></span> Actualizar</a>
          </div>
          <div class="row">
@@ -50,6 +56,7 @@
 {% endblock %}
 
 {% block js %}
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
    <script src="{{ asset('bundles/atletismo/js/adminscripts.js') }}"></script>
 {% endblock %}
 

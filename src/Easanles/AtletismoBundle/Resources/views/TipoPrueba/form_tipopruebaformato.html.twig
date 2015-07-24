@@ -1,0 +1,38 @@
+
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+
+   <div id="data_form" class="row">
+
+{#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
+
+{{ form_start(form, {'action': path('crear_tipopruebaformato')}) }}
+    {{ form_errors(form) }}
+    
+    <div class=row">
+       <div class="form_row col-xs-12">
+          {{ form_row(form.nombre) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-8">
+          {{ form_row(form.unidades) }}
+       </div>
+       <div class="form_row col-xs-4">
+          {{ form_row(form.numint) }}
+       </div>
+    </div>
+    {% if mode == "new" %}
+    {% elseif mode == "edit" %}
+    {% endif %}
+    
+    
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>
+
+
+
+

@@ -28,6 +28,11 @@ ver_competicion:
 listado_tipopruebaformato:
    path: /configuracion/tipoprueba
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:listadoTipoPruebaFormato"}
+   
+crear_tipopruebaformato:
+   path: /configuracion/tipoprueba/nuevo/
+   defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:crearTipoPruebaFormato"}
+
     
 configuracion: #portada configuracion
     path: /configuracion/

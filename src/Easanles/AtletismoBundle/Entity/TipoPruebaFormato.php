@@ -65,11 +65,11 @@ class TipoPruebaFormato {
 		$this->unidades = $unidades;
 		return $this;
 	}
-	public function getNumInt() {
-		return $this->numInt;
+	public function getNumint() {
+		return $this->numint;
 	}
-	public function setNumInt($numInt) {
-		$this->numInt = $numInt;
+	public function setNumint($numint) {
+		$this->numint = $numint;
 		return $this;
 	}
 

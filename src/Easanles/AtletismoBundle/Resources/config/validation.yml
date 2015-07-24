@@ -28,3 +28,28 @@ Easanles\AtletismoBundle\Entity\Competicion:
      cartel:
         - Image: 
            mimeTypesMessage: El archivo recibido no es un archivo de imagen
+           
+Easanles\AtletismoBundle\Entity\TipoPruebaFormato:
+  properties:
+     nombre:
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     unidades:
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     numint:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThan:
+           value: 0
+           message: Debe tener al menos 1 intento por prueba
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+           
