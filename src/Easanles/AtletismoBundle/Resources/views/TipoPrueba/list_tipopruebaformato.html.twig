@@ -11,7 +11,7 @@
                      <td>
                         <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Modalidades"><span class="glyphicon glyphicon-collapse-down"></span></a>
                         <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-edit"></span></a>
-                        <span data-toggle="tooltip" data-placement="top" title="Borrar"><a type="button" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></span></a>
+                        <a type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delTPR', '{{ row.nombre }}', {{ row.sid }}, null)"><span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                   </tr>
                   {% endfor %}

@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class TipoPruebaFormatoRepository extends EntityRepository {
 	public function findAllOrdered()	{
 		return $this->getEntityManager()
-		->createQuery('SELECT tprf.nombre, tprf.unidades, tprf.numint FROM EasanlesAtletismoBundle:TipoPruebaFormato tprf ORDER BY tprf.nombre ASC')
+		->createQuery('SELECT tprf.sid, tprf.nombre, tprf.unidades, tprf.numint FROM EasanlesAtletismoBundle:TipoPruebaFormato tprf ORDER BY tprf.nombre ASC')
 		->getResult();
 	}
 	

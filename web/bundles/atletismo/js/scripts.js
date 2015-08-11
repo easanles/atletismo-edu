@@ -52,7 +52,25 @@ function submitDialogForm(){
 	  });
 }
 
-$('#modalDialog').on('show.bs.modal', function (event) {
+/*function showModal(data1, data2, okbtn, action){
+	var modal = $('#modalDialog');
+	modal.find('#data1').text(data1);
+	modal.find('#data2').text(data2);
+	modal.find('#confirmbutton').attr("href", okbtn);
+	modal.modal();
+	
+    if (action != null){
+	  $.getJSON(action, function(data, status){
+	     if (status = "success"){
+		   $("#dialog-body").html(data.message);
+         } else {
+		    $("#dialog-body").html("Error al cargar datos");
+		 }	
+      });
+   }
+}*/
+
+/*$('#modalDialog').on('show.bs.modal', function (event) {
 	  var button = $(event.relatedTarget) // Button that triggered the modal
 	  var data1 = button.data('data1')
 	  var data2 = button.data('data2')
@@ -72,7 +90,7 @@ $('#modalDialog').on('show.bs.modal', function (event) {
 			}	
          });
 	  }
-})
+})*/
 	
 $(document).ready(function(){
 	$(function () {

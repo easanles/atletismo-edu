@@ -13,7 +13,7 @@ class AtletismoVersionCollector extends DataCollector{
 	 * @see \Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface::collect()
 	 */
 	public function collect(Request $request, Response $response, \Exception $exception = null) {
-		$VERSION = 'dev 22';
+		$VERSION = 'dev 23'; //YA CAMBIADO
 		$ITERATION = '10';
 		
        $this->data = array(

@@ -64,7 +64,7 @@
             <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0</td>
             <td>
                <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <span data-toggle="tooltip" data-placement="top" title="Borrar"><a type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDialog" data-data1="{{ row.nombre }}" data-data2="{{ row.temp }}" data-okbtn="./competiciones/borrar?i={{ row.sid }}"><span class="glyphicon glyphicon-remove"></span></span></a>
+               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ row.nombre }}', '{{ row.temp }}', '{{ row.sid }}')"><span class="glyphicon glyphicon-remove"></span></span></button>
             </td>
          </tr>
          {% endfor %}
@@ -75,6 +75,7 @@
 {% endblock %}
 
 {% block js %}
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
    <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
 {% endblock %}
 

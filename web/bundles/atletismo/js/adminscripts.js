@@ -11,6 +11,7 @@ function toggleContent(tab){
 	   case ('tp'): {
 		    $("#navtab-tp").addClass("active");
 		    $("#tabcontent-tp").css("display", "inline");
+			$('[data-toggle="tooltip"]').tooltip();
 	   }; break;
        case ('oa'): {
 			$("#navtab-oa").addClass("active");
@@ -48,10 +49,8 @@ function loadViews(){
 		} else {
 			 $("#tabcontent-tp").html("Error al cargar datos");
 		}
-		
+	    icon.removeClass("spinning");		
     });
-	
-    icon.removeClass("spinning");
 }
 
 $(document).ready(function(){

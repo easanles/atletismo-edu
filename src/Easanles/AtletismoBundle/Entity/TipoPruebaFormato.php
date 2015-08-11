@@ -13,11 +13,18 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class TipoPruebaFormato {
 	
+	/**
+	 * @var integer
+	 * @ORM\Column(name="sidcom", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})
+	 */
+	private $sid;
+	
 	 /**
 	 * @var string
 	 * @ORM\Column(name="nombretpr", type="string", length=255)
-	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})
 	 */
 	 private $nombre;
 	 
@@ -37,7 +44,7 @@ class TipoPruebaFormato {
 	 
 	 /**
 	  * @var array_collection
-	  * @ORM\OneToMany(targetEntity="TipoPruebaModalidad", mappedBy="nombre", cascade={"all"})
+	  * ORM\OneToMany(targetEntity="TipoPruebaModalidad", mappedBy="nombre", cascade={"all"})
 	  **/
 	 private $modalidades;
 	 
@@ -51,6 +58,13 @@ class TipoPruebaFormato {
 	 
 	 /******************* GETTERS & SETTERS **************************/ 
 	 
+	 public function getSid() {
+	 	return $this->sid;
+	 }
+	 public function setSid($sid) {
+	 	$this->sid = $sid;
+	 	return $this;
+	 }
 	public function getNombre() {
 		return $this->nombre;
 	}
