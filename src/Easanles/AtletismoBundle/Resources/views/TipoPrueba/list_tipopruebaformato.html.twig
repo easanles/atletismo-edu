@@ -9,9 +9,9 @@
                   <tr>
                      <td>{{ row.nombre }}</td><td>{{ row.unidades }}</td><td>{{ row.numint }}</td>
                      <td>
-                        <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Modalidades"><span class="glyphicon glyphicon-collapse-down"></span></a>
-                        <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-edit"></span></a>
-                        <a type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delTPR', '{{ row.nombre }}', {{ row.sid }}, null)"><span class="glyphicon glyphicon-remove"></span></a>
+                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Modalidades"><span class="glyphicon glyphicon-collapse-down"></span></button>
+                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediTPR', '{{ row.nombre }}', {{ row.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
+                        <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delTPR', '{{ row.nombre }}', {{ row.sid }}, null)"><span class="glyphicon glyphicon-remove"></span></button>
                         </td>
                   </tr>
                   {% endfor %}

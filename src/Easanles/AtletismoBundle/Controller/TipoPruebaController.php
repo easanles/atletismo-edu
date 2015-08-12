@@ -43,20 +43,20 @@ class TipoPruebaController extends Controller {
          	return new JsonResponse([
    		   	'success' => false,
    		   	'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-   		   	array('form' => $form->createView(), 'mode' => "new", 'exception' => $exception))->getContent()
+   		   	array('form' => $form->createView(), 'exception' => $exception))->getContent()
    	      ]);
    		}
    		return new JsonResponse([
    		   	'success' => true,
    		   	'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-   		   	array('form' => $form->createView(), 'mode' => "new"))->getContent()
+   		   	array('form' => $form->createView()))->getContent()
    	   ]);
    	}
    	
       return new JsonResponse([
    	   	'success' => false,
    	   	'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-   	  	array('form' => $form->createView(), 'mode' => "new"))->getContent()
+   	  	array('form' => $form->createView()))->getContent()
       ]);
    }
    
@@ -81,6 +81,52 @@ class TipoPruebaController extends Controller {
        }
     }
     
+    public function editarTipoPruebaFormatoAction(Request $request, $id){
+    	$em = $this->getDoctrine()->getManager();
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
+    	$tprf = $repository->find($id);
+    
+    	if ($tprf != null) {
+    		$prevNombre = $tprf->getNombre();
+    		$form = $this->createForm(new TprfType(), $tprf);
+    		 
+    		$form->handleRequest($request);
+    		 
+    		if ($form->isValid()) {
+    			try {
+    				$nombre = $tprf->getNombre();
+    				$testResult = $repository->checkData($nombre);
+    				if ($testResult && !($prevNombre == $nombre)) {
+    					throw new Exception("Ya existe el tipo de prueba \"".$nombre."\"");
+    				}
+    				$em->flush();
+    			} catch (\Exception $e) {
+    				$exception = $e->getMessage();
+    				return new JsonResponse([
+    						'success' => false,
+    						'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
+    								array('form' => $form->createView(), 'exception' => $exception))->getContent()
+    				]);
+    			}
+    			return new JsonResponse([
+    					'success' => true,
+    					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
+    							array('form' => $form->createView()))->getContent()
+    			]);
+    		}
+
+    		return new JsonResponse([
+    				'success' => false,
+    				'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
+    						array('form' => $form->createView()))->getContent()
+    		]);
+    	}
+    	/*} else {
+    		$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../../competiciones">Volver</a>');
+    		$response->headers->set('Refresh', '2; url=../../../competiciones');
+    		return $response;
+    	}*/
+    }
     
 }
 

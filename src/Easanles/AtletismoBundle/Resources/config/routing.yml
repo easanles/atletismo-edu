@@ -30,12 +30,16 @@ listado_tipopruebaformato:
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:listadoTipoPruebaFormato"}
    
 crear_tipopruebaformato:
-   path: /configuracion/tipoprueba/nuevo/
+   path: /configuracion/tipoprueba/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:crearTipoPruebaFormato"}
    
 borrar_tipopruebaformato:
    path: /configuracion/tipoprueba/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:borrarTipoPruebaFormato"}
+   
+editar_tipopruebaformato:
+   path: /configuracion/tipoprueba/editar/{id}
+   defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:editarTipoPruebaFormato"}
 
     
 configuracion: #portada configuracion

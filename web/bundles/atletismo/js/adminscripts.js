@@ -11,7 +11,6 @@ function toggleContent(tab){
 	   case ('tp'): {
 		    $("#navtab-tp").addClass("active");
 		    $("#tabcontent-tp").css("display", "inline");
-			$('[data-toggle="tooltip"]').tooltip();
 	   }; break;
        case ('oa'): {
 			$("#navtab-oa").addClass("active");
@@ -46,6 +45,7 @@ function loadViews(){
 	$.get("./tipoprueba", function(data, status){
 		if (status = "success"){
 			 $("#tprf-table").html(data);
+			 $('[data-toggle="tooltip"]').tooltip()
 		} else {
 			 $("#tabcontent-tp").html("Error al cargar datos");
 		}

@@ -7,7 +7,7 @@
 
 {#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
 
-{{ form_start(form, {'action': path('crear_tipopruebaformato')}) }}
+{{ form_start(form, {'action': path('crear_tipopruebaformato')}) }} {# TODO: cambiar action para el modo de edicion#}
     {{ form_errors(form) }}
     
     <div class=row">
@@ -22,11 +22,7 @@
        <div class="form_row col-xs-4">
           {{ form_row(form.numint) }}
        </div>
-    </div>
-    {% if mode == "new" %}
-    {% elseif mode == "edit" %}
-    {% endif %}
-    
+    </div>    
     
     {{ form_rest(form) }}
  

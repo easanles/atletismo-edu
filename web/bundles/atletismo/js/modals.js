@@ -14,7 +14,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-label').html("Nuevo tipo de prueba");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning text-center\"></span>");
-    	   $.getJSON("./tipoprueba/nuevo/", function(data, status){
+    	   $.getJSON("./tipoprueba/nuevo", function(data, status){
     		     if (status = "success"){
     			   $("#dialog-body").html(data.message);
     	         } else {
@@ -28,8 +28,23 @@ function showModal(type, data1, data2, data3){
 		   $("#dialog-body").html("¿Está seguro de borrar el tipo de prueba <strong>" + data1 + "</strong>?");
 		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./tipoprueba/borrar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</a>");           
        } break;
+       
+       case ("ediTPR"): { //Editar tipo de prueba
+    	   $('#dialog-label').html("Editar tipo de prueba <small> - " + data1 + "</small>");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning text-center\"></span>");
+    	   $.getJSON("./tipoprueba/editar/" + data2, function(data, status){
+  		      if (status = "success"){
+  			    $("#dialog-body").html(data.message);
+  	          } else {
+  			     $("#dialog-body").html("Error al cargar datos");
+  			  }	
+  	       });
+       }
+       
        default: break;
 	}
+	
 	modal.modal();
 }
 

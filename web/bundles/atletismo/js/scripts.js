@@ -46,7 +46,7 @@ function submitDialogForm(){
 	  	       $('#dialog-body').html(data.message);
 	    	} else if (data.success == true){
 	    	   $("#modal-dismiss").click();
-	    	   $("#btn_tprf-refresh").click();
+	    	   $(".updater").click();
 	    	}
 	    }
 	  });
