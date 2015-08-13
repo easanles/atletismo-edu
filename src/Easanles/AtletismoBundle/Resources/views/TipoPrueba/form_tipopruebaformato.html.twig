@@ -7,7 +7,12 @@
 
 {#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
 
-{{ form_start(form, {'action': path('crear_tipopruebaformato')}) }} {# TODO: cambiar action para el modo de edicion#}
+{% if mode == "new" %}
+{{ form_start(form, {'action': path('crear_tipopruebaformato')}) }}
+{% elseif mode == "edit" %}
+{{ form_start(form, {'action': path('editar_tipopruebaformato', {'id': id})}) }}
+{% endif %}
+
     {{ form_errors(form) }}
     
     <div class=row">
