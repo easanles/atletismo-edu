@@ -9,6 +9,7 @@ use Easanles\AtletismoBundle\Form\Type\TprfType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Constraints\Length;
 
 class TipoPruebaController extends Controller {
     
@@ -16,9 +17,14 @@ class TipoPruebaController extends Controller {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
    	$tiposprueba = $repository->findAllOrdered();
    	
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+   	$cuentaModalidades = array();
+   	/*for ($i = 0; $i <= count($tiposprueba); $i++){
+   		$cuentaModalidades = $cuentaModalidades + $repository->countFor($tiposprueba[$i]);
+   	};*/
    	
       return $this->render('EasanlesAtletismoBundle:TipoPrueba:list_tipopruebaformato.html.twig',
-      		array("tiposprueba" => $tiposprueba));		 
+      		array("tiposprueba" => $tiposprueba, "cuentamod" => $cuentaModalidades));
    }
 
    public function crearTipoPruebaFormatoAction(Request $request) {

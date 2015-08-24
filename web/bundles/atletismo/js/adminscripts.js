@@ -45,19 +45,22 @@ function loadViews(){
 	$.get("./tipoprueba", function(data, status){
 		if (status = "success"){
 			 $("#tprf-table").html(data);
-			 $('[data-toggle="tooltip"]').tooltip()
-		} else {
+			 $('.dropdown-toggle').dropdown()
+	    } else {
 			 $("#tabcontent-tp").html("Error al cargar datos");
 		}
 	    icon.removeClass("spinning");		
     });
 }
 
-$(document).ready(function(){
-	$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
-    })
-	
+function toggleTprmTable(id, button){
+	button.button('toggle');
+	table = $("#tprm-table-" + id);
+	if (table.css("display") == "none") table.css("display", "table-row");
+	else table.css("display", "none");
+}
+
+$(document).ready(function(){	
 	$("#btn_poblarbd").click(function(){
 	   icon = $(this).find("span");
 	   icon.addClass("spinning");

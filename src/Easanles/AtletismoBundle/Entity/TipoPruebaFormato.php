@@ -15,7 +15,7 @@ class TipoPruebaFormato {
 	
 	/**
 	 * @var integer
-	 * @ORM\Column(name="sidcom", type="integer")
+	 * @ORM\Column(name="sidtprf", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
 	 * ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})

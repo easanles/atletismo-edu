@@ -9,29 +9,35 @@ use Doctrine\Common\Collections\ArrayCollection;
  * TipoPruebaModalidad
  *
  * @ORM\Table(name="tprm")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\TipoPruebaModalidadRepository")
  */
 class TipoPruebaModalidad
 {
 	
-	 /**
-	 * @var string
-	 * @ORM\Column(name="nombretpr", type="string", length=255)
+	/**
+	 * @var integer
+	 * @ORM\Column(name="sidtprm", type="integer")
 	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})
 	 */
-	 private $nombre;
+	private $sid;
+	
+	 /**
+	 * @var integer
+	 * @ORM\Column(name="sidtprf", type="integer")
+	 */
+	 private $sidTprf;
 	 
 	 /**
 	  * @var integer
 	  * @ORM\Column(name="sexotpr", type="smallint")
-	  * @ORM\Id
 	  */
 	 private $sexo;
 	 
 	 /**
 	  * @var string
 	  * @ORM\Column(name="entornotpr", type="string", length=255)
-	  * @ORM\Id
      */
 	 private $entorno;
 	 
@@ -60,12 +66,20 @@ class TipoPruebaModalidad
 	 }
 	 
 	 /******************* GETTERS & SETTERS **************************/
-	 
-	public function getNombre() {
-		return $this->nombre;
+
+	
+	public function getSid() {
+	   return $this->sid;
 	}
-	public function setNombre($nombre) {
-		$this->nombre = $nombre;
+	public function setSid($sid) {
+	   $this->sid = $sid;
+	   return $this;
+	}
+	public function getSidTprf() {
+		return $this->sidTprf;
+	}
+	public function setSidTprf($sidTprf) {
+		$this->sidTprf = $sidTprf;
 		return $this;
 	}
 	public function getSexo() {
@@ -82,6 +96,8 @@ class TipoPruebaModalidad
 		$this->entorno = $entorno;
 		return $this;
 	}
+
+	
 	
 	 
 	 

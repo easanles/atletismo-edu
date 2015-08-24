@@ -55,5 +55,6 @@ function submitDialogForm(){
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
+          $('.dropdown-toggle').dropdown()
     });
 })

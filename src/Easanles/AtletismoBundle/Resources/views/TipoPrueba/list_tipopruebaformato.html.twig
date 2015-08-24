@@ -1,19 +1,33 @@
                <tbody>
                   <tr>
                      <th>Nombre</th>
+                     <th>Modalidades</th>
                      <th>Unidades</th>
                      <th>Intentos por prueba</th>
                      <th>Acciones</th>
                   </tr>
                   {% for row in tiposprueba %}
                   <tr>
-                     <td>{{ row.nombre }}</td><td>{{ row.unidades }}</td><td>{{ row.numint }}</td>
+                     <td>{{ row.nombre }}</td>
+                     <td>4 <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleTprmTable({{ row.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
+                     </td>
+                     <td>{{ row.unidades }}</td><td>{{ row.numint }}</td>
                      <td>
-                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Modalidades"><span class="glyphicon glyphicon-collapse-down"></span></button>
                         <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediTPR', '{{ row.nombre }}', {{ row.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
                         <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delTPR', '{{ row.nombre }}', {{ row.sid }}, null)"><span class="glyphicon glyphicon-remove"></span></button>
-                        </td>
+                     </td>
                   </tr>
+                  <tr id="tprm-table-{{ row.sid }}" style="display:none;"><td colspan="5">
+                      <table class="table">
+                        <tbody>
+                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Masculino, Campo a través</td></tr>
+                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Femenino, Campo a través</td></tr>
+                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Masculino, Ruta</td></tr>
+                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Femenino, Ruta</td></tr>
+                        </tbody>
+                     </table>
+                  </td></tr>
+
                   {% endfor %}
                </tbody>
 

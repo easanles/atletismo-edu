@@ -22,10 +22,6 @@ h1 {
 	margin-bottom: 5px;
 }
 
-.config-content {
-   margin: 1em 0.5em;
-}
-
 .clickable{
    cursor: pointer;
 }
@@ -38,6 +34,14 @@ h1 {
    margin-bottom: 0.5em;
 }
 
+
+.config-content {
+   margin: 1em 0.5em;
+}
+
+.table .table td {
+   padding-left: 3em;
+}
 
 /* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state*/
 .glyphicon.spinning {

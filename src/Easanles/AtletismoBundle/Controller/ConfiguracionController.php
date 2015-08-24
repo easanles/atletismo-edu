@@ -9,6 +9,7 @@ use Symfony\Component\VarDumper;
 use Easanles\AtletismoBundle\Entity\Competicion;
 use Easanles\AtletismoBundle\Entity\TipoPruebaFormato;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 
 class ConfiguracionController extends Controller
 {
@@ -35,7 +36,32 @@ class ConfiguracionController extends Controller
     	      ->setUnidades("Segundos")
     	      ->setNumInt(1);
     	   $em->persist($tprf);
-    	
+    	   $em->flush();
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf->getSid())
+    	        ->setSexo("Masculino")
+    	        ->setEntorno("Campo a través");
+    	   $em->persist($tprm);
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf->getSid())
+    	        ->setSexo("Femenino")
+    	        ->setEntorno("Campo a través");
+    	   $em->persist($tprm);
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf->getSid())
+    	        ->setSexo("Masculino")
+    	        ->setEntorno("Ruta");
+    	   $em->persist($tprm);
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf->getSid())
+    	        ->setSexo("Femenino")
+    	        ->setEntorno("Ruta");
+    	   $em->persist($tprm);
+    	   
     	   $tprf = new TipoPruebaFormato();
     	   $tprf->setNombre("Salto de altura")
     	      ->setUnidades("Metros")
@@ -47,14 +73,25 @@ class ConfiguracionController extends Controller
     	      ->setUnidades("Segundos")
     	      ->setNumInt(1);
     	   $em->persist($tprf);
+    	   $em->flush();
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf->getSid())
+    	   ->setSexo("Masculino")
+    	   ->setEntorno("Ruta");
+    	   $em->persist($tprm);
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf->getSid())
+    	   ->setSexo("Femenino")
+    	   ->setEntorno("Ruta");
+    	   $em->persist($tprm);
     	   
     	   $tprf = new TipoPruebaFormato();
     	   $tprf->setNombre("Prueba por puntos")
     	     ->setUnidades("Puntos")
     	     ->setNumInt(1);
     	   $em->persist($tprf);
-    	   
-    	   
     	   
     	   $em->flush();
        	$response = new JsonResponse([
