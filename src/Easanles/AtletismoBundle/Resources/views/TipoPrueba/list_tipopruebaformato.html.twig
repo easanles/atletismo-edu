@@ -9,7 +9,7 @@
                   {% for row in tiposprueba %}
                   <tr>
                      <td>{{ row.nombre }}</td>
-                     <td>4 <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleTprmTable({{ row.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
+                     <td>{{ row.modalidades.toArray()|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleTprmTable({{ row.sid }}, $(this))" {% if row.modalidades.toArray()|length == 0 %}disabled{% endif %}><span class="glyphicon glyphicon-collapse-down"></span></button>
                      </td>
                      <td>{{ row.unidades }}</td><td>{{ row.numint }}</td>
                      <td>
@@ -20,10 +20,9 @@
                   <tr id="tprm-table-{{ row.sid }}" style="display:none;"><td colspan="5">
                       <table class="table">
                         <tbody>
-                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Masculino, Campo a través</td></tr>
-                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Femenino, Campo a través</td></tr>
-                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Masculino, Ruta</td></tr>
-                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> Femenino, Ruta</td></tr>
+                           {% for mod in row.modalidades.toArray() %}
+                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> {% if mod.sexo == 0 %}Masculino, {% elseif mod.sexo == 1 %}Femenino, {% endif%}{{ mod.entorno }}</td></tr>
+                           {% endfor %}
                         </tbody>
                      </table>
                   </td></tr>

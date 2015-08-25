@@ -18,7 +18,6 @@ class TipoPruebaFormato {
 	 * @ORM\Column(name="sidtprf", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})
 	 */
 	private $sid;
 	
@@ -44,7 +43,7 @@ class TipoPruebaFormato {
 	 
 	 /**
 	  * @var array_collection
-	  * ORM\OneToMany(targetEntity="TipoPruebaModalidad", mappedBy="nombre", cascade={"all"})
+	  * @ORM\OneToMany(targetEntity="TipoPruebaModalidad", mappedBy="sidTprf", cascade={"all"})
 	  **/
 	 private $modalidades;
 	 

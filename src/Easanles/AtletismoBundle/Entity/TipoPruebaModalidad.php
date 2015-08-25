@@ -19,13 +19,13 @@ class TipoPruebaModalidad
 	 * @ORM\Column(name="sidtprm", type="integer")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="modalidades", cascade={"all"})
 	 */
 	private $sid;
 	
 	 /**
 	 * @var integer
-	 * @ORM\Column(name="sidtprf", type="integer")
+	 * @ORM\ManyToOne(targetEntity="TipoPruebaFormato", inversedBy="modalidades", cascade={"all"})
+	 * @ORM\JoinColumn(name="sidtprf", referencedColumnName="sidtprf")
 	 */
 	 private $sidTprf;
 	 

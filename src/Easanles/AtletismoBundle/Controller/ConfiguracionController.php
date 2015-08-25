@@ -39,26 +39,26 @@ class ConfiguracionController extends Controller
     	   $em->flush();
     	   
     	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf->getSid())
-    	        ->setSexo("Masculino")
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(0)
     	        ->setEntorno("Campo a través");
     	   $em->persist($tprm);
     	   
     	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf->getSid())
-    	        ->setSexo("Femenino")
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(1)
     	        ->setEntorno("Campo a través");
     	   $em->persist($tprm);
     	   
     	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf->getSid())
-    	        ->setSexo("Masculino")
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(0)
     	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
     	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf->getSid())
-    	        ->setSexo("Femenino")
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(1)
     	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
@@ -76,14 +76,14 @@ class ConfiguracionController extends Controller
     	   $em->flush();
     	   
     	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf->getSid())
-    	   ->setSexo("Masculino")
+    	   $tprm->setSidTprf($tprf)
+    	   ->setSexo(0)
     	   ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
     	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf->getSid())
-    	   ->setSexo("Femenino")
+    	   $tprm->setSidTprf($tprf)
+    	   ->setSexo(1)
     	   ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   

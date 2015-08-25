@@ -15,16 +15,10 @@ class TipoPruebaController extends Controller {
     
    public function listadoTipoPruebaFormatoAction() {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
-   	$tiposprueba = $repository->findAllOrdered();
-   	
-   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
-   	$cuentaModalidades = array();
-   	/*for ($i = 0; $i <= count($tiposprueba); $i++){
-   		$cuentaModalidades = $cuentaModalidades + $repository->countFor($tiposprueba[$i]);
-   	};*/
-   	
+   	$tiposprueba = $repository->findAll();
+   	   	
       return $this->render('EasanlesAtletismoBundle:TipoPrueba:list_tipopruebaformato.html.twig',
-      		array("tiposprueba" => $tiposprueba, "cuentamod" => $cuentaModalidades));
+      		array("tiposprueba" => $tiposprueba));
    }
 
    public function crearTipoPruebaFormatoAction(Request $request) {
