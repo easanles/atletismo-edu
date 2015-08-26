@@ -15,25 +15,39 @@
 
     {{ form_errors(form) }}
     
-    <div class=row">
+    <div>
        <div class="form_row col-xs-12">
           {{ form_row(form.nombre) }}
        </div>
     </div>
-    <div class=row">
+    <div>
        <div class="form_row col-xs-8">
           {{ form_row(form.unidades) }}
        </div>
        <div class="form_row col-xs-4">
           {{ form_row(form.numint) }}
        </div>
-    </div>    
+    </div>
+    
+    <div><strong>MODALIDADES </strong><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir</button></div>
+    {% for mod in form.modalidades %}
+    <div>
+       <div class="form_row col-xs-5">
+          {{ form_row(mod.sexo) }}
+       </div>
+       <div class="form_row col-xs-6 input-sm">
+          {{ form_row(mod.entorno) }}
+       </div>
+       <div class="col-xs-1">
+          <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button>
+       </div>
+    </div>
+    {% endfor %}
     
     {{ form_rest(form) }}
  
 {{ form_end(form) }}
    </div>
-
 
 
 

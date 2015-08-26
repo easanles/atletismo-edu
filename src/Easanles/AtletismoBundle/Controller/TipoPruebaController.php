@@ -10,6 +10,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\Length;
+use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 
 class TipoPruebaController extends Controller {
     
@@ -23,6 +24,9 @@ class TipoPruebaController extends Controller {
 
    public function crearTipoPruebaFormatoAction(Request $request) {
    	$tprf = new TipoPruebaFormato();
+   	$tprm = new TipoPruebaModalidad($tprf);
+   	$tprm->name = 'tprm1';
+   	$tprf->getModalidades()->add($tprm);
    	$form = $this->createForm(new TprfType(), $tprf);
    	
    	$form->handleRequest($request);
@@ -35,8 +39,7 @@ class TipoPruebaController extends Controller {
    			if ($testResult) throw new Exception("Ya existe un tipo de prueba con el nombre \"".$nombre."\"");
    	
    			$em = $this->getDoctrine()->getManager();
-   			$em->persist($tprf);
-   	
+            $em->persist($tprf);
    			$em->flush();
    		} catch (\Exception $e) {
    			$exception = $e->getMessage();

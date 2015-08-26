@@ -38,27 +38,23 @@ class ConfiguracionController extends Controller
     	   $em->persist($tprf);
     	   $em->flush();
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(0)
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(0)
     	        ->setEntorno("Campo a través");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(1)
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(1)
     	        ->setEntorno("Campo a través");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(0)
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(0)
     	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(1)
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(1)
     	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
@@ -75,15 +71,13 @@ class ConfiguracionController extends Controller
     	   $em->persist($tprf);
     	   $em->flush();
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	   ->setSexo(0)
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(0)
     	   ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	   ->setSexo(1)
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(1)
     	   ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
@@ -92,6 +86,12 @@ class ConfiguracionController extends Controller
     	     ->setUnidades("Puntos")
     	     ->setNumInt(1);
     	   $em->persist($tprf);
+    	   $em->flush();
+    	   
+    	   $tprm = new TipoPruebaModalidad($tprf);
+    	   $tprm->setSexo(2)
+    	   ->setEntorno("Cubierto");
+    	   $em->persist($tprm);
     	   
     	   $em->flush();
        	$response = new JsonResponse([
@@ -116,7 +116,7 @@ class ConfiguracionController extends Controller
     public function borrar_bdAction(){
     	try{
     	   $em = $this->getDoctrine()->getManager();
-    	   $sql = 'DELETE FROM atl; DELETE FROM `cat`; DELETE FROM `cfg`; DELETE FROM `com`; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprf`; DELETE FROM `tprm`; DELETE FROM `vrq`;';
+    	   $sql = 'DELETE FROM atl; DELETE FROM `cat`; DELETE FROM `cfg`; DELETE FROM `com`; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprm`; DELETE FROM `tprf`; DELETE FROM `vrq`;';
     	   $connection = $em->getConnection();
     	   $stmt = $connection->prepare($sql);
     	   $stmt->execute();
@@ -144,15 +144,12 @@ class ConfiguracionController extends Controller
        	$kernel = $this->get('kernel');
     	   $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
     	   $application->setAutoExit(false);
-       	//Drop tables
     	   $options = array('command' => 'doctrine:database:drop',"--force" => true);
     	   $application->run(new ArrayInput($options))." ";
     	
     	   $this->getDoctrine()->getManager()->getConnection()->close();
-       	//Create database
     	   $options = array('command' => 'doctrine:database:create');
     	   $application->run(new ArrayInput($options))." ";
-       	//Schema update
        	$options = array('command' => 'doctrine:schema:update',"--force" => true);
        	$application->run(new ArrayInput($options))." ";
     	

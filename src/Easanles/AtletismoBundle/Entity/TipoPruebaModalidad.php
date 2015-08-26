@@ -4,6 +4,7 @@ namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * TipoPruebaModalidad
@@ -23,7 +24,6 @@ class TipoPruebaModalidad
 	private $sid;
 	
 	 /**
-	 * @var integer
 	 * @ORM\ManyToOne(targetEntity="TipoPruebaFormato", inversedBy="modalidades", cascade={"all"})
 	 * @ORM\JoinColumn(name="sidtprf", referencedColumnName="sidtprf")
 	 */
@@ -53,9 +53,10 @@ class TipoPruebaModalidad
 	  **/
 	 private $pruebas;
 	 
-	 public function __construct() {
+	 public function __construct($tprf) {
 	 	$this->requisitos = new ArrayCollection();
 	 	$this->pruebas = new ArrayCollection();
+	 	$this->sidTprf = $tprf;
 	 }
 	  
 	 public function getRequisitos() {
@@ -97,8 +98,5 @@ class TipoPruebaModalidad
 		return $this;
 	}
 
-	
-	
-	 
 	 
 }

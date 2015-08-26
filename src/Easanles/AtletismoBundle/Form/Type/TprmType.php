@@ -6,27 +6,30 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  
-class TprfType extends AbstractType
+class TprmType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-    	    ->add('nombre', 'text', array('label' => 'Nombre de la prueba'))
-    	    ->add('unidades', 'text', array('label' => 'Unidades'))
-    	    ->add('numint', 'integer', array('label' => 'Intentos por prueba'))
-          ->add('modalidades', 'collection', array('type' => new TprmType(), 'cascade_validation' => true));
+    	    ->add('sexo', 'choice', array('choices' => array(
+    	    		    '2' => 'Ambos',
+    	    		    '0' => 'Masculino',
+    	    		    '1' => 'Femenino',
+    	          ),
+    	    		 'expanded' => false,
+    	    		 'label' => 'Sexo', 'required' => true))
+    	    ->add('entorno', 'text', array('label' => 'Entorno'));
     }
  
     public function getName()
     {
-        return 'tprf';
+        return 'tprm';
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
     	$resolver->setDefaults(array(
-    			'data_class' => 'Easanles\AtletismoBundle\Entity\TipoPruebaFormato',
-    			'cascade_validation' => true
+    			'data_class' => 'Easanles\AtletismoBundle\Entity\TipoPruebaModalidad',
     	));
     }
 }

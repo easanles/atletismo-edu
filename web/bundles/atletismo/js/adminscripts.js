@@ -39,12 +39,12 @@ function sendAction(path, icon){
 }
 
 function loadViews(){
-	icon = $("#btn_tprf-refresh").find("span");
+	icon = $(".updater").find("span");
 	icon.addClass("spinning");
 	
 	$.get("./tipoprueba", function(data, status){
 		if (status = "success"){
-			 $("#tprf-table").html(data);
+			 $("#tpr-table").html(data);
 			 $('.dropdown-toggle').dropdown()
 	    } else {
 			 $("#tabcontent-tp").html("Error al cargar datos");
