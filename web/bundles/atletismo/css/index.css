@@ -34,6 +34,25 @@ h1 {
    margin-bottom: 0.5em;
 }
 
+.subform{
+   display: inline-block;
+   width: 100%;
+}
+
+.panel-body {
+   max-height: 15em;
+   overflow-y: auto;
+}
+
+.subform table{
+   border: none;
+   width: 100%;
+}
+
+.subform th{
+   text-align: center;
+}
+
 
 .config-content {
    margin: 1em 0.5em;

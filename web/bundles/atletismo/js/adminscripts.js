@@ -60,6 +60,13 @@ function toggleTprmTable(id, button){
 	else table.css("display", "none");
 }
 
+function addFormRow(){
+    divclone = $('.form-placeholder').clone();
+    $('.form-placeholder').css("display", "table");
+    $('.form-placeholder').removeClass("form-placeholder");
+    $('.form-collection').append(divclone);
+}
+
 $(document).ready(function(){	
 	$("#btn_poblarbd").click(function(){
 	   icon = $(this).find("span");

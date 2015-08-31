@@ -29,25 +29,30 @@
        </div>
     </div>
     
-    <div><strong>MODALIDADES </strong><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir</button></div>
-    {% for mod in form.modalidades %}
-    <div>
-       <div class="form_row col-xs-5">
-          {{ form_row(mod.sexo) }}
-       </div>
-       <div class="form_row col-xs-6 input-sm">
-          {{ form_row(mod.entorno) }}
-       </div>
-       <div class="col-xs-1">
-          <button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button>
+    <div class="subform panel panel-default">
+       <div class="panel-heading">MODALIDADES<button type="button" class="btn btn-default btn-sm pull-right" onClick="addFormRow()"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir</button><div class="clearfix"></div></div>
+       <div class="panel-body">
+          <table class="table-responsive table-condensed">
+             <tbody class="form-collection">
+                <tr><th>Sexo</th><th>Entorno</th><th></th></tr>
+                {% for mod in form.modalidades %}
+                <tr>
+                   <td>{{ form_widget(mod.sexo) }}{{ form_errors(mod.sexo) }}</td>
+                   <td>{{ form_widget(mod.entorno) }}{{ form_errors(mod.entorno) }}</td>
+                   <td><button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                </tr>
+                {% endfor %}
+                <tr class="form-placeholder" style="display:none">
+                   <td data-prototype="{{ form_widget(form.modalidades.vars.prototype.sexo)|e }}{{ form_errors(form.modalidades.vars.prototype.sexo)|e }}"></td>
+                   <td data-prototype="{{ form_widget(form.modalidades.vars.prototype.entorno)|e }}{{ form_errors(form.modalidades.vars.prototype.entorno)|e }}"></td>
+                   <td><button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                </tr>
+             </tbody>
+          </table>
        </div>
     </div>
-    {% endfor %}
     
     {{ form_rest(form) }}
  
 {{ form_end(form) }}
    </div>
-
-
-
