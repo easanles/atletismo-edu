@@ -16,6 +16,8 @@ class TprfType extends AbstractType
     	    ->add('numint', 'integer', array('label' => 'Intentos por prueba'))
           ->add('modalidades', 'collection', array('type' => new TprmType(),
           		                                    'allow_add' => true,
+          		                                    'allow_delete' => true,
+          		                                    'by_reference' => false,
           		                                    'cascade_validation' => true));
     }
  

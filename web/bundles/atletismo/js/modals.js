@@ -15,12 +15,14 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning text-center\"></span>");
     	   $.getJSON("./tipoprueba/nuevo", function(data, status){
-    		     if (status = "success"){
-    			   $("#dialog-body").html(data.message);
-    	         } else {
-    			    $("#dialog-body").html("Error al cargar datos");
-    			 }	
-    	      });
+    		  if (status = "success"){
+    		     $("#dialog-body").html(data.message);
+    		     collectionHolder = $('#form-collection');
+    		     collectionHolder.data('index', collectionHolder.find('.subform-row').length);
+    	      } else {
+    			 $("#dialog-body").html("Error al cargar datos");
+    	      }	
+    	   });
        } break;
        
        case ("delTPR"):{ //Borrar tipo de prueba
@@ -36,6 +38,8 @@ function showModal(type, data1, data2, data3){
     	   $.getJSON("./tipoprueba/editar/" + data2, function(data, status){
   		      if (status = "success"){
   			    $("#dialog-body").html(data.message);
+                collectionHolder = $('#form-collection');
+		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
   	          } else {
   			     $("#dialog-body").html("Error al cargar datos");
   			  }	

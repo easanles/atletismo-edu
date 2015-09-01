@@ -55,6 +55,16 @@ class TipoPruebaFormato {
 	 	return $this->modalidades;
 	 }
 	 
+	 public function addModalidad(TipoPruebaModalidad $tprm) {
+	 	$tprm->setSidTprf($this);
+	 	$this->modalidades->add($tprm);
+	 }
+	 
+	 public function removeModalidad(TipoPruebaModalidad $tprm) {
+	    $this->modalidades->removeElement($tprm);
+	 }
+	 
+	 
 	 /******************* GETTERS & SETTERS **************************/ 
 	 
 	 public function getSid() {

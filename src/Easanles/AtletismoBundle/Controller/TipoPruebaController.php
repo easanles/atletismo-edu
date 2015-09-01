@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Constraints\Length;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class TipoPruebaController extends Controller {
     
@@ -24,9 +25,8 @@ class TipoPruebaController extends Controller {
 
    public function crearTipoPruebaFormatoAction(Request $request) {
    	$tprf = new TipoPruebaFormato();
-   	$tprm = new TipoPruebaModalidad($tprf);
-   	$tprm->name = 'tprm1';
-   	$tprf->getModalidades()->add($tprm);
+   	$tprm = new TipoPruebaModalidad();
+   	$tprf->addModalidad($tprm);
    	$form = $this->createForm(new TprfType(), $tprf);
    	
    	$form->handleRequest($request);
@@ -91,8 +91,13 @@ class TipoPruebaController extends Controller {
     
     	if ($tprf != null) {
     		$prevNombre = $tprf->getNombre();
+    		
+    		$originalTags = new ArrayCollection();
+    		foreach ($tprf->getModalidades() as $tprm) {
+    			$originalTags->add($tprm);
+    		}
+    		
     		$form = $this->createForm(new TprfType(), $tprf);
-    		 
     		$form->handleRequest($request);
     		 
     		if ($form->isValid()) {
@@ -102,6 +107,21 @@ class TipoPruebaController extends Controller {
     				if ($testResult && !($prevNombre == $nombre)) {
     					throw new Exception("Ya existe el tipo de prueba \"".$nombre."\"");
     				}
+    				
+    				// remove the relationship between the tag and the Task
+    				foreach ($originalTags as $tprm) {
+    					if (false === $tprf->getModalidades()->contains($tprm)) {
+    						// remove the Task from the Tag
+    						// $tprm->getTasks()->removeElement($task);
+    						// if it was a many-to-one relationship, remove the relationship like this
+    						// $tprm->setTask(null);
+    						//$em->persist($tag);
+    						// if you wanted to delete the Tag entirely, you can also do that
+    						$em->remove($tprm);
+    					}
+    				}
+    				
+    				//$em->persist($tprf);
     				$em->flush();
     			} catch (\Exception $e) {
     				$exception = $e->getMessage();
@@ -124,7 +144,7 @@ class TipoPruebaController extends Controller {
     						array('form' => $form->createView(), 'mode' => 'edit', 'id' => $id))->getContent()
     		]);
     	} else {
-    		$message = "No existe la competicion con identificador ".$id;
+    		$message = "No existe el tipo de prueba con identificador ".$id;
     		return new JsonResponse([
     				'success' => false,
     				'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',

@@ -24,7 +24,7 @@ class TipoPruebaModalidad
 	private $sid;
 	
 	 /**
-	 * @ORM\ManyToOne(targetEntity="TipoPruebaFormato", inversedBy="modalidades", cascade={"all"})
+	 * @ORM\ManyToOne(targetEntity="TipoPruebaFormato", inversedBy="modalidades")
 	 * @ORM\JoinColumn(name="sidtprf", referencedColumnName="sidtprf")
 	 */
 	 private $sidTprf;
@@ -53,10 +53,9 @@ class TipoPruebaModalidad
 	  **/
 	 private $pruebas;
 	 
-	 public function __construct($tprf) {
+	 public function __construct() {
 	 	$this->requisitos = new ArrayCollection();
 	 	$this->pruebas = new ArrayCollection();
-	 	$this->sidTprf = $tprf;
 	 }
 	  
 	 public function getRequisitos() {

@@ -33,20 +33,21 @@
        <div class="panel-heading">MODALIDADES<button type="button" class="btn btn-default btn-sm pull-right" onClick="addFormRow()"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir</button><div class="clearfix"></div></div>
        <div class="panel-body">
           <table class="table-responsive table-condensed">
-             <tbody class="form-collection">
+             <tbody id="form-collection" data-prototype='
+                <tr class="subform-row">
+                   <td>{{ form_widget(form.modalidades.vars.prototype.sexo)|e }}{{ form_errors(form.modalidades.vars.prototype.sexo)|e }}</td>
+                   <td>{{ form_widget(form.modalidades.vars.prototype.entorno)|e }}{{ form_errors(form.modalidades.vars.prototype.entorno)|e }}</td>
+                   <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this)"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                </tr>
+             '>
                 <tr><th>Sexo</th><th>Entorno</th><th></th></tr>
                 {% for mod in form.modalidades %}
-                <tr>
+                <tr class="subform-row">
                    <td>{{ form_widget(mod.sexo) }}{{ form_errors(mod.sexo) }}</td>
                    <td>{{ form_widget(mod.entorno) }}{{ form_errors(mod.entorno) }}</td>
-                   <td><button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                   <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this)"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
                 </tr>
                 {% endfor %}
-                <tr class="form-placeholder" style="display:none">
-                   <td data-prototype="{{ form_widget(form.modalidades.vars.prototype.sexo)|e }}{{ form_errors(form.modalidades.vars.prototype.sexo)|e }}"></td>
-                   <td data-prototype="{{ form_widget(form.modalidades.vars.prototype.entorno)|e }}{{ form_errors(form.modalidades.vars.prototype.entorno)|e }}"></td>
-                   <td><button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
-                </tr>
              </tbody>
           </table>
        </div>

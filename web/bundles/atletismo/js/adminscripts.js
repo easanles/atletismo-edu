@@ -61,10 +61,18 @@ function toggleTprmTable(id, button){
 }
 
 function addFormRow(){
-    divclone = $('.form-placeholder').clone();
-    $('.form-placeholder').css("display", "table");
-    $('.form-placeholder').removeClass("form-placeholder");
-    $('.form-collection').append(divclone);
+	collectionHolder = $('#form-collection')
+    
+    prototype = collectionHolder.data('prototype');
+    index = collectionHolder.data('index');
+    collectionHolder.data('index', index + 1);
+    newForm = prototype.replace(/__name__/g, index);
+
+    collectionHolder.append(newForm);
+}
+
+function removeFormRow(button){
+	button.parentElement.parentElement.remove();
 }
 
 $(document).ready(function(){	
