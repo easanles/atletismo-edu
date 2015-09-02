@@ -4,6 +4,9 @@ namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * TipoPruebaFormato
@@ -96,4 +99,11 @@ class TipoPruebaFormato {
 		return $this;
 	}
 
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+		$this->nombre = strip_tags($this->nombre);
+	}
+	
 }

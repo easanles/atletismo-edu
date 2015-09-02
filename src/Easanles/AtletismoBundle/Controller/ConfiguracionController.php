@@ -38,23 +38,27 @@ class ConfiguracionController extends Controller
     	   $em->persist($tprf);
     	   $em->flush();
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(0)
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(0)
     	        ->setEntorno("Campo a través");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(1)
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(1)
     	        ->setEntorno("Campo a través");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(0)
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(0)
     	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(1)
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(1)
     	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
@@ -64,6 +68,18 @@ class ConfiguracionController extends Controller
     	      ->setNumInt("3");
     	   $em->persist($tprf);
     	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	   ->setSexo(0)
+    	   ->setEntorno("Cubierto");
+    	   $em->persist($tprm);
+    	   
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	   ->setSexo(1)
+    	   ->setEntorno("Cubierto");
+    	   $em->persist($tprm);
+    	   
     	   $tprf = new TipoPruebaFormato();
     	   $tprf->setNombre("Maratón")
     	      ->setUnidades("Segundos")
@@ -71,26 +87,29 @@ class ConfiguracionController extends Controller
     	   $em->persist($tprf);
     	   $em->flush();
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(0)
-    	   ->setEntorno("Ruta");
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(0)
+    	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(1)
-    	   ->setEntorno("Ruta");
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(1)
+    	        ->setEntorno("Ruta");
     	   $em->persist($tprm);
     	   
     	   $tprf = new TipoPruebaFormato();
     	   $tprf->setNombre("Prueba por puntos")
-    	     ->setUnidades("Puntos")
-    	     ->setNumInt(1);
+    	        ->setUnidades("Puntos")
+    	        ->setNumInt(1);
     	   $em->persist($tprf);
     	   $em->flush();
     	   
-    	   $tprm = new TipoPruebaModalidad($tprf);
-    	   $tprm->setSexo(2)
-    	   ->setEntorno("Cubierto");
+    	   $tprm = new TipoPruebaModalidad();
+    	   $tprm->setSidTprf($tprf)
+    	        ->setSexo(2)
+    	         ->setEntorno("Cubierto");
     	   $em->persist($tprm);
     	   
     	   $em->flush();

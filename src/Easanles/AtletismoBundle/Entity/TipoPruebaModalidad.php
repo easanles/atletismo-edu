@@ -5,6 +5,8 @@ namespace Easanles\AtletismoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * TipoPruebaModalidad
@@ -97,5 +99,14 @@ class TipoPruebaModalidad
 		return $this;
 	}
 
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+		$this->entorno = strip_tags($this->entorno);
+		if (($this->sexo < 0) || ($this->sexo > 2)) {
+			$this->sexo = 2;
+		}
+	}
 	 
 }

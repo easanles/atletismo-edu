@@ -33,10 +33,18 @@ class TipoPruebaController extends Controller {
    	 
    	if ($form->isValid()) {
    		try {
+   			// Comprobar nombre repetido
    			$nombre = $form->getData()->getNombre();
    			$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
    			$testResult = $repository->checkData($nombre);
    			if ($testResult) throw new Exception("Ya existe un tipo de prueba con el nombre \"".$nombre."\"");
+
+   			// Minimo una modalidad por tipo de prueba
+   			if ($tprf->getModalidades()->count() == 0)
+   		         throw new Exception("Introduce al menos una modalidad para este tipo de prueba");
+   			
+   			// Restricciones en modalidades
+   			$this->checkModalidades($tprf);
    	
    			$em = $this->getDoctrine()->getManager();
             $em->persist($tprf);
@@ -102,26 +110,30 @@ class TipoPruebaController extends Controller {
     		 
     		if ($form->isValid()) {
     			try {
+    				// Comprobar nombre repetido
     				$nombre = $tprf->getNombre();
     				$testResult = $repository->checkData($nombre);
     				if ($testResult && !($prevNombre == $nombre)) {
     					throw new Exception("Ya existe el tipo de prueba \"".$nombre."\"");
     				}
     				
-    				// remove the relationship between the tag and the Task
+    				// Minimo una modalidad por tipo de prueba
+    				if ($tprf->getModalidades()->count() == 0)
+    					throw new Exception("Introduce al menos una modalidad para este tipo de prueba");
+    				
+    				// Restricciones en modalidades
+    				$this->checkModalidades($tprf);
+    				
+    				
     				foreach ($originalTags as $tprm) {
     					if (false === $tprf->getModalidades()->contains($tprm)) {
-    						// remove the Task from the Tag
     						// $tprm->getTasks()->removeElement($task);
-    						// if it was a many-to-one relationship, remove the relationship like this
     						// $tprm->setTask(null);
     						//$em->persist($tag);
-    						// if you wanted to delete the Tag entirely, you can also do that
     						$em->remove($tprm);
     					}
     				}
     				
-    				//$em->persist($tprf);
     				$em->flush();
     			} catch (\Exception $e) {
     				$exception = $e->getMessage();
@@ -150,6 +162,42 @@ class TipoPruebaController extends Controller {
     				'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
     						array('form' => $form->createView(), 'mode' => 'edit', 'id' => $id, 'exception' => $message))->getContent()
     		]);
+    	}
+    }
+    
+    private function checkModalidades($tprf){
+    	$modArray = $tprf->getModalidades()->toArray();
+    	$ambosArray = array();
+    	$masArray = array();
+    	$femArray = array();
+    	foreach ($modArray as $mod){
+    		switch ($mod->getSexo()){
+    			case 2: { //Ambos
+    				if ((in_array($mod->getEntorno(), $ambosArray))
+    						|| (in_array($mod->getEntorno(), $masArray))
+    						|| (in_array($mod->getEntorno(), $femArray))) {
+    				   throw new Exception("Existe una modalidad repetida");
+    				}
+    				else $ambosArray[] = $mod->getEntorno();
+    			} break;
+    			case 0: { //Masculino
+    				if ((in_array($mod->getEntorno(), $ambosArray))
+    						|| (in_array($mod->getEntorno(), $masArray))) {
+    				   throw new Exception("Existe una modalidad repetida");
+    				}
+    				else $masArray[] = $mod->getEntorno();
+    			} break;
+    			case 1: { //Femenino
+    				if ((in_array($mod->getEntorno(), $ambosArray))
+    						|| (in_array($mod->getEntorno(), $femArray))) {
+    				   throw new Exception("Existe una modalidad repetida");
+    				}
+    				else $femArray[] = $mod->getEntorno();
+    			} break;
+    			default: {
+    				throw new Exception("Error en los datos recibidos");
+    			} break;
+    		}
     	}
     }
     
