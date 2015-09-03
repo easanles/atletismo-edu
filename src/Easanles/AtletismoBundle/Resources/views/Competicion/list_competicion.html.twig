@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-  <li><a href="../">Portada Admin</a></li>
+  <li><a href="./">Portada Admin</a></li>
   <li class="active">Competiciones</li>
 {% endblock %}
 
@@ -46,29 +46,29 @@
       <tbody>
          <tr>
             <th>Temporada</th>
-            <th>Ubicación</th>
             <th>Competición</th>
             <th>Fecha</th>
             <th>Sede</th>
+            <th>Pruebas</th>
             <th>Atletas inscritos</th>
             <th>Acciones</th>
          </tr>
-         {% for row in competiciones %}
+         {% for com in competiciones %}
          <tr>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.temp }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.ubicacion }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.nombre }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">
-{% if row.fecha is null %} <em>Sin fecha</em> {% else %} {{ row.fecha|date('d/m/Y') }} {% endif %} </td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.sede }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.temp }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.nombre }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">
+{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.sede }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.numpruebas }} <a type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="./pruebas/{{ com.sid }}"><span class="glyphicon glyphicon-list"></span></a></td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">0</td>
             <td>
-               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ row.nombre }}', '{{ row.temp }}', '{{ row.sid }}')"><span class="glyphicon glyphicon-remove"></span></span></button>
+               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ com.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
+               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ com.sid }}')"><span class="glyphicon glyphicon-remove"></span></span></button>
             </td>
          </tr>
          {% endfor %}
-         </tbody>
+      </tbody>
    </table>
    </div>
    

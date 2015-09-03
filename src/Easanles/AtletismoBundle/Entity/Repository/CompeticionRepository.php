@@ -8,9 +8,14 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class CompeticionRepository extends EntityRepository {
 	public function findAllOrdered()	{
-		return $this->getEntityManager()
-		->createQuery('SELECT com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
+		$result = $this->getEntityManager()
+		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
 		->getResult();
+		foreach ($result as &$com){ // & = Paso por referencia
+			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
+			$com['numpruebas'] = $numPruebas;
+		}
+		return $result;
 	}
 	
 	public function findTemps(){

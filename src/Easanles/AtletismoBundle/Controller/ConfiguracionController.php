@@ -10,9 +10,11 @@ use Easanles\AtletismoBundle\Entity\Competicion;
 use Easanles\AtletismoBundle\Entity\TipoPruebaFormato;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
+use Easanles\AtletismoBundle\Entity\Prueba;
+use Easanles\AtletismoBundle\Helpers\Helpers;
 
-class ConfiguracionController extends Controller
-{
+class ConfiguracionController extends Controller {
+	
     public function menu_configuracionAction() {
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig');		 
     }
@@ -20,99 +22,9 @@ class ConfiguracionController extends Controller
     public function poblar_bdAction(){
     	try{
     	   $em = $this->getDoctrine()->getManager();
-    	    	
-    	   $com = new Competicion();
-    	   $com->setNombre("Competicion 1")
-    	       ->setTemp(2014);
-    	   $em->persist($com);
-
-       	$com = new Competicion();
-       	$com->setNombre("Competicion 2")
-    	      ->setTemp(2015);
-    	   $em->persist($com);
-    	 
-    	   $tprf = new TipoPruebaFormato();
-    	   $tprf->setNombre("50 metros lisos")
-    	      ->setUnidades("Segundos")
-    	      ->setNumInt(1);
-    	   $em->persist($tprf);
-    	   $em->flush();
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(0)
-    	        ->setEntorno("Campo a través");
-    	   $em->persist($tprm);
+    	   Helpers::poblarBD($em);
     	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(1)
-    	        ->setEntorno("Campo a través");
-    	   $em->persist($tprm);
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(0)
-    	        ->setEntorno("Ruta");
-    	   $em->persist($tprm);
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(1)
-    	        ->setEntorno("Ruta");
-    	   $em->persist($tprm);
-    	   
-    	   $tprf = new TipoPruebaFormato();
-    	   $tprf->setNombre("Salto de altura")
-    	      ->setUnidades("Metros")
-    	      ->setNumInt("3");
-    	   $em->persist($tprf);
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	   ->setSexo(0)
-    	   ->setEntorno("Cubierto");
-    	   $em->persist($tprm);
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	   ->setSexo(1)
-    	   ->setEntorno("Cubierto");
-    	   $em->persist($tprm);
-    	   
-    	   $tprf = new TipoPruebaFormato();
-    	   $tprf->setNombre("Maratón")
-    	      ->setUnidades("Segundos")
-    	      ->setNumInt(1);
-    	   $em->persist($tprf);
-    	   $em->flush();
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(0)
-    	        ->setEntorno("Ruta");
-    	   $em->persist($tprm);
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(1)
-    	        ->setEntorno("Ruta");
-    	   $em->persist($tprm);
-    	   
-    	   $tprf = new TipoPruebaFormato();
-    	   $tprf->setNombre("Prueba por puntos")
-    	        ->setUnidades("Puntos")
-    	        ->setNumInt(1);
-    	   $em->persist($tprf);
-    	   $em->flush();
-    	   
-    	   $tprm = new TipoPruebaModalidad();
-    	   $tprm->setSidTprf($tprf)
-    	        ->setSexo(2)
-    	         ->setEntorno("Cubierto");
-    	   $em->persist($tprm);
-    	   
-    	   $em->flush();
        	$response = new JsonResponse([
        			'success' => true,
        			'message' => 'Base de datos poblada con datos de prueba',
@@ -135,7 +47,7 @@ class ConfiguracionController extends Controller
     public function borrar_bdAction(){
     	try{
     	   $em = $this->getDoctrine()->getManager();
-    	   $sql = 'DELETE FROM atl; DELETE FROM `cat`; DELETE FROM `cfg`; DELETE FROM `com`; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprm`; DELETE FROM `tprf`; DELETE FROM `vrq`;';
+    	   $sql = 'DELETE FROM atl; DELETE FROM `cat`; DELETE FROM `cfg`; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprm`; DELETE FROM `tprf`; DELETE FROM `vrq`; DELETE FROM `com`;';
     	   $connection = $em->getConnection();
     	   $stmt = $connection->prepare($sql);
     	   $stmt->execute();

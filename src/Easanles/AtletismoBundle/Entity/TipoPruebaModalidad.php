@@ -52,6 +52,7 @@ class TipoPruebaModalidad
 	 
 	 /**
 	  * @var array_collection
+	  * @ORM\OneToMany(targetEntity="Prueba", mappedBy="sidTprm", cascade={"all"})
 	  **/
 	 private $pruebas;
 	 

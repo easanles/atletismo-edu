@@ -5,37 +5,34 @@ namespace Easanles\AtletismoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+
 /**
  * Prueba
  * 
  * @ORM\Table(name="pru")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\PruebaRepository")
  */
 class Prueba {
 	
 	/**
 	 * @var integer
-	 * @ORM\Column(name="idpru", type="integer")
+	 * @ORM\Column(name="sidpru", type="integer")
 	 * @ORM\Id
-	 * ORM\ManyToOne(targetEntity="Competicion", inversedBy="pruebas", cascade={"all"})
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $sid;
+	
+	/**
+	 * @var integer
+	 * @ORM\Column(name="idpru", type="integer")
 	 */
 	private $id;
 	
 	/**
-	 * @var string
-	 * @ORM\Column(name="nombrecom", type="string", length=255)
-	 * @ORM\Id
-	 * ORM\ManyToOne(targetEntity="Competicion", inversedBy="pruebas", cascade={"all"})
+	 * @ORM\ManyToOne(targetEntity="Competicion", inversedBy="pruebas")
+	 * @ORM\JoinColumn(name="sidcom", referencedColumnName="sidcom")
 	 */
-	private $nombreCom;
-	
-	/**
-	 * @var integer
-	 * @ORM\Column(name="tempcom", type="smallint")
-	 * @ORM\Id
-	 * ORM\ManyToOne(targetEntity="Competicion", inversedBy="pruebas", cascade={"all"})
-	 */
-	private $tempCom;
+	private $sidCom;
 	
 	/**
 	 * @var integer
@@ -52,27 +49,16 @@ class Prueba {
 	/**
 	 * @var integer
 	 * @ORM\Column(name="idcat", type="integer")
-	 * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="pruebas", cascade={"all"})
+	 * ORM\ManyToOne(targetEntity="Categoria", inversedBy="pruebas", cascade={"all"})
 	 */
 	private $idCat;
 	
 	/**
-	 * @var string
-	 * @ORM\Column(name="nombretpr", type="string", length=255)
+	 * @ORM\ManyToOne(targetEntity="TipoPruebaModalidad", inversedBy="pruebas")
+	 * @ORM\JoinColumn(name="sidtprm", referencedColumnName="sidtprm")
 	 */
-	private $nombreTpr;
+	private $sidTprm;
 	
-	/**
-	 * @var integer
-	 * @ORM\Column(name="sexotpr", type="smallint")
-	 */
-	private $sexoTpr;
-	
-	/**
-	 * @var string
-	 * @ORM\Column(name="entornotpr", type="string", length=255)
-	 */
-	private $entornoTpr;
 	
 	/********************* FOREIGN KEYS *****************************/
 	 
@@ -98,8 +84,16 @@ class Prueba {
 		return $this->intentos;
 	}
 	
+
 	/******************* GETTERS & SETTERS **************************/
 	
+	public function getSid() {
+		return $this->sid;
+	}
+	public function setSid($sid) {
+		$this->sid = $sid;
+		return $this;
+	}
 	public function getId() {
 		return $this->id;
 	}
@@ -107,18 +101,11 @@ class Prueba {
 		$this->id = $id;
 		return $this;
 	}
-	public function getNombreCom() {
-		return $this->nombreCom;
+	public function getSidCom() {
+		return $this->sidCom;
 	}
-	public function setNombreCom($nombreCom) {
-		$this->nombreCom = $nombreCom;
-		return $this;
-	}
-	public function getTempCom() {
-		return $this->tempCom;
-	}
-	public function setTempCom($tempCom) {
-		$this->tempCom = $tempCom;
+	public function setSidCom($sidCom) {
+		$this->sidCom = $sidCom;
 		return $this;
 	}
 	public function getRonda() {
@@ -142,29 +129,12 @@ class Prueba {
 		$this->idCat = $idCat;
 		return $this;
 	}
-	public function getNombreTpr() {
-		return $this->nombreTpr;
+	public function getSidTprm() {
+		return $this->sidTprm;
 	}
-	public function setNombreTpr($nombreTpr) {
-		$this->nombreTpr = $nombreTpr;
+	public function setSidTprm($sidTprm) {
+		$this->sidTprm = $sidTprm;
 		return $this;
 	}
-	public function getSexoTpr() {
-		return $this->sexoTpr;
-	}
-	public function setSexoTpr($sexoTpr) {
-		$this->sexoTpr = $sexoTpr;
-		return $this;
-	}
-	public function getEntornoTpr() {
-		return $this->entornoTpr;
-	}
-	public function setEntornoTpr($entornoTpr) {
-		$this->entornoTpr = $entornoTpr;
-		return $this;
-	}
-	
-	
-	
 	
 }

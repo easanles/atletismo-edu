@@ -7,7 +7,9 @@
 symfony_demo:
    path: /demo
    defaults: {_controller: "AcmeDemoBundle:Demo:index"}
-    
+   
+   
+#===================COMPETICIONES====================
 listado_competiciones: #portada competiciones
     path: /competiciones
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listadoCompeticiones"}
@@ -24,7 +26,14 @@ ver_competicion:
     path: /competiciones/{id}/
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
     
+
+#======================PRUEBAS=======================
+listado_pruebas:
+    path: /pruebas/{id}
+    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:listadoPruebas"}
     
+    
+#==================TIPOS DE PRUEBAS==================
 listado_tipopruebaformato:
    path: /configuracion/tipoprueba
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:listadoTipoPruebaFormato"}
@@ -41,7 +50,8 @@ editar_tipopruebaformato:
    path: /configuracion/tipoprueba/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:editarTipoPruebaFormato"}
 
-    
+
+#====================CONFIGURACION===================
 configuracion: #portada configuracion
     path: /configuracion/
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}

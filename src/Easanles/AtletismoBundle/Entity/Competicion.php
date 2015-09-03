@@ -108,7 +108,7 @@ class Competicion {
      
    /**
     * @var array_collection
-    * ORM\OneToMany(targetEntity="Prueba", mappedBy="sid", cascade={"all"})
+    * @ORM\OneToMany(targetEntity="Prueba", mappedBy="sidCom", cascade={"all"})
     **/
    private $pruebas;
    
