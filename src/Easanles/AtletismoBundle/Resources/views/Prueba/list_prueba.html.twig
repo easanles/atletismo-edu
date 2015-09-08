@@ -29,6 +29,21 @@
 {% block container %}   
    <h1 id="container_title" class="row page-header">Lista de pruebas <small>{{ com.nombre }} ({{ com.temp }})</small></h1>
    <div id="container_header" class="row">
+      <a type="button" class="btn btn-m btn-default pull-left" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
+      <div class="col-xs-4">
+         <select class="form-control col-xs-4">
+            <option value="" {% if tpr is not defined %}selected{% endif %}>Tipo de prueba</option>
+            {% for row in listapru %}
+            <option value="{{ row.sidTprm }}">{{ row.sidTprm }}</option>
+            {% endfor %}
+         </select>
+      </div>
+      <div class="col-xs-3">
+         <select class="form-control col-xs-3">
+         <option value="" {% if cat is not defined %}selected{% endif %}>Categoría</option>
+         </select>
+      </div>
+      <a class="btn btn-primary" href=""><span class="glyphicon glyphicon-plus"></span> Añadir</a>
    </div>
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
@@ -55,19 +70,9 @@
                <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar"><span class="glyphicon glyphicon-remove"></span></button>
             </td>
          </tr>
-            {# <tr>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.temp }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.nombre }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">
-{% if row.fecha is null %} <em>Sin fecha</em> {% else %} {{ row.fecha|date('d/m/Y') }} {% endif %} </td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">{{ row.sede }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0 <a type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="./pruebas/{{ row.sid }}"><span class="glyphicon glyphicon-list"></span></a></td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ row.sid }}/')">0</td>
-            <td>
-               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
+            {# <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
                <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ row.nombre }}', '{{ row.temp }}', '{{ row.sid }}')"><span class="glyphicon glyphicon-remove"></span></span></button>
-            </td>
-         </tr> #}
+             #}
          {% endfor %}
       </tbody>
    </table>

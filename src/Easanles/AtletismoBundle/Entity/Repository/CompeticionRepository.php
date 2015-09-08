@@ -54,6 +54,11 @@ class CompeticionRepository extends EntityRepository {
 		         ->getResult();
 			}
 		}
+		
+		foreach ($result as &$com){ // & = Paso por referencia
+			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
+			$com['numpruebas'] = $numPruebas;
+		}
 		return $result;
 	}
 	
