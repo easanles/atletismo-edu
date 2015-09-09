@@ -15,7 +15,7 @@
 {% block breadcrumb %}
   <li><a href="../">Portada Admin</a></li>
   <li><a href="../competiciones">Competiciones</a></li>
-  <li><a href="../competiciones/{{ id }}/">{{ com.nombre }} ({{ com.temp }})</a></li>
+  <li><a href="../competiciones/{{ com.sid }}/">{{ com.nombre }} ({{ com.temp }})</a></li>
   <li class="active">Pruebas</li>
   
 {% endblock %}
@@ -31,10 +31,10 @@
    <div id="container_header" class="row">
       <a type="button" class="btn btn-m btn-default pull-left" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <div class="col-xs-4">
-         <select class="form-control col-xs-4">
-            <option value="" {% if tpr is not defined %}selected{% endif %}>Tipo de prueba</option>
-            {% for row in listapru %}
-            <option value="{{ row.sidTprm }}">{{ row.sidTprm }}</option>
+         <select class="form-control col-xs-4" onChange="pruSearch({{ com.sid }}, this.value, {% if selcat is defined %}'{{ selcat }}'{% else %}null{% endif %})">
+            <option value=""{% if seltpr is not defined %} selected{% endif %}>Tipo de prueba</option>
+            {% for tpr in tipospruebas %}
+            <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino{% elseif tpr.sexo == 1 %}Femenino{% endif %}, {{ tpr.entorno }}</option>
             {% endfor %}
          </select>
       </div>
@@ -57,10 +57,10 @@
             <th>Acciones</th>
          </tr>
          
-         {% for pru in com.pruebas.toArray() %}
+         {% for pru in pruebas %}
          <tr>
             <td>{{ pru.id }}</td>
-            <td>{{ pru.sidTprm.sidTprf.nombre }}. {% if pru.sidTprm.sexo == 0 %}Masculino{% elseif pru.sidTprm.sexo == 1 %}Femenino{% endif%}, {{ pru.sidTprm.entorno }}</td>
+            <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino{% elseif pru.tprm.sexo == 1 %}Femenino{% endif%}, {{ pru.tprm.entorno }}</td>
             <td>{{ pru.idCat }}</td>
             <td>{{ pru.ronda }}</td>
             <td>{{ pru.nombre }}</td>

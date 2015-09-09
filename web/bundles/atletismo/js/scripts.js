@@ -20,6 +20,22 @@ function comSearch(temp, query){
 	goToUrl(path);
 }
 
+function pruSearch(id, tpr, cat){
+	path = "./" + id;
+	if ((tpr != null) && (tpr != "")){
+		if ((cat != null) && (cat != "")){
+			path = path + "?tpr=" + tpr + "&c=" + cat;
+		} else {
+			path = path + "?tpr=" + tpr;
+		}
+	} else {
+		if ((cat != null) && (cat != "")) {
+			path = path + "?c=" + cat;
+		}
+	}
+	goToUrl(path);
+}
+
 function getQuery(){
 	return document.getElementById('search-input').value;
 }

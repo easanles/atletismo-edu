@@ -24,36 +24,21 @@ class CompeticionRepository extends EntityRepository {
 		->getResult();
 	}
 	
-	public function searchByParameters($temp, $string) {
-		if (($temp == null) || ($temp == "")){
-			if ((($string == null) || ($string == ""))){
-				$query = 'SELECT com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC';
-				$result = $this->getEntityManager()
-		         ->createQuery($query)
-		         ->getResult();
-			} else {
-				$query = 'SELECT com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com WHERE com.nombre LIKE :string OR com.ubicacion LIKE :string OR com.sede LIKE :string OR com.nivel LIKE :string OR com.feder LIKE :string ORDER BY com.temp DESC, com.fecha DESC';
-				$result = $this->getEntityManager()
-		         ->createQuery($query)
-		         ->setParameter('string', '%'.$string.'%')
-		         ->getResult();
-			}
-		} else {
-			if ((($string == null) || ($string == ""))){
-				$query = 'SELECT com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com WHERE com.temp = :temp ORDER BY com.temp DESC, com.fecha DESC';
-				$result = $this->getEntityManager()
-		         ->createQuery($query)
-		         ->setParameter('temp', $temp)
-		         ->getResult();
-			} else {
-				$query = 'SELECT com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com WHERE com.temp = :temp AND (com.nombre LIKE :string OR com.ubicacion LIKE :string OR com.sede LIKE :string OR com.nivel LIKE :string OR com.feder LIKE :string) ORDER BY com.temp DESC, com.fecha DESC';
-				$result = $this->getEntityManager()
-		         ->createQuery($query)
-		         ->setParameter('temp', $temp)
-		         ->setParameter('string', '%'.$string.'%')
-		         ->getResult();
-			}
+	public function searchByParameters($temp, $string) {	
+		$qb = $this->getEntityManager()->createQueryBuilder('com');
+		if (($string != null) || ($string != "")){
+			$qb = $qb->andWhere('com.nombre LIKE :string OR com.ubicacion LIKE :string OR com.sede LIKE :string OR com.nivel LIKE :string OR com.feder LIKE :string')
+			->setParameter('string', '%'.$string.'%');
 		}
+		if (($temp != null) && ($temp != "")){
+			$qb = $qb->andWhere('com.temp = :temp')
+			->setParameter('temp', $temp);
+		}
+		$result = $qb->select('com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede')
+		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->orderBy('com.temp', 'DESC')
+		->addOrderBy('com.fecha', 'DESC')
+		->getQuery()->getResult();
 		
 		foreach ($result as &$com){ // & = Paso por referencia
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();

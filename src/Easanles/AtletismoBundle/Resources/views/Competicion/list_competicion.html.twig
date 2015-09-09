@@ -31,7 +31,7 @@
          <select class="form-control" onChange="comSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
             <option value="" {% if temp is not defined %}selected{% endif %}>Todas las temporadas</option>
             {% for row in temporadas %}
-            <option value="{{ row.temp }}"{% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
+            <option value="{{ row.temp }}" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
             {% endfor %}
          </select>
       </div>

@@ -17,29 +17,16 @@ class CompeticionController extends Controller
     	$query = $request->query->get('q');
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$temporadas = $repository->findTemps();
-    	 
-    	 
-    	if ($temp != null) {
-    		if ($query != null){
-    			$competiciones = $repository->searchByParameters($temp, $query);
-    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-    					array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'temp' => $temp, 'query' => $query));
-    		} else {
-    			$competiciones = $repository->searchByParameters($temp, '');
-    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-    					array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'temp' => $temp));
-    		}
+    	
+    	if (($temp == null) && ($query == null)){
+    		$competiciones = $repository->findAllOrdered();
     	} else {
-    		if ($query != null){
-    			$competiciones = $repository->searchByParameters('', $query);
-    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-    					array('competiciones' => $competiciones, 'temporadas' => $temporadas, 'query' => $query));
-    		} else {
-    			$competiciones = $repository->findAllOrdered();
-    			return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig',
-    					array('competiciones' => $competiciones, 'temporadas' => $temporadas));
-    		}
+    		$competiciones = $repository->searchByParameters($temp, $query);
     	}
+    	$parametros = array('competiciones' => $competiciones, 'temporadas' => $temporadas);
+    	if ($temp != null) $parametros['temp'] = $temp;
+    	if ($query != null) $parametros['query'] = $query;
+    	return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig', $parametros);
     }
     
     public function crearCompeticionAction(Request $request) {
