@@ -20,11 +20,9 @@
   
 {% endblock %}
 
-   {% block modallabel %}Confirmar borrado{% endblock %}
-   {% block modalbody %}
-   {% endblock %}
-   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
-
+   {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
 
 {% block container %}   
    <h1 id="container_title" class="row page-header">Lista de pruebas <small>{{ com.nombre }} ({{ com.temp }})</small></h1>
@@ -32,7 +30,7 @@
       <a type="button" class="btn btn-m btn-default pull-left" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <div class="col-xs-4">
          <select class="form-control col-xs-4" onChange="pruSearch({{ com.sid }}, this.value, {% if selcat is defined %}'{{ selcat }}'{% else %}null{% endif %})">
-            <option value=""{% if seltpr is not defined %} selected{% endif %}>Tipo de prueba</option>
+            <option value=""{% if seltpr is not defined %} selected{% endif %}>Seleccionar prueba</option>
             {% for tpr in tipospruebas %}
             <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino{% elseif tpr.sexo == 1 %}Femenino{% endif %}, {{ tpr.entorno }}</option>
             {% endfor %}
@@ -43,7 +41,7 @@
          <option value="" {% if cat is not defined %}selected{% endif %}>Categoría</option>
          </select>
       </div>
-      <a class="btn btn-primary" href=""><span class="glyphicon glyphicon-plus"></span> Añadir</a>
+      <button class="btn btn-primary" onClick="showModal('newPRU', {{ com.sid }}, null, null)"><span class="glyphicon glyphicon-plus"></span> Agregar prueba</button>
    </div>
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
@@ -62,10 +60,11 @@
             <td>{{ pru.id }}</td>
             <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino{% elseif pru.tprm.sexo == 1 %}Femenino{% endif%}, {{ pru.tprm.entorno }}</td>
             <td>{{ pru.idCat }}</td>
-            <td>{{ pru.ronda }}</td>
+            <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
             <td>{{ pru.nombre }}</td>
-            <td>0</td>
+            <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-list"></span></button></td>
             <td>
+               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar"><span class="glyphicon glyphicon-duplicate"></span></button>
                <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-edit"></span></button>
                <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar"><span class="glyphicon glyphicon-remove"></span></button>
             </td>

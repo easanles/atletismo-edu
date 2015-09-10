@@ -7,11 +7,13 @@ use Easanles\AtletismoBundle\Entity\Prueba;
 use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Symfony\Component\HttpFoundation\Request;
+use Easanles\AtletismoBundle\Form\Type\PruType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 //$id representa el identificador de la competicion
 
-class PruebaController extends Controller
-{
+class PruebaController extends Controller {
+	
     public function listadoPruebasAction($id, Request $request) {
     	$seltpr = $request->query->get('tpr');
     	$selcat = $request->query->get('c');
@@ -49,4 +51,47 @@ class PruebaController extends Controller
        }
     }
     
+   public function crearPruebaAction($id, Request $request) {
+   	$pru = new Prueba();
+   	$pru->setRonda(1);
+   	$pru->setIdCat(1);
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$com = $repository->find($id);
+   	$pru->setSidCom($com);
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+   	$count = count($repository->findBy(array("sidCom" => $id)));
+   	$pru->setId($count);
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
+   	$listaFormatos = $repository->findAllOrdered();
+   	$form = $this->createForm(new PruType($listaFormatos), $pru);
+   	
+   	$form->handleRequest($request);
+   	
+   	if ($form->isValid()) {
+   		try {
+   			//hacer cosas
+   		} catch (\Exception $e) {
+   			$exception = $e->getMessage();
+         	return new JsonResponse([
+   		   	'success' => false,
+   		   	'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
+   		   	array('form' => $form->createView(), 'sidCom' => $id,
+   		   			 'mode' => 'new', 'exception' => $exception))->getContent()
+   	      ]);
+   		}
+         return new JsonResponse([
+   			'success' => true,
+   			'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
+   					array('form' => $form->createView(), 'sidCom' => $id,
+   							 'mode' => 'new'))->getContent()
+   	   ]);
+   	}
+   	
+   	return new JsonResponse([
+   			'success' => false,
+   			'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
+   					array('form' => $form->createView(), 'sidCom' => $id,
+   							 'mode' => 'new'))->getContent()
+   	]);
+   }
 }

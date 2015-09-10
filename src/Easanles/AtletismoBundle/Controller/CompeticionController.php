@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 
-class CompeticionController extends Controller
-{
+class CompeticionController extends Controller {
+	
     public function listadoCompeticionesAction(Request $request) {
     	$temp = $request->query->get('temp');
     	$query = $request->query->get('q');

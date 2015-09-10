@@ -44,7 +44,20 @@ function showModal(type, data1, data2, data3){
   			     $("#dialog-body").html("Error al cargar datos");
   			  }	
   	       });
-       }
+       } break;
+       
+       case ("newPRU"): { //Nueva prueba
+    	   $('#dialog-label').html("Agregar prueba");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning text-center\"></span>");   
+    	   $.getJSON("./" + data1 + "/nuevo", function(data, status){
+   		      if (status = "success"){
+   			    $("#dialog-body").html(data.message);
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
        
        default: break;
 	}

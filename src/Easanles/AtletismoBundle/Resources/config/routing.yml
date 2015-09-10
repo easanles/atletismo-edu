@@ -31,6 +31,9 @@ ver_competicion:
 listado_pruebas:
     path: /pruebas/{id}
     defaults: {_controller: "EasanlesAtletismoBundle:Prueba:listadoPruebas"}
+crear_prueba:
+    path: /pruebas/{id}/nuevo
+    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:crearPrueba"}
     
     
 #==================TIPOS DE PRUEBAS==================
