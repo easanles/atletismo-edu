@@ -21,6 +21,14 @@ class PruebaRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function maxId($sidCom){
+		$query = $this->getEntityManager()
+		->createQuery('SELECT MAX(pru.id) AS maxid FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom')
+		->setParameter("sidcom", $sidCom)
+		->getResult();
+		return intval($query); //TODO: no devuelve el resultado correctamente
+	}
+	
 	public function searchByParameters($sidCom, $sidTprm, $idCat) {
 		$qb = $this->getEntityManager()->createQueryBuilder('pru')
 		      ->where('IDENTITY(pru.sidCom) LIKE :sidcom')

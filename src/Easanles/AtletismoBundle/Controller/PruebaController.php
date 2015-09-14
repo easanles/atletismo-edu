@@ -59,17 +59,19 @@ class PruebaController extends Controller {
     	$com = $repository->find($id);
    	$pru->setSidCom($com);
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-   	$count = count($repository->findBy(array("sidCom" => $id)));
-   	$pru->setId($count);
-   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
-   	$listaFormatos = $repository->findAllOrdered();
-   	$form = $this->createForm(new PruType($listaFormatos), $pru);
+   	$pru->setId($repository->maxId($id) + 1);
+   	$doctrine = $this->getDoctrine();
+   	$form = $this->createForm(new PruType($doctrine), $pru);
    	
    	$form->handleRequest($request);
    	
    	if ($form->isValid()) {
    		try {
-   			//hacer cosas
+   			
+   			$em = $this->getDoctrine()->getManager();
+            $em->persist($pru);
+   			$em->flush();
+   			
    		} catch (\Exception $e) {
    			$exception = $e->getMessage();
          	return new JsonResponse([
@@ -81,9 +83,7 @@ class PruebaController extends Controller {
    		}
          return new JsonResponse([
    			'success' => true,
-   			'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
-   					array('form' => $form->createView(), 'sidCom' => $id,
-   							 'mode' => 'new'))->getContent()
+   			'message' => "OK" //TODO: recargar pagina
    	   ]);
    	}
    	
