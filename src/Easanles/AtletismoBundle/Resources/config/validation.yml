@@ -75,3 +75,30 @@ Easanles\AtletismoBundle\Entity\TipoPruebaModalidad:
         - NotBlank: 
            message: Este campo no debe estar en blanco
            
+Easanles\AtletismoBundle\Entity\Prueba:
+  properties:
+     id:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     ronda:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThanOrEqual:
+           value: 0
+           message: Dato no válido
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     idCat:
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+           

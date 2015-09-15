@@ -9,6 +9,7 @@ use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Form\Type\PruType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 //$id representa el identificador de la competicion
 
@@ -67,7 +68,10 @@ class PruebaController extends Controller {
    	
    	if ($form->isValid()) {
    		try {
-   			
+   			if ($pru->getSidTprm() == null) {
+   				throw new Exception("Selecciona un tipo de prueba y una modalidad");
+   				//Mejorable. Mostrar error en el campo concreto.
+   			}
    			$em = $this->getDoctrine()->getManager();
             $em->persist($pru);
    			$em->flush();
@@ -83,7 +87,7 @@ class PruebaController extends Controller {
    		}
          return new JsonResponse([
    			'success' => true,
-   			'message' => "OK" //TODO: recargar pagina
+   			'message' => "OK"
    	   ]);
    	}
    	
@@ -93,5 +97,26 @@ class PruebaController extends Controller {
    					array('form' => $form->createView(), 'sidCom' => $id,
    							 'mode' => 'new'))->getContent()
    	]);
+   }
+   
+   public function borrarPruebaAction($id, Request $request){
+   	$idpru = $request->query->get('i');
+   
+   	$em = $this->getDoctrine()->getManager();
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+   	$pru = $repository->find($idpru);
+   	if ($pru != null){
+   		$em->remove($pru);
+   		try {
+   			$em->flush();
+   		} catch (\Exception $e) {
+   			return new Response($e->getMessage());
+   		}
+   		return $this->redirect($this->generateUrl('listado_pruebas', ['id' => $id]));
+   	} else {
+   		$response = new Response('No existe la prueba con el identificador "'.$idpru.'" <a href="../competiciones">Volver</a>');
+   		//$response->headers->set('Refresh', '2; url=../competiciones');
+   		return $response;
+   	}
    }
 }

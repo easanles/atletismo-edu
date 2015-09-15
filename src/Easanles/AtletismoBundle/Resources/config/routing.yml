@@ -34,6 +34,9 @@ listado_pruebas:
 crear_prueba:
     path: /pruebas/{id}/nuevo
     defaults: {_controller: "EasanlesAtletismoBundle:Prueba:crearPrueba"}
+borrar_prueba:
+    path: /pruebas/{id}/borrar
+    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:borrarPrueba"}
     
     
 #==================TIPOS DE PRUEBAS==================

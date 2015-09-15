@@ -45,28 +45,6 @@ function checkEnterKeypress(event){
 		document.getElementById("search-button").click();
 	}
 }
-
-function submitDialogForm(){	
-	  var values = {};
-	  form = $('form');
-	  $.each( form.serializeArray(), function(i, field) {
-	    values[field.name] = field.value;
-	  });
-	 
-	  $.ajax({
-	    type        : form.attr( 'method' ),
-	    url         : form.attr( 'action' ),
-	    data        : values,
-	    success     : function(data) {
-	    	if (data.success == false){
-	  	       $('#dialog-body').html(data.message);
-	    	} else if (data.success == true){
-	    	   $("#modal-dismiss").click();
-	    	   $(".updater").click();
-	    	}
-	    }
-	  });
-}
 	
 $(document).ready(function(){
 	$(function () {

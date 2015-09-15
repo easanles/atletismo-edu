@@ -28,11 +28,12 @@
    <h1 id="container_title" class="row page-header">Lista de pruebas <small>{{ com.nombre }} ({{ com.temp }})</small></h1>
    <div id="container_header" class="row">
       <a type="button" class="btn btn-m btn-default pull-left" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
+      <button class="updater hidden" onClick="location.reload()"></button>
       <div class="col-xs-4">
          <select class="form-control col-xs-4" onChange="pruSearch({{ com.sid }}, this.value, {% if selcat is defined %}'{{ selcat }}'{% else %}null{% endif %})">
             <option value=""{% if seltpr is not defined %} selected{% endif %}>Seleccionar prueba</option>
             {% for tpr in tipospruebas %}
-            <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino{% elseif tpr.sexo == 1 %}Femenino{% endif %}, {{ tpr.entorno }}</option>
+            <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino, {% elseif tpr.sexo == 1 %}Femenino, {% endif %}{{ tpr.entorno }}</option>
             {% endfor %}
          </select>
       </div>
@@ -58,7 +59,7 @@
          {% for pru in pruebas %}
          <tr>
             <td>{{ pru.id }}</td>
-            <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino{% elseif pru.tprm.sexo == 1 %}Femenino{% endif%}, {{ pru.tprm.entorno }}</td>
+            <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
             <td>{{ pru.idCat }}</td>
             <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
             <td>{{ pru.nombre }}</td>
@@ -66,11 +67,10 @@
             <td>
                <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar"><span class="glyphicon glyphicon-duplicate"></span></button>
                <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-edit"></span></button>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar"><span class="glyphicon glyphicon-remove"></span></button>
+               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
             </td>
          </tr>
             {# <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ row.nombre }}', '{{ row.temp }}', '{{ row.sid }}')"><span class="glyphicon glyphicon-remove"></span></span></button>
              #}
          {% endfor %}
       </tbody>

@@ -59,8 +59,7 @@ class TipoPruebaController extends Controller {
    		}
    		return new JsonResponse([
    		   	'success' => true,
-   		   	'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-   		   	array('form' => $form->createView(), 'mode' => 'new'))->getContent()
+   		   	'message' => "OK"
    	   ]);
    	}
    	
@@ -145,8 +144,7 @@ class TipoPruebaController extends Controller {
     			}
     			return new JsonResponse([
     					'success' => true,
-    					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-    							array('form' => $form->createView(), 'mode' => 'edit', 'id' => $id))->getContent()
+    					'message' => "OK"
     			]);
     		}
 

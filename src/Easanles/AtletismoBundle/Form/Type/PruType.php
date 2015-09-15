@@ -45,13 +45,13 @@ class PruType extends AbstractType {
     	  			   'choices' => $choices,
     	  				'choice_label' => function ($allChoices, $currentChoiceKey) {
     	  					$nombre = "";
-    	  					if ($allChoices->getSexo() == 0) $nombre = "Masculino";
-    	  					else if ($allChoices->getSexo() == 1) $nombre = "Femenino";
-    	  					return $nombre.", ".$allChoices->getEntorno();
+    	  					if ($allChoices->getSexo() == 0) $nombre = "Masculino, ";
+    	  					else if ($allChoices->getSexo() == 1) $nombre = "Femenino, ";
+    	  					return $nombre.$allChoices->getEntorno();
                    },
     	  				'empty_value' => ' ',
     	  				'expanded' => false,
-    	  				'disabled' => ($tprf === null),
+    	  				'disabled' => ($tprf == null),
     	  				'label' => 'Seleccione modalidad',
     	  				'required' => true));
     	  	};
@@ -72,6 +72,7 @@ class PruType extends AbstractType {
     	  						'expanded' => false,
     	  						'mapped' => false,
     	  						'label' => 'Seleccione tipo de prueba',
+    	  						'error_mapping' => false,
     	  						'required' => true));
     	  				    	  				 
     	  				$formModifier($event->getForm(), $form['tprf']->getData());
