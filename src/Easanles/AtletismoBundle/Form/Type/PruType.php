@@ -15,14 +15,16 @@ class PruType extends AbstractType {
 	
 	private $listaFormatos;
 	private $repo;
+	private $selectedTpr;
 	
-	public function __construct($doctrine) {
+	public function __construct($doctrine, $selectedTpr) {
 		$repository = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
 		$this->listaFormatos = $repository->findAllOrdered();
 		$this->repo = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+		$this->selectedTpr = $selectedTpr;
 	}
 	
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options) {  	
     	  //opciones directamente mapeadas
         $builder
     	    ->add('idcat', 'choice', array(
@@ -31,7 +33,7 @@ class PruType extends AbstractType {
     	    		'label' => 'Categoría',
     	    		'required' => true))
     	    ->add('nombre', 'text', array(
-    	    		'label' => 'Nombre de la primera ronda',
+    	    		'label' => 'Nombre',
     	    		'required' => false));
 
     	  	$formModifier = function (FormInterface $form, $tprf) {
@@ -65,15 +67,20 @@ class PruType extends AbstractType {
     	  				foreach($this->listaFormatos as $tprf){
     	  					$choices[$tprf['sid']] = $tprf['nombre'];
     	  				}
-    	  					
-    	  				$form->add('tprf', 'choice', array(
+
+    	  				$options = array(
     	  						'choices' => $choices,
     	  						'empty_value' => '...',
     	  						'expanded' => false,
     	  						'mapped' => false,
     	  						'label' => 'Seleccione tipo de prueba',
     	  						'error_mapping' => false,
-    	  						'required' => true));
+    	  						'required' => true);
+    	  				if ($this->selectedTpr != null){
+    	  				   $options['data'] = $this->selectedTpr->getSidTprf()->getSid();
+    	  				}
+    	  				
+    	  				$form->add('tprf', 'choice', $options);
     	  				    	  				 
     	  				$formModifier($event->getForm(), $form['tprf']->getData());
     	  			}

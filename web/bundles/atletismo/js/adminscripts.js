@@ -11,6 +11,7 @@ function toggleContent(tab){
 	   case ('tp'): {
 		    $("#navtab-tp").addClass("active");
 		    $("#tabcontent-tp").css("display", "inline");
+		    loadViews();
 	   }; break;
        case ('oa'): {
 			$("#navtab-oa").addClass("active");

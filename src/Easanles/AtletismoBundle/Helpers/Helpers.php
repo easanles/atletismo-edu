@@ -189,7 +189,7 @@ class Helpers {
 		->setId(8)
 		->setSidTprm($tprm2)
 		->setIdCat(1)
-		->setRonda(2)
+		->setRonda(1)
 		->setNombre("Semifinal A");
 		$em->persist($pru);
 		
@@ -198,7 +198,7 @@ class Helpers {
 		->setId(9)
 		->setSidTprm($tprm2)
 		->setIdCat(1)
-		->setRonda(2)
+		->setRonda(1)
 		->setNombre("Semifinal B");
 		$em->persist($pru);
 		
@@ -207,7 +207,7 @@ class Helpers {
 		->setId(10)
 		->setSidTprm($tprm2)
 		->setIdCat(1)
-		->setRonda(3)
+		->setRonda(2)
 		->setNombre("Final");
 		$em->persist($pru);
 		

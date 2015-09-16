@@ -29,29 +29,29 @@ ver_competicion:
 
 #======================PRUEBAS=======================
 listado_pruebas:
-    path: /pruebas/{id}
+    path: /pruebas/{sidCom}
     defaults: {_controller: "EasanlesAtletismoBundle:Prueba:listadoPruebas"}
 crear_prueba:
-    path: /pruebas/{id}/nuevo
+    path: /pruebas/{sidCom}/nuevo
     defaults: {_controller: "EasanlesAtletismoBundle:Prueba:crearPrueba"}
 borrar_prueba:
-    path: /pruebas/{id}/borrar
+    path: /pruebas/{sidCom}/borrar
     defaults: {_controller: "EasanlesAtletismoBundle:Prueba:borrarPrueba"}
+editar_prueba:
+    path: /pruebas/{sidCom}/editar/{sidPru}
+    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:editarPrueba"}
     
     
 #==================TIPOS DE PRUEBAS==================
 listado_tipopruebaformato:
    path: /configuracion/tipoprueba
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:listadoTipoPruebaFormato"}
-   
 crear_tipopruebaformato:
    path: /configuracion/tipoprueba/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:crearTipoPruebaFormato"}
-   
 borrar_tipopruebaformato:
    path: /configuracion/tipoprueba/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:borrarTipoPruebaFormato"}
-   
 editar_tipopruebaformato:
    path: /configuracion/tipoprueba/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:editarTipoPruebaFormato"}
@@ -61,23 +61,18 @@ editar_tipopruebaformato:
 configuracion: #portada configuracion
     path: /configuracion/
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
-    
 configuracion_poblarbd: #poblar base de datos con datos de prueba
     path: /configuracion/poblarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:poblar_bd"}
-    
 configuracion_borrarbd: #borrar datos de la base de datos
     path: /configuracion/borrarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:borrar_bd"}
-    
 configuracion_rehacerbd: #drop tables y schema update
     path: /configuracion/rehacerbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:rehacer_bd"}    
-    
 configuracion_limpiarcache: #Limpiar archivos cache
     path: /configuracion/limpiarcache
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:limpiar_cache"}
-    
 configuracion_asseticdump:
     path: /configuracion/asseticdump
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:assetic_dump"}     

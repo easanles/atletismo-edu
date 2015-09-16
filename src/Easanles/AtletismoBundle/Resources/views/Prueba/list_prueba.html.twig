@@ -61,17 +61,15 @@
             <td>{{ pru.id }}</td>
             <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
             <td>{{ pru.idCat }}</td>
-            <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
+            <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
             <td>{{ pru.nombre }}</td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-list"></span></button></td>
             <td>
-               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar"><span class="glyphicon glyphicon-duplicate"></span></button>
-               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><span class="glyphicon glyphicon-edit"></span></button>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
+               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span></button>
+               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
+               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
             </td>
          </tr>
-            {# <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ row.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-             #}
          {% endfor %}
       </tbody>
    </table>

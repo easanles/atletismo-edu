@@ -1,6 +1,6 @@
 
    {% if exception is defined %}
-   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span>{{ exception }}</span></div>
    {% endif %}
 
    <div id="data_form" class="row">
@@ -8,10 +8,11 @@
 {#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
 
 {% if mode == "new" %}
-{{ form_start(form, {'action': path('crear_prueba', {'id': sidCom})}) }}
+{{ form_start(form, {'action': path('crear_prueba', {'sidCom': sidCom})}) }}
 {% elseif mode == "edit" %}
-{{ form_start(form, {'action': path('editar_prueba', {'id': id})}) }}
+{{ form_start(form, {'action': path('editar_prueba', {'sidCom': sidCom, 'sidPru': sidPru})}) }}
 {% endif %}
+
 
      <div>
        <div class="form_row col-xs-6">

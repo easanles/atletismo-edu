@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class PruebaRepository extends EntityRepository {
 	public function findAllFor($sidCom) {
 		return $this->getEntityManager()
-		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) as tprm, pru.idCat, pru.ronda, pru.nombre FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom')
+		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) as tprm, pru.idCat, pru.ronda, pru.nombre FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.sidTprm DESC, pru.idCat ASC, pru.ronda ASC, pru.id ASC')
 		->setParameter("sidcom", $sidCom)
 		->getResult();
 	}
@@ -44,10 +44,27 @@ class PruebaRepository extends EntityRepository {
 		}
 		return $qb->select('pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, pru.idCat, pru.ronda, pru.nombre')
 		          ->from('EasanlesAtletismoBundle:Prueba', 'pru')
+		          ->orderBy("pru.sidTprm", "DESC")
+		          ->orderBy("pru.idCat", "ASC")
+		          ->orderBy("pru.ronda", "ASC")
+		          ->orderBy("pru.id", "ASC")
 		          ->getQuery()->getResult();
 	}
 	
-	/*public function checkData($nombre){
-      return (false);
-	}*/
+	public function getNextRondas($sidCom, $sidTprm, $idCat, $ronda){
+		return $this->getEntityManager()->createQueryBuilder('pru')
+		->select('pru.sid, pru.ronda')
+		->from('EasanlesAtletismoBundle:Prueba', 'pru')
+		->where('IDENTITY(pru.sidCom) LIKE :sidcom')
+		->setParameter('sidcom', $sidCom)
+		->andWhere('IDENTITY(pru.sidTprm) LIKE :sidtprm')
+		->setParameter('sidtprm', $sidTprm)
+		->andWhere('pru.idCat LIKE :idcat')
+		->setParameter('idcat', $idCat)
+		->andWhere('pru.ronda >= :ronda')
+		->setParameter('ronda', $ronda)
+		->getQuery()->getResult();
+	}
+	
+	
 }
