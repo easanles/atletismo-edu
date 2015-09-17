@@ -55,6 +55,12 @@ borrar_tipopruebaformato:
 editar_tipopruebaformato:
    path: /configuracion/tipoprueba/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:editarTipoPruebaFormato"}
+   
+   
+#=====================CATEGORIAS=====================
+listado_categorias:
+   path: /configuracion/categoria
+   defaults: {_controller: "EasanlesAtletismoBundle:Categoria:listadoCategorias"}
 
 
 #====================CONFIGURACION===================

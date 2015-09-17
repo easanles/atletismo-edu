@@ -1,0 +1,26 @@
+               <tbody>
+                  <tr>
+                     <th>Id</th>
+                     <th>Nombre</th>
+                     <th>Edad máxima</th>
+                     <th>Fecha de validez</th>
+                     <th>Fecha de caducidad</th>
+                     <th>Acciones</th>
+                  </tr>
+                  {% for cat in categorias %}
+                  <tr{% if cat.tFinVal is not null %} class="danger"{% endif %}>
+                     <td>{{ cat.id }}</td>
+                     <td>{{ cat.nombre }}</td>
+                     <td>{{ cat.edadMax }}</td>
+                     <td>{{ cat.tIniVal|date('d/m/Y') }}</td>
+                     {% if cat.tFinVal is null %}<td><em>Vigente</em></td>
+                     {% else %}<td class="text-danger">{{ cat.tFinVal|date('d/m/Y') }}</td>
+                     {% endif %}
+                     <td>
+                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick=""><span class="glyphicon glyphicon-edit"></span></button>
+                        <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick=""><span class="glyphicon glyphicon-remove-circle"></span></button>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+

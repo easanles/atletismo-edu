@@ -6,6 +6,7 @@ use Easanles\AtletismoBundle\Entity\Competicion;
 use Easanles\AtletismoBundle\Entity\TipoPruebaFormato;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Easanles\AtletismoBundle\Entity\Prueba;
+use Easanles\AtletismoBundle\Entity\Categoria;
 
 class Helpers {
 	
@@ -119,6 +120,84 @@ class Helpers {
 		->setSexo(1)
 		->setEntorno("Aire libre");
 		$em->persist($tprm2);
+		$em->flush();
+		
+		$cat = new Categoria();
+		$cat->setNombre("Prebenjamín")
+		->setEdadMax(7)
+		->setTIniVal(1)
+		->setTFinVal(1);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Prebenjamín")
+		->setEdadMax(6)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Benjamín")
+		->setEdadMax(8)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Alevín")
+		->setEdadMax(10)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Infantil")
+		->setEdadMax(12)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Cadete")
+		->setEdadMax(14)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Juvenil")
+		->setEdadMax(16)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Junior")
+		->setEdadMax(18)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Promesa")
+		->setEdadMax(21)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Senior")
+		->setEdadMax(34)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
+		
+		$cat = new Categoria();
+		$cat->setNombre("Veteranos")
+		->setEdadMax(null)
+		->setTIniVal(1)
+		->setTFinVal(null);
+		$em->persist($cat);
 		$em->flush();
 		
 		$pru = new Prueba();
