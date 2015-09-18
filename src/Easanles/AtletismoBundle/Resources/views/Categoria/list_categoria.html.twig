@@ -3,8 +3,8 @@
                      <th>Id</th>
                      <th>Nombre</th>
                      <th>Edad máxima</th>
-                     <th>Fecha de validez</th>
-                     <th>Fecha de caducidad</th>
+                     <th title="Temporada de inicio de validez">Temporada inicial</th>
+                     <th title="Temporada de final de validez">Temporada final</th>
                      <th>Acciones</th>
                   </tr>
                   {% for cat in categorias %}
@@ -12,9 +12,9 @@
                      <td>{{ cat.id }}</td>
                      <td>{{ cat.nombre }}</td>
                      <td>{{ cat.edadMax }}</td>
-                     <td>{{ cat.tIniVal|date('d/m/Y') }}</td>
+                     <td>{{ cat.tIniVal }} / {{ cat.tIniVal + 1 }}</td>
                      {% if cat.tFinVal is null %}<td><em>Vigente</em></td>
-                     {% else %}<td class="text-danger">{{ cat.tFinVal|date('d/m/Y') }}</td>
+                     {% else %}<td class="text-danger">{{ cat.tFinVal }} / {{ cat.tFinVal + 1 }}</td>
                      {% endif %}
                      <td>
                         <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick=""><span class="glyphicon glyphicon-edit"></span></button>

@@ -32,7 +32,7 @@
       <div id="tabcontent-tp" style="display:none">
          <div class="row">
             <button type="button" class="btn btn-primary" onClick="showModal('newTPR', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
-            <button class="btn btn-default updater hidden" onClick="loadViews()"><span class="glyphicon glyphicon-refresh spinning"></span></button>
+            <button class="btn btn-default updater hidden" onClick="loadViews('tp')"><span class="glyphicon glyphicon-refresh spinning"></span></button>
          </div>
          <div class="row">
             <table id="tpr-table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
@@ -42,9 +42,9 @@
       </div>
       <div id="tabcontent-cat" style="display:none">
          <div class="row">
-            <button type="button" class="btn btn-primary" onClick=""><span class="glyphicon glyphicon-plus"></span> Añadir</button>
-            <button class="btn btn-default updater hidden" onClick="loadViews()"><span class="glyphicon glyphicon-refresh spinning"></span></button>
-            <label class="checkbox-inline pull-right"><input type="checkbox"> Mostrar categorías caducadas</label>
+            <button type="button" class="btn btn-primary" onClick="showModal('newCAT', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
+            <button class="btn btn-default updater hidden" onClick="loadViews('cat')"><span class="glyphicon glyphicon-refresh spinning"></span></button>
+            <label class="checkbox-inline pull-right"><input id="cat-showOutdated" type="checkbox" onClick="loadViews('cat')"> Mostrar categorías caducadas</label>
          </div>
          <div class="row">
             <table id="cat-table" class="table table-hover table-bordered table-condensed table-striped table-responsive">

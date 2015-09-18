@@ -15,7 +15,7 @@
 {% block breadcrumb %}
   <li><a href="../">Portada Admin</a></li>
   <li><a href="../competiciones">Competiciones</a></li>
-  <li><a href="../competiciones/{{ com.sid }}/">{{ com.nombre }} ({{ com.temp }})</a></li>
+  <li><a href="../competiciones/{{ com.sid }}/">{{ com.nombre }} ({{ com.temp }} / {{ com.temp + 1}})</a></li>
   <li class="active">Pruebas</li>
   
 {% endblock %}
@@ -25,7 +25,7 @@
    {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
 
 {% block container %}   
-   <h1 id="container_title" class="row page-header">Lista de pruebas <small>{{ com.nombre }} ({{ com.temp }})</small></h1>
+   <h1 id="container_title" class="row page-header">Lista de pruebas <small>{{ com.nombre }} ({{ com.temp }} / {{ com.temp + 1}})</small></h1>
    <div id="container_header" class="row">
       <a type="button" class="btn btn-m btn-default pull-left" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <button class="updater hidden" onClick="location.reload()"></button>

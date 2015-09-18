@@ -101,4 +101,37 @@ Easanles\AtletismoBundle\Entity\Prueba:
            message: Este dato no debe ser nulo
         - NotBlank: 
            message: Este campo no debe estar en blanco
-           
+
+Easanles\AtletismoBundle\Entity\Categoria:
+  properties:
+     nombre:
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     edadMax:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThan:
+           value: 0
+           message: Introduzca un valor mayor a 0 o deje en blanco
+     tIniVal:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThan:
+           value: 0
+           message: Introduzca un valor mayor a 0
+        - NotNull: 
+           message: Este dato no debe ser nulo
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     tFinVal:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThan:
+           value: 0
+           message: Introduzca un valor mayor a 0
+        

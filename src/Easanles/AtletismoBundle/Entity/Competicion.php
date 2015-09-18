@@ -240,7 +240,9 @@ class Competicion {
 		$this->esOficial = $esOficial;
 		return $this;
 	}
-
+	
+	/********************** VALIDACION ***********************/
+	
 	/**
 	 * @Assert\Callback
 	 */

@@ -1,7 +1,7 @@
 
 {% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
 
-{% block title %}{{ com.nombre }} ({{ com.temp }}){% endblock %}
+{% block title %}{{ com.nombre }} ({{ com.temp }} / {{ com.temp + 1}}){% endblock %}
 
 {% block navbar %}
       <li><a class="inactive">Atletas</a></li>
@@ -15,11 +15,11 @@
 {% block breadcrumb %}
   <li><a href="../../">Portada Admin</a></li>
   <li><a href="../../competiciones">Competiciones</a></li>
-  <li class="active">{{ com.nombre }} ({{ com.temp }})</li>
+  <li class="active">{{ com.nombre }} ({{ com.temp }} / {{ com.temp +1 }})</li>
 {% endblock %}
 
 {% block container %}
-   <h1 id="container_title" class="row page-header">{{ com.nombre }} ({{ com.temp }})</h1>
+   <h1 id="container_title" class="row page-header">{{ com.nombre }} ({{ com.temp }} / {{ com.temp + 1}})</h1>
     
    <div class="row">
       <div class="col-xs-12 col-sm-4">

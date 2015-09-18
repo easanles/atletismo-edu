@@ -25,24 +25,6 @@ function toggleContent(tab){
    }
 }
 
-function sendAction(path, icon){
-   alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
-   alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
-   alerthtml_pos = "</span></div>";
-   $.getJSON(path, function(data, status){
-        if (status = "success"){
-           if (data.success == true){
-             $("#alert_div").append(alerthtml_preok + data.message + alerthtml_pos);
-           } else {
-             $("#alert_div").append(alerthtml_preerr + data.message + alerthtml_pos);
-           }
-        } else {
-          $("#alert_div").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);
-        }
-       icon.removeClass("spinning");
-   });
-}
-
 function loadViews(content){
    icon = $(".updater");
    icon.removeClass("hidden")
@@ -59,7 +41,8 @@ function loadViews(content){
         });      
       } break;
       case "cat": {
-         $.get("./categoria", function(data, status){
+    	 route = routeCatData($("#cat-showOutdated").is(':checked'));
+         $.get(route, function(data, status){
             if (status = "success"){
                 $("#cat-table").html(data);
                 $('.dropdown-toggle').dropdown()
@@ -74,6 +57,8 @@ function loadViews(content){
       $('.dropdown-toggle').dropdown()
    }
 }
+
+//TIPOS DE PRUEBA
 
 function toggleTprmTable(id, button){
    button.button('toggle');
@@ -96,6 +81,34 @@ function addFormRow(){
 function removeFormRow(button){
    button.parentElement.parentElement.remove();
 }
+
+//CATEGORIAS
+
+function routeCatData(outdated){
+	if (outdated == true) return "./categoria?outd=true";
+	else return "./categoria?outd=false";
+}
+
+//COMANDOS
+
+function sendAction(path, icon){
+	   alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
+	   alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
+	   alerthtml_pos = "</span></div>";
+	   $.getJSON(path, function(data, status){
+	        if (status = "success"){
+	           if (data.success == true){
+	             $("#alert_div").append(alerthtml_preok + data.message + alerthtml_pos);
+	           } else {
+	             $("#alert_div").append(alerthtml_preerr + data.message + alerthtml_pos);
+	           }
+	        } else {
+	          $("#alert_div").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);
+	        }
+	       icon.removeClass("spinning");
+	   });
+	}
+
 
 $(document).ready(function(){   
    $("#btn_poblarbd").click(function(){

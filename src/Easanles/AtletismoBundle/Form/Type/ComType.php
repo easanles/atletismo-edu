@@ -12,7 +12,7 @@ class ComType extends AbstractType
     {
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre de la competición'))
-    	    ->add('temp', 'integer', array('label' => 'Temporada'))
+    	    ->add('temp', 'integer', array('label' => 'Temporada (año de inicio)'))
     	    ->add('ubicacion', 'text', array('label' => 'Ubicación','required' => false))
     	    ->add('sede', 'text', array('label' => 'Sede','required' => false))
     	    ->add('fecha', 'date', array('label' => 'Fecha de comienzo','required' => false))

@@ -61,6 +61,9 @@ editar_tipopruebaformato:
 listado_categorias:
    path: /configuracion/categoria
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:listadoCategorias"}
+crear_categoria:
+   path: /configuracion/categoria/nuevo
+   defaults: {_controller: "EasanlesAtletismoBundle:Categoria:crearCategoria"}
 
 
 #====================CONFIGURACION===================

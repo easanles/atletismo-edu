@@ -41,7 +41,7 @@
    {% if mode == "new" %}
    <h1 id="container_title" class="row page-header">Añadir competición</h1>
    {% elseif mode == "edit" %}
-    <h1 id="container_title" class="row page-header">Editar competición <small>{{ nombre }} ({{ temp }})</small></h1>
+    <h1 id="container_title" class="row page-header">Editar competición <small>{{ nombre }} ({{ temp }} / {{ temp + 1}})</small></h1>
    {% endif %}
    
    {% if exception is defined %}

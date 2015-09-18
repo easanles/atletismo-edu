@@ -123,6 +123,19 @@ function showModal(type, data1, data2, data3){
     	   }
 		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./" + data1 + "/borrar?i=" + data3 + "\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</a>");           
 	   } break;
+	   
+       case ("newCAT"): { //Nueva categoria
+    	   $('#dialog-label').html("Agregar categoría");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
+    	   $.getJSON("./categoria/nuevo", function(data, status){
+   		      if (status = "success"){
+   			    $("#dialog-body").html(data.message);
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
        
        default: break;
 	}
@@ -130,6 +143,7 @@ function showModal(type, data1, data2, data3){
 	modal.modal();
 }
 
+//funcion para modificar datos de formulario en funcion de una seleccion previa
 function addListeners(name){
 	switch (name){
 	   case("pru_tprf"): {

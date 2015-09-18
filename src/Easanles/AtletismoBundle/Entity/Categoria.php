@@ -4,12 +4,15 @@ namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Categoria
  *
  * @ORM\Table(name="cat")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\CategoriaRepository")
  */
 class Categoria
 {
@@ -99,7 +102,20 @@ class Categoria
 		return $this;
 	}
 	
+	/********************** VALIDACION ***********************/
+	
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+		if ($this->edadMax == "") $this->edadMax = null;
+		if ($this->tFinVal != null){
+	   	if ($this->tFinVal < $this->tIniVal) {
+		   	$context->buildViolation("La temporada final de validez es menor que la inicial")
+			   ->atPath('tFinVal')
+			   ->addViolation();
+		   }
+		}
+	}
     
-    
-
 }

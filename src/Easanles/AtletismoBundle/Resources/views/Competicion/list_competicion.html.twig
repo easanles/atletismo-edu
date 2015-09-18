@@ -31,7 +31,7 @@
          <select class="form-control" onChange="comSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
             <option value="" {% if temp is not defined %}selected{% endif %}>Todas las temporadas</option>
             {% for row in temporadas %}
-            <option value="{{ row.temp }}" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}</option>
+            <option value="{{ row.temp }}" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }} / {{ row.temp + 1}}</option>
             {% endfor %}
          </select>
       </div>
@@ -55,7 +55,7 @@
          </tr>
          {% for com in competiciones %}
          <tr>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.temp }}</td>
+            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.temp }} / {{ com.temp + 1 }}</td>
             <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.nombre }}</td>
             <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">
 {% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
