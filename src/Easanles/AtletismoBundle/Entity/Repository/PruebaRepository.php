@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class PruebaRepository extends EntityRepository {
 	public function findAllFor($sidCom) {
 		return $this->getEntityManager()
-		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) as tprm, pru.idCat, pru.ronda, pru.nombre FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.sidTprm DESC, pru.idCat ASC, pru.ronda ASC, pru.id ASC')
+		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.ronda, pru.nombre FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.sidTprm DESC, pru.idCat ASC, pru.ronda ASC, pru.id ASC')
 		->setParameter("sidcom", $sidCom)
 		->getResult();
 	}
@@ -17,6 +17,13 @@ class PruebaRepository extends EntityRepository {
 	public function findTprs($sidCom){
 		return $this->getEntityManager()
 		->createQuery('SELECT IDENTITY(pru.sidTprm) AS sidTprm FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom GROUP BY pru.sidTprm ORDER BY pru.sidTprm ASC')
+		->setParameter("sidcom", $sidCom)
+		->getResult();
+	}
+
+	public function findCats($sidCom){
+		return $this->getEntityManager()
+		->createQuery('SELECT IDENTITY(pru.idCat) AS idCat FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom GROUP BY pru.idCat ORDER BY pru.idCat ASC')
 		->setParameter("sidcom", $sidCom)
 		->getResult();
 	}
@@ -39,10 +46,10 @@ class PruebaRepository extends EntityRepository {
 			      ->setParameter('sidtprm', $sidTprm);
 		}
 		if ((($idCat != null) && ($idCat != ""))){
-			$qb = $qb->andWhere('pru.idCat LIKE :idcat')
+			$qb = $qb->andWhere('IDENTITY(pru.idCat) LIKE :idcat')
 			      ->setParameter('idcat', $idCat);
 		}
-		return $qb->select('pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, pru.idCat, pru.ronda, pru.nombre')
+		return $qb->select('pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.ronda, pru.nombre')
 		          ->from('EasanlesAtletismoBundle:Prueba', 'pru')
 		          ->orderBy("pru.sidTprm", "DESC")
 		          ->orderBy("pru.idCat", "ASC")
@@ -59,7 +66,7 @@ class PruebaRepository extends EntityRepository {
 		->setParameter('sidcom', $sidCom)
 		->andWhere('IDENTITY(pru.sidTprm) LIKE :sidtprm')
 		->setParameter('sidtprm', $sidTprm)
-		->andWhere('pru.idCat LIKE :idcat')
+		->andWhere('IDENTITY(pru.idCat) LIKE :idcat')
 		->setParameter('idcat', $idCat)
 		->andWhere('pru.ronda >= :ronda')
 		->setParameter('ronda', $ronda)

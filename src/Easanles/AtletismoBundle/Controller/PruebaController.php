@@ -11,6 +11,7 @@ use Easanles\AtletismoBundle\Form\Type\PruType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Form\Type\PruCopyType;
+use Easanles\AtletismoBundle\Entity\Categoria;
 
 class PruebaController extends Controller {
 	
@@ -34,8 +35,14 @@ class PruebaController extends Controller {
   		   $tpr['entorno'] = $tprm->getEntorno();
   		   $tpr['nombre'] = $tprm->getSidTprf()->getNombre();
   	   }
+  	   $listaCats = $repoPru->findCats($sidCom);
+  	   $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+  	   foreach ($listaCats as &$c){
+  	   	$cat = $repoCat->find($c['idCat']);
+  	   	$c['nombre'] = $cat->getNombre();
+  	   }
      	 
-     	$parametros = array('com' => $com, 'tipospruebas' => $listaTprs);
+     	$parametros = array('com' => $com, 'tipospruebas' => $listaTprs, 'categorias' => $listaCats);
   		if ($seltpr != null) $parametros['seltpr'] = $seltpr;
   	   if ($selcat != null) $parametros['selcat'] = $selcat;
   		if (($seltpr != null) || ($selcat != null)){
@@ -43,15 +50,16 @@ class PruebaController extends Controller {
   		} else {
   			$pruebas = $repoPru->findAllFor($sidCom);
   		}
-  		foreach($pruebas as &$pru){ //etiquetar como unica prueba de una ronda con rondas posteriores
-  			$nextRondas = $repoPru->getNextRondas($sidCom, $pru['tprm'], $pru['idCat'], $pru['ronda']);
+  		foreach($pruebas as &$pru){ //etiquetar como unica prueba de una ronda con rondas posteriores (mostrar aviso)
+  			$nextRondas = $repoPru->getNextRondas($sidCom, $pru['tprm'], $pru['cat'], $pru['ronda']);
   		   $currentRondaCount = 0;
-  	   foreach ($nextRondas as $ronda){
-  	      if ($ronda['ronda'] == $pru['ronda']) $currentRondaCount++;
-  	      if ($currentRondaCount > 1) break;
-  	   }
-  	   $pru['unique'] = (($currentRondaCount == 1) && (count($nextRondas)) > 1);
-  			$pru['tprm'] = $repoTprm->find($pru['tprm']);
+  	      foreach ($nextRondas as $ronda){
+  	         if ($ronda['ronda'] == $pru['ronda']) $currentRondaCount++;
+  	         if ($currentRondaCount > 1) break;
+  	      }
+  	      $pru['unique'] = (($currentRondaCount == 1) && (count($nextRondas)) > 1);
+  	      $pru['tprm'] = $repoTprm->find($pru['tprm']);
+  	      $pru['cat'] = $repoCat->find($pru['cat']);
   		}
   		$parametros['pruebas'] = $pruebas;
   		return $this->render('EasanlesAtletismoBundle:Prueba:list_prueba.html.twig', $parametros);
@@ -61,7 +69,6 @@ class PruebaController extends Controller {
     private function crearPrimeraRonda($sidCom, Request $request) {
     	$pru = new Prueba();
     	$pru->setRonda(1);
-    	$pru->setIdCat(1);
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$com = $repository->find($sidCom);
     	$pru->setSidCom($com);
@@ -122,8 +129,9 @@ class PruebaController extends Controller {
    	if ($pruCopia->getSidTprm()->getSexo() == 0) $nombreTpr = $nombreTpr."Masculino, ";
    	else if ($pruCopia->getSidTprm()->getSexo() == 1) $nombreTpr = $nombreTpr."Femenino, ";
    	$nombreTpr = $nombreTpr.$pruCopia->getSidTprm()->getEntorno();
+   	$nombreCat = $pruCopia->getIdCat()->getNombre()." (".$pruCopia->getIdCat()->getEdadMax().")";
    	
-   	$form = $this->createForm(new PruCopyType($nombreTpr), $pru);
+   	$form = $this->createForm(new PruCopyType($nombreTpr, $nombreCat), $pru);
    	
    	$form->handleRequest($request);
    	$parametros = array('form' => $form->createView(),
@@ -244,8 +252,9 @@ class PruebaController extends Controller {
    		if ($pru->getSidTprm()->getSexo() == 0) $nombreTpr = $nombreTpr."Masculino, ";
    		else if ($pru->getSidTprm()->getSexo() == 1) $nombreTpr = $nombreTpr."Femenino, ";
    		$nombreTpr = $nombreTpr.$pru->getSidTprm()->getEntorno();
-   		
-   		$form = $this->createForm(new PruCopyType($nombreTpr), $pru);
+   		$nombreCat = $pru->getIdCat()->getNombre()." (".$pru->getIdCat()->getEdadMax().")";
+   		 
+   		$form = $this->createForm(new PruCopyType($nombreTpr, $nombreCat), $pru);
    	}
    	$form->handleRequest($request);
    	

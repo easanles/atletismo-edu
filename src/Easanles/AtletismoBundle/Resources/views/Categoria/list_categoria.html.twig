@@ -4,7 +4,7 @@
                      <th>Nombre</th>
                      <th>Edad máxima</th>
                      <th title="Temporada de inicio de validez">Temporada inicial</th>
-                     <th title="Temporada de final de validez">Temporada final</th>
+                     {% if outdated == 'true' %}<th title="Temporada de final de validez">Temporada final</th>{% endif %}
                      <th>Acciones</th>
                   </tr>
                   {% for cat in categorias %}
@@ -13,12 +13,14 @@
                      <td>{{ cat.nombre }}</td>
                      <td>{{ cat.edadMax }}</td>
                      <td>{{ cat.tIniVal }} / {{ cat.tIniVal + 1 }}</td>
-                     {% if cat.tFinVal is null %}<td><em>Vigente</em></td>
-                     {% else %}<td class="text-danger">{{ cat.tFinVal }} / {{ cat.tFinVal + 1 }}</td>
+                     {% if outdated == 'true' %}
+                        {% if cat.tFinVal is null %}<td><em>Vigente</em></td>
+                           {% else %}<td class="text-danger">{{ cat.tFinVal }} / {{ cat.tFinVal + 1 }}</td>
+                        {% endif %}
                      {% endif %}
                      <td>
-                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick=""><span class="glyphicon glyphicon-edit"></span></button>
-                        <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick=""><span class="glyphicon glyphicon-remove-circle"></span></button>
+                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
+                        <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-remove-circle"></span></button>
                      </td>
                   </tr>
                   {% endfor %}

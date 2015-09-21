@@ -8,6 +8,7 @@ use Easanles\AtletismoBundle\Entity\Categoria;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Form\Type\CatType;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoriaController extends Controller
 {
@@ -19,15 +20,15 @@ class CategoriaController extends Controller
     	else if ($outdated == "true")$categorias = $repository->findAll();
     	
     	return $this->render('EasanlesAtletismoBundle:Categoria:list_categoria.html.twig',
-    			array("categorias" => $categorias));
+    			array("categorias" => $categorias, "outdated" => $outdated));
     }
     
     public function crearCategoriaAction(Request $request) {
     	$cat = new Categoria();
-    	$cat->setTIniVal(date("Y"));
+    	$cat->setTIniVal(date("Y"));  //TODO: hallar correctamente la temporada actual (no es igual al año actual)
     	
     	$form = $this->createForm(new CatType(), $cat);
-    	
+    	 
     	$form->handleRequest($request);
     	
     	if ($form->isValid()) {
@@ -40,11 +41,11 @@ class CategoriaController extends Controller
     					throw new Exception("Solo puede haber una categoría vigente sin edad máxima");
     				}
     			}
-    			/*
-    			 * get nombre
-    			 * si existe nombre vigente
-    			 * avisar por si hay que caducarla
-    			 */
+    			$nombre = $cat->getNombre();
+    			$prevCat = $repository->findOneCurrent($nombre);
+    			if ($prevCat != null) {
+    				throw new Exception("Ya existe una categoría vigente con el nombre \"".$nombre."\"");
+    			}
     			
     			$em = $this->getDoctrine()->getManager();
     			$em->persist($cat);
@@ -70,4 +71,87 @@ class CategoriaController extends Controller
     	]);
     	 
     }
+    
+    public function editarCategoriaAction(Request $request, $id) {
+    	$em = $this->getDoctrine()->getManager();
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	$cat = $repository->find($id);
+    	 
+    	if ($cat == null){
+    		$response = new Response('No existe la categoria con el identificador "'.$id.'" <a href="../../">Volver</a>');
+    		$response->headers->set('Refresh', '2; url=../../');
+    		return $response;
+    	}
+    	
+    	$prevNombre = $cat->getNombre();
+    	$prevEdadMax = $cat->getEdadMax();
+    	
+    	$form = $this->createForm(new CatType(), $cat);
+    
+    	$form->handleRequest($request);
+    	 
+    	if ($form->isValid()) {
+    		try {
+    			$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    
+    			if (($prevEdadMax != null) && (($cat->getEdadMax() == null) || ($cat->getEdadMax() == ""))) {
+    				$nullCat = $repository->findCurrentEdadMaxNull();
+    				if ($nullCat != null){
+    					throw new Exception("Solo puede haber una categoría vigente sin edad máxima");
+    				}
+    			}
+    			$nombre = $cat->getNombre();
+    			if ($prevNombre != $nombre){
+    				$prevCat = $repository->findOneCurrent($nombre);
+    				if ($prevCat != null) {
+    					throw new Exception("Ya existe una categoría vigente con el nombre \"".$nombre."\"");
+    				}
+    			}
+    			 
+    			$em = $this->getDoctrine()->getManager();
+    			$em->persist($cat);
+    			$em->flush();
+    		} catch (\Exception $e) {
+    			$exception = $e->getMessage();
+    			return new JsonResponse([
+    					'success' => false,
+    					'message' => $this->render('EasanlesAtletismoBundle:Categoria:form_categoria.html.twig',
+    							array('form' => $form->createView(), 'mode' => 'edit', 'id' => $id, 'exception' => $exception))->getContent()
+    			]);
+    		}
+    		return new JsonResponse([
+    				'success' => true,
+    				'message' => "OK"
+    		]);
+    	}
+    	 
+    	return new JsonResponse([
+    			'success' => false,
+    			'message' => $this->render('EasanlesAtletismoBundle:Categoria:form_categoria.html.twig',
+    					array('form' => $form->createView(), 'mode' => 'edit', 'id' => $id))->getContent()
+    	]);
+    }
+    
+    public function caducarCategoriaAction(Request $request){
+    	 $idCat = $request->query->get('i');
+    	 
+    	 $em = $this->getDoctrine()->getManager();
+    	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	 $cat = $repository->find($idCat);
+    	 
+    	 if ($cat == null){
+    	 	 $response = new Response('No existe la categoria con el identificador "'.$idCat.'" <a href="../../">Volver</a>');
+    	 	 $response->headers->set('Refresh', '2; url=../../');
+    	 	 return $response;
+    	 } else {
+    	 	 $cat->setTFinVal(date("Y")); //TODO: marcar correctamente la temporada de fin (no es igual al año actual)
+    	 	 try {
+    	 	 	$em->flush();
+    	 	 } catch (\Exception $e) {
+    	 	 	return new Response($e->getMessage());
+    	 	 }
+    	 	 return $this->redirect($this->generateUrl('configuracion'));
+    	 }
+    } 
+
 }

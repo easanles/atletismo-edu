@@ -47,9 +47,8 @@ class Prueba {
 	private $nombre;
 	
 	/**
-	 * @var integer
-	 * @ORM\Column(name="idcat", type="integer")
-	 * ORM\ManyToOne(targetEntity="Categoria", inversedBy="pruebas", cascade={"all"})
+	 * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="pruebas")
+	 * @ORM\JoinColumn(name="idcat", referencedColumnName="idcat")
 	 */
 	private $idCat;
 	

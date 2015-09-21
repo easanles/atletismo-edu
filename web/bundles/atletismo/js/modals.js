@@ -137,6 +137,25 @@ function showModal(type, data1, data2, data3){
    	       });
        } break;
        
+       case ("ediCAT"): { //Editar categoria
+    	   $('#dialog-label').html("Editar categoría <small> - " + data1 + "</small>");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
+    	   $.getJSON("./categoria/editar/" + data2, function(data, status){
+   		      if (status = "success"){
+   			    $("#dialog-body").html(data.message);
+   	          } else {
+   			    $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
+       
+	   case ("cadCAT"): { //Caducar categoria
+    	   $('#dialog-label').html("Caducar categoría");
+    	   $("#dialog-body").html("¿Está seguro de marcar como caducada la categoría <strong>" + data1 + "</strong>?");
+		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./categoria/caducar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</a>");           
+	   } break;
+       
        default: break;
 	}
 	

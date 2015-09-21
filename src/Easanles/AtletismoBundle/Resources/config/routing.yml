@@ -64,6 +64,12 @@ listado_categorias:
 crear_categoria:
    path: /configuracion/categoria/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:crearCategoria"}
+editar_categoria:
+   path: /configuracion/categoria/editar/{id}
+   defaults: {_controller: "EasanlesAtletismoBundle:Categoria:editarCategoria"}
+caducar_categoria:
+   path: /configuracion/categoria/caducar
+   defaults: {_controller: "EasanlesAtletismoBundle:Categoria:caducarCategoria"}   
 
 
 #====================CONFIGURACION===================

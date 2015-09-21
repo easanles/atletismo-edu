@@ -171,12 +171,12 @@ class Helpers {
 		->setTFinVal(null);
 		$em->persist($cat);
 		
-		$cat = new Categoria();
-		$cat->setNombre("Junior")
+		$cat1 = new Categoria();
+		$cat1->setNombre("Junior")
 		->setEdadMax(18)
 		->setTIniVal(2015)
 		->setTFinVal(null);
-		$em->persist($cat);
+		$em->persist($cat1);
 		
 		$cat = new Categoria();
 		$cat->setNombre("Promesa")
@@ -204,7 +204,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(1)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Cuartos de final A");
 		$em->persist($pru);
@@ -213,7 +213,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(2)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Cuartos de final B");
 		$em->persist($pru);
@@ -222,7 +222,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(3)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Cuartos de final C");
 		$em->persist($pru);
@@ -231,7 +231,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(4)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Cuartos de final D");
 		$em->persist($pru);
@@ -240,7 +240,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(5)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(2)
 		->setNombre("Semifinal A");
 		$em->persist($pru);
@@ -249,7 +249,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(6)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(2)
 		->setNombre("Semifinal B");
 		$em->persist($pru);
@@ -258,7 +258,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(7)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(3)
 		->setNombre("Final");
 		$em->persist($pru);
@@ -267,7 +267,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(8)
 		->setSidTprm($tprm2)
-		->setIdCat(1)
+		->setIdCat($cat1)
 		->setRonda(1)
 		->setNombre("Semifinal A");
 		$em->persist($pru);
@@ -276,7 +276,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(9)
 		->setSidTprm($tprm2)
-		->setIdCat(1)
+		->setIdCat($cat1)
 		->setRonda(1)
 		->setNombre("Semifinal B");
 		$em->persist($pru);
@@ -285,7 +285,7 @@ class Helpers {
 		$pru->setSidCom($com1)
 		->setId(10)
 		->setSidTprm($tprm2)
-		->setIdCat(1)
+		->setIdCat($cat1)
 		->setRonda(2)
 		->setNombre("Final");
 		$em->persist($pru);
@@ -294,7 +294,7 @@ class Helpers {
 		$pru->setSidCom($com2)
 		->setId(1)
 		->setSidTprm($tprm1)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Final");
 		$em->persist($pru);
@@ -303,7 +303,7 @@ class Helpers {
 		$pru->setSidCom($com2)
 		->setId(2)
 		->setSidTprm($tprm2)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Final");
 		$em->persist($pru);
@@ -312,7 +312,7 @@ class Helpers {
 		$pru->setSidCom($com2)
 		->setId(3)
 		->setSidTprm($tprm3)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Final");
 		$em->persist($pru);
@@ -321,7 +321,7 @@ class Helpers {
 		$pru->setSidCom($com2)
 		->setId(4)
 		->setSidTprm($tprm4)
-		->setIdCat(1)
+		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Final");
 		$em->persist($pru);

@@ -16,22 +16,19 @@ class PruType extends AbstractType {
 	private $listaFormatos;
 	private $repo;
 	private $selectedTpr;
+	private $repoCat;
 	
 	public function __construct($doctrine, $selectedTpr) {
 		$repository = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
 		$this->listaFormatos = $repository->findAllOrdered();
 		$this->repo = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$this->selectedTpr = $selectedTpr;
+		$this->repoCat = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
 	}
 	
     public function buildForm(FormBuilderInterface $builder, array $options) {  	
     	  //opciones directamente mapeadas
         $builder
-    	    ->add('idcat', 'choice', array(
-    	    		'choices' => array('1'),
-    	    		'expanded' => false,
-    	    		'label' => 'Categoría',
-    	    		'required' => true))
     	    ->add('nombre', 'text', array(
     	    		'label' => 'Nombre',
     	    		'required' => false));
@@ -67,7 +64,6 @@ class PruType extends AbstractType {
     	  				foreach($this->listaFormatos as $tprf){
     	  					$choices[$tprf['sid']] = $tprf['nombre'];
     	  				}
-
     	  				$options = array(
     	  						'choices' => $choices,
     	  						'empty_value' => '...',
@@ -79,8 +75,23 @@ class PruType extends AbstractType {
     	  				if ($this->selectedTpr != null){
     	  				   $options['data'] = $this->selectedTpr->getSidTprf()->getSid();
     	  				}
-    	  				
     	  				$form->add('tprf', 'choice', $options);
+    	  				
+    	  				$listaCategorias = $this->repoCat->findAllCurrent();
+    	  				$choices = array();
+    	  				foreach($listaCategorias as $cat){
+    	  					$choices[] = $this->repoCat->find($cat['id']);
+    	  				}
+    	  		      $form->add('idCat', 'entity', array(
+    	  				   'class' => 'Easanles\AtletismoBundle\Entity\Categoria',
+    	  			      'choices' => $choices,
+    	  				   'choice_label' => function ($allChoices, $currentChoiceKey) {
+    	  					   return $allChoices->getNombre()." (".$allChoices->getEdadMax().")";
+                      },
+    	  				   'empty_value' => '...',
+    	  				   'expanded' => false,
+    	  				   'label' => 'Categoría',
+    	  				   'required' => true));
     	  				    	  				 
     	  				$formModifier($event->getForm(), $form['tprf']->getData());
     	  			}

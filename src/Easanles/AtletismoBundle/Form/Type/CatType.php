@@ -5,6 +5,8 @@ namespace Easanles\AtletismoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
  
 class CatType extends AbstractType
 {
@@ -12,8 +14,7 @@ class CatType extends AbstractType
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre'))
     	    ->add('edadMax', 'integer', array('label' => 'Edad máxima', 'required' => false))
-    	    ->add('tIniVal', 'integer', array('label' => 'Temporada inicial de validez'))
-    	    ->add('tFinVal', 'integer', array('label' => 'Temporada final de validez', 'required' => false));
+    	    ->add('tIniVal', 'integer', array('label' => 'Temporada inicial de validez'));
     }
  
     public function getName() {

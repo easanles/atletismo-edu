@@ -9,9 +9,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class PruCopyType extends AbstractType {
 	
 	private $nombreTpr;
+	private $nombreCat;
 	
-	public function __construct($nombreTpr) {
+	public function __construct($nombreTpr, $nombreCat) {
 		$this->nombreTpr = $nombreTpr;
+		$this->nombreCat = $nombreCat;
 	}
 	
     public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -24,12 +26,11 @@ class PruCopyType extends AbstractType {
           ->add('ronda', 'integer', array(
                 'label' => 'Ronda',
           		 'disabled' => true))
-    	    ->add('idcat', 'choice', array(
-    	    		'choices' => array('1'),
-    	    		'expanded' => false,
-    	    		'disabled' => true,
-    	    		'label' => 'Categoría',
-    	    		'required' => true))
+          ->add('idCat', 'text', array(
+                'label' => 'Categoría',
+          		 'mapped' => false,
+          		 'disabled' => true,
+                'data' => $this->nombreCat))
     	    ->add('nombre', 'text', array(
     	    		'label' => 'Nombre',
     	    		'required' => false));

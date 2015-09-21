@@ -33,13 +33,16 @@
          <select class="form-control col-xs-4" onChange="pruSearch({{ com.sid }}, this.value, {% if selcat is defined %}'{{ selcat }}'{% else %}null{% endif %})">
             <option value=""{% if seltpr is not defined %} selected{% endif %}>Seleccionar prueba</option>
             {% for tpr in tipospruebas %}
-            <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino, {% elseif tpr.sexo == 1 %}Femenino, {% endif %}{{ tpr.entorno }}</option>
+               <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino, {% elseif tpr.sexo == 1 %}Femenino, {% endif %}{{ tpr.entorno }}</option>
             {% endfor %}
          </select>
       </div>
       <div class="col-xs-3">
-         <select class="form-control col-xs-3">
-         <option value="" {% if cat is not defined %}selected{% endif %}>Categoría</option>
+         <select class="form-control col-xs-3" onChange="pruSearch({{ com.sid }}, {% if seltpr is defined %}'{{ seltpr }}'{% else %}null{% endif %}, this.value)">
+         <option value=""{% if selcat is not defined %} selected{% endif %}>Categoría</option>
+         {% for cat in categorias %}
+            <option value="{{ cat.idCat }}"{% if selcat is defined %}{% if selcat == cat.idCat %} selected{% endif %}{% endif %}>{{ cat.nombre }}</option>
+         {% endfor %}
          </select>
       </div>
       <button class="btn btn-primary" onClick="showModal('newPRU', {{ com.sid }}, null, null)"><span class="glyphicon glyphicon-plus"></span> Agregar prueba</button>
@@ -60,7 +63,7 @@
          <tr>
             <td>{{ pru.id }}</td>
             <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
-            <td>{{ pru.idCat }}</td>
+            <td>{{ pru.cat.nombre }}</td>
             <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
             <td>{{ pru.nombre }}</td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-list"></span></button></td>

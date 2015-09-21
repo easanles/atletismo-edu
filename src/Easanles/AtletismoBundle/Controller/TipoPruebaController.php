@@ -99,9 +99,9 @@ class TipoPruebaController extends Controller {
     	if ($tprf != null) {
     		$prevNombre = $tprf->getNombre();
     		
-    		$originalTags = new ArrayCollection();
+    		$originalTprms = new ArrayCollection();
     		foreach ($tprf->getModalidades() as $tprm) {
-    			$originalTags->add($tprm);
+    			$originalTprms->add($tprm);
     		}
     		
     		$form = $this->createForm(new TprfType(), $tprf);
@@ -124,7 +124,7 @@ class TipoPruebaController extends Controller {
     				$this->checkModalidades($tprf);
     				
     				
-    				foreach ($originalTags as $tprm) {
+    				foreach ($originalTprms as $tprm) {
     					if (false === $tprf->getModalidades()->contains($tprm)) {
     						// $tprm->getTasks()->removeElement($task);
     						// $tprm->setTask(null);

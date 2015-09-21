@@ -1,6 +1,11 @@
 
+{% if mode == "edit" %}
+<div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> Solo se recomienda editar una categoría en caso de error en algun dato del formulario.<br>
+Para realizar un cambio en una categoría de una temporada a otra, primero marca como caducada la anterior y luego crea una nueva.</div>
+{% endif %}
+
    {% if exception is defined %}
-   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span>{{ exception }}</span></div>
    {% endif %}
 
    <div id="data_form" class="row">
@@ -14,17 +19,14 @@
     {{ form_errors(form) }}
     
     <div>
-       <div class="form_row col-xs-4">
+       <div class="form_row col-xs-6">
           {{ form_row(form.nombre) }}
        </div>
-       <div class="form_row col-xs-2">
+       <div class="form_row col-xs-3">
           {{ form_row(form.edadMax) }}
        </div>
        <div class="form_row col-xs-3">
           {{ form_row(form.tIniVal) }}
-       </div>
-       <div class="form_row col-xs-3">
-          {{ form_row(form.tFinVal) }}
        </div>
     </div>
     
