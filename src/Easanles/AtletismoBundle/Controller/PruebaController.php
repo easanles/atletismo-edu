@@ -85,6 +85,9 @@ class PruebaController extends Controller {
     				throw new Exception("Selecciona un tipo de prueba y una modalidad");
     				//Mejorable. Mostrar error en el campo concreto.
     			}
+    			if ($pru->getIdCat()->getTFinVal() != null){
+    				throw new Exception("Categoría caducada");
+    			}
     			$em = $this->getDoctrine()->getManager();
     			$em->persist($pru);
     			$em->flush();
@@ -263,6 +266,9 @@ class PruebaController extends Controller {
    			if ($pru->getSidTprm() == null) {
    				throw new Exception("Selecciona un tipo de prueba y una modalidad");
    				//Mejorable. Mostrar error en el campo concreto.
+   			}
+   			if ($pru->getIdCat()->getTFinVal() != null){
+   				throw new Exception("Categoría caducada");
    			}
    			$em = $this->getDoctrine()->getManager();
    			$em->persist($pru);

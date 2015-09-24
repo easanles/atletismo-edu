@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <buildpath>
+	<buildpathentry kind="src" path="vendor/vich/uploader-bundle"/>
 	<buildpathentry kind="src" path="vendor/twig/extensions/lib"/>
 	<buildpathentry kind="src" path="vendor/sensio/generator-bundle"/>
+	<buildpathentry kind="src" path="vendor/jms/metadata/src"/>
 	<buildpathentry kind="src" path="vendor/sensio/distribution-bundle"/>
 	<buildpathentry kind="src" path="vendor/doctrine/annotations/lib"/>
 	<buildpathentry kind="src" path="vendor/composer"/>
+	<buildpathentry kind="src" path="vendor/symfony/assetic-bundle"/>
 	<buildpathentry kind="src" path="vendor/doctrine/doctrine-cache-bundle"/>
 	<buildpathentry kind="src" path="vendor/psr/log"/>
-	<buildpathentry kind="src" path="vendor/symfony/assetic-bundle"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Bridge/Monolog"/>
 	<buildpathentry kind="src" path="vendor/symfony/swiftmailer-bundle"/>
 	<buildpathentry kind="src" path="vendor/symfony/symfony/src/Symfony/Bridge/ProxyManager"/>

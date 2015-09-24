@@ -21,7 +21,12 @@ class ComType extends AbstractType
     	    ->add('feder', 'text', array('label' => 'Federación','required' => false))
     	    ->add('web', 'url', array('label' => 'Página web','required' => false))
     	    ->add('email', 'email', array('label' => 'Correo electrónico de contacto','required' => false))
-    	    ->add('cartel', 'file', array('label' => 'Archivo de imagen del cartel','required' => false))
+    	    ->add('cartelFile', 'vich_image', array(
+    	    		'label' => 'Archivo de imagen del cartel',
+    	    		'required' => false,
+    	    		'allow_delete'  => true,
+    	    		'download_link' => false,
+    	    ))
     	    ->add('esfeder', 'checkbox', array('label' => 'Competición federada','required' => false))
     	    ->add('esoficial', 'checkbox', array('label' => 'Competición oficial del club','required' => false));
     }

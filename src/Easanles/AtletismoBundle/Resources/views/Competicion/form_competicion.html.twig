@@ -94,7 +94,8 @@
     </div>
     <div class="row">
        <div class="form_row col-xs-12 col-sm-6">
-          {{ form_row(form.cartel) }}
+          {{ form_errors(form.cartelFile) }}
+          {{ form_widget(form.cartelFile) }}
        </div>
        <div class="col-xs-12 col-sm-6">
           <div class="row">

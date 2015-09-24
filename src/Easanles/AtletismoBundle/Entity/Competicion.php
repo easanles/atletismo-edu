@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * 
  * @ORM\Table(name="com")
  * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\CompeticionRepository")
+ * @Vich\Uploadable
  */
 class Competicion {
 	
@@ -91,6 +93,18 @@ class Competicion {
    * @ORM\Column(name="cartelcom", type="string", length=255, nullable=true)
    */
    private $cartel;
+   
+   /**
+    * @var File
+    * @Vich\UploadableField(mapping="competicion_image", fileNameProperty="cartel") 
+    */
+   private $cartelFile;
+   
+   /**
+    * @var \DateTime
+    * @ORM\Column(type="datetime", nullable=true)
+   */
+   private $updatedAt;
    
    /**
    * @var boolean
@@ -226,6 +240,28 @@ class Competicion {
 		$this->cartel = $cartel;
 		return $this;
 	}
+	
+	//*******VICH**********
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
+	public function setUpdatedAt($updatedAt) {
+		$this->updatedAt = $updatedAt;
+		return $this;
+	}
+	public function setCartelFile(File $image = null){
+		$this->cartelFile = $image;
+		if ($image) {
+			$this->updatedAt = new \DateTime('now');
+		}
+	}
+	/**
+	* @return File
+	*/
+   public function getCartelFile() {
+		 return $this->cartelFile;
+	}
+	
 	public function getEsFeder() {
 		return $this->esFeder;
 	}
@@ -271,5 +307,7 @@ class Competicion {
 		*/
 		}
 	}
+
+	
    
 }

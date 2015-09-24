@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Acme\HelloBundle\AcmeHelloBundle(),
             new Acme\TestBundle\AcmeTestBundle(),
+            new Vich\UploaderBundle\VichUploaderBundle(),
             new Easanles\AtletismoBundle\EasanlesAtletismoBundle(),
         );
 
