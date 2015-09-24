@@ -13,12 +13,14 @@ class Helpers {
 	public static function poblarBD($em){
 		$com1 = new Competicion();
 		$com1->setNombre("Competicion 1")
-		->setTemp(2014);
+		->setTemp(2014)
+		->setCartel("ejemplo.jpg");
 		$em->persist($com1);
 		
 		$com2 = new Competicion();
 		$com2->setNombre("Competicion 2")
-		->setTemp(2015);
+		->setTemp(2015)
+		->setCartel("ejemplo.jpg");
 		$em->persist($com2);
 		
 		$tprf = new TipoPruebaFormato();

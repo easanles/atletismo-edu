@@ -20,7 +20,8 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/var-dumper": "~2.6",
-        "symfony/intl": "~2.6"
+        "symfony/intl": "~2.6",
+        "vich/uploader-bundle": "0.14.*"
     },
     "scripts": {
         "post-install-cmd": [

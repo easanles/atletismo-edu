@@ -25,7 +25,7 @@ Easanles\AtletismoBundle\Entity\Competicion:
      email:
         - Email:
            message: Este dato no es una dirección de correo electrónico válido
-     cartel:
+     cartelFile:
         - Image: 
            mimeTypesMessage: El archivo recibido no es un archivo de imagen
 

@@ -1,6 +1,7 @@
 /web/bundles/acmedemo
 /web/bundles/framework
 /web/bundles/sensiodistribution
+/web/images
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml

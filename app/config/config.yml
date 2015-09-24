@@ -33,6 +33,9 @@ twig:
     form:
        resources: ['bootstrap_3_layout.html.twig']
        #resources: ['bootstrap_3_horizontal_layout.html.twig']
+    form_themes:
+        # other form themes
+        - 'VichUploaderBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -72,3 +75,18 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+    
+    
+# Vich Uploader
+vich_uploader:
+    db_driver: orm
+    twig: true
+    mappings:
+        competicion_image:
+            uri_prefix:         /www/web/images/com
+            upload_destination: "%kernel.root_dir%/../web/images/com"
+            namer:              vich_uploader.namer_uniqid
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
+            
