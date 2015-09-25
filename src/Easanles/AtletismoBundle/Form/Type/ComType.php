@@ -15,7 +15,13 @@ class ComType extends AbstractType
     	    ->add('temp', 'integer', array('label' => 'Temporada (año de inicio)'))
     	    ->add('ubicacion', 'text', array('label' => 'Ubicación','required' => false))
     	    ->add('sede', 'text', array('label' => 'Sede','required' => false))
-    	    ->add('fecha', 'date', array('label' => 'Fecha de comienzo','required' => false))
+    	    ->add('fecha', 'date', array(
+    	    		'label' => 'Fecha de comienzo',
+    	    		'widget' => 'single_text',
+    	    		'format' => 'dd-MM-yyyy',
+    	    		'placeholder' => 'dd-mm-aaaa',
+    	    		'invalid_message' => 'Fecha no válida. Formato: dd/mm/aaaa',
+    	    		'required' => false))
     	    ->add('desc', 'textarea', array('label' => 'Descripción','required' => false))
     	    ->add('nivel', 'text', array('label' => 'Nivel','required' => false))
     	    ->add('feder', 'text', array('label' => 'Federación','required' => false))

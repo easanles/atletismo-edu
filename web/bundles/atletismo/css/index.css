@@ -58,6 +58,10 @@ h1 {
    margin: 1em 0.5em;
 }
 
+.config-content table {
+   margin-top: 0.5em;
+}
+
 .table .table td {
    padding-left: 3em;
 }

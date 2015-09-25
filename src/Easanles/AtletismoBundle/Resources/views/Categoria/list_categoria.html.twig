@@ -2,10 +2,10 @@
                   <tr>
                      <th>Id</th>
                      <th>Nombre</th>
-                     <th>Edad máxima</th>
-                     <th title="Temporada de inicio de validez">Temporada inicial</th>
-                     {% if outdated == 'true' %}<th title="Temporada de final de validez">Temporada final</th>{% endif %}
-                     <th>Acciones</th>
+                     <th><abbr title="Edad máxima" class="visible-xs-block">E. máx.</abbr><div class="hidden-xs">Edad máxima</div></th>
+                     <th title="Temporada de inicio de validez"><abbr title="Temporada de inicio de validez" class="visible-xs-block">T. inicial</abbr><div class="hidden-xs">Temporada inicial</div></th>
+                     {% if outdated == 'true' %}<th title="Temporada de final de validez"><abbr title="Temporada de final de validez" class="visible-xs-block">T. final</abbr><div class="hidden-xs">Temporada final</div></th>{% endif %}
+                     <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
                   </tr>
                   {% for cat in categorias %}
                   <tr{% if cat.tFinVal is not null %} class="danger"{% endif %}>
@@ -19,8 +19,17 @@
                         {% endif %}
                      {% endif %}
                      <td>
-                        <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
-                        <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                        <div class="btn-group visible-xs-block">
+                           <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                           <ul class="dropdown-menu pull-right">
+                              <li><a href="#" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                              <li><a class="bg-danger" href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Borrar</div></a></li>
+                           </ul>
+                        </div>
+                        <div class="hidden-xs">
+                           <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
+                           <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                        </div>
                      </td>
                   </tr>
                   {% endfor %}

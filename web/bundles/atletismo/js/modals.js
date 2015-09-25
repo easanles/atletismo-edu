@@ -9,7 +9,7 @@ function showModal(type, data1, data2, data3){
 	   case ("delCOM"): { //Borrar competicion
 		   $('#data1').html(data1);
 		   $('#data2').html(data2);
-		   $('#confirmbutton').attr("href", "./competiciones/borrar?i="+ data3);
+		   $('#confirmbutton').attr("href", data3);
 	   } break;
 	   
        case ("newTPR"): { //Nuevo tipo de prueba

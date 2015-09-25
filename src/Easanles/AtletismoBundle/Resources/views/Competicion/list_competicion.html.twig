@@ -36,22 +36,21 @@
          </select>
       </div>
       <a class="btn btn-primary" href="./competiciones/nuevo/"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
-      <div class="input-group col-xs-12 col-sm-4 pull-right">
+      <div class="input-group col-xs-6 col-sm-4 pull-right">
          <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)">
          <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
-   <div class="row">
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
          <tr>
             <th>Temporada</th>
             <th>Competición</th>
             <th>Fecha</th>
-            <th>Sede</th>
-            <th>Pruebas</th>
-            <th>Atletas inscritos</th>
-            <th>Acciones</th>
+            <th class="hidden-xs">Sede</th>
+            <th><abbr title="Pruebas" class="visible-xs-block">Pru.</abbr><div class="hidden-xs">Pruebas</div></th>
+            <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
+            <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
          {% for com in competiciones %}
          <tr>
@@ -59,18 +58,26 @@
             <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.nombre }}</td>
             <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">
 {% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.sede }}</td>
-            <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.numpruebas }} <a type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="./pruebas/{{ com.sid }}"><span class="glyphicon glyphicon-list"></span></a></td>
+            <td class="clickable hidden-xs" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.sede }}</td>
+            <td class="clickable{% if com.numpruebas == 0 %} warning text-warning{% endif %}" onClick="goToUrl('./competiciones/{{ com.sid }}/')">{{ com.numpruebas }} <a type="button" class="btn btn-xs btn-{% if com.numpruebas == 0 %}warning{% else %}default{% endif %} pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="./pruebas/{{ com.sid }}"><span class="glyphicon glyphicon-list"></span></a></td>
             <td class="clickable" onClick="goToUrl('./competiciones/{{ com.sid }}/')">0</td>
             <td>
-               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ com.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ com.sid }}')"><span class="glyphicon glyphicon-remove"></span></span></button>
+               <div class="btn-group visible-xs-block">
+                  <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                  <ul class="dropdown-menu pull-right">
+                     <li><a href="./competiciones/editar/{{ com.sid }}/"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', './competiciones/borrar?i={{ com.sid }}')"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                  </ul>
+               </div>
+               <div class="hidden-xs">
+                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="./competiciones/editar/{{ com.sid }}/"><span class="glyphicon glyphicon-edit"></span></a>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ com.sid }}')"><span class="glyphicon glyphicon-remove"></span></button>
+               </div>
             </td>
          </tr>
          {% endfor %}
       </tbody>
    </table>
-   </div>
    
 {% endblock %}
 

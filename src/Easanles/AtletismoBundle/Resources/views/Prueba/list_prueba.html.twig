@@ -27,9 +27,9 @@
 {% block container %}   
    <h1 id="container_title" class="row page-header">Lista de pruebas <small>{{ com.nombre }} ({{ com.temp }} / {{ com.temp + 1}})</small></h1>
    <div id="container_header" class="row">
-      <a type="button" class="btn btn-m btn-default pull-left" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
+      <a type="button" class="btn btn-m btn-default pull-left hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <button class="updater hidden" onClick="location.reload()"></button>
-      <div class="col-xs-4">
+      <div class="col-xs-6 col-sm-4">
          <select class="form-control col-xs-4" onChange="pruSearch({{ com.sid }}, this.value, {% if selcat is defined %}'{{ selcat }}'{% else %}null{% endif %})">
             <option value=""{% if seltpr is not defined %} selected{% endif %}>Seleccionar prueba</option>
             {% for tpr in tipospruebas %}
@@ -37,7 +37,7 @@
             {% endfor %}
          </select>
       </div>
-      <div class="col-xs-3">
+      <div class="col-xs-4 col-sm-3">
          <select class="form-control col-xs-3" onChange="pruSearch({{ com.sid }}, {% if seltpr is defined %}'{{ seltpr }}'{% else %}null{% endif %}, this.value)">
          <option value=""{% if selcat is not defined %} selected{% endif %}>Categoría</option>
          {% for cat in categorias %}
@@ -45,18 +45,18 @@
          {% endfor %}
          </select>
       </div>
-      <button class="btn btn-primary" onClick="showModal('newPRU', {{ com.sid }}, null, null)"><span class="glyphicon glyphicon-plus"></span> Agregar prueba</button>
+      <button class="btn btn-primary" onClick="showModal('newPRU', {{ com.sid }}, null, null)"><span class="glyphicon glyphicon-plus"></span><span class="hidden-xs"> Agregar prueba</span></button>
    </div>
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
          <tr>
             <th>Id</th>
             <th>Prueba</th>
-            <th>Categoría</th>
+            <th><abbr title="Categoría" class="visible-xs-block">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
             <th>Ronda</th>
             <th>Nombre</th>
-            <th>Atletas inscritos</th>
-            <th>Acciones</th>
+            <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
+            <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
          
          {% for pru in pruebas %}
@@ -68,9 +68,19 @@
             <td>{{ pru.nombre }}</td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-list"></span></button></td>
             <td>
-               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span></button>
-               <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
+               <div class="btn-group visible-xs-block">
+                  <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                  <ul class="dropdown-menu pull-right">
+                     <li><a href="#" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span> Duplicar</a></li>
+                     <li><a href="#" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                  </ul>
+               </div>
+               <div class="hidden-xs">
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span></button>
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
+               </div>
             </td>
          </tr>
          {% endfor %}

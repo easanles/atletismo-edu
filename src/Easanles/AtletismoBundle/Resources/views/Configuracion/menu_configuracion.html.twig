@@ -28,18 +28,17 @@
       <li id="navtab-cat" role="presentation" onClick="toggleContent('cat')"><a class="clickable">Categorías</a></li>
       <li id="navtab-comm" role="presentation" onClick="toggleContent('comm')"><a class="clickable">Comandos</a></li>
    </ul>
-   <div class="row config-content">
+   <div class="config-content">
       <div id="tabcontent-tp" style="display:none">
          <div class="row">
             <button type="button" class="btn btn-primary" onClick="showModal('newTPR', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
             <button class="btn btn-default updater hidden" onClick="loadViews('tp')"><span class="glyphicon glyphicon-refresh spinning"></span></button>
          </div>
          <div class="row">
-            <table id="tpr-table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
-            </table>
+            <table id="tpr-table" class="table table-hover table-bordered table-condensed table-striped table-responsive"></table>
          </div>
-         
       </div>
+      
       <div id="tabcontent-cat" style="display:none">
          <div class="row">
             <button type="button" class="btn btn-primary" onClick="showModal('newCAT', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
@@ -51,14 +50,17 @@
             </table>
          </div>
       </div>
+      
       <div id="tabcontent-comm" style="display:none">
-         <button id="btn_poblarbd" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="INSERT INTO ..."><span class="glyphicon glyphicon-save"></span> Poblar BD</button>
-         <button id="btn_borrarbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="DELETE FROM ..."><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</button>
-         <button id="btn_rehacerbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</button>
-         <button id="btn_limpiarcache" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</button>
-         <button id="btn_asseticdump" type="button" class="btn btn-default inactive" data-toggle="tooltip" data-placement="bottom" title="assetic:dump"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</button>
+         <div class="row">
+            <button id="btn_poblarbd" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="INSERT INTO ..."><span class="glyphicon glyphicon-save"></span> Poblar BD</button>
+            <button id="btn_borrarbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="DELETE FROM ..."><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</button>
+            <button id="btn_rehacerbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</button>
+            <button id="btn_limpiarcache" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</button>
+            <button id="btn_asseticdump" type="button" class="btn btn-default inactive" data-toggle="tooltip" data-placement="bottom" title="assetic:dump"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</button>
          
-         <div id="alert_div"> </div>
+            <div id="alert_div"> </div>
+         </div>
       </div>
    </div>
 

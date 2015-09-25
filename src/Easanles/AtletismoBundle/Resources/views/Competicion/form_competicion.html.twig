@@ -7,6 +7,12 @@
    {% endif %}
 {% endblock %}
 
+{% block css %}
+   <link rel="stylesheet" href="{{ asset('bundles/atletismo/css/index.css') }}" />
+
+   <style> .vich-image img {max-width: 200px} </style>
+{% endblock %}
+
 {% block navbar %}
 {% if mode == "new" %}
       <li><a class="inactive">Atletas</a></li>
