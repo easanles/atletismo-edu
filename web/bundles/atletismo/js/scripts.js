@@ -45,12 +45,33 @@ function checkEnterKeypress(event){
 		document.getElementById("search-button").click();
 	}
 }
+
+function toggleDropListTable(id, button){
+   button.button('toggle');
+   dl = $("#droplist-" + id);
+   if (dl.css("height") == "0px"){
+	   dl.css("height", dl.data("height"));
+   }
+   else {
+	   dl.css("height", "0px");
+   }
+}
 	
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
           $('.dropdown-toggle').dropdown()
     });
+	$('.droplist').each(function (){
+		$(this).data("height", $(this).height());
+		$(this).css("height", "0px");
+	});
+	$(window).keydown(function(event){
+	   if(event.keyCode == 13) {
+	      event.preventDefault();
+	      return false;
+       }
+	});
 })
 
 

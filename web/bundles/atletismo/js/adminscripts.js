@@ -34,6 +34,10 @@ function loadViews(content){
         $.get("./tipoprueba", function(data, status){
            if (status = "success"){
               $("#tpr-table").html(data);
+          	  $('.droplist').each(function (){
+        		$(this).data("height", $(this).height());
+        		$(this).css("height", "0px");
+        	  });
            } else {
               $("#tabcontent-tp").html("Error al cargar datos");
            }
@@ -59,13 +63,6 @@ function loadViews(content){
 }
 
 //TIPOS DE PRUEBA
-
-function toggleTprmTable(id, button){
-   button.button('toggle');
-   table = $("#tprm-table-" + id);
-   if (table.css("display") == "none") table.css("display", "table-row");
-   else table.css("display", "none");
-}
 
 function addFormRow(){
    collectionHolder = $('#form-collection')

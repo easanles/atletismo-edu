@@ -1,7 +1,13 @@
 @CHARSET "UTF-8";
 
+html{
+   position: relative;
+   min-height: 100%;
+}
+
 body {
 	padding-top: 50px;
+	margin-bottom: 50px;
 }
 
 h1 {
@@ -62,9 +68,37 @@ h1 {
    margin-top: 0.5em;
 }
 
+.droplist{
+   overflow: hidden;
+   -webkit-transition: height 0.2s ease-in;
+   -moz-transition: height 0.2s ease-in;
+   -ms-transition: height 0.2s ease-in;
+   -o-transition: height 0.2s ease-in;
+   transition: height 0.2s ease-in;
+}
+
+.table .table {
+   margin: 0;
+}
+
 .table .table td {
    padding-left: 3em;
 }
+
+
+/*http://getbootstrap.com/examples/sticky-footer-navbar/*/
+.footer {
+    background-color: #f5f5f5;
+    bottom: 0;
+    height: 50px;
+    position: absolute;
+    width: 100%;
+}
+
+.footer > .container{
+   padding: 1em 1em;
+}
+
 
 /* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state*/
 .glyphicon.spinning {

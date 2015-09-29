@@ -1,7 +1,4 @@
 
-
-
-
 function showModal(type, data1, data2, data3){
 	var modal = $('#modalDialog');
 	switch(type){

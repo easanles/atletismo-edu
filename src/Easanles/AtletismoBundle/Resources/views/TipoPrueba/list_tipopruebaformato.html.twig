@@ -9,7 +9,7 @@
                   {% for row in tiposprueba %}
                   <tr>
                      <td>{{ row.nombre }}</td>
-                     <td>{{ row.modalidades.toArray()|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleTprmTable({{ row.sid }}, $(this))" {% if row.modalidades.toArray()|length == 0 %}disabled{% endif %}><span class="glyphicon glyphicon-collapse-down"></span></button>
+                     <td>{{ row.modalidades.toArray()|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleDropListTable({{ row.sid }}, $(this))" {% if row.modalidades.toArray()|length == 0 %}disabled{% endif %}><span class="glyphicon glyphicon-collapse-down"></span></button>
                      </td>
                      <td>{{ row.unidades }}</td><td>{{ row.numint }}</td>
                      <td>
@@ -26,7 +26,8 @@
                         </div>
                      </td>
                   </tr>
-                  <tr id="tprm-table-{{ row.sid }}" style="display:none;"><td colspan="5">
+                  <tr><td colspan="5" style="padding: 0px">
+                      <div id="droplist-{{ row.sid }}" class="droplist">
                       <table class="table">
                         <tbody>
                            {% for mod in row.modalidades.toArray() %}
@@ -34,6 +35,7 @@
                            {% endfor %}
                         </tbody>
                      </table>
+                     </div>
                   </td></tr>
 
                   {% endfor %}

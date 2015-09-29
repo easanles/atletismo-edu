@@ -78,8 +78,8 @@ class CategoriaController extends Controller
     	$cat = $repository->find($id);
     	 
     	if ($cat == null){
-    		$response = new Response('No existe la categoria con el identificador "'.$id.'" <a href="../../">Volver</a>');
-    		$response->headers->set('Refresh', '2; url=../../');
+    		$response = new Response('No existe la categoria con el identificador "'.$id.'" <a href="'.$this->generateUrl('configuracion').'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('configuracion'));
     		return $response;
     	}
     	
@@ -140,8 +140,8 @@ class CategoriaController extends Controller
     	 $cat = $repository->find($idCat);
     	 
     	 if ($cat == null){
-    	 	 $response = new Response('No existe la categoria con el identificador "'.$idCat.'" <a href="../../">Volver</a>');
-    	 	 $response->headers->set('Refresh', '2; url=../../');
+    	 	 $response = new Response('No existe la categoria con el identificador "'.$idCat.'" <a href="'.$this->generateUrl('configuracion').'">Volver</a>');
+    	 	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('configuracion'));
     	 	 return $response;
     	 } else {
     	 	 $cat->setTFinVal(date("Y")); //TODO: marcar correctamente la temporada de fin (no es igual al año actual)

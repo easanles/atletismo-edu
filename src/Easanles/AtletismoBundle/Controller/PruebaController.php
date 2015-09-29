@@ -22,8 +22,8 @@ class PruebaController extends Controller {
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$com = $repository->find($sidCom);
     	if ($com == null){
-    		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="../competiciones">Volver</a>');
-    		$response->headers->set('Refresh', '2; url=../competiciones');
+    		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
     		return $response;
     	}
   	   $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
@@ -175,8 +175,8 @@ class PruebaController extends Controller {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repository->find($sidCom);
    	if ($com == null){
-   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="../competiciones">Volver</a>');
-   		$response->headers->set('Refresh', '2; url=../competiciones');
+   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
    		return $response;
    	}
       $sidPru = $request->query->get('pru');
@@ -184,8 +184,8 @@ class PruebaController extends Controller {
      		$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
    	   $pruCopia = $repoPru->find($sidPru);
    	   if ($pruCopia == null) {
-     			$response = new Response('No existe la prueba con el identificador "'.$sidPru.'" <a href="../'.$sidCom.'">Volver</a>');
-     			$response->headers->set('Refresh', '2; url=../'.$sidCom);
+     			$response = new Response('No existe la prueba con el identificador "'.$sidPru.'" <a href="'.$this->generateUrl('listado_pruebas', array('sidCom' => $sidCom)).'">Volver</a>');
+     			$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_pruebas', array('sidCom' => $sidCom)));
    		   return $response;
    	   } else {
      			$copyMode = $request->query->get('mod');
@@ -199,8 +199,8 @@ class PruebaController extends Controller {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repository->find($sidCom);
    	if ($com == null){
-   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="../competiciones">Volver</a>');
-   		$response->headers->set('Refresh', '2; url=../competiciones');
+   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
    		return $response;
    	}
    	$idpru = $request->query->get('i');
@@ -234,15 +234,15 @@ class PruebaController extends Controller {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repository->find($sidCom);
    	if ($com == null){
-   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="../../../competiciones">Volver</a>');
-   		$response->headers->set('Refresh', '2; url=../../../competiciones');
+   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones').'');
    		return $response;
    	}
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
    	$pru = $repository->find($sidPru);
    	if ($pru == null){
-     	   $response = new Response('No existe la prueba con el identificador "'.$sidPru.'" <a href="../../'.$sidCom.'">Volver</a>');
-     		$response->headers->set('Refresh', '2; url=../../'.$sidCom);
+     	   $response = new Response('No existe la prueba con el identificador "'.$sidPru.'" <a href="'.$this->generateUrl('listado_pruebas', array('sidCom' => $sidCom)).'">Volver</a>');
+     		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_pruebas', array('sidCom' => $sidCom)));
    		return $response;
    	}
    	

@@ -74,8 +74,8 @@ class CompeticionController extends Controller {
     	   }
     	    return $this->redirect($this->generateUrl('listado_competiciones'));
     	 } else {
-       	$response = new Response('No existe la competicion con el identificador "'.$id.'" <a href="../competiciones">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=../competiciones');
+       	$response = new Response('No existe la competicion con el identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+       	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
        	return $response;
        }
     }
@@ -112,8 +112,8 @@ class CompeticionController extends Controller {
       	return $this->render('EasanlesAtletismoBundle:Competicion:form_competicion.html.twig',
     		   	array('form' => $form->createView(), 'mode' => "edit", 'nombre' => $prevNombre, 'temp' => $prevTemp));
        } else {
-       	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../../competiciones">Volver</a>');
-       	$response->headers->set('Refresh', '2; url=../../../competiciones');
+       	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+       	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
        	return $response;
        }
     }
@@ -126,8 +126,8 @@ class CompeticionController extends Controller {
           return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
     	          array('com' => $com));
     	 } else {
-    	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="../../competiciones">Volver</a>');
-    	 	$response->headers->set('Refresh', '2; url=../../competiciones');
+    	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
     	 	return $response;
     	 }
     }

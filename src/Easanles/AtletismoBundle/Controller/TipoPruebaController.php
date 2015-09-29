@@ -174,21 +174,21 @@ class TipoPruebaController extends Controller {
     				if ((in_array($mod->getEntorno(), $ambosArray))
     						|| (in_array($mod->getEntorno(), $masArray))
     						|| (in_array($mod->getEntorno(), $femArray))) {
-    				   throw new Exception("Existe una modalidad repetida");
+    				   throw new Exception("Hay una modalidad repetida");
     				}
     				else $ambosArray[] = $mod->getEntorno();
     			} break;
     			case 0: { //Masculino
     				if ((in_array($mod->getEntorno(), $ambosArray))
     						|| (in_array($mod->getEntorno(), $masArray))) {
-    				   throw new Exception("Existe una modalidad repetida");
+    				   throw new Exception("Hay una modalidad repetida");
     				}
     				else $masArray[] = $mod->getEntorno();
     			} break;
     			case 1: { //Femenino
     				if ((in_array($mod->getEntorno(), $ambosArray))
     						|| (in_array($mod->getEntorno(), $femArray))) {
-    				   throw new Exception("Existe una modalidad repetida");
+    				   throw new Exception("Hay una modalidad repetida");
     				}
     				else $femArray[] = $mod->getEntorno();
     			} break;

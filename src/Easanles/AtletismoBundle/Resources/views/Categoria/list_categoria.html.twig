@@ -12,10 +12,10 @@
                      <td>{{ cat.id }}</td>
                      <td>{{ cat.nombre }}</td>
                      <td>{{ cat.edadMax }}</td>
-                     <td>{{ cat.tIniVal }} / {{ cat.tIniVal + 1 }}</td>
+                     <td>{{ cat.tIniVal }}/{{ (cat.tIniVal + 1)|slice(2, 2) }}</td>
                      {% if outdated == 'true' %}
                         {% if cat.tFinVal is null %}<td><em>Vigente</em></td>
-                           {% else %}<td class="text-danger">{{ cat.tFinVal }} / {{ cat.tFinVal + 1 }}</td>
+                           {% else %}<td class="text-danger">{{ cat.tFinVal }}/{{ (cat.tFinVal + 1)|slice(2, 2) }}</td>
                         {% endif %}
                      {% endif %}
                      <td>
@@ -23,7 +23,7 @@
                            <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
                            <ul class="dropdown-menu pull-right">
                               <li><a href="#" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
-                              <li><a class="bg-danger" href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Borrar</div></a></li>
+                              <li><a class="bg-danger" href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Marcar como caducado</div></a></li>
                            </ul>
                         </div>
                         <div class="hidden-xs">
