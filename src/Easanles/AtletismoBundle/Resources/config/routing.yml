@@ -76,6 +76,9 @@ caducar_categoria:
 configuracion: #portada configuracion
     path: /configuracion/
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
+configuracion_cambiar_ajustes: #ajustes
+    path: /configuracion/ajustes
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:cambiarAjustes"}
 configuracion_poblarbd: #poblar base de datos con datos de prueba
     path: /configuracion/poblarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:poblar_bd"}

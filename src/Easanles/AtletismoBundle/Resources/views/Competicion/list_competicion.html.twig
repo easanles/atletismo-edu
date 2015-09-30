@@ -44,7 +44,7 @@
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
          <tr>
-            <th>Temporada</th>
+            <th><abbr title="Temporada" class="visible-xs-block">Temp.</abbr><div class="hidden-xs">Temporada</div></th>
             <th>Competición</th>
             <th>Fecha</th>
             <th class="hidden-xs">Sede</th>
@@ -63,7 +63,7 @@
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">0</td>
             <td>
                <div class="btn-group visible-xs-block">
-                  <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                  <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>
                   <ul class="dropdown-menu pull-right">
                      <li><a href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>

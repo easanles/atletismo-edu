@@ -7,8 +7,21 @@ use Easanles\AtletismoBundle\Entity\TipoPruebaFormato;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Entity\Categoria;
+use Easanles\AtletismoBundle\Entity\Config;
 
 class Helpers {
+	
+	public static function checkDayMonth($date){
+		//return date_parse_from_format("dd/mm" , $date);
+		return \preg_match("/^\s*\d?\d\s*\/\s*\d\d\s*$/", $date);
+	}
+	
+	public static function defaultBDValues($em){
+		$fIniTemp = new Config();
+		$fIniTemp->setClave("fIniTemp")->setValor("01/11");
+		$em->persist($fIniTemp);
+		$em->flush();
+	}
 	
 	public static function poblarBD($em){
 		$com1 = new Competicion();

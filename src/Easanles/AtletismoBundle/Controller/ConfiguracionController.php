@@ -12,11 +12,56 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Helpers\Helpers;
+use Symfony\Component\HttpFoundation\Request;
 
 class ConfiguracionController extends Controller {
 	
     public function menu_configuracionAction() {
-    	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig');		 
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
+    			"fIniTemp" => $repository->findOneBy(array("clave" => "fIniTemp"))->getValor()
+    	))->getContent();
+    	
+    	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig', array(
+    			"ajustesContent" => $ajContent
+    	));		 
+    }
+    
+    public function cambiarAjustesAction(Request $request){
+    	 $parametros = array();
+    	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	 $em = $this->getDoctrine()->getManager();
+    	 
+    	 //DIA Y MES DE INICIO DE LAS TEMPORADAS
+    	 $fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
+    	 $fIniTempString = $request->request->get('fIniTemp');
+    	 if ($fIniTempString == null){
+    	 	 $parametros["fIniTemp"] = $fIniTempObj->getValor();
+    	 } else {
+    	 	  if (!Helpers::checkDayMonth($fIniTempString)){
+    	 	  	  $parametros["fIniTemp"] = $fIniTempString;
+    	 	  	  $parametros["errFIniTemp"] = "Formato de fecha: dd/mm (dd = dia, mm = mes)";
+    	 	  } else {
+    	 	  	  $datos = explode("/", $fIniTempString);
+    	 	  	  if (!checkdate(trim($datos[1]), trim($datos[0]), 2015)){ //Cualquier año no bisiesto
+    	 	  		  $parametros["fIniTemp"] = $fIniTempString;
+    	 	  		  $parametros["errFIniTemp"] = "Fecha no valida";
+    	 	  	  } else {
+    	 	  	  	  $prevString = $fIniTempObj->getValor();
+    	 	  	  	  if (!strcmp($prevString, $fIniTempString)) { //Comprobar cambios
+    	 	  	  	     $parametros["okFIniTemp"] = true;
+    	 	  		     $fIniTempObj->setValor(trim($datos[0])."/".trim($datos[1]));
+    	 	  		     $parametros["fIniTemp"] = $fIniTempObj->getValor();
+    	 	  	  	  }
+    	 	  	  }
+    	 	  }
+    	 }
+
+    	 $em->flush();
+    	 return new JsonResponse([
+       	'success' => true,
+       	'message' => $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', $parametros)->getContent()
+       ]);
     }
     
     public function poblar_bdAction(){
@@ -47,7 +92,7 @@ class ConfiguracionController extends Controller {
     public function borrar_bdAction(){
     	try{
     	   $em = $this->getDoctrine()->getManager();
-    	   $sql = 'DELETE FROM atl; DELETE FROM `cfg`; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprm`; DELETE FROM `tprf`; DELETE FROM `vrq`; DELETE FROM `com`; DELETE FROM `cat`';
+    	   $sql = 'DELETE FROM atl; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprm`; DELETE FROM `tprf`; DELETE FROM `vrq`; DELETE FROM `com`; DELETE FROM `cat`';
     	   $connection = $em->getConnection();
     	   $stmt = $connection->prepare($sql);
     	   $stmt->execute();
@@ -86,6 +131,9 @@ class ConfiguracionController extends Controller {
     	
     	   $options = array('command' => 'doctrine:fixtures:load','--append' => true);
     	   $application->run(new ArrayInput($options));
+    	   
+    	   $em = $this->getDoctrine()->getManager();
+    	   Helpers::defaultBDValues($em);
     	
     	   $response = new JsonResponse([
        			'success' => true,

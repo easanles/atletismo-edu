@@ -1,0 +1,28 @@
+         <div class="row">
+            <form id="cfg-form" class="form-horizontal" action="{{ path("configuracion_cambiar_ajustes") }}" method="post">
+               <div class="form-group{% if errFIniTemp is defined %} has-error has-feedback{% endif %}{% if okFIniTemp is defined %} has-success has-feedback{% endif %}">
+                  <label for="cfg_fIniTemp" class="col-xs-12 col-sm-4 control-label">Día y mes de inicio de las temporadas</label>
+                  <div class="col-xs-12 col-sm-6">
+                     <input type="date" class="form-control" id="cfg_fIniTemp" placeholder="dd/mm" name="fIniTemp" value="{% if fIniTemp is not null %}{{ fIniTemp }}{% endif %}">
+                     {% if okFIniTemp is defined %}
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                     {% endif %}
+                     {% if errFIniTemp is defined %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block">
+                           <span class="glyphicon glyphicon-exclamation-sign"></span> {{ errFIniTemp }}
+                        </span>
+                     {% endif %}
+                  </div>
+               </div>
+               <div class="form-group">
+                  <div class="col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-6">
+                     <button id="ajSendBtn" type="button" class="btn btn-primary btn-block" onClick="changeSettings()"><span class="glyphicon glyphicon-save"></span> Guardar</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+
+
+
+

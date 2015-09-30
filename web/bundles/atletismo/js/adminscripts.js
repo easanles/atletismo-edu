@@ -1,28 +1,13 @@
 
-function toggleContent(tab){
-    $("#navtab-tp").removeClass("active");
-    $("#tabcontent-tp").css("display", "none");
-    $("#navtab-cat").removeClass("active");
-    $("#tabcontent-cat").css("display", "none");
-    $("#navtab-comm").removeClass("active");
-    $("#tabcontent-comm").css("display", "none");
-   switch (tab){
-      case ('tp'): {
-          $("#navtab-tp").addClass("active");
-          $("#tabcontent-tp").css("display", "inline");
-          loadViews("tp");
-      }; break;
-       case ('cat'): {
-          $("#navtab-cat").addClass("active");
-          $("#tabcontent-cat").css("display", "inline");
-          loadViews("cat");
-      }; break;
-       case ('comm'): {
-         $("#navtab-comm").addClass("active");
-         $("#tabcontent-comm").css("display", "inline");
-      }; break;
-      default:;
-   }
+function toggleContent(tab){   
+    $("#config-nav li").removeClass("active");
+    $(".tabcontent").css("display", "none");
+    
+    $("#navtab-" + tab).addClass("active");
+    $("#tabcontent-" + tab).css("display", "inline");
+    if ((tab == "tp") || (tab == "cat")){
+    	loadViews(tab);
+    }
 }
 
 function loadViews(content){
@@ -86,6 +71,29 @@ function routeCatData(outdated){
 	else return "./categoria?outd=false";
 }
 
+
+//AJUSTES
+function changeSettings(){
+	  icon = $("#ajSendBtn").find("span");
+      icon.removeClass("glyphicon-save");
+      icon.addClass("glyphicon-refresh spinning");
+	  var values = {};
+	  form = $('#cfg-form');
+	  $.each( form.serializeArray(), function(i, field) {
+	    values[field.name] = field.value;
+	  });
+	  $.ajax({
+	    type        : form.attr( 'method' ),
+	    url         : form.attr( 'action' ),
+	    data        : values,
+	    success     : function(data) {
+	  	    $('#tabcontent-aj').html(data.message);
+	        icon.removeClass("glyphicon-refresh spinning");
+	        icon.addClass("glyphicon-save");
+	    }
+	  });
+}
+
 //COMANDOS
 
 function sendAction(path, icon){
@@ -95,12 +103,12 @@ function sendAction(path, icon){
 	   $.getJSON(path, function(data, status){
 	        if (status = "success"){
 	           if (data.success == true){
-	             $("#alert_div").append(alerthtml_preok + data.message + alerthtml_pos);
+	             $("#alert-div-comm").append(alerthtml_preok + data.message + alerthtml_pos);
 	           } else {
-	             $("#alert_div").append(alerthtml_preerr + data.message + alerthtml_pos);
+	             $("#alert-div-comm").append(alerthtml_preerr + data.message + alerthtml_pos);
 	           }
 	        } else {
-	          $("#alert_div").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);
+	          $("#alert-div-comm").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);
 	        }
 	       icon.removeClass("spinning");
 	   });
@@ -137,7 +145,4 @@ $(document).ready(function(){
       //icon.addClass("spinning");
       //sendAction("./asseticdump", icon);
     });
-    
-    loadViews();
-
 });
