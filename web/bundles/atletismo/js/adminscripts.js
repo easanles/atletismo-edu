@@ -16,7 +16,7 @@ function loadViews(content){
 
    switch (content){
       case "tp": {
-        $.get("./tipoprueba", function(data, status){
+        $.get("./configuracion/tipoprueba", function(data, status){
            if (status = "success"){
               $("#tpr-table").html(data);
           	  $('.droplist').each(function (){
@@ -48,7 +48,6 @@ function loadViews(content){
 }
 
 //TIPOS DE PRUEBA
-
 function addFormRow(){
    collectionHolder = $('#form-collection')
     
@@ -65,10 +64,9 @@ function removeFormRow(button){
 }
 
 //CATEGORIAS
-
 function routeCatData(outdated){
-	if (outdated == true) return "./categoria?outd=true";
-	else return "./categoria?outd=false";
+	if (outdated == true) return "./configuracion/categoria?outd=true";
+	else return "./configuracion/categoria?outd=false";
 }
 
 
@@ -119,30 +117,30 @@ $(document).ready(function(){
    $("#btn_poblarbd").click(function(){
       icon = $(this).find("span");
       icon.addClass("spinning");
-         sendAction("./poblarbd", icon);
+         sendAction("./configuracion/poblarbd", icon);
    });
 
     $("#btn_borrarbd").click(function(){
        icon = $(this).find("span");
       icon.addClass("spinning");
-       sendAction("./borrarbd", icon);
+       sendAction("./configuracion/borrarbd", icon);
     });
    
     $("#btn_rehacerbd").click(function(){
        icon = $(this).find("span");
       icon.addClass("spinning");
-       sendAction("./rehacerbd", icon);
+       sendAction("./configuracion/rehacerbd", icon);
     });
     
     $("#btn_limpiarcache").click(function(){
        icon = $(this).find("span");
       icon.addClass("spinning");
-       sendAction("./limpiarcache", icon);
+       sendAction("./configuracion/limpiarcache", icon);
     });
     
     $("#btn_asseticdump").click(function(){
        //icon = $(this).find("span");
       //icon.addClass("spinning");
-      //sendAction("./asseticdump", icon);
+      //sendAction("./configuracion/asseticdump", icon);
     });
 });

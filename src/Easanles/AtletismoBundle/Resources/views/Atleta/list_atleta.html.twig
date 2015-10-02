@@ -1,0 +1,37 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Lista de atletas{% endblock %}
+
+{% block navbar %}
+      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li class="active">Atletas</li>
+{% endblock %}
+
+   {% block modallabel %}Confirmar borrado{% endblock %}
+   {% block modalbody %}
+   {% endblock %}
+   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+
+
+{% block container %}   
+   <h1 id="container_title" class="row page-header">Listado de atletas</h1>
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+{% endblock %}
+
+
+

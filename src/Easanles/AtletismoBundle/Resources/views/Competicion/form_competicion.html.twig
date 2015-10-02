@@ -15,7 +15,7 @@
 
 {% block navbar %}
 {% if mode == "new" %}
-      <li><a class="inactive">Atletas</a></li>
+      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
       <li class="active"><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
       <li><a class="inactive">Records</a></li>
       <li><a class="inactive">Noticias</a></li>

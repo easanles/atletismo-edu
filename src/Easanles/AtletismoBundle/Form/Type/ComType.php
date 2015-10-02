@@ -19,7 +19,7 @@ class ComType extends AbstractType
     	    		'label' => 'Fecha de comienzo',
     	    		'widget' => 'single_text',
     	    		'format' => 'dd-MM-yyyy',
-    	    		'placeholder' => 'dd-mm-aaaa',
+    	    		'placeholder' => 'dd/mm/aaaa',
     	    		'invalid_message' => 'Fecha no válida. Formato: dd/mm/aaaa',
     	    		'required' => false))
     	    ->add('desc', 'textarea', array('label' => 'Descripción','required' => false))

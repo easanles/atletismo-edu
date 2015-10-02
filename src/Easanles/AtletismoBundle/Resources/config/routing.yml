@@ -72,9 +72,15 @@ caducar_categoria:
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:caducarCategoria"}   
 
 
+#=======================ATLETAS======================
+listado_atletas:
+   path: /atletas
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:listadoAtletas"}
+
+
 #====================CONFIGURACION===================
 configuracion: #portada configuracion
-    path: /configuracion/
+    path: /configuracion
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
 configuracion_cambiar_ajustes: #ajustes
     path: /configuracion/ajustes

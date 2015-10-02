@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Atleta
  *
  * @ORM\Table(name="atl")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\AtletaRepository")
  */
 class Atleta
 {
@@ -134,19 +134,19 @@ class Atleta
       
     /**
      * @var array_collection
-     * @ORM\OneToMany(targetEntity="Participacion", mappedBy="sid", cascade={"all"})
+     * ORM\OneToMany(targetEntity="Participacion", mappedBy="sid", cascade={"all"})
      **/
     private $participaciones;
     
     /**
      * @var array_collection
-     * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="sid", cascade={"all"})
+     * ORM\OneToMany(targetEntity="Inscripcion", mappedBy="sid", cascade={"all"})
      **/
     private $inscripciones;
     
     /**
      * @var array_collection
-     * @ORM\OneToMany(targetEntity="Intento", mappedBy="sid", cascade={"all"})
+     * ORM\OneToMany(targetEntity="Intento", mappedBy="sid", cascade={"all"})
      **/
     private $intentos;
      

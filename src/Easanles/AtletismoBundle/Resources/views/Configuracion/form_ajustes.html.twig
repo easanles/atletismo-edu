@@ -1,5 +1,3 @@
-                {% block dumpv %}{% if dumpv is defined %}{{ dump(dumpv) }}{% endif %}{% endblock %}
-         
          <div class="row">
             <form id="cfg-form" class="form-horizontal" action="{{ path("configuracion_cambiar_ajustes") }}" method="post">
                <div class="form-group{% if errFIniTemp is defined %} has-error has-feedback{% endif %}{% if okFIniTemp is defined %} has-success has-feedback{% endif %}">
