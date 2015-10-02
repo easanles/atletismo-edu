@@ -71,6 +71,7 @@
           <li class="active">Portada Admin</li>
        {% endblock %}
        </ol>
+       {% block dumpv %}{% if dumpv is defined %}{{ dump(dumpv) }}{% endif %}{% endblock %}
        {% block container %}
        <div class="container-fluid">
           <div class="jumbotron">

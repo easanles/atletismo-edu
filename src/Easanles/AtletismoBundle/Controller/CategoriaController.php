@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Form\Type\CatType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
+use Easanles\AtletismoBundle\Helpers\Helpers;
 
 class CategoriaController extends Controller
 {
@@ -24,8 +25,9 @@ class CategoriaController extends Controller
     }
     
     public function crearCategoriaAction(Request $request) {
-    	$cat = new Categoria();
-    	$cat->setTIniVal(date("Y"));  //TODO: hallar correctamente la temporada actual (no es igual al año actual)
+      $em = $this->getDoctrine()->getManager();
+    	$cat = new Categoria();    	 
+    	$cat->setTIniVal(Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y')));
     	
     	$form = $this->createForm(new CatType(), $cat);
     	 
@@ -47,7 +49,6 @@ class CategoriaController extends Controller
     				throw new Exception("Ya existe una categoría vigente con el nombre \"".$nombre."\"");
     			}
     			
-    			$em = $this->getDoctrine()->getManager();
     			$em->persist($cat);
     			$em->flush();
     		} catch (\Exception $e) {
@@ -144,7 +145,7 @@ class CategoriaController extends Controller
     	 	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('configuracion'));
     	 	 return $response;
     	 } else {
-    	 	 $cat->setTFinVal(date("Y")); //TODO: marcar correctamente la temporada de fin (no es igual al año actual)
+    	 	 $cat->setTFinVal(Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y')));
     	 	 try {
     	 	 	$em->flush();
     	 	 } catch (\Exception $e) {

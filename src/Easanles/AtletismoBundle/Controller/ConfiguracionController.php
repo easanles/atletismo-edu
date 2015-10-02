@@ -18,8 +18,11 @@ class ConfiguracionController extends Controller {
 	
     public function menu_configuracionAction() {
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
+    	if ($fIniTempObj == null) $fIniTempVal = "";
+      else $fIniTempVal = $fIniTempObj->getValor();
     	$ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
-    			"fIniTemp" => $repository->findOneBy(array("clave" => "fIniTemp"))->getValor()
+    			"fIniTemp" => $fIniTempVal
     	))->getContent();
     	
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig', array(
@@ -38,20 +41,18 @@ class ConfiguracionController extends Controller {
     	 if ($fIniTempString == null){
     	 	 $parametros["fIniTemp"] = $fIniTempObj->getValor();
     	 } else {
+    	 	 $parametros["fIniTemp"] = $fIniTempString;
     	 	  if (!Helpers::checkDayMonth($fIniTempString)){
-    	 	  	  $parametros["fIniTemp"] = $fIniTempString;
     	 	  	  $parametros["errFIniTemp"] = "Formato de fecha: dd/mm (dd = dia, mm = mes)";
     	 	  } else {
     	 	  	  $datos = explode("/", $fIniTempString);
     	 	  	  if (!checkdate(trim($datos[1]), trim($datos[0]), 2015)){ //Cualquier año no bisiesto
-    	 	  		  $parametros["fIniTemp"] = $fIniTempString;
     	 	  		  $parametros["errFIniTemp"] = "Fecha no valida";
     	 	  	  } else {
-    	 	  	  	  $prevString = $fIniTempObj->getValor();
-    	 	  	  	  if (!strcmp($prevString, $fIniTempString)) { //Comprobar cambios
+    	 	  	  	  $prevString = $fIniTempObj->getValor();  	 	  	  	   
+    	 	  	  	  if (!(strcmp($prevString, $fIniTempString) == 0)) { //Comprobar si hay cambios
     	 	  	  	     $parametros["okFIniTemp"] = true;
     	 	  		     $fIniTempObj->setValor(trim($datos[0])."/".trim($datos[1]));
-    	 	  		     $parametros["fIniTemp"] = $fIniTempObj->getValor();
     	 	  	  	  }
     	 	  	  }
     	 	  }

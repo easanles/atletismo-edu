@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Form\Type\ComType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Easanles\AtletismoBundle\Helpers\Helpers;
 
 
 class CompeticionController extends Controller {
@@ -31,6 +32,8 @@ class CompeticionController extends Controller {
     
     public function crearCompeticionAction(Request $request) {
     	 $com = new Competicion();
+    	 $com->setTemp(Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y')));
+    	 
     	 $form = $this->createForm(new ComType(), $com);
     	 
     	 $form->handleRequest($request);

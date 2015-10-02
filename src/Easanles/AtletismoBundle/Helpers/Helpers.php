@@ -8,14 +8,44 @@ use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Entity\Categoria;
 use Easanles\AtletismoBundle\Entity\Config;
+use Doctrine\ORM\EntityManager;
 
 class Helpers {
 	
+	/**
+	 * Comprueba si el string recibido como fecha sigue el formato dd/mm
+	 * @param string $date Cadena de texto indicando dia y fecha 
+	 * @return boolean true si sigue el formato dd/mm
+	 */
 	public static function checkDayMonth($date){
-		//return date_parse_from_format("dd/mm" , $date);
 		return \preg_match("/^\s*\d?\d\s*\/\s*\d\d\s*$/", $date);
 	}
 	
+   /**
+    * Dado un dia y un mes, obtiene la temporada a la que pertenece esa fecha
+    * @param $doctrine El servicio Doctrine
+    * @param int $dia Dia del año en forma numérica
+    * @param int $mes Mes del año en forma numérica
+    * @param int $ano Año
+    * @return int El año de inicio de la temporada
+    */
+	public static function getTempYear($doctrine, $dia, $mes, $ano){
+		$repo = $doctrine->getRepository('EasanlesAtletismoBundle:Config');
+    	$fIniTempObj = $repo->findOneBy(array("clave" => "fIniTemp"));
+    	if ($fIniTempObj == null) return $ano;
+    	else {
+    		$fIniTempVal = $fIniTempObj->getValor();
+    		$datos = explode("/", $fIniTempVal);
+    		if (($mes >= $datos[1]) && ($dia >= $datos[0]))
+    			   return $ano;
+    		else return $ano - 1;
+    	}
+	}
+	
+	/**
+	 * Ajusta los valores iniciales de la base de datos
+	 * @param EntityManager $em El EntityManager
+	 */
 	public static function defaultBDValues($em){
 		$fIniTemp = new Config();
 		$fIniTemp->setClave("fIniTemp")->setValor("01/11");
