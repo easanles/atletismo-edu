@@ -9,6 +9,7 @@ use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Entity\Categoria;
 use Easanles\AtletismoBundle\Entity\Config;
 use Doctrine\ORM\EntityManager;
+use Easanles\AtletismoBundle\Entity\Atleta;
 
 class Helpers {
 	
@@ -370,6 +371,79 @@ class Helpers {
 		->setRonda(1)
 		->setNombre("Final");
 		$em->persist($pru);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre1")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(false)
+		->setFnac(new \DateTime("1990/07/22"))
+		->setNick("Nick1")
+		->setDni("1234567A")
+		->setLfga("AG-1234567")
+		->setLxogade("ABC123456");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre2")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(false)
+		->setFnac(new \DateTime("1988/07/22"))
+		->setNick("Nick2")
+		->setDni("1234568B")
+		->setLfga("AG-1234568")
+		->setLxogade("ABC123457");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre3")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(true)
+		->setFnac(new \DateTime("1992/07/22"))
+		->setNick("Nick3")
+		->setDni("1234569C")
+		->setLfga("AG-1234569")
+		->setLxogade("ABC123458");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre4")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(false)
+		->setFnac(new \DateTime("1994/07/22"))
+		->setNick("Nick4")
+		->setDni("1234242C")
+		->setLfga("AG-1233426")
+		->setLxogade("ABC123454");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre5")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(true)
+		->setFnac(new \DateTime("1996/07/22"))
+		->setNick("Nick5")
+		->setDni("1234560G")
+		->setLfga("AG-1764567")
+		->setLxogade("ABC124556");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre6")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(false)
+		->setFnac(new \DateTime("1976/12/01"))
+		->setNick("Nick6")
+		->setDni("5234567A")
+		->setLfga("AG-4234567");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre7")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(true)
+		->setFnac(new \DateTime("2006/07/22"))
+		->setDni("9234567A");
+		$em->persist($atl);
 		
 		$em->flush();
 	}

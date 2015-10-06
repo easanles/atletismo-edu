@@ -13,7 +13,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-label').html("Nuevo tipo de prueba");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
-    	   $.getJSON("./tipoprueba/nuevo", function(data, status){
+    	   $.getJSON("./configuracion/tipoprueba/nuevo", function(data, status){
     		  if (status = "success"){
     		     $("#dialog-body").html(data.message);
     		     collectionHolder = $('#form-collection');
@@ -27,14 +27,14 @@ function showModal(type, data1, data2, data3){
        case ("delTPR"):{ //Borrar tipo de prueba
     	   $('#dialog-label').html("Borrar tipo de prueba");
 		   $("#dialog-body").html("¿Está seguro de borrar el tipo de prueba <strong>" + data1 + "</strong>?");
-		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./tipoprueba/borrar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</a>");           
+		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./configuracion/tipoprueba/borrar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</a>");           
        } break;
        
        case ("ediTPR"): { //Editar tipo de prueba
     	   $('#dialog-label').html("Editar tipo de prueba <small> - " + data1 + "</small>");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
-    	   $.getJSON("./tipoprueba/editar/" + data2, function(data, status){
+    	   $.getJSON("./configuracion/tipoprueba/editar/" + data2, function(data, status){
   		      if (status = "success"){
   			    $("#dialog-body").html(data.message);
                 collectionHolder = $('#form-collection');
@@ -125,7 +125,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-label').html("Agregar categoría");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
-    	   $.getJSON("./categoria/nuevo", function(data, status){
+    	   $.getJSON("./configuracion/categoria/nuevo", function(data, status){
    		      if (status = "success"){
    			    $("#dialog-body").html(data.message);
    	          } else {
@@ -138,7 +138,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-label').html("Editar categoría <small> - " + data1 + "</small>");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
-    	   $.getJSON("./categoria/editar/" + data2, function(data, status){
+    	   $.getJSON("./configuracion/categoria/editar/" + data2, function(data, status){
    		      if (status = "success"){
    			    $("#dialog-body").html(data.message);
    	          } else {
@@ -150,7 +150,7 @@ function showModal(type, data1, data2, data3){
 	   case ("cadCAT"): { //Caducar categoria
     	   $('#dialog-label').html("Caducar categoría");
     	   $("#dialog-body").html("¿Está seguro de marcar como caducada la categoría <strong>" + data1 + "</strong>?");
-		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./categoria/caducar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</a>");           
+		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./configuracion/categoria/caducar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</a>");           
 	   } break;
        
        default: break;

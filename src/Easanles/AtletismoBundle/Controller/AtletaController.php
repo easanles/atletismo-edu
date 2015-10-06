@@ -8,8 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 class AtletaController extends Controller {
 	
 	public function listadoAtletasAction(Request $request) {
-		return $this->render('EasanlesAtletismoBundle:Atleta:list_atleta.html.twig',
-				array());
+		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$atletas = $repository->findAllOrdered();
+		
+		$parametros = array('atletas' => $atletas);
+		
+		return $this->render('EasanlesAtletismoBundle:Atleta:list_atleta.html.twig', $parametros);
 	}
 	
 }

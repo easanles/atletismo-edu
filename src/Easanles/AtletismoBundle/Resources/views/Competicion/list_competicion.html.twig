@@ -37,7 +37,7 @@
       </div>
       <a class="btn btn-primary" href="{{ path('crear_competicion') }}"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-6 col-sm-4 pull-right">
-         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)">
+         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
          <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
@@ -59,7 +59,7 @@
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">
 {% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
             <td class="clickable hidden-xs" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.sede }}</td>
-            <td class="clickable{% if com.numpruebas == 0 %} warning text-warning{% endif %}" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.numpruebas }} <a type="button" class="btn btn-xs btn-{% if com.numpruebas == 0 %}warning{% else %}default{% endif %} pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list"></span></a></td>
+            <td class="clickable{% if com.numpruebas == 0 %} warning text-warning{% endif %}" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.numpruebas }} <a type="button" class="btn btn-xs btn-{% if com.numpruebas == 0 %}warning{% else %}default{% endif %} pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">0</td>
             <td>
                <div class="btn-group visible-xs-block">
@@ -70,7 +70,7 @@
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar"href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span></a>
+                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span></a>
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><span class="glyphicon glyphicon-remove"></span></button>
                </div>
             </td>
