@@ -8,9 +8,11 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class CategoriaRepository extends EntityRepository {
    public function findAllCurrent() {
-		return $this->getEntityManager()
-		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL')
+		$result = $this->getEntityManager()
+		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.edadMax IS NOT NULL ORDER BY cat.edadMax ASC')
 		->getResult();
+		$result[] = $this->findCurrentEdadMaxNull()[0];
+		return $result;
 	}
 	
 	public function findOneCurrent($nombre) {
@@ -22,7 +24,19 @@ class CategoriaRepository extends EntityRepository {
 	
 	public function findCurrentEdadMaxNull() {
 		return $this->getEntityManager()
-		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.edadMax IS NULL')
+		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.edadMax IS NULL')
 		->getResult();
 	}
+	
+	public function findForEdad($edad) {
+		$current = $this->findAllCurrent();
+		foreach($current as $cat){
+			if ($cat['edadMax'] != null){
+			   if ($edad <= $cat['edadMax']){
+			   	return $cat;
+			   }
+			} else return $cat;
+		}
+	}
+	
 }

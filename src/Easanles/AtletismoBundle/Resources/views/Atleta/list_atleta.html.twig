@@ -53,6 +53,7 @@
             <th>Nick</th>
             <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
+         {% set catIndex = 0 %}
          {% for atl in atletas %}
          <tr>
          <td class="hidden-xs">{{ atl.id }}</td>
@@ -62,7 +63,7 @@
          </td>
          <td class="hidden-xs">{% if atl.lfga is null %} <em>Sin L. FGA</em> {% else %} {{ atl.lfga }} {% endif %} </td>
          <td class="hidden-xs">{% if atl.lxogade is null %} <em>Sin L. XOGADE</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
-         <td>Categoría</td>
+         <td>{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
          <td>{{ atl.apellidos }}</td>
          <td>{{ atl.nombre }}</td>
          <td class="hidden-xs">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>

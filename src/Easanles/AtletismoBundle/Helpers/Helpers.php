@@ -43,6 +43,16 @@ class Helpers {
     	}
 	}
 	
+	/** Obtiene la edad actual dada una fecha de nacimiento
+	 * @param \DateTime $fecha La fecha de nacimiento
+	 * @return int Edad actual 
+	 */
+	public static function getEdad($fecha){
+		$now = new \DateTime();
+		$interval = $now->diff($fecha);
+		return $interval->y;
+	}
+	
 	/**
 	 * Ajusta los valores iniciales de la base de datos
 	 * @param EntityManager $em El EntityManager
@@ -54,6 +64,10 @@ class Helpers {
 		$em->flush();
 	}
 	
+	/**
+	 * Llena la base de datos con datos de ejemplo para realizar pruebas
+	 * @param $em El Entity Manager
+	 */
 	public static function poblarBD($em){
 		$com1 = new Competicion();
 		$com1->setNombre("Competicion 1")
@@ -443,6 +457,14 @@ class Helpers {
 		->setSexo(true)
 		->setFnac(new \DateTime("2006/07/22"))
 		->setDni("9234567A");
+		$em->persist($atl);
+		
+		$atl = new Atleta();
+		$atl->setNombre("Nombre8")
+		->setApellidos("ApellidoA ApellidoB")
+		->setSexo(false)
+		->setFnac(new \DateTime("2012/07/22"))
+		->setDni("9999999Z");
 		$em->persist($atl);
 		
 		$em->flush();
