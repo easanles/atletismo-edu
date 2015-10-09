@@ -122,3 +122,25 @@ Easanles\AtletismoBundle\Entity\Categoria:
         - NotBlank: 
            message: Este campo no debe estar en blanco
         
+Easanles\AtletismoBundle\Entity\Atleta:
+  properties:
+     nombre:
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     apellidos:
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     fnac:
+        - Type:
+           type: DateTime
+           message: Este dato no es una fecha válida
+     sexo:
+        - NotNull: 
+           message: Este dato no debe ser nulo
+     email:
+        - Email:
+           message: Este dato no es una dirección de correo electrónico válido
+     fotoFile:
+        - Image: 
+           mimeTypesMessage: El archivo recibido no es un archivo de imagen      
+  

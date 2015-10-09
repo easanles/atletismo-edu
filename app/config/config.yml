@@ -89,4 +89,11 @@ vich_uploader:
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
+        atleta_image:
+            uri_prefix:         /www/web/images/atl
+            upload_destination: "%kernel.root_dir%/../web/images/atl"
+            namer:              vich_uploader.namer_uniqid
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true
             

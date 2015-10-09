@@ -262,6 +262,8 @@ class Competicion {
 		 return $this->cartelFile;
 	}
 	
+	
+	
 	public function getEsFeder() {
 		return $this->esFeder;
 	}

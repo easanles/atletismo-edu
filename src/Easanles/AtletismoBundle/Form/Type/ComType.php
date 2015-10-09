@@ -8,8 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  
 class ComType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre de la competición'))
     	    ->add('temp', 'integer', array('label' => 'Temporada (año de inicio)'))
@@ -37,13 +36,11 @@ class ComType extends AbstractType
     	    ->add('esoficial', 'checkbox', array('label' => 'Competición oficial del club','required' => false));
     }
  
-    public function getName()
-    {
+    public function getName() {
         return 'com';
     }
     
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
     	$resolver->setDefaults(array(
     			'data_class' => 'Easanles\AtletismoBundle\Entity\Competicion',
     	));

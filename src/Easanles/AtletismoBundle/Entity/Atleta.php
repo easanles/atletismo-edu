@@ -4,12 +4,15 @@ namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Atleta
  *
  * @ORM\Table(name="atl")
  * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\AtletaRepository")
+ * @Vich\Uploadable
  */
 class Atleta
 {
@@ -116,6 +119,18 @@ class Atleta
      * @ORM\Column(name="fotoatl", type="string", length=255, nullable=true)
      */
     private $foto;
+    
+    /**
+     * @var File
+     * @Vich\UploadableField(mapping="atleta_image", fileNameProperty="foto")
+     */
+    private $fotoFile;
+    
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
     
     /**
      * @var string
@@ -302,6 +317,27 @@ class Atleta
 	public function setEmail($email) {
 		$this->email = $email;
 		return $this;
+	}
+	
+	//*******VICH**********
+	public function getUpdatedAt() {
+		return $this->updatedAt;
+	}
+	public function setUpdatedAt($updatedAt) {
+		$this->updatedAt = $updatedAt;
+		return $this;
+	}
+	public function setFotoFile(File $image = null){
+		$this->fotoFile = $image;
+		if ($image) {
+			$this->updatedAt = new \DateTime('now');
+		}
+	}
+	/**
+	 * @return File
+	 */
+	public function getFotoFile() {
+		return $this->fotoFile;
 	}
     
 }

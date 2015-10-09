@@ -14,16 +14,16 @@ listado_competiciones: #portada competiciones
     path: /competiciones
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listadoCompeticiones"}
 crear_competicion:
-    path: /competiciones/nuevo/
+    path: /competiciones/nuevo
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:crearCompeticion"}
 borrar_competicion:
     path: /competiciones/borrar
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:borrarCompeticion"}
 editar_competicion:
-    path: /competiciones/editar/{id}/
+    path: /competiciones/editar/{id}
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:editarCompeticion"}
 ver_competicion:
-    path: /competiciones/{id}/
+    path: /competiciones/{id}
     defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
     
 
@@ -76,7 +76,12 @@ caducar_categoria:
 listado_atletas:
    path: /atletas
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:listadoAtletas"}
-
+crear_atleta:
+   path: /atletas/nuevo
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:crearAtleta"}
+ver_atleta:
+   path: /atletas/{id}
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:verAtleta"}
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion

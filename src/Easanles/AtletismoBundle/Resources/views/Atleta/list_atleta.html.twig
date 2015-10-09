@@ -31,7 +31,7 @@
             <option value="" {% if cat is not defined %}selected{% endif %}>Todas las categorías</option>
          </select>
       </div>
-      <a class="btn btn-primary" href="" disabled><span class="glyphicon glyphicon-plus"></span> Añadir</a>
+      <a class="btn btn-primary" href="{{ path('crear_atleta') }}"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-6 col-sm-4 pull-right">
          <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)" disabled>
          <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="atlSearch()" disabled><span class="glyphicon glyphicon-search"></span></button></div>
@@ -56,19 +56,19 @@
          {% set catIndex = 0 %}
          {% for atl in atletas %}
          <tr>
-         <td class="hidden-xs">{{ atl.id }}</td>
-         <td class="visible-xs-block">
-            <small>{% if atl.lfga is null %} <em>---</em> {% else %} {{ atl.lfga }} {% endif %}</small><br>
-            <small>{% if atl.lxogade is null %} <em>---</em> {% else %} {{ atl.lxogade }} {% endif %}</small>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.id }}</td>
+         <td class="visible-xs-block clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">
+            <small>{% if atl.lfga is null %} <em class="text-muted">---</em> {% else %} {{ atl.lfga }} {% endif %}</small><br>
+            <small>{% if atl.lxogade is null %} <em class="text-muted">---</em> {% else %} {{ atl.lxogade }} {% endif %}</small>
          </td>
-         <td class="hidden-xs">{% if atl.lfga is null %} <em>Sin L. FGA</em> {% else %} {{ atl.lfga }} {% endif %} </td>
-         <td class="hidden-xs">{% if atl.lxogade is null %} <em>Sin L. XOGADE</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
-         <td>{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
-         <td>{{ atl.apellidos }}</td>
-         <td>{{ atl.nombre }}</td>
-         <td class="hidden-xs">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
-         <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
-         <td>{% if atl.nick is null %} <em>--</em> {% else %} {{ atl.nick }} {% endif %} </td>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.lfga is null %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.lxogade is null %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
+         <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
+         <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.apellidos }}</td>
+         <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.nombre }}</td>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.fnac|date('d/m/Y') }}</td>
+         <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.nick is null %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
          <td>
             <div class="btn-group visible-xs-block">
                <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>

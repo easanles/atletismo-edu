@@ -1,0 +1,62 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Atleta: {% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}{% endblock %}
+
+{% block navbar %}
+      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+  <li class="active">Atleta: {% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</li>
+{% endblock %}
+
+   {% block modallabel %}Confirmar borrado{% endblock %}
+   {% block modalbody %}
+   <p>¿Confirmar borrado del atleta <strong id="data1">***</strong>?</p>
+   {% endblock %}
+   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="row page-header">Atleta: <small>{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</small></h1>
+    
+   <div class="row">
+      <div class="col-xs-12 col-sm-8 col-sm-push-4">
+         <table class="table table-responsive">
+            <tbody>
+               <tr><td><strong class="visible-xs-block"><abbr title="Licencia FGA">FGA:</abbr></strong><strong class="hidden-xs">Licencia FGA:</strong></td><td colspan="2">{{ atl.lfga }}</td><td><strong class="visible-xs-block"><abbr title="Licencia XOGADE">XOGADE:</abbr></strong><strong class="hidden-xs">Licencia XOGADE:</strong></td><td colspan="2">{{ atl.lxogade }}</td></tr>
+               <tr><td><strong>Apellidos:</strong></td><td colspan="2">{{ atl.apellidos }}</td><td><strong>Nombre:</strong></td><td colspan="2">{{ atl.nombre }}</td></tr>
+               <tr><td><strong>DNI:</strong></td><td>{{ atl.dni }}</td><td><strong>Nick:</strong></td><td>{{ atl.nick }}</td><td><strong class="visible-xs-block"><abbr title="Nacionalidad">Nac.:</abbr></strong><strong class="hidden-xs">Nacionalidad:</strong></td><td>{{ atl.nacion }}</td></tr>
+               <tr><td><strong class="visible-xs-block"><abbr title="Fecha de nacimiento">F. nac.:</abbr></strong><strong class="hidden-xs">Fecha de nacimiento:</strong></td><td>{{ atl.fnac|date('d/m/Y') }}</td><td><strong>Categoría:</strong></td><td>{{ categoria.nombre }}</td><td><strong>Sexo:</strong></td><td>{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
+               <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td></tr>
+               <tr><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
+               <tr><td><strong>Email<span class="hidden-xs"> de contacto</span>:</strong></td><td colspan="5"><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td></tr>
+               <tr><td colspan="6"><strong>Notas:</strong></td></tr>
+               <tr><td colspan="6">{{ atl.notas|nl2br }}</td></tr>
+            </tbody>
+         </table>
+         <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
+         <a type="button" class="btn btn-m btn-default" href=""><span class="glyphicon glyphicon-edit"></span> Editar</a>
+         <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal()"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-sm-pull-8">
+         <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/></a>
+      </div>
+   </div>
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+
+{% endblock %}
+
+
+

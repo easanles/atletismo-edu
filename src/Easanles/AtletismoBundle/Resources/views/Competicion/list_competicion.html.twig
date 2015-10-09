@@ -57,7 +57,7 @@
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.nombre }}</td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">
-{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
+{% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
             <td class="clickable hidden-xs" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.sede }}</td>
             <td class="clickable{% if com.numpruebas == 0 %} warning text-warning{% endif %}" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.numpruebas }} <a type="button" class="btn btn-xs btn-{% if com.numpruebas == 0 %}warning{% else %}default{% endif %} pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar/editar pruebas" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span></a></td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">0</td>

@@ -1,0 +1,147 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}
+   {% if mode == "new" %}Añadir atleta
+   {% elseif mode == "edit" %}Editar atleta
+   {% endif %}
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+   <style> .vich-image img {max-width: 200px} </style>
+{% endblock %}
+
+{% block navbar %}
+      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Noticias</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+  {% if mode == "new" %}
+  <li class="active">Añadir atleta</li>
+  {% elseif mode == "edit" %}
+  <li class="active">Editar atleta</li>
+  {% endif %}
+{% endblock %}
+
+{% block container %}
+   {% if mode == "new" %}
+   <h1 id="container_title" class="row page-header">Añadir atleta</h1>
+   {% elseif mode == "edit" %}
+    <h1 id="container_title" class="row page-header">Editar atleta <small> - ...</small></h1>
+   {% endif %}
+   
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+   
+   <div id="data_form" class="row">
+
+{#{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }#}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    
+    <div class=row">
+       <div class="form_row col-xs-12 col-sm-6">
+          {{ form_row(form.apellidos) }}
+       </div>
+       <div class="form_row col-xs-12 col-sm-3">
+          {{ form_row(form.nombre) }}
+       </div>
+       <div class="form_row col-xs-12 col-sm-3">
+          {{ form_row(form.nick) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-6 col-sm-3">
+          {{ form_row(form.dni) }}
+       </div>
+       <div class="form_row col-xs-6 col-sm-3">
+          {{ form_row(form.fnac) }}
+       </div>
+       <div class="form_row col-xs-6 col-sm-3">
+          {{ form_row(form.sexo) }}
+       </div>
+        <div class="form_row col-xs-6 col-sm-3">
+          {{ form_row(form.bloque) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-9">
+          {{ form_row(form.direccion) }}
+       </div>
+       <div class="form_row col-xs-3">
+          {{ form_row(form.cp) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-6 col-sm-4">
+          {{ form_row(form.localidad) }}
+       </div>
+       <div class="form_row col-xs-6 col-sm-4">
+          {{ form_row(form.provincia) }}
+       </div>
+       <div class="form_row col-xs-6 col-sm-2">
+          {{ form_row(form.pais) }}
+       </div>
+       <div class="form_row col-xs-6 col-sm-2">
+          {{ form_row(form.nacion) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-6 col-sm-3">
+          {{ form_row(form.lfga) }}
+       </div>
+       <div class="form_row col-xs-6 col-sm-3">
+          {{ form_row(form.lxogade) }}
+       </div>
+       <div class="form_row col-xs-12 col-sm-6">
+          {{ form_row(form.email) }}
+       </div>
+    </div>
+    <div class=row">
+       <div class="form_row col-xs-12 col-sm-6">
+          {{ form_errors(form.fotoFile) }}
+          {{ form_widget(form.fotoFile) }}
+       </div>    
+       <div class="col-xs-12 col-sm-6">
+          <div class="row">
+             <div class="form_row col-xs-12">
+                {{ form_row(form.notas) }}
+             </div>
+          </div>
+          <div class="row">
+              {% if mode == "new" %}
+              <a type="button" class="btn btn-m btn-default col-xs-3" href={{ path('listado_atletas') }}><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
+              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Crear</button>
+              {% elseif mode == "edit" %}
+              <a type="button" class="btn btn-m btn-default col-xs-3" href="{{ path('listado_atletas') }}"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
+              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Guardar</button>
+              {% endif %}
+          </div>
+       </div>
+    </div>
+    
+    
+    
+    
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>
+   
+{% endblock %}
+
+{% block js %}
+
+
+{% endblock %}
+

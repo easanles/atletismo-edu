@@ -65,6 +65,22 @@ class Helpers {
 	}
 	
 	/**
+	 * Dado un array de categorias obtener a cual pertenece un atleta
+	 * @param $categorias la lista de categorias vigentes
+	 * @param int $edad La edad del atleta
+	 * @param Categoria La categoria a la que pertenece el atleta
+	 */
+	public static function getCategoria($categorias, $edad){
+		foreach($categorias as $cat){
+			if ($cat['edadMax'] != null){
+				if ($edad <= $cat['edadMax']){
+					return $cat;
+				}
+			} else return $cat;
+		}
+	}
+	
+	/**
 	 * Llena la base de datos con datos de ejemplo para realizar pruebas
 	 * @param $em El Entity Manager
 	 */
