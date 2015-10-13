@@ -8,6 +8,7 @@ use Easanles\AtletismoBundle\Helpers\Helpers;
 use Easanles\AtletismoBundle\Entity\Atleta;
 use Easanles\AtletismoBundle\Form\Type\AtlType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class AtletaController extends Controller {
 	
@@ -31,16 +32,28 @@ class AtletaController extends Controller {
 	
 	public function crearAtletaAction(Request $request) {
 		$atl = new Atleta();
-	
 		$form = $this->createForm(new AtlType(), $atl);
 	
 		$form->handleRequest($request);
 		 
 		if ($form->isValid()) {
 			try {
-
-				// ···
-	
+				$dni = $atl->getDni();
+				if ($dni != null){
+					$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+					$query = $repository->findOneBy(array('dni' => $dni));
+					if ($query != null){
+						$warn_dni = $atl->getWarnDni();
+						if (($warn_dni == null) || (strcmp($warn_dni, $dni) != 0)){
+							$atl->setWarnDni($dni);
+							$form2 = $this->createForm(new AtlType(), $atl);
+							return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
+							      array('form' => $form2->createView(), 'mode' => "new",
+							      		'warning' => "DNI repetido. Confirme la operación volviendo a enviar el formulario"));
+						}
+					}
+				}
+								
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($atl);
 	
@@ -66,6 +79,27 @@ class AtletaController extends Controller {
 		if ($atl != null) {
 			return $this->render('EasanlesAtletismoBundle:Atleta:ver_atleta.html.twig',
 					array('atl' => $atl, 'categoria' => $categoria));
+		} else {
+			$response = new Response('No existe el atleta con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_atletas').'">Volver</a>');
+			$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_atletas'));
+			return $response;
+		}
+	}
+	
+	public function borrarAtletaAction(Request $request){
+		$id = $request->query->get('i');
+	
+		$em = $this->getDoctrine()->getManager();
+		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$atl = $repository->find($id);
+		if ($atl != null){
+			try {
+				$em->remove($atl);
+				$em->flush();
+			} catch (\Exception $e) {
+				return new Response($e->getMessage());
+			}
+			return $this->redirect($this->generateUrl('listado_atletas'));
 		} else {
 			$response = new Response('No existe el atleta con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_atletas').'">Volver</a>');
 			$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_atletas'));

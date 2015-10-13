@@ -44,7 +44,10 @@ class AtlType extends AbstractType
         		'download_link' => false,
         ))
         ->add('notas', 'textarea', array('label' => 'Notas','required' => false))
-        ->add('email', 'email', array('label' => 'Email de contacto','required' => false));
+        ->add('email', 'email', array('label' => 'Email de contacto','required' => false))
+        ->add('warn_dni', 'hidden', array(
+        		'required' => false
+        ));
     }
  
     public function getName() {

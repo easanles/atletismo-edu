@@ -69,9 +69,9 @@ class CompeticionController extends Controller {
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	 $com = $repository->find($id);
     	 if ($com != null){
-    	    $em->remove($com);
-    	    try {
-    	   	$em->flush();
+    	   try {
+    	      $em->remove($com);
+    	    	$em->flush();
     	   } catch (\Exception $e) {
     	   	return new Response($e->getMessage());
     	   }

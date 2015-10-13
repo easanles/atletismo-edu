@@ -85,6 +85,10 @@ h1 {
    padding-left: 3em;
 }
 
+.table small{
+   white-space: nowrap;
+   text-transform: uppercase;
+}
 
 /*http://getbootstrap.com/examples/sticky-footer-navbar/*/
 .footer {

@@ -152,6 +152,11 @@ function showModal(type, data1, data2, data3){
     	   $("#dialog-body").html("¿Está seguro de marcar como caducada la categoría <strong>" + data1 + "</strong>?");
 		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./configuracion/categoria/caducar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</a>");           
 	   } break;
+	   
+	   case ("delATL"): { //Borrar atleta
+		   $('#data1').html(data1);
+		   $('#confirmbutton').attr("href", data2);
+	   } break;
        
        default: break;
 	}

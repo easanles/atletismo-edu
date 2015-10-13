@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Easanles\AtletismoBundle\Helpers\Helpers;
 
 /**
  * Atleta
@@ -142,8 +145,7 @@ class Atleta
      * @var string
      * @ORM\Column(name="emailatl", type="string", length=255, nullable=true)
      */
-    private $email;
-    
+    private $email;    
 
     /********************* FOREIGN KEYS *****************************/
       
@@ -338,6 +340,36 @@ class Atleta
 	 */
 	public function getFotoFile() {
 		return $this->fotoFile;
+	}
+	
+	
+	/********************** VALIDACION ***********************/
+	
+	/**
+	 * @var string
+	 */
+	private $warn_dni;
+	
+	public function getWarnDni() {
+		return $this->warn_dni;
+	}
+	public function setWarnDni($warn_dni) {
+		$this->warn_dni = $warn_dni;
+		return $this;
+	}
+	
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+		if ($this->getLxogade() != null){
+			$edad = Helpers::getEdad($this->getFnac());
+			if (($edad < 6) || ($edad > 16)) {
+				$context->buildViolation("Solo personas de entre 6 y 16 años pueden tener licencia XOGADE")
+				->atPath('lxogade')
+				->addViolation();
+			}
+		}
 	}
     
 }
