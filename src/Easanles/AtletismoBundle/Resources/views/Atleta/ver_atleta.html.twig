@@ -43,7 +43,7 @@
                <tr><td colspan="6">{{ atl.notas|nl2br }}</td></tr>
             </tbody>
          </table>
-         <table class="table table-responsive visible-xs-block" style="display: table !important;">
+         <table class="table table-responsive visible-xs-block"">
             <tbody>
                <tr><td><strong>FGA:</strong></td><td><small>{{ atl.lfga }}</small></td><td><strong>XOGADE:</strong></td><td><small>{{ atl.lxogade }}</small></td></tr>
                <tr><td><strong>Apellidos:</strong></td><td colspan="3">{{ atl.apellidos }}</td></tr>
@@ -62,8 +62,8 @@
             </tbody>
          </table>
          <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
-         <a type="button" class="btn btn-m btn-default" href="" disabled><span class="glyphicon glyphicon-edit"></span> Editar</a>
-         <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal()" disabled><span class="glyphicon glyphicon-remove"></span> Borrar</button>
+         <a type="button" class="btn btn-m btn-default" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
+         <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', null)"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
       </div>
       <div class="col-xs-12 col-sm-3 col-sm-pull-9">
          <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/></a>

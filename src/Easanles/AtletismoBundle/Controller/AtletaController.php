@@ -38,20 +38,62 @@ class AtletaController extends Controller {
 		 
 		if ($form->isValid()) {
 			try {
+				$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+					
+				$query = $repository->findOneBy(array(
+						'apellidos' => $atl->getApellidos(),
+				      'nombre' => $atl->getNombre()
+				));
+				if ($query != null){
+					throw new Exception("Ya existe un atleta llamado ".$atl->getApellidos().", ".$atl->getNombre());
+				}
+				if ($atl->getLfga() != null){
+					$query = $repository->findOneBy(array('lfga' => $atl->getLfga()));
+					if ($query != null){
+						throw new Exception("Ya existe un atleta con este código de licencia FGA");
+					}
+				}
+				if ($atl->getLxogade() != null){
+					$query = $repository->findOneBy(array('lxogade' => $atl->getLxogade()));
+					if ($query != null){
+						throw new Exception("Ya existe un atleta con este código de licencia XOGADE");
+					}
+				}
+				
+				$mensaje = "";
+				$parametros = array('mode' => "new");
+				$doWarn = false;
 				$dni = $atl->getDni();
 				if ($dni != null){
-					$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 					$query = $repository->findOneBy(array('dni' => $dni));
 					if ($query != null){
 						$warn_dni = $atl->getWarnDni();
 						if (($warn_dni == null) || (strcmp($warn_dni, $dni) != 0)){
 							$atl->setWarnDni($dni);
-							$form2 = $this->createForm(new AtlType(), $atl);
-							return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-							      array('form' => $form2->createView(), 'mode' => "new",
-							      		'warning' => "DNI repetido. Confirme la operación volviendo a enviar el formulario"));
+							$doWarn = true;
+							$parametros['warnAtDni'] = true;
+							$mensaje = $mensaje."DNI repetido. ";
 						}
 					}
+				} else $atl->setWarnDni($dni);
+				$nick = $atl->getNick();
+				if ($nick != null){
+					$query = $repository->findOneBy(array('nick' => $nick));
+					if ($query != null){
+						$warn_nick = $atl->getWarnNick();
+						if (($warn_nick == null) || (strcmp($warn_nick, $nick) != 0)){
+							$doWarn = true;
+							$atl->setWarnNick($nick);
+							$parametros['warnAtNick'] = true;
+							$mensaje = $mensaje."Nick repetido. ";
+						}
+					}
+				} else $atl->setWarnNick($nick);
+				if ($doWarn){
+					$form2 = $this->createForm(new AtlType(), $atl);
+					$parametros['form'] = $form2->createView();
+					$parametros['warning'] = $mensaje."Confirme la operación volviendo a enviar el formulario";
+					return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig', $parametros);
 				}
 								
 				$em = $this->getDoctrine()->getManager();
@@ -105,5 +147,105 @@ class AtletaController extends Controller {
 			$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_atletas'));
 			return $response;
 		}
+	}
+	
+	public function editarAtletaAction(Request $request, $id){
+		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$atl = $repository->find($id);
+	
+		if ($atl != null) {
+			$prevApellidos = $atl->getApellidos();
+			$prevNombre = $atl->getNombre();
+			$prevLfga = $atl->getLfga();
+			$prevLxogade = $atl->getLxogade();
+			$prevDni = $atl->getDni();
+			$prevNick = $atl->getNick();
+			if ($atl->getNick() != null){
+				$editando = $atl->getNick();
+			} else $editando = $atl->getApellidos().", ".$atl->getNombre();
+			$form = $this->createForm(new AtlType(), $atl);
+			if ($atl->getSexo() == false){
+				$form->get("sexo")->setData("0");
+			}
+			 
+			$form->handleRequest($request);
+			 
+			if ($form->isValid()) {
+				try {
+					$apellidos = $atl->getApellidos();
+					$nombre = $atl->getNombre();
+					$query = $repository->findOneBy(array(
+							'apellidos' => $atl->getApellidos(),
+							'nombre' => $atl->getNombre()
+					));
+					if (($query != null) && !(($prevApellidos == $apellidos) && ($prevNombre == $nombre))){
+						throw new Exception("Ya existe un atleta llamado ".$atl->getApellidos().", ".$atl->getNombre());
+		         }
+		         
+		         $lfga = $atl->getLfga();
+		         if ($atl->getLfga() != null){
+		         	$query = $repository->findOneBy(array('lfga' => $atl->getLfga()));
+		         	if (($query != null) && !($prevLfga == $lfga)){
+		         		throw new Exception("Ya existe un atleta con este código de licencia FGA");
+		         	}
+		         }
+		         $lxogade = $atl->getLxogade();
+		         if ($atl->getLxogade() != null){
+		         	$query = $repository->findOneBy(array('lxogade' => $atl->getLxogade()));
+		         	if (($query != null) && !($prevLxogade == $lxogade)){
+		         	   throw new Exception("Ya existe un atleta con este código de licencia XOGADE");
+		         	}
+		         }
+		         
+				$mensaje = "";
+				$parametros = array('mode' => "edit", "editando" => $editando);
+				$doWarn = false;
+				$dni = $atl->getDni();
+				if (($dni != null) && !($prevDni == $dni)){
+					$query = $repository->findOneBy(array('dni' => $dni));
+					if ($query != null){
+						$warn_dni = $atl->getWarnDni();
+						if (($warn_dni == null) || (strcmp($warn_dni, $dni) != 0)){
+							$atl->setWarnDni($dni);
+							$doWarn = true;
+							$parametros['warnAtDni'] = true;
+							$mensaje = $mensaje."DNI repetido. ";
+						}
+					}
+				} else $atl->setWarnDni($dni);
+				$nick = $atl->getNick();
+				if (($nick != null) && !($prevNick == $nick)){
+					$query = $repository->findOneBy(array('nick' => $nick));
+					if ($query != null){
+						$warn_nick = $atl->getWarnNick();
+						if (($warn_nick == null) || (strcmp($warn_nick, $nick) != 0)){
+							$doWarn = true;
+							$atl->setWarnNick($nick);
+							$parametros['warnAtNick'] = true;
+							$mensaje = $mensaje."Nick repetido. ";
+						}
+					}
+				} else $atl->setWarnNick($nick);
+				if ($doWarn){
+					$form2 = $this->createForm(new AtlType(), $atl);
+					$parametros['form'] = $form2->createView();
+					$parametros['warning'] = $mensaje."Confirme la operación volviendo a enviar el formulario";
+					return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig', $parametros);
+				}
+		         
+		         $em = $this->getDoctrine()->getManager();
+			      $em->persist($atl);
+	
+				   $em->flush();
+			   } catch (\Exception $e) {
+				   $exception = $e->getMessage();
+				   return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
+						   array('form' => $form->createView(), 'mode' => "edit", "editando" => $editando, 'exception' => $exception));
+			   }
+			   return $this->redirect($this->generateUrl('listado_atletas'));
+		   }
+		}
+		return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
+				array('form' => $form->createView(), 'mode' => "edit", "editando" => $editando));
 	}
 }

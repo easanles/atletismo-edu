@@ -17,6 +17,4 @@ class AtletaRepository extends EntityRepository {
 	public function searchByParameters() {	
 	}
 	
-	public function checkData(){
-	}
 }

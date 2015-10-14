@@ -350,6 +350,11 @@ class Atleta
 	 */
 	private $warn_dni;
 	
+	/**
+	 * @var string
+	 */
+	private $warn_nick;
+	
 	public function getWarnDni() {
 		return $this->warn_dni;
 	}
@@ -357,11 +362,21 @@ class Atleta
 		$this->warn_dni = $warn_dni;
 		return $this;
 	}
+	public function getWarnNick() {
+		return $this->warn_nick;
+	}
+	public function setWarnNick($warn_nick) {
+		$this->warn_nick = $warn_nick;
+		return $this;
+	}
 	
 	/**
 	 * @Assert\Callback
 	 */
 	public function validate(ExecutionContextInterface $context) {
+		$this->dni = strtoupper($this->dni);
+		$this->lfga = strtoupper($this->lfga);
+		$this->lxogade = strtoupper($this->lxogade);
 		if ($this->getLxogade() != null){
 			$edad = Helpers::getEdad($this->getFnac());
 			if (($edad < 6) || ($edad > 16)) {
@@ -371,5 +386,7 @@ class Atleta
 			}
 		}
 	}
+
+	
     
 }

@@ -85,7 +85,10 @@ ver_atleta:
 borrar_atleta:
     path: /atleta/borrar
     defaults: {_controller: "EasanlesAtletismoBundle:Atleta:borrarAtleta"}   
-   
+editar_atleta:
+    path: /atleta/editar/{id}
+    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:editarAtleta"}
+     
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion

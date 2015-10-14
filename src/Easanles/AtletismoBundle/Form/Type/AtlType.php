@@ -47,6 +47,9 @@ class AtlType extends AbstractType
         ->add('email', 'email', array('label' => 'Email de contacto','required' => false))
         ->add('warn_dni', 'hidden', array(
         		'required' => false
+        ))
+        ->add('warn_nick', 'hidden', array(
+        		'required' => false
         ));
     }
  

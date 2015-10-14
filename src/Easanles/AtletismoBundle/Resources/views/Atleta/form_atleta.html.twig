@@ -35,7 +35,7 @@
    {% if mode == "new" %}
    <h1 id="container_title" class="row page-header">Añadir atleta</h1>
    {% elseif mode == "edit" %}
-    <h1 id="container_title" class="row page-header">Editar atleta <small> - ...</small></h1>
+    <h1 id="container_title" class="row page-header">Editar atleta <small> - {{ editando }}</small></h1>
    {% endif %}
    
    {% if exception is defined %}
@@ -52,7 +52,7 @@
 
 {{ form_start(form) }}
     {{ form_errors(form) }}
-    
+
     <div class=row">
        <div class="form_row col-xs-12 col-sm-6">
           {{ form_row(form.apellidos) }}
@@ -61,12 +61,28 @@
           {{ form_row(form.nombre) }}
        </div>
        <div class="form_row col-xs-12 col-sm-3">
+          {% if warnAtNick is defined %}
+             <div class="form-group has-warning has-feedback">
+                {{ form_label(form.nick) }}
+                {{ form_widget(form.nick) }}
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true">
+             </div>
+          {% else %}
           {{ form_row(form.nick) }}
+          {% endif %}
        </div>
     </div>
     <div class=row">
        <div class="form_row col-xs-6 col-sm-3">
+          {% if warnAtDni is defined %}
+             <div class="form-group has-warning has-feedback">
+                {{ form_label(form.dni) }}
+                {{ form_widget(form.dni) }}
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true">
+             </div>
+          {% else %}
           {{ form_row(form.dni) }}
+          {% endif %}
        </div>
        <div class="form_row col-xs-6 col-sm-3">
           {{ form_row(form.fnac) }}
@@ -125,7 +141,7 @@
           <div class="row">
               {% if mode == "new" %}
               <a type="button" class="btn btn-m btn-default col-xs-3" href={{ path('listado_atletas') }}><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
-              <button type="submit" class="btn btn-m btn-{% if warning is defined %}warning{% else %}primary{% endif %} col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Crear</button>
+              <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Crear</button>
               {% elseif mode == "edit" %}
               <a type="button" class="btn btn-m btn-default col-xs-3" href="{{ path('listado_atletas') }}"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
               <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Guardar</button>
