@@ -37,7 +37,7 @@
       </div>
       <a class="btn btn-primary" href="{{ path('crear_competicion') }}"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-6 col-sm-4 pull-right">
-         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
+         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
          <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>

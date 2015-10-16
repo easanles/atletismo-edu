@@ -28,14 +28,17 @@
    <h1 id="container_title" class="row page-header">Listado de atletas</h1>
    <div id="container_header" class="row">
       <div class="col-xs-8 col-sm-6">
-         <select class="form-control" onChange="atlSearch()">
+         <select class="form-control" onChange="atlSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
             <option value="" {% if cat is not defined %}selected{% endif %}>Todas las categorías</option>
+            {% for row in vigentes %}
+            <option value="{{ row.id }}" {% if cat is defined %}{% if cat == row.id %}selected{% endif %}{% endif %}>{{ row.nombre }}{% if row.edadMax is not null %} ({{ row.edadMax }}){% endif %}</option>
+            {% endfor %}
          </select>
       </div>
       <a class="btn btn-primary" href="{{ path('crear_atleta') }}"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-6 col-sm-4 pull-right">
-         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %}value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)" disabled>
-         <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="atlSearch()" disabled><span class="glyphicon glyphicon-search"></span></button></div>
+         <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)">
+         <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="atlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
    

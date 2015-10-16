@@ -20,6 +20,22 @@ function comSearch(temp, query){
 	goToUrl(path);
 }
 
+function atlSearch(cat, query){
+	path = "./atletas";
+	if ((cat != null) && (cat != "")){
+		if ((query != null) && (query != "")){
+			path = path + "?cat=" + cat + "&q=" + query;
+		} else {
+			path = path + "?cat=" + cat;
+		}
+	} else {
+		if ((query != null) && (query != "")) {
+			path = path + "?q=" + query;
+		}
+	}
+	goToUrl(path);
+}
+
 function pruSearch(id, tpr, cat){
 	path = "./" + id;
 	if ((tpr != null) && (tpr != "")){

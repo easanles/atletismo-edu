@@ -28,6 +28,23 @@ class CategoriaRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function findPreviousCat($cat){
+		if ($cat->getEdadMax() == null){
+			$query = $this->getEntityManager()
+			->createQuery("SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat
+					 WHERE cat.tFinVal IS NULL AND cat.edadMax IS NOT NULL ORDER BY cat.edadMax DESC")
+			->getResult();
+		} else {
+			$query = $this->getEntityManager()
+			->createQuery("SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat
+					 WHERE cat.tFinVal IS NULL AND cat.edadMax < :edadMax ORDER BY cat.edadMax DESC")
+			->setParameter("edadMax", $cat->getEdadMax())
+			->getResult();
+		}
+		if (count($query) == 0) return null;
+		else return $query[0];
+	}
+	
 	//NOTA: Para evitar multiples consultas a la BD usar la funcion Helpers::getCategoria($categorias, $edad)
 	public function findForEdad($edad) {
 		$current = $this->findAllCurrent();

@@ -81,6 +81,47 @@ class Helpers {
 	}
 	
 	/**
+	 * Obtiene la fecha de inicio en la que un atleta debe haber nacido para pertenecer a esta categoría a dia de hoy
+	 * @param $repo El repositorio EasanlesAtletismoBundle:Categoria
+	 * @param array $cat Array de datos de la categoría a comprobar
+	 * @return La fecha inicial de la categoria
+	 */
+	public static function getCatIniDate($repo, $cat){
+		/*$prevCat = $repo->findPreviousCat($cat);
+		if ($prevCat != null){
+		   $now = new \DateTime();
+		   $edadMax = $prevCat["edadMax"];
+		   return $now->sub(new \DateInterval("P".$edadMax."Y"));
+		} else {
+			return new \DateTime("0000-01-01");
+		}*/
+	}
+	
+	/**
+	 * Obtiene la fecha de fin en la que un atleta debe haber nacido para pertenecer a esta categoría a dia de hoy
+	 * @param Categoría $cat La categoría a comprobar
+	 * @return La fecha final de la categoría, año 9999 si la edad máxima es null
+	 */
+	public static function getCatFinDate($repo, $cat){
+		$prevCat = $repo->findPreviousCat($cat);
+		$now = new \DateTime();
+		if ($prevCat != null){
+			return $now;
+		} else if ($cat->getEdadMax() == null){
+			return new \DateTime("0000-01-01");
+		} else {
+			$edadMax = $prevCat->getEdadMax();
+			return $now->sub(new \DateInterval("P".$edadMax."Y"));
+		}
+		/*$edadMax = $cat->getEdadMax();
+		if ($edadMax == null) return new \DateTime("9999-12-31");
+		else {
+			$now = new \DateTime();
+			return $now->sub(new \DateInterval("P".$edadMax."Y1D"));
+		}*/
+	}
+	
+	/**
 	 * Llena la base de datos con datos de ejemplo para realizar pruebas
 	 * @param $em El Entity Manager
 	 */

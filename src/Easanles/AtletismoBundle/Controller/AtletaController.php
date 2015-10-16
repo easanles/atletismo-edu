@@ -9,24 +9,44 @@ use Easanles\AtletismoBundle\Entity\Atleta;
 use Easanles\AtletismoBundle\Form\Type\AtlType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Easanles\AtletismoBundle\Entity\Categoria;
 
 class AtletaController extends Controller {
 	
 	public function listadoAtletasAction(Request $request) {
-		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-		$atletas = $repository->findAllOrdered();
-		$parametros = array('atletas' => $atletas);
+		$cat = $request->query->get('cat');
+		$query = $request->query->get('q');
+		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
 		
-		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-		$current = $repository->findAllCurrent();
+		$catObj = new Categoria(); //debug
+		if (($cat == null) && ($query == null)){
+			$atletas = $repoAtl->findAllOrdered();
+		} else {
+			$catObj = $repoCat->findOneBy(array("id" => $cat));
+			if ($catObj == null) {
+				$atletas = $repoAtl->searchByParameters(null, null, $query);
+			} else {
+				$fnacIni = Helpers::getCatIniDate($repoCat, $catObj);
+				$fnacFin = Helpers::getCatFinDate($repoCat, $catObj);
+				$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query);
+				//$atletas = $repoAtl->searchByParameters(null, null, $query);
+			}
+		}
+		$parametros = array('atletas' => $atletas);
+		//$parametros['dumpv'][0] = Helpers::getCatIniDate($repoCat, $catObj)->format("Y-m-d");
+		$parametros['dumpv'][1] = Helpers::getCatFinDate($repoCat, $catObj)->format("Y-m-d");
+		
+		$vigentes = $repoCat->findAllCurrent();
+		$parametros['vigentes'] = $vigentes;
 		
 		$categorias = array();
 		foreach ($atletas as $atl){
-			$categorias[] = Helpers::getCategoria($current, Helpers::getEdad($atl['fnac']));
+			$categorias[] = Helpers::getCategoria($vigentes, Helpers::getEdad($atl['fnac']));
 		}
 		$parametros['categorias'] = $categorias;
-		
-		
+		if ($cat != null) $parametros['cat'] = $cat;
+		if ($query != null) $parametros['query'] = $query;
 		return $this->render('EasanlesAtletismoBundle:Atleta:list_atleta.html.twig', $parametros);
 	}
 	
