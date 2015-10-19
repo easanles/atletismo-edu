@@ -21,8 +21,10 @@ class ConfiguracionController extends Controller {
     	$fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
     	if ($fIniTempObj == null) $fIniTempVal = "";
       else $fIniTempVal = $fIniTempObj->getValor();
+      $catAsig = $repository->findOneBy(array("clave" => "catAsig"));
     	$ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
-    			"fIniTemp" => $fIniTempVal
+    			"fIniTemp" => $fIniTempVal,
+    			"catAsig" => $catAsig->getValor()
     	))->getContent();
     	
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig', array(
@@ -56,6 +58,20 @@ class ConfiguracionController extends Controller {
     	 	  	  	  }
     	 	  	  }
     	 	  }
+    	 }
+    	 
+    	 //FECHA DE ASIGNACION DE CATEGORÍAS
+    	 $catAsigObj = $repository->findOneBy(array("clave" => "catAsig"));
+    	 $catAsigString = $request->request->get('catAsig');
+    	 if (($catAsigString == "0") || ($catAsigString == "1")){
+    	 	 if (!(strcmp($catAsigString, $catAsigObj->getValor()) == 0)){
+    	 	    $parametros["okCatAsig"] = true;
+    	 	 	 $catAsigObj->setValor($catAsigString);
+    	 	 }
+    	 	 $parametros["catAsig"] = $catAsigString;
+    	 } else {
+    	 	$parametros["errCatAsig"] = "ERROR";
+    	 	$parametros["catAsig"] = $catAsigObj->getValor();
     	 }
 
     	 $em->flush();

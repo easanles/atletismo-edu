@@ -19,7 +19,6 @@ class AtletaController extends Controller {
 		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
 		
-		$catObj = new Categoria(); //debug
 		if (($cat == null) && ($query == null)){
 			$atletas = $repoAtl->findAllOrdered();
 		} else {
@@ -27,24 +26,23 @@ class AtletaController extends Controller {
 			if ($catObj == null) {
 				$atletas = $repoAtl->searchByParameters(null, null, $query);
 			} else {
-				$fnacIni = Helpers::getCatIniDate($repoCat, $catObj);
-				$fnacFin = Helpers::getCatFinDate($repoCat, $catObj);
+				$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
+				$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
 				$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query);
-				//$atletas = $repoAtl->searchByParameters(null, null, $query);
 			}
 		}
 		$parametros = array('atletas' => $atletas);
-		//$parametros['dumpv'][0] = Helpers::getCatIniDate($repoCat, $catObj)->format("Y-m-d");
-		$parametros['dumpv'][1] = Helpers::getCatFinDate($repoCat, $catObj)->format("Y-m-d");
 		
 		$vigentes = $repoCat->findAllCurrent();
 		$parametros['vigentes'] = $vigentes;
 		
 		$categorias = array();
+		$fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
 		foreach ($atletas as $atl){
-			$categorias[] = Helpers::getCategoria($vigentes, Helpers::getEdad($atl['fnac']));
+			$categorias[] = Helpers::getCategoria($vigentes, $fechaRefCat, $atl['fnac']);
 		}
 		$parametros['categorias'] = $categorias;
+		
 		if ($cat != null) $parametros['cat'] = $cat;
 		if ($query != null) $parametros['query'] = $query;
 		return $this->render('EasanlesAtletismoBundle:Atleta:list_atleta.html.twig', $parametros);
@@ -136,11 +134,13 @@ class AtletaController extends Controller {
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$atl = $repository->find($id);
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-		$categoria = $repository->findForEdad(Helpers::getEdad($atl->getFnac()));
+		$vigentes = $repository->findAllCurrent();
+		$fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
+		$categoria = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
 	
 		if ($atl != null) {
 			return $this->render('EasanlesAtletismoBundle:Atleta:ver_atleta.html.twig',
-					array('atl' => $atl, 'categoria' => $categoria));
+					array('atl' => $atl, 'categoria' => $categoria, 'edad' => Helpers::getEdad($atl->getFnac(), null)));
 		} else {
 			$response = new Response('No existe el atleta con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_atletas').'">Volver</a>');
 			$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_atletas'));

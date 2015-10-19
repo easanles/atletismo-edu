@@ -11,7 +11,10 @@ class CategoriaRepository extends EntityRepository {
 		$result = $this->getEntityManager()
 		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.edadMax IS NOT NULL ORDER BY cat.edadMax ASC')
 		->getResult();
-		$result[] = $this->findCurrentEdadMaxNull()[0];
+		$edadMaxNull = $this->findCurrentEdadMaxNull();
+		if (count($edadMaxNull) != 0){
+			$result[] = $this->findCurrentEdadMaxNull()[0];
+		}
 		return $result;
 	}
 	

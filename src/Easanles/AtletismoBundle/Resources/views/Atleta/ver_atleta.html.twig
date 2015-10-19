@@ -34,7 +34,7 @@
                <tr><td><strong>Licencia FGA:</strong></td><td colspan="2">{{ atl.lfga }}</td><td><strong>Licencia XOGADE:</strong></td><td colspan="2">{{ atl.lxogade }}</td></tr>
                <tr><td><strong>Apellidos:</strong></td><td colspan="2">{{ atl.apellidos }}</td><td><strong>Nombre:</strong></td><td colspan="2">{{ atl.nombre }}</td></tr>
                <tr><td><strong>DNI:</strong></td><td colspan="2">{{ atl.dni }}</td><td><strong>Nick:</strong></td><td colspan="2">{{ atl.nick }}</td></tr>
-               <tr><td><strong>Fecha de nacimiento:</strong></td><td colspan="2">{{ atl.fnac|date('d/m/Y') }}</td><td><strong>Categoría:</strong></td><td colspan="2">{{ categoria.nombre }}</td></tr>
+               <tr><td><strong>Fecha de nacimiento:</strong></td><td colspan="2">{{ atl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td><td><strong>Categoría:</strong></td><td colspan="2">{{ categoria.nombre }}</td></tr>
                <tr><td><strong>Nacionalidad:</strong></td><td colspan="2">{{ atl.nacion }}</td><td><strong>Sexo:</strong></td><td colspan="2">{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td></tr>
                <tr><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
@@ -50,7 +50,7 @@
                <tr><td><strong>Nombre:</strong></td><td colspan="3">{{ atl.nombre }}</td></tr>
                <tr><td><strong>DNI:</strong></td><td colspan="3">{{ atl.dni }}</td></tr>
                <tr><td><strong>Nick:</strong></td><td colspan="3">{{ atl.nick }}</td></tr>
-               <tr><td><abbr title="Fecha de nacimiento"><strong>F. nac.:</strong></abbr></td><td colspan="3">{{ atl.fnac|date('d/m/Y') }}</td></tr>
+               <tr><td><abbr title="Fecha de nacimiento"><strong>F. nac.:</strong></abbr></td><td colspan="3">{{ atl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td></tr>
                <tr><td><strong>Categoría:</strong></td><td>{{ categoria.nombre }}</td><td><abbr title="FNacionalidad"><strong>Nacion.:</strong></abbr></td><td>{{ atl.nacion }}</td></tr>
                <tr><td><strong>Sexo:</strong></td><td colspan="3">{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td></tr>

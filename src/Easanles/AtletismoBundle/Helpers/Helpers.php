@@ -27,13 +27,17 @@ class Helpers {
     * @param $doctrine El servicio Doctrine
     * @param int $dia Dia del año en forma numérica
     * @param int $mes Mes del año en forma numérica
-    * @param int $ano Año
+    * @param int $ano Año, null si es año actual
     * @return int El año de inicio de la temporada
     */
 	public static function getTempYear($doctrine, $dia, $mes, $ano){
-		$repo = $doctrine->getRepository('EasanlesAtletismoBundle:Config');
+    	if ($ano == null){
+    		$now = new \DateTime();
+    		$ano = $now->format("Y");
+    	}
+    	$repo = $doctrine->getRepository('EasanlesAtletismoBundle:Config');
     	$fIniTempObj = $repo->findOneBy(array("clave" => "fIniTemp"));
-    	if ($fIniTempObj == null) return $ano;
+    	if ($fIniTempObj == null) return $ano; //Como si comenzase el 1 de enero
     	else {
     		$fIniTempVal = $fIniTempObj->getValor();
     		$datos = explode("/", $fIniTempVal);
@@ -43,16 +47,90 @@ class Helpers {
     	}
 	}
 	
-	/** Obtiene la edad actual dada una fecha de nacimiento
-	 * @param \DateTime $fecha La fecha de nacimiento
-	 * @return int Edad actual 
+	/**
+	 * Obtiene la edad con respecto a un dia concreto
+	 * @param \DateTime $fnac La fecha de nacimiento
+	 * @param \DateTime $fecha La fecha de referencia a comparar, null para edad actual a dia de hoy
+	 * @return int Edad del atleta a dia $fecha
 	 */
-	public static function getEdad($fecha){
-		$now = new \DateTime();
-		$interval = $now->diff($fecha);
+	public static function getEdad($fnac, $fecha){
+		if ($fecha == null) {
+			$fecha =  new \DateTime();
+		}	
+		$interval = $fecha->diff($fnac);
 		return $interval->y;
 	}
 	
+	/**
+	 * Obtiene la fecha a partir de la cual se asignan las categorias a los atletas. Depende de los valores de configuracion catAsig y fIniTemp
+	 * @param $doctrine El servicio Doctrine
+	 * @return La fecha en la que se asignan las categorias de la temporada actual
+	 */
+	public static function getFechaRefCat($doctrine){
+		$repoCfg = $doctrine->getRepository('EasanlesAtletismoBundle:Config');
+		$catAsig = $repoCfg->findOneBy(array("clave" => "catAsig"));
+		$now = new \DateTime();
+		if ($catAsig->getValor() == "0") {
+			$fIniTemp = $repoCfg->findOneBy(array("clave" => "fIniTemp"));
+			$datos = explode("/", $fIniTemp->getValor());
+			$ano = Helpers::getTempYear($doctrine, $now->format("d"), $now->format("m"), null);
+			return new \DateTime($datos[0]."/".$datos[1]."/".$ano);
+		} else return $now;
+	}
+	
+	/**
+	 * Dado un array de categorias obtener a cual pertenece un atleta
+	 * @param $categorias La lista de categorias vigentes ordenado de menor a mayor edad maxima terminando en la categoria sin edad maxima si la hubiese
+	 * @param \DateTime $fechaRefCat La fecha de referencia para comparar fecha de nacimiento
+	 * @param \DateTime $fnac La fecha de nacimiento del atleta
+	 * @return Categoria La categoria a la que pertenece el atleta
+	 */
+	public static function getCategoria($categorias, $fechaRefCat, $fnac){
+		foreach($categorias as $cat){
+		   if ($cat['edadMax'] != null){
+				if (Helpers::getEdad($fnac, $fechaRefCat) <= $cat['edadMax']){
+				   return $cat;
+			   }
+		   } else return $cat;
+		}
+	}
+	
+	/**
+	 * Obtiene la fecha de inicio en la que un atleta debe haber nacido para pertenecer a esta categoría
+	 * @param $doctrine El servicio Doctrine
+	 * @param Categoria $cat La categoría a comprobar
+	 * @return La fecha inicial de la categoria, año 0 si la edad máxima es null
+	 */
+	public static function getCatIniDate($doctrine, $cat){
+		$edadMax = $cat->getEdadMax();
+		if ($edadMax == null){
+			return new \DateTime("0000-01-01");
+		} else {
+			$fecha = Helpers::getFechaRefCat($doctrine);
+			return $fecha->sub(new \DateInterval("P".($edadMax+1)."Y1D"))
+			             ->add(new \DateInterval("P1D"));
+		}
+	}
+	
+	/**
+	 * Obtiene la fecha de fin en la que un atleta debe haber nacido para pertenecer a esta categoría
+	 * @param $doctrine El servicio Doctrine
+	 * @param Categoria $cat La categoría a comprobar
+	 * @return La fecha final de la categoría
+	 */
+	public static function getCatFinDate($doctrine, $cat){
+		$repo = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
+		$prevCat = $repo->findPreviousCat($cat);
+		$fecha = Helpers::getFechaRefCat($doctrine);
+		if ($prevCat == null){
+			return $fecha;
+		} else {
+			$edadMax = $prevCat['edadMax'];
+			return $fecha->sub(new \DateInterval("P".($edadMax+1)."Y"));
+		}
+	}
+	
+
 	/**
 	 * Ajusta los valores iniciales de la base de datos
 	 * @param EntityManager $em El EntityManager
@@ -61,64 +139,10 @@ class Helpers {
 		$fIniTemp = new Config();
 		$fIniTemp->setClave("fIniTemp")->setValor("01/11");
 		$em->persist($fIniTemp);
+		$catAsig = new Config();
+		$catAsig->setClave("catAsig")->setValor("0"); //Asignacion al inicio de la temporada
+		$em->persist($catAsig);
 		$em->flush();
-	}
-	
-	/**
-	 * Dado un array de categorias obtener a cual pertenece un atleta
-	 * @param $categorias la lista de categorias vigentes
-	 * @param int $edad La edad del atleta
-	 * @param Categoria La categoria a la que pertenece el atleta
-	 */
-	public static function getCategoria($categorias, $edad){
-		foreach($categorias as $cat){
-			if ($cat['edadMax'] != null){
-				if ($edad <= $cat['edadMax']){
-					return $cat;
-				}
-			} else return $cat;
-		}
-	}
-	
-	/**
-	 * Obtiene la fecha de inicio en la que un atleta debe haber nacido para pertenecer a esta categoría a dia de hoy
-	 * @param $repo El repositorio EasanlesAtletismoBundle:Categoria
-	 * @param array $cat Array de datos de la categoría a comprobar
-	 * @return La fecha inicial de la categoria
-	 */
-	public static function getCatIniDate($repo, $cat){
-		/*$prevCat = $repo->findPreviousCat($cat);
-		if ($prevCat != null){
-		   $now = new \DateTime();
-		   $edadMax = $prevCat["edadMax"];
-		   return $now->sub(new \DateInterval("P".$edadMax."Y"));
-		} else {
-			return new \DateTime("0000-01-01");
-		}*/
-	}
-	
-	/**
-	 * Obtiene la fecha de fin en la que un atleta debe haber nacido para pertenecer a esta categoría a dia de hoy
-	 * @param Categoría $cat La categoría a comprobar
-	 * @return La fecha final de la categoría, año 9999 si la edad máxima es null
-	 */
-	public static function getCatFinDate($repo, $cat){
-		$prevCat = $repo->findPreviousCat($cat);
-		$now = new \DateTime();
-		if ($prevCat != null){
-			return $now;
-		} else if ($cat->getEdadMax() == null){
-			return new \DateTime("0000-01-01");
-		} else {
-			$edadMax = $prevCat->getEdadMax();
-			return $now->sub(new \DateInterval("P".$edadMax."Y"));
-		}
-		/*$edadMax = $cat->getEdadMax();
-		if ($edadMax == null) return new \DateTime("9999-12-31");
-		else {
-			$now = new \DateTime();
-			return $now->sub(new \DateInterval("P".$edadMax."Y1D"));
-		}*/
 	}
 	
 	/**
