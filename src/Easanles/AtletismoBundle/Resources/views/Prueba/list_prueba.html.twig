@@ -51,8 +51,8 @@
       <tbody>
          <tr>
             <th>Id</th>
-            <th>Prueba</th>
-            <th><abbr title="Categoría" class="visible-xs-block">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
+            <th{% if seltpr is defined %} class="hidden-xs"{% endif %}>Prueba</th>
+            <th{% if selcat is defined %} class="hidden-xs"{% endif %}><abbr title="Categoría" class="visible-xs-block">Categ.</abbr><div class="hidden-xs">Categoría</div></th>
             <th>Ronda</th>
             <th>Nombre</th>
             <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
@@ -62,8 +62,8 @@
          {% for pru in pruebas %}
          <tr>
             <td>{{ pru.id }}</td>
-            <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
-            <td>{{ pru.cat.nombre }}</td>
+            <td{% if seltpr is defined %} class="hidden-xs"{% endif %}>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
+            <td{% if selcat is defined %} class="hidden-xs"{% endif %}>{{ pru.cat.nombre }}</td>
             <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
             <td>{{ pru.nombre }}</td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-list-alt"></span></button></td>

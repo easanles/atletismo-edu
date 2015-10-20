@@ -44,7 +44,7 @@
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
          <tr>
-            <th><abbr title="Temporada" class="visible-xs-block">Temp.</abbr><div class="hidden-xs">Temporada</div></th>
+            <th{% if temp is defined %} class="hidden-xs"{% endif %}><abbr title="Temporada" class="visible-xs-block">Temp.</abbr><div class="hidden-xs">Temporada</div></th>
             <th>Competición</th>
             <th>Fecha</th>
             <th class="hidden-xs">Sede</th>
@@ -54,7 +54,7 @@
          </tr>
          {% for com in competiciones %}
          <tr>
-            <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>
+            <td class="clickable{% if temp is defined %} hidden-xs{% endif %}" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.nombre }}</td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">
 {% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>

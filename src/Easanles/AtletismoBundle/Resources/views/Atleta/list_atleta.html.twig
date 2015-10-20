@@ -46,10 +46,10 @@
       <tbody>
          <tr>
             <th class="hidden-xs">Id</th>
-            <th class="visible-xs-block">Licencias</th>
+            <th class="visible-xs">Licencias</th>
             <th class="hidden-xs"><abbr title="Licencia FGA" class="visible-xs-block">L. FGA</abbr><div class="hidden-xs">Licencia FGA</div></th>
             <th class="hidden-xs"><abbr title="Licencia XOGADE" class="visible-xs-block">L. XOGADE</abbr><div class="hidden-xs">Licencia XOGADE</div></th>
-            <th><abbr title="Categoría" class="visible-xs-block">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
+            <th{% if cat is defined %} class="hidden-xs"{% endif %}><abbr title="Categoría" class="visible-xs-block">Categ.</abbr><div class="hidden-xs">Categoría</div></th>
             <th>Apellidos</th>
             <th>Nombre</th>
             <th class="hidden-xs"><abbr title="Sexo">H/M</abbr></th>
@@ -61,13 +61,13 @@
          {% for atl in atletas %}
          <tr>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.id }}</td>
-         <td class="visible-xs-block clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">
+         <td class="visible-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">
             <small>{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
             <small>{% if atl.lxogade is null or atl.lxogade == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lxogade }}{% endif %}</small>
          </td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.lfga is null or atl.lfga == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.lxogade is null or atl.lxogade == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
-         <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
+         <td class="clickable{% if cat is defined %} hidden-xs{% endif %}" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
          <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.apellidos }}</td>
          <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.nombre }}</td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
