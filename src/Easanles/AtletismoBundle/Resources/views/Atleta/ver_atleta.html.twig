@@ -51,7 +51,7 @@
                <tr><td><strong>DNI:</strong></td><td colspan="3">{{ atl.dni }}</td></tr>
                <tr><td><strong>Nick:</strong></td><td colspan="3">{{ atl.nick }}</td></tr>
                <tr><td><abbr title="Fecha de nacimiento"><strong>F. nac.:</strong></abbr></td><td colspan="3">{{ atl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td></tr>
-               <tr><td><strong>Categoría:</strong></td><td>{{ categoria.nombre }}</td><td><abbr title="FNacionalidad"><strong>Nacion.:</strong></abbr></td><td>{{ atl.nacion }}</td></tr>
+               <tr><td><strong>Categoría:</strong></td><td>{{ categoria.nombre }}</td><td><abbr title="Nacionalidad"><strong>Nacion.:</strong></abbr></td><td>{{ atl.nacion }}</td></tr>
                <tr><td><strong>Sexo:</strong></td><td colspan="3">{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td></tr>
                <tr><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td></tr>
@@ -73,6 +73,7 @@
 {% endblock %}
 
 {% block js %}
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
    <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
 
 {% endblock %}

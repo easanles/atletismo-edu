@@ -19,8 +19,9 @@
                   <label for="cfg_catAsig" class="col-xs-12 col-sm-4 control-label">Fecha de asignación de categorías</label>
                   <div class="col-xs-12 col-sm-6">
                      <select class="form-control" id="cfg_catAsig" name="catAsig">
-                        <option value="0"{% if catAsig == "0" %} selected{% endif %}>Al comienzo de la temporada</option>
-                        <option value="1"{% if catAsig == "1" %} selected{% endif %}>Cada día</option>
+                        <option value="year"{% if catAsig == "year" %} selected{% endif %}>Al comienzo del año</option>
+                        <option value="temp"{% if catAsig == "temp" %} selected{% endif %}>Al comienzo de la temporada</option>
+                        <option value="daily"{% if catAsig == "daily" %} selected{% endif %}>Cada día</option>
                      </select>
                   </div>
                </div>

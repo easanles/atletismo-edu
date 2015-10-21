@@ -70,12 +70,23 @@ class Helpers {
 		$repoCfg = $doctrine->getRepository('EasanlesAtletismoBundle:Config');
 		$catAsig = $repoCfg->findOneBy(array("clave" => "catAsig"));
 		$now = new \DateTime();
-		if ($catAsig->getValor() == "0") {
-			$fIniTemp = $repoCfg->findOneBy(array("clave" => "fIniTemp"));
-			$datos = explode("/", $fIniTemp->getValor());
-			$ano = Helpers::getTempYear($doctrine, $now->format("d"), $now->format("m"), null);
-			return new \DateTime($datos[0]."/".$datos[1]."/".$ano);
-		} else return $now;
+		switch ($catAsig->getValor()){
+			case "temp": {
+				$fIniTemp = $repoCfg->findOneBy(array("clave" => "fIniTemp"));
+				$datos = explode("/", $fIniTemp->getValor());
+				$ano = Helpers::getTempYear($doctrine, $now->format("d"), $now->format("m"), null);
+				return new \DateTime($datos[0]."-".$datos[1]."-".$ano);
+			} break;
+			case "year": {
+				return new \DateTime("31-12-".$now->sub(new \DateInterval("P1Y"))->format('Y'));
+			} break;
+			case "daily": {
+				return $now;
+			} break;
+			default: {
+				return $now;
+			} break;
+		}
 	}
 	
 	/**
@@ -140,7 +151,7 @@ class Helpers {
 		$fIniTemp->setClave("fIniTemp")->setValor("01/11");
 		$em->persist($fIniTemp);
 		$catAsig = new Config();
-		$catAsig->setClave("catAsig")->setValor("0"); //Asignacion al inicio de la temporada
+		$catAsig->setClave("catAsig")->setValor("year"); //Asignacion al inicio del año
 		$em->persist($catAsig);
 		$em->flush();
 	}
@@ -151,16 +162,25 @@ class Helpers {
 	 */
 	public static function poblarBD($em){
 		$com1 = new Competicion();
-		$com1->setNombre("Competicion 1")
+		$com1->setNombre("Competición 1")
 		->setTemp(2014)
+		->setFecha(new \DateTime("2015/08/22"))
 		->setCartel("ejemplo.jpg");
 		$em->persist($com1);
 		
 		$com2 = new Competicion();
-		$com2->setNombre("Competicion 2")
+		$com2->setNombre("Competición 2")
 		->setTemp(2015)
+		->setFecha(new \DateTime("2015/11/07"))
 		->setCartel("ejemplo.jpg");
 		$em->persist($com2);
+		
+		$com3 = new Competicion();
+		$com3->setNombre("Competición 3")
+		->setTemp(2015)
+		->setFecha(new \DateTime("2015/12/12"))
+		->setCartel("ejemplo.jpg");
+		$em->persist($com3);
 		
 		$tprf = new TipoPruebaFormato();
 		$tprf->setNombre("100 metros lisos")

@@ -63,7 +63,7 @@ class ConfiguracionController extends Controller {
     	 //FECHA DE ASIGNACION DE CATEGORÍAS
     	 $catAsigObj = $repository->findOneBy(array("clave" => "catAsig"));
     	 $catAsigString = $request->request->get('catAsig');
-    	 if (($catAsigString == "0") || ($catAsigString == "1")){
+    	 if (($catAsigString == "temp") || ($catAsigString == "year") || ($catAsigString == "daily")){
     	 	 if (!(strcmp($catAsigString, $catAsigObj->getValor()) == 0)){
     	 	    $parametros["okCatAsig"] = true;
     	 	 	 $catAsigObj->setValor($catAsigString);
