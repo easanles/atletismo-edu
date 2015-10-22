@@ -10,6 +10,8 @@ use Easanles\AtletismoBundle\Entity\Categoria;
 use Easanles\AtletismoBundle\Entity\Config;
 use Doctrine\ORM\EntityManager;
 use Easanles\AtletismoBundle\Entity\Atleta;
+use Easanles\AtletismoBundle\Entity\Inscripcion;
+use Easanles\AtletismoBundle\Entity\Participacion;
 
 class Helpers {
 	
@@ -179,7 +181,9 @@ class Helpers {
 		$com3->setNombre("Competición 3")
 		->setTemp(2015)
 		->setFecha(new \DateTime("2015/12/12"))
-		->setCartel("ejemplo.jpg");
+		->setCartel("ejemplo.jpg")
+		->setEsFeder(true)
+		->setEsOficial(true);
 		$em->persist($com3);
 		
 		$tprf = new TipoPruebaFormato();
@@ -370,14 +374,14 @@ class Helpers {
 		->setNombre("Cuartos de final A");
 		$em->persist($pru);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
+		$pru0 = new Prueba();
+		$pru0->setSidCom($com1)
 		->setId(2)
 		->setSidTprm($tprm1)
 		->setIdCat($cat)
 		->setRonda(1)
 		->setNombre("Cuartos de final B");
-		$em->persist($pru);
+		$em->persist($pru0);
 		
 		$pru = new Prueba();
 		$pru->setSidCom($com1)
@@ -397,23 +401,23 @@ class Helpers {
 		->setNombre("Cuartos de final D");
 		$em->persist($pru);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
+		$pru1 = new Prueba();
+		$pru1->setSidCom($com1)
 		->setId(5)
 		->setSidTprm($tprm1)
 		->setIdCat($cat)
 		->setRonda(2)
 		->setNombre("Semifinal A");
-		$em->persist($pru);
+		$em->persist($pru1);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
+		$pru2 = new Prueba();
+		$pru2->setSidCom($com1)
 		->setId(6)
 		->setSidTprm($tprm1)
 		->setIdCat($cat)
 		->setRonda(2)
 		->setNombre("Semifinal B");
-		$em->persist($pru);
+		$em->persist($pru2);
 		
 		$pru = new Prueba();
 		$pru->setSidCom($com1)
@@ -498,6 +502,15 @@ class Helpers {
 		->setLxogade("ABC123456");
 		$em->persist($atl);
 		
+		$ins = new Inscripcion();
+		$ins->setIdAtl($atl)
+		->setIdPru($pru1)
+		->setFecha(new \DateTime)
+		->setOrigen("test")
+		->setCoste(1.00)
+		->setEstado("Pendiente");
+		$em->persist($ins);
+		
 		$atl = new Atleta();
 		$atl->setNombre("Nombre2")
 		->setApellidos("ApellidoA ApellidoB")
@@ -508,6 +521,29 @@ class Helpers {
 		->setLfga("AG-1234568")
 		->setLxogade("ABC123457");
 		$em->persist($atl);
+		
+		$ins = new Inscripcion();
+		$ins->setIdAtl($atl)
+		->setIdPru($pru1)
+		->setFecha(new \DateTime)
+		->setOrigen("test")
+		->setCoste(1.00)
+		->setEstado("Pendiente");
+		$em->persist($ins);
+		
+		$ins = new Inscripcion();
+		$ins->setIdAtl($atl)
+		->setIdPru($pru0)
+		->setFecha(new \DateTime)
+		->setOrigen("test")
+		->setCoste(4.00)
+		->setEstado("Pagado");
+		$em->persist($ins);
+		
+		$par = new Participacion();
+		$par->setIdAtl($atl)
+		->setSidCom($com1)
+		->setDorsal("1234");
 		
 		$atl = new Atleta();
 		$atl->setNombre("Nombre3")

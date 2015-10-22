@@ -10,37 +10,30 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="ins")
  * @ORM\Entity
  */
-class Inscripcion
-{
+class Inscripcion {
+	
+	 /**
+     * @var integer
+	  * @ORM\Column(name="sidins", type="integer")
+	  * @ORM\Id
+	  * @ORM\GeneratedValue(strategy="AUTO")
+	  */
+	 private $sid;
+	  
     /**
      * @var integer
-     * @ORM\Column(name="idatl", type="integer")
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="inscripciones", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="inscripciones")
+     * @ORM\JoinColumn(name="idatl", referencedColumnName="idatl")
      */
     private $idAtl;
 
     /**
      * @var integer
-     * @ORM\Column(name="idpru", type="integer")
-     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Prueba", inversedBy="inscripciones")
+     * @ORM\JoinColumn(name="sidpru", referencedColumnName="sidpru")
      */
-    private $idPru;
+    private $sidPru;
     
-    /**
-     * @var string
-     * @ORM\Column(name="nombrecom", type="string", length=255)
-     * @ORM\Id
-     */
-    private $nombreCom;
-    
-    /**
-     * @var integer
-     * @ORM\Column(name="tempcom", type="smallint")
-     * @ORM\Id
-     */
-    private $tempCom;
-	
     /**
      * @var string
      * @ORM\Column(name="origenins", type="string", length=255, nullable=true)
@@ -73,6 +66,13 @@ class Inscripcion
     
     /******************* GETTERS & SETTERS **************************/
     
+   public function getSid() {
+    	return $this->sid;
+   }
+   public function setSid($sid) {
+    	$this->sid = $sid;
+    	return $this;
+   }
 	public function getIdAtl() {
 		return $this->idAtl;
 	}
@@ -80,25 +80,18 @@ class Inscripcion
 		$this->idAtl = $idAtl;
 		return $this;
 	}
+   public function getSidPru() {
+    	return $this->sidPru;
+   }
+   public function setSidPru($sidPru) {
+      $this->sidPru = $sidPru;
+   	return $this;
+   }
 	public function getIdPru() {
 		return $this->idPru;
 	}
 	public function setIdPru($idPru) {
 		$this->idPru = $idPru;
-		return $this;
-	}
-	public function getNombreCom() {
-		return $this->nombreCom;
-	}
-	public function setNombreCom($nombreCom) {
-		$this->nombreCom = $nombreCom;
-		return $this;
-	}
-	public function getTempCom() {
-		return $this->tempCom;
-	}
-	public function setTempCom($tempCom) {
-		$this->tempCom = $tempCom;
 		return $this;
 	}
 	public function getOrigen() {
@@ -136,7 +129,4 @@ class Inscripcion
 		$this->codGrupo = $codGrupo;
 		return $this;
 	}
-	
-    
-    
 }

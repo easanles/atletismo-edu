@@ -63,6 +63,7 @@ class Prueba {
 	 
 	/**
 	 * @var array_collection
+	 * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="sidPru", cascade={"all"})
 	 **/
 	private $inscripciones;
 	 

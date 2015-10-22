@@ -88,6 +88,12 @@ borrar_atleta:
 editar_atleta:
     path: /atleta/editar/{id}
     defaults: {_controller: "EasanlesAtletismoBundle:Atleta:editarAtleta"}
+    
+    
+#====================INSCRIPCIONES===================
+listado_inscripciones:
+   path: /competiciones/{sidCom}/inscripciones
+   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:listadoInscripciones"}
      
 
 #====================CONFIGURACION===================

@@ -23,14 +23,14 @@ class Participacion {
     /**
      * @var integer
      * @ORM\Column(name="idatl", type="integer")
-     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones")
      */
     private $idAtl;
     
 	 /**
 	  * @var integer
-	  * @ORM\Column(name="sidcom", type="integer")
-	  * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones", cascade={"all"})
+	  * @ORM\ManyToOne(targetEntity="Competicion", inversedBy="participaciones")
+	  * @ORM\JoinColumn(name="sidcom", referencedColumnName="sidcom")
      */
     private $sidCom;
     
@@ -48,25 +48,25 @@ class Participacion {
     
     /******************* GETTERS & SETTERS **************************/
     
-	public function getIdAtl() {
+	public function getSid() {
+		return $this->sid;
+	}
+	public function setSid($sid) {
+		$this->sid = $sid;
+		return $this;
+	}
+    public function getIdAtl() {
 		return $this->idAtl;
 	}
 	public function setIdAtl($idAtl) {
 		$this->idAtl = $idAtl;
 		return $this;
 	}
-	public function getNombreCom() {
-		return $this->nombreCom;
+	public function getSidCom() {
+		return $this->sidCom;
 	}
-	public function setNombreCom($nombreCom) {
-		$this->nombreCom = $nombreCom;
-		return $this;
-	}
-	public function getTempCom() {
-		return $this->tempCom;
-	}
-	public function setTempCom($tempCom) {
-		$this->tempCom = $tempCom;
+	public function setSidCom($sidCom) {
+		$this->sidCom = $sidCom;
 		return $this;
 	}
 	public function getDorsal() {
@@ -82,8 +82,6 @@ class Participacion {
 	public function setAsisten($asisten) {
 		$this->asisten = $asisten;
 		return $this;
-	}
-	
-    
-    
+	}	
+	    
 }

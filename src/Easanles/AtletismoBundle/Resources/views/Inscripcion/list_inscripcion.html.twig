@@ -1,0 +1,89 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Atletas inscritos{% endblock %}
+
+{% block navbar %}
+      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li class="active"><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+  <li><a href="{{ path('ver_competicion', {'id': com.sid}) }}">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</a></li>
+  <li class="active">Inscripciones</li>
+  
+{% endblock %}
+
+   {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
+
+{% block container %}   
+   <h1 id="container_title" class="row page-header">Atletas inscritos <small>{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</small></h1>
+   <div id="container_header" class="row">
+      <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
+      <button class="updater hidden" onClick="location.reload()"></button>
+      <button class="btn btn-primary" onClick="showModal()" disabled><span class="glyphicon glyphicon-plus"></span> Inscribir<span class="hidden-xs"> atleta</span></button>
+   </div>
+   <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
+      <tbody>
+         <tr>
+            {% if com.esFeder == true %}
+            <th><abbr title="Licencia FGA" class="visible-xs">L. FGA</abbr><div class="hidden-xs">Licencia FGA</div></th>
+            {% else %}
+            <th class="hidden-xs">Id</th>
+            {% endif %}
+            <th>Apellidos</th>
+            <th>Nombre</th>
+            <th><abbr title="Categoría" class="visible-xs">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
+            <th><abbr title="Pruebas" class="visible-xs">Pru.</abbr><div class="hidden-xs">Pruebas</div></th>
+            <th class="hidden-xs">Coste total</th>
+            <th>Estado</th>
+            <th class="hidden-xs">Dorsal</th>
+            <th class="hidden-xs">Asistencia</th>
+            <th><abbr title="Acciones" class="visible-xs">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
+         </tr>
+         {% for atl in atletas %}
+         <tr>
+            <td{% if com.esFeder != true %} class="hidden-xs"{% endif %}><small>AG-1234567</small></td>
+            <td>Apellido1 Apellido2</td>
+            <td>Nombre</td>
+            <td>Categoría</td>
+            <td>0 <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="" disabled><span class="glyphicon glyphicon-collapse-down"></span></button></td>
+            <td class="hidden-xs">0.00€</td>
+            <td>Estado</td>
+            <td class="hidden-xs">1234</td>
+            <td class="hidden-xs"><input type="checkbox"></td>
+            <td>
+               <div class="btn-group visible-xs-block">
+                  <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
+                  <ul class="dropdown-menu pull-right">
+                     <li><a href="#" onClick=""><span class="glyphicon glyphicon-ok"></span> Asistencia</a></li>
+                     <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                  </ul>
+               </div>
+               <div class="hidden-xs">
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal()"><span class="glyphicon glyphicon-remove"></span></button>
+               </div>
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+{% endblock %}
+
+
+

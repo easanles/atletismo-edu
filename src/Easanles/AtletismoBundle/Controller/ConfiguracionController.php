@@ -109,7 +109,20 @@ class ConfiguracionController extends Controller {
     public function borrar_bdAction(){
     	try{
     	   $em = $this->getDoctrine()->getManager();
-    	   $sql = 'DELETE FROM atl; DELETE FROM `ins`; DELETE FROM `int`; DELETE FROM `not`; DELETE FROM `par`; DELETE FROM `pru`; DELETE FROM `req`; DELETE FROM `tprm`; DELETE FROM `tprf`; DELETE FROM `vrq`; DELETE FROM `com`; DELETE FROM `cat`';
+    	   $sql = '
+    	   		DELETE FROM `par`;
+    	   		DELETE FROM `ins`;
+    	   		DELETE FROM `int`;
+    	   		DELETE FROM `atl`;
+    	   		DELETE FROM `pru`;
+    	   		DELETE FROM `cat`;
+    	   		DELETE FROM `vrq`;
+    	   		DELETE FROM `req`;
+    	   		DELETE FROM `tprm`;
+    	   		DELETE FROM `tprf`;
+    	   		DELETE FROM `com`;
+    	   		DELETE FROM `not`;
+    	   ';
     	   $connection = $em->getConnection();
     	   $stmt = $connection->prepare($sql);
     	   $stmt->execute();
