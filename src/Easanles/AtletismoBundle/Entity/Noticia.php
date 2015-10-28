@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Noticia
  *
- * @ORM\Table(name="not")
- * @ORM\Entity
+ * ORM\Table(name="not")
+ * ORM\Entity
  */
 class Noticia
 {

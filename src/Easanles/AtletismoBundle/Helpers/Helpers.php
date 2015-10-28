@@ -504,7 +504,7 @@ class Helpers {
 		
 		$ins = new Inscripcion();
 		$ins->setIdAtl($atl)
-		->setIdPru($pru1)
+		->setSidPru($pru1)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(1.00)
@@ -524,7 +524,7 @@ class Helpers {
 		
 		$ins = new Inscripcion();
 		$ins->setIdAtl($atl)
-		->setIdPru($pru1)
+		->setSidPru($pru1)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(1.00)
@@ -533,7 +533,7 @@ class Helpers {
 		
 		$ins = new Inscripcion();
 		$ins->setIdAtl($atl)
-		->setIdPru($pru0)
+		->setSidPru($pru0)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(4.00)

@@ -12,6 +12,10 @@ class InscripcionController extends Controller
     	  $com = $repository->find($sidCom);
     	  $parametros = array('com' => $com);
     	  
+    	  $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	  $inscripciones = $repository->findFor($sidCom);
+    	  $parametros = array('inscripciones' => $inscripciones);
+    	  
     	  if ($com->getEsFeder() == true){
     	  }
     	  $atletas = array();

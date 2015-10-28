@@ -124,10 +124,11 @@ class CompeticionController extends Controller {
     public function verCompeticionAction($id){
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	 $com = $repository->find($id);
+    	 $numAtletas = $repository->countAtletasIns($id);
 
        if ($com != null) {
           return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
-    	          array('com' => $com));
+    	          array('com' => $com, 'numatletas' => $numAtletas));
     	 } else {
     	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
     	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
