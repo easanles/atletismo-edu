@@ -15,22 +15,21 @@ class CompeticionRepository extends EntityRepository {
 		foreach ($result as &$com){ // & = Paso por referencia
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
 			$com['numpruebas'] = $numPruebas;
-			$com['numatletas'] = $this->countAtletasIns($com['sid']);
+			$com['numatletas'] = count($this->findAtletasIns($com['sid']));
 		}
 		return $result;
 	}
-		
-	public function countAtletasIns($sidCom){
-		$result = $this->getEntityManager()
+	
+	public function findAtletasIns($sidCom){
+		return $this->getEntityManager()
 		->createQuery('SELECT IDENTITY (ins.idAtl)
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				JOIN ins.sidPru pru
 				JOIN pru.sidCom com
 				WHERE com.sid LIKE :sidcom
 				GROUP BY ins.idAtl')
-		->setParameter("sidcom", $sidCom)
+	   ->setParameter("sidcom", $sidCom)
 		->getResult();
-		return count($result);
 	}
 	
 	public function findTemps(){

@@ -527,8 +527,8 @@ class Helpers {
 		->setSidPru($pru1)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
-		->setCoste(1.00)
-		->setEstado("Pendiente");
+		->setCoste(1.20)
+		->setEstado("Pagado");
 		$em->persist($ins);
 		
 		$ins = new Inscripcion();
@@ -542,8 +542,10 @@ class Helpers {
 		
 		$par = new Participacion();
 		$par->setIdAtl($atl)
-		->setSidCom($com1)
-		->setDorsal("1234");
+		->setSidCom($pru0->getSidCom())
+		->setDorsal(1234)
+		->setAsisten(true);
+		$em->persist($par);
 		
 		$atl = new Atleta();
 		$atl->setNombre("Nombre3")

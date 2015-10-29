@@ -30,7 +30,7 @@
       <button class="updater hidden" onClick="location.reload()"></button>
       <button class="btn btn-primary" onClick="showModal()" disabled><span class="glyphicon glyphicon-plus"></span> Inscribir<span class="hidden-xs"> atleta</span></button>
    </div>
-   <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
+   <table id="primary_table" class="table table-hover table-bordered table-condensed table-responsive">
       <tbody>
          <tr>
             {% if com.esFeder == true %}
@@ -48,33 +48,66 @@
             <th class="hidden-xs">Asistencia</th>
             <th><abbr title="Acciones" class="visible-xs">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
-            {# {% for atl in atletas %} #}
-         {% for ins in inscripciones %}
+         {% for atl in atletas %}
          <tr>
-            <td{% if com.esFeder != true %} class="hidden-xs"{% endif %}><small>AG-1234567</small></td>
-            <td>Apellido1 Apellido2</td>
-            <td>Nombre</td>
-            <td>Categoría</td>
-            <td>0 <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="" disabled><span class="glyphicon glyphicon-collapse-down"></span></button></td>
-            <td class="hidden-xs">0.00€</td>
-            <td>Estado</td>
-            <td class="hidden-xs">1234</td>
-            <td class="hidden-xs"><input type="checkbox"></td>
+            {% if com.esFeder != true %}
+            <td class="hidden-xs">{{ atl.id }}</td>
+            {% else %}
+            <td><small>{{ atl.lfga }}</small></td>
+            {% endif %}
+            <td>{{ atl.apellidos }}</td>
+            <td>{{ atl.nombre }}</td>
+            <td>{{ atl.categoria }}</td>
+            <td>{{ atl.pruebas|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="toggleDropListTable({{ atl.id }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button></td>
+            <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }} €</td>
+            <td>{{ atl.estado }}</td>
+            <td class="hidden-xs{% if atl.sidPar is not defined %} text-muted{% endif %}">{{ atl.dorsal }}</td>
+            <td class="hidden-xs"><input type="checkbox"{% if atl.asistencia == true %} checked{% endif %}></td>
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
                      <li><a href="#" onClick=""><span class="glyphicon glyphicon-ok"></span> Asistencia</a></li>
+                     <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-bullhorn"></span> Confirmar participación</a></li>
                      <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
-                     <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Desinscribir</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Confirmar participación" onClick="showModal()"><span class="glyphicon glyphicon-bullhorn"></span></button>
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span></button>
-                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal()"><span class="glyphicon glyphicon-remove"></span></button>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Desinscribir" onClick="showModal()"><span class="glyphicon glyphicon-remove-circle"></span></button>
                </div>
             </td>
          </tr>
+         <tr><td colspan="10" style="padding: 0px">
+            <div id="droplist-{{ atl.id }}" class="droplist">
+               <table class="table table-responsive table-hover table-bordered">
+                  <tbody>
+                     <tr>
+                        <th>Prueba</th>
+                        <th class="hidden-xs">Fecha de inscripción</th>
+                        <th class="hidden-xs">Coste</th>
+                        <th>Estado</th>
+                        <th class="hidden-xs">Código de grupo</th>
+                        <th class="hidden-xs">Inscrito por</th>
+                        <th>Registrar marca</th>
+                     </tr>
+                     {% for ins in atl.pruebas %}
+                        <tr>
+                           <td><span class="glyphicon glyphicon-chevron-right"></span> {{ ins.nombre }}. {% if ins.sexo == 0 %}Masculino, {% elseif ins.sexo == 1 %}Femenino, {% endif%}{{ ins.entorno }}</td>
+                           <td class="hidden-xs">{{ ins.fecha|date('d/m/Y') }}</td>
+                           <td class="hidden-xs">{{ ins.coste }}</td>
+                           <td>{{ ins.estado }}</td>
+                           <td class="hidden-xs">{{ ins.codGrupo }}</td>
+                           <td class="hidden-xs">{{ ins.origen }}</td>
+                           <td><button type="button" class="btn btn-xs btn-block btn-default" onClick="showModal()"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
+                        </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </td></tr>
          {% endfor %}
       </tbody>
    </table>

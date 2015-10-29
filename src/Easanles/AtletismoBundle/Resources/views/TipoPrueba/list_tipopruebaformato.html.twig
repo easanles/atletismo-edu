@@ -31,7 +31,7 @@
                       <table class="table">
                         <tbody>
                            {% for mod in row.modalidades.toArray() %}
-                           <tr><td><span class="glyphicon glyphicon-chevron-right"></span> {% if mod.sexo == 0 %}Masculino, {% elseif mod.sexo == 1 %}Femenino, {% endif%}{{ mod.entorno }}</td></tr>
+                           <tr><td class="td-padding"><span class="glyphicon glyphicon-chevron-right"></span> {% if mod.sexo == 0 %}Masculino, {% elseif mod.sexo == 1 %}Femenino, {% endif%}{{ mod.entorno }}</td></tr>
                            {% endfor %}
                         </tbody>
                      </table>

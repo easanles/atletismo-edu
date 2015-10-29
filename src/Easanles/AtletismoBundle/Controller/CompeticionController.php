@@ -124,7 +124,7 @@ class CompeticionController extends Controller {
     public function verCompeticionAction($id){
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	 $com = $repository->find($id);
-    	 $numAtletas = $repository->countAtletasIns($id);
+    	 $numAtletas = count($repository->findAtletasIns($id));
 
        if ($com != null) {
           return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',

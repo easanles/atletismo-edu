@@ -22,8 +22,8 @@ class Participacion {
     
     /**
      * @var integer
-     * @ORM\Column(name="idatl", type="integer")
      * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="participaciones")
+     * @ORM\JoinColumn(name="idatl", referencedColumnName="idatl")
      */
     private $idAtl;
     
@@ -44,7 +44,7 @@ class Participacion {
      * @var boolean
      * @ORM\Column(name="asistenpar", type="boolean", options={"default":0})
      */
-    private $asisten = 0;
+    private $asisten;
     
     /******************* GETTERS & SETTERS **************************/
     
