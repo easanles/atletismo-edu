@@ -59,15 +59,15 @@
             <td>{{ atl.nombre }}</td>
             <td>{{ atl.categoria }}</td>
             <td>{{ atl.pruebas|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="toggleDropListTable({{ atl.id }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button></td>
-            <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }} €</td>
+            <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }}€</td>
             <td>{{ atl.estado }}</td>
             <td class="hidden-xs{% if atl.sidPar is not defined %} text-muted{% endif %}">{{ atl.dorsal }}</td>
-            <td class="hidden-xs"><input type="checkbox"{% if atl.asistencia == true %} checked{% endif %}></td>
+            <td class="hidden-xs"><input type="checkbox"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
-                     <li><a href="#" onClick=""><span class="glyphicon glyphicon-ok"></span> Asistencia</a></li>
+                     <li><a href="#" onClick=""{% if atl.sidPar is not defined %} disabled{% endif %}><span class="glyphicon glyphicon-ok"></span> Asistencia</a></li>
                      <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-bullhorn"></span> Confirmar participación</a></li>
                      <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Desinscribir</div></a></li>
@@ -97,7 +97,7 @@
                         <tr>
                            <td><span class="glyphicon glyphicon-chevron-right"></span> {{ ins.nombre }}. {% if ins.sexo == 0 %}Masculino, {% elseif ins.sexo == 1 %}Femenino, {% endif%}{{ ins.entorno }}</td>
                            <td class="hidden-xs">{{ ins.fecha|date('d/m/Y') }}</td>
-                           <td class="hidden-xs">{{ ins.coste }}</td>
+                           <td class="hidden-xs">{{ ins.coste }}€</td>
                            <td>{{ ins.estado }}</td>
                            <td class="hidden-xs">{{ ins.codGrupo }}</td>
                            <td class="hidden-xs">{{ ins.origen }}</td>

@@ -30,23 +30,34 @@ class InscripcionController extends Controller
     	     $pruebasIns = $repoIns->findForAtl($sidCom, $idAtl);
     	     $atlData['pruebas'] = $pruebasIns;
     	     $costeTotal = 0.00;
-    	     $estado = "";
+    	     $estado = 0;
     	     foreach($pruebasIns as $ins){
     	        $costeTotal += $ins['coste'];
-    	        $estado = $ins['estado']; //TODO: Estados parciales
+    	        if ($ins['estado'] == "Pagado"){
+    	           if ($estado == 0) $estado = 2;
+    	        }
+    	        if ($ins['estado'] == "Pendiente"){
+    	           if ($estado == 2) $estado = 1;
+    	        }
     	     }
     	     $atlData['costetotal'] = $costeTotal;
     	     $atlData['estado'] = $estado;
     	     $par = $repoPar->findOneBy(array('idAtl' => $atl, 'sidCom' => $com));
     	     if ($par == null){
-    	        $atlData['estado'] = "No participa";
     	        $atlData['dorsal'] = "--";
     	        $atlData['asistencia'] = false;
     	     } else {
     	     	  $atlData['sidPar'] = $par->getSid();
-    	     	  $atlData['estado'] = "Confirmado";
+    	     	  $estado = 3;
     	     	  $atlData['dorsal'] = $par->getDorsal();
     	        $atlData['asistencia'] = $par->getAsisten();
+    	     }
+    	     switch ($estado){
+    	     	  case 0: $atlData['estado'] = "Pendiente de pago"; break;
+    	     	  case 1: $atlData['estado'] = "Parcialmente pagado"; break;
+    	     	  case 2: $atlData['estado'] = "Pagado"; break;
+    	     	  case 3: $atlData['estado'] = "Confirmado"; break;
+    	     	  default: $atlData['estado'] = "?";
     	     }
 
     	     $atletas[] = $atlData;

@@ -67,9 +67,11 @@ function toggleDropListTable(id, button){
    dl = $("#droplist-" + id);
    if (dl.css("height") == "0px"){
 	   dl.css("height", dl.data("height"));
+	   button.parent().closest("tr").attr("class", "info");
    }
    else {
 	   dl.css("height", "0px");
+	   button.parent().closest("tr").attr("class", "");
    }
 }
 	
@@ -88,6 +90,18 @@ $(document).ready(function(){
 	      event.preventDefault();
 	      return false;
        }
+	});
+})
+
+$(window).resize(function(){
+   $('.droplist').each(function (){
+	  if ($(this).css("height") == "0px") hide = true;
+	  else hide = false;
+      $(this).css("height", "auto");
+      $(this).data("height", $(this).height());
+	  if (hide){
+         $(this).css("height", "0px");
+	  }
 	});
 })
 
