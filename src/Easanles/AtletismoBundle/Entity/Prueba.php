@@ -36,15 +36,23 @@ class Prueba {
 	
 	/**
 	 * @var integer
-	 * @ORM\Column(name="rondapru", type="smallint")
+	 * @ORM\Column(name="rondapru", type="smallint", nullable=true)
+	 * @deprecated
 	 */
 	private $ronda;
 
 	/**
 	 * @var string
 	 * @ORM\Column(name="nombrepru", type="string", length=255, nullable=true)
+	 * @deprecated
 	 */
 	private $nombre;
+	
+    /**
+     * @var string
+     * @ORM\Column(name="costepru", type="decimal", precision=10, scale=2, options={"default":0.00})
+     */
+   private $coste;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="pruebas")
@@ -66,22 +74,23 @@ class Prueba {
 	 * @ORM\OneToMany(targetEntity="Inscripcion", mappedBy="sidPru", cascade={"all"})
 	 **/
 	private $inscripciones;
-	 
+	
 	/**
 	 * @var array_collection
+	 * @ORM\OneToMany(targetEntity="Ronda", mappedBy="sidPru", cascade={"all"})
 	 **/
-	private $intentos;
+	private $rondas;
 	 
 	public function __construct() {
 		$this->inscripciones = new ArrayCollection();
-		$this->intentos = new ArrayCollection();
+		$this->rondas = new ArrayCollection();
 	}
 	 
 	public function getInscripciones() {
 		return $this->inscripciones;
 	}
-	public function getIntentos() {
-		return $this->intentos;
+	public function getRondas() {
+		return $this->rondas;
 	}
 	
 
@@ -108,18 +117,33 @@ class Prueba {
 		$this->sidCom = $sidCom;
 		return $this;
 	}
+	/**
+	 *  @deprecated */
 	public function getRonda() {
 		return $this->ronda;
 	}
+	/**
+	 *  @deprecated */
 	public function setRonda($ronda) {
 		$this->ronda = $ronda;
 		return $this;
 	}
+	/**
+	 *  @deprecated */
 	public function getNombre() {
 		return $this->nombre;
 	}
+	/**
+	 *  @deprecated */
 	public function setNombre($nombre) {
 		$this->nombre = $nombre;
+		return $this;
+	}
+	public function getCoste() {
+		return $this->coste;
+	}
+	public function setCoste($coste) {
+		$this->coste = $coste;
 		return $this;
 	}
 	public function getIdCat() {

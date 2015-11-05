@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManager;
 use Easanles\AtletismoBundle\Entity\Atleta;
 use Easanles\AtletismoBundle\Entity\Inscripcion;
 use Easanles\AtletismoBundle\Entity\Participacion;
+use Easanles\AtletismoBundle\Entity\Ronda;
 
 class Helpers {
 	
@@ -366,130 +367,156 @@ class Helpers {
 		$em->flush();
 		
 		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(1)
-		->setSidTprm($tprm1)
+		$pru->setId(1)
+		->setSidCom($com1)
+		->setCoste("4.95")
 		->setIdCat($cat)
-		->setRonda(1)
+		->setSidTprm($tprm1);
+		$em->persist($pru);
+		$em->flush();
+		
+		$ron = new Ronda();
+		$ron->setId(1)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Cuartos de final A");
-		$em->persist($pru);
-		
-		$pru0 = new Prueba();
-		$pru0->setSidCom($com1)
-		->setId(2)
-		->setSidTprm($tprm1)
-		->setIdCat($cat)
-		->setRonda(1)
+		$em->persist($ron);
+
+		$ron = new Ronda();
+		$ron->setId(2)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Cuartos de final B");
-		$em->persist($pru0);
+		$em->persist($ron);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(3)
-		->setSidTprm($tprm1)
-		->setIdCat($cat)
-		->setRonda(1)
+		$ron = new Ronda();
+		$ron->setId(3)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Cuartos de final C");
-		$em->persist($pru);
+		$em->persist($ron);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(4)
-		->setSidTprm($tprm1)
-		->setIdCat($cat)
-		->setRonda(1)
+		$ron = new Ronda();
+		$ron->setId(4)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Cuartos de final D");
-		$em->persist($pru);
+		$em->persist($ron);
 		
-		$pru1 = new Prueba();
-		$pru1->setSidCom($com1)
-		->setId(5)
-		->setSidTprm($tprm1)
-		->setIdCat($cat)
-		->setRonda(2)
+		$ron = new Ronda();
+		$ron->setId(5)
+		->setSidPru($pru)
+		->setNum(2)
 		->setNombre("Semifinal A");
-		$em->persist($pru1);
+		$em->persist($ron);
 		
-		$pru2 = new Prueba();
-		$pru2->setSidCom($com1)
-		->setId(6)
-		->setSidTprm($tprm1)
-		->setIdCat($cat)
-		->setRonda(2)
+		$ron = new Ronda();
+		$ron->setId(6)
+		->setSidPru($pru)
+		->setNum(2)
 		->setNombre("Semifinal B");
-		$em->persist($pru2);
+		$em->persist($ron);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(7)
-		->setSidTprm($tprm1)
-		->setIdCat($cat)
-		->setRonda(3)
+		$ron = new Ronda();
+		$ron->setId(7)
+		->setSidPru($pru)
+		->setNum(3)
 		->setNombre("Final");
-		$em->persist($pru);
+		$em->persist($ron);
 		
 		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(8)
-		->setSidTprm($tprm2)
+		$pru->setId(2)
+		->setSidCom($com1)
+		->setCoste("3.95")
 		->setIdCat($cat1)
-		->setRonda(1)
+		->setSidTprm($tprm2);
+		$em->persist($pru);
+		$em->flush();
+		
+		$ron = new Ronda();
+		$ron->setId(1)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Semifinal A");
-		$em->persist($pru);
+		$em->persist($ron);
 		
-		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(9)
-		->setSidTprm($tprm2)
-		->setIdCat($cat1)
-		->setRonda(1)
+		$ron = new Ronda();
+		$ron->setId(2)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Semifinal B");
-		$em->persist($pru);
+		$em->persist($ron);
+		
+		$ron = new Ronda();
+		$ron->setId(3)
+		->setSidPru($pru)
+		->setNum(2)
+		->setNombre("Final");
+		$em->persist($ron);
 		
 		$pru = new Prueba();
-		$pru->setSidCom($com1)
-		->setId(10)
-		->setSidTprm($tprm2)
-		->setIdCat($cat1)
-		->setRonda(2)
-		->setNombre("Final");
+		$pru->setId(1)
+		->setSidCom($com2)
+		->setCoste("2.45")
+		->setIdCat($cat)
+		->setSidTprm($tprm1);
 		$em->persist($pru);
+		$em->flush();
+		
+		$ron = new Ronda();
+		$ron->setId(1)
+		->setSidPru($pru)
+		->setNum(1)
+		->setNombre("Final");
+		$em->persist($ron);
 		
 		$pru = new Prueba();
-		$pru->setSidCom($com2)
-		->setId(1)
-		->setSidTprm($tprm1)
+		$pru->setId(2)
+		->setSidCom($com2)
+		->setCoste("2.45")
 		->setIdCat($cat)
-		->setRonda(1)
-		->setNombre("Final");
+		->setSidTprm($tprm2);
 		$em->persist($pru);
+		$em->flush();
+		
+		$ron = new Ronda();
+		$ron->setId(1)
+		->setSidPru($pru)
+		->setNum(1)
+		->setNombre("Final");
+		$em->persist($ron);
 		
 		$pru = new Prueba();
-		$pru->setSidCom($com2)
-		->setId(2)
-		->setSidTprm($tprm2)
+		$pru->setId(3)
+		->setSidCom($com2)
+		->setCoste("2.45")
 		->setIdCat($cat)
-		->setRonda(1)
-		->setNombre("Final");
+		->setSidTprm($tprm3);
 		$em->persist($pru);
-	
-	   $pru = new Prueba();
-		$pru->setSidCom($com2)
-		->setId(3)
-		->setSidTprm($tprm3)
+		$em->flush();
+		
+		$ron = new Ronda();
+		$ron->setId(1)
+		->setSidPru($pru)
+		->setNum(1)
+		->setNombre("Final");
+		$em->persist($ron);
+		
+		$pru = new Prueba();
+		$pru->setId(4)
+		->setSidCom($com2)
+		->setCoste("2.45")
 		->setIdCat($cat)
-		->setRonda(1)
-		->setNombre("Final");
+		->setSidTprm($tprm4);
 		$em->persist($pru);
-	
-	   $pru = new Prueba();
-		$pru->setSidCom($com2)
-		->setId(4)
-		->setSidTprm($tprm4)
-		->setIdCat($cat)
-		->setRonda(1)
+		$em->flush();
+		
+		$ron = new Ronda();
+		$ron->setId(1)
+		->setSidPru($pru)
+		->setNum(1)
 		->setNombre("Final");
-		$em->persist($pru);
+		$em->persist($ron);
 		
 		$atl = new Atleta();
 		$atl->setNombre("Nombre1")
@@ -504,7 +531,7 @@ class Helpers {
 		
 		$ins = new Inscripcion();
 		$ins->setIdAtl($atl)
-		->setSidPru($pru1)
+		->setSidPru($pru)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(1.00)
@@ -524,7 +551,7 @@ class Helpers {
 		
 		$ins = new Inscripcion();
 		$ins->setIdAtl($atl)
-		->setSidPru($pru1)
+		->setSidPru($pru)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(1.20)
@@ -533,7 +560,7 @@ class Helpers {
 		
 		$ins = new Inscripcion();
 		$ins->setIdAtl($atl)
-		->setSidPru($pru0)
+		->setSidPru($pru)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(4.00)
@@ -542,7 +569,7 @@ class Helpers {
 		
 		$par = new Participacion();
 		$par->setIdAtl($atl)
-		->setSidCom($pru0->getSidCom())
+		->setSidCom($pru->getSidCom())
 		->setDorsal(1234)
 		->setAsisten(true);
 		$em->persist($par);

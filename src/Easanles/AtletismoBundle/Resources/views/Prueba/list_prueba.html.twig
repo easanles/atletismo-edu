@@ -28,16 +28,8 @@
    <div id="container_header" class="row">
       <a type="button" class="btn btn-m btn-default pull-left hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <button class="updater hidden" onClick="location.reload()"></button>
-      <div class="col-xs-6 col-sm-4">
-         <select class="form-control col-xs-4" onChange="pruSearch({{ com.sid }}, this.value, {% if selcat is defined %}'{{ selcat }}'{% else %}null{% endif %})">
-            <option value=""{% if seltpr is not defined %} selected{% endif %}>Seleccionar prueba</option>
-            {% for tpr in tipospruebas %}
-               <option value="{{ tpr.sidTprm }}"{% if seltpr is defined %}{% if seltpr == tpr.sidTprm %} selected{% endif %}{% endif %}>{{ tpr.nombre }}. {% if tpr.sexo == 0 %}Masculino, {% elseif tpr.sexo == 1 %}Femenino, {% endif %}{{ tpr.entorno }}</option>
-            {% endfor %}
-         </select>
-      </div>
       <div class="col-xs-4 col-sm-3">
-         <select class="form-control col-xs-3" onChange="pruSearch({{ com.sid }}, {% if seltpr is defined %}'{{ seltpr }}'{% else %}null{% endif %}, this.value)">
+         <select class="form-control col-xs-3" onChange="pruSearch({{ com.sid }}, this.value)">
          <option value=""{% if selcat is not defined %} selected{% endif %}>Categoría</option>
          {% for cat in categorias %}
             <option value="{{ cat.idCat }}"{% if selcat is defined %}{% if selcat == cat.idCat %} selected{% endif %}{% endif %}>{{ cat.nombre }}</option>
@@ -50,10 +42,9 @@
       <tbody>
          <tr>
             <th>Id</th>
-            <th{% if seltpr is defined %} class="hidden-xs"{% endif %}>Prueba</th>
+            <th>Prueba</th>
             <th{% if selcat is defined %} class="hidden-xs"{% endif %}><abbr title="Categoría" class="visible-xs-block">Categ.</abbr><div class="hidden-xs">Categoría</div></th>
-            <th>Ronda</th>
-            <th>Nombre</th>
+            <th>Rondas</th>
             <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
             <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
@@ -61,27 +52,55 @@
          {% for pru in pruebas %}
          <tr>
             <td>{{ pru.id }}</td>
-            <td{% if seltpr is defined %} class="hidden-xs"{% endif %}>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
+            <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
             <td{% if selcat is defined %} class="hidden-xs"{% endif %}>{{ pru.cat.nombre }}</td>
-            <td>{{ pru.ronda }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Añadir ronda siguiente" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span></button></td>
-            <td>{{ pru.nombre }}</td>
+            <td>{{ pru.rondas|length }}
+               <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar rondas" onClick="toggleDropListTable({{ pru.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
+            </td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-user"></span></button></td>
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
-                     <li><a href="#" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span> Duplicar</a></li>
+                     <li><a href="#" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span> Añadir ronda</a></li>
                      <li><a href="#" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span></button>
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Añadir ronda" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span></button>
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
                </div>
             </td>
          </tr>
+         <tr><td colspan="6" style="padding: 0px">
+            <div id="droplist-{{ pru.sid }}" class="droplist">
+               <table class="table table-responsive table-hover table-bordered">
+                  <tbody>
+                     <tr>
+                        <th>Id</th>
+                        <th># Ronda</th>
+                        <th>Nombre</th>
+                        <th>Acciones</th>
+                     </tr>
+                     {% for ron in pru.rondas %}
+                        <tr>
+                           <td><span class="glyphicon glyphicon-chevron-right"></span> {{ ron.id }}</td>
+                           <td>{{ ron.num }}</td>
+                           <td>{{ ron.nombre }}</td>
+                           <td>
+                              <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span></button>
+                              <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
+                              <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
+                           </td>
+                        </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </td></tr>
+         
          {% endfor %}
       </tbody>
    </table>

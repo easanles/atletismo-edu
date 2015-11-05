@@ -16,7 +16,6 @@ use Easanles\AtletismoBundle\Entity\Categoria;
 class PruebaController extends Controller {
 	
     public function listadoPruebasAction($sidCom, Request $request) {
-    	$seltpr = $request->query->get('tpr');
     	$selcat = $request->query->get('c');
     	
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
@@ -43,12 +42,16 @@ class PruebaController extends Controller {
   	   }
      	 
      	$parametros = array('com' => $com, 'tipospruebas' => $listaTprs, 'categorias' => $listaCats);
-  		if ($seltpr != null) $parametros['seltpr'] = $seltpr;
-  	   if ($selcat != null) $parametros['selcat'] = $selcat;
-  		if (($seltpr != null) || ($selcat != null)){
-  			$pruebas = $repoPru->searchByParameters($sidCom, $seltpr, $selcat);
+  		if ($selcat != null){
+  	   	$parametros['selcat'] = $selcat;
+  			$pruebas = $repoPru->searchByParameters($sidCom, $selcat);
   		} else {
   			$pruebas = $repoPru->findAllFor($sidCom);
+  		}
+  		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
+  		foreach($pruebas as &$pru){
+  			$rondas = $repoRon->findBy(array("sidPru" => $pru['sid']));
+  			$pru['rondas'] = $rondas;
   		}
   		foreach($pruebas as &$pru){ //etiquetar como unica prueba de una ronda con rondas posteriores (mostrar aviso)
   			$nextRondas = $repoPru->getNextRondas($sidCom, $pru['tprm'], $pru['cat'], $pru['ronda']);
@@ -62,6 +65,8 @@ class PruebaController extends Controller {
   	      $pru['cat'] = $repoCat->find($pru['cat']);
   		}
   		$parametros['pruebas'] = $pruebas;
+  		//exit(dump($pruebas));
+  		
   		return $this->render('EasanlesAtletismoBundle:Prueba:list_prueba.html.twig', $parametros);
     }
     

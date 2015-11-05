@@ -114,6 +114,7 @@ class ConfiguracionController extends Controller {
     	   		DELETE FROM `ins`;
     	   		DELETE FROM `int`;
     	   		DELETE FROM `atl`;
+    	   		DELETE FROM `ron`;
     	   		DELETE FROM `pru`;
     	   		DELETE FROM `cat`;
     	   		DELETE FROM `vrq`;
@@ -121,7 +122,6 @@ class ConfiguracionController extends Controller {
     	   		DELETE FROM `tprm`;
     	   		DELETE FROM `tprf`;
     	   		DELETE FROM `com`;
-    	   		DELETE FROM `not`;
     	   ';
     	   $connection = $em->getConnection();
     	   $stmt = $connection->prepare($sql);
