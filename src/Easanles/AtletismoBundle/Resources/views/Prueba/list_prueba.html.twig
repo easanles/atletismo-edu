@@ -45,6 +45,7 @@
             <th>Prueba</th>
             <th{% if selcat is defined %} class="hidden-xs"{% endif %}><abbr title="Categoría" class="visible-xs-block">Categ.</abbr><div class="hidden-xs">Categoría</div></th>
             <th>Rondas</th>
+            <th>Coste</th>
             <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
             <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
@@ -57,6 +58,7 @@
             <td>{{ pru.rondas|length }}
                <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar rondas" onClick="toggleDropListTable({{ pru.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
             </td>
+            <td>{{ pru.coste }}€</td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-user"></span></button></td>
             <td>
                <div class="btn-group visible-xs-block">
@@ -64,17 +66,16 @@
                   <ul class="dropdown-menu pull-right">
                      <li><a href="#" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span> Añadir ronda</a></li>
                      <li><a href="#" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
-                     <li><a class="bg-danger" href="#" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Añadir ronda" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span></button>
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
-                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal()"><span class="glyphicon glyphicon-remove"></span></button>
                </div>
             </td>
          </tr>
-         <tr><td colspan="6" style="padding: 0px">
+         <tr><td colspan="7" style="padding: 0px">
             <div id="droplist-{{ pru.sid }}" class="droplist">
                <table class="table table-responsive table-hover table-bordered">
                   <tbody>
@@ -82,7 +83,7 @@
                         <th>Id</th>
                         <th># Ronda</th>
                         <th>Nombre</th>
-                        <th>Acciones</th>
+                        <th>Atletas</th>
                      </tr>
                      {% for ron in pru.rondas %}
                         <tr>
@@ -90,9 +91,8 @@
                            <td>{{ ron.num }}</td>
                            <td>{{ ron.nombre }}</td>
                            <td>
-                              <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Duplicar" onClick="showModal('dupPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-duplicate"></span></button>
-                              <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
-                              <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU{% if pru.unique %}warn{% endif %}', '{{ com.sid }}', '{{ pru.nombre }}', {{ pru.sid }})"><span class="glyphicon glyphicon-remove"></span></button>
+                              0 <span class="hidden-xs">atletas</span>
+                              <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Ver resultados" onClick="showModal()"><span class="glyphicon glyphicon-list-alt"></span><span class="hidden-xs"> Ver resultados</span></button>
                            </td>
                         </tr>
                      {% endfor %}

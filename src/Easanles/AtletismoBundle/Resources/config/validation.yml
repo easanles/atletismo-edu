@@ -85,20 +85,30 @@ Easanles\AtletismoBundle\Entity\Prueba:
            message: Este dato no debe ser nulo
         - NotBlank: 
            message: Este campo no debe estar en blanco
-     ronda:
-        - Type: 
-           type: Integer
-           message: Este valor debe ser un número entero
-        - GreaterThanOrEqual:
-           value: 0
-           message: Dato no válido
-        - NotNull: 
-           message: Este dato no debe ser nulo
-        - NotBlank: 
-           message: Este campo no debe estar en blanco
      idCat:
         - NotNull: 
            message: Seleccione una categoría
+     coste:
+        - Type: 
+           type: Float
+           message: Este valor debe ser un número entero o con decimales
+        - GreaterThanOrEqual:
+           value: 0
+           message: No se puede asignar un coste negativo
+        - NotBlank: 
+           message: Introduzca el coste de la prueba
+           
+Easanles\AtletismoBundle\Entity\Ronda:
+  properties:
+     num:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThan:
+           value: 0
+           message: El número de ronda debe ser mayor de cero
+        - NotBlank: 
+           message: Introduzca el número de ronda
 
 Easanles\AtletismoBundle\Entity\Categoria:
   properties:

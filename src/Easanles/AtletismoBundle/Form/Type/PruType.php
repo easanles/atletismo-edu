@@ -27,12 +27,13 @@ class PruType extends AbstractType {
 	}
 	
     public function buildForm(FormBuilderInterface $builder, array $options) {  	
-    	  //opciones directamente mapeadas
-        $builder
-    	    ->add('nombre', 'text', array(
-    	    		'label' => 'Nombre',
-    	    		'required' => false));
-
+    	   $builder->add('coste', 'money', array('label' => 'Coste estándar en euros', 'currency' => 'EUR', 'required' => true))
+    	   ->add('rondas', 'collection', array('type' => new RonType(),
+          		                                    'allow_add' => true,
+          		                                    'allow_delete' => true,
+          		                                    'by_reference' => false,
+          		                                    'cascade_validation' => true));
+    	   
     	  	$formModifier = function (FormInterface $form, $tprf) {
     	  		$modalidades = $tprf === null ? array() : $this->repo->findFor($tprf);
     	  		$choices = array();
@@ -113,6 +114,7 @@ class PruType extends AbstractType {
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
     	$resolver->setDefaults(array(
     			'data_class' => 'Easanles\AtletismoBundle\Entity\Prueba',
+    			'cascade_validation' => true
     	));
     }
     

@@ -52,6 +52,8 @@ function showModal(type, data1, data2, data3){
     	   $.getJSON("./" + data1 + "/nuevo", function(data, status){
    		      if (status = "success"){
    			    $("#dialog-body").html(data.message);
+   		        collectionHolder = $('#form-collection');
+		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
    			    $("#dialog-body").data('listener', 'pru_tprf');
    			    addListeners("pru_tprf");
    	          } else {
@@ -60,7 +62,7 @@ function showModal(type, data1, data2, data3){
    	       });
        } break;
 
-       case ("newRondaPRU"): { //Añadir ronda prueba
+       /*case ("newRondaPRU"): { //Añadir ronda prueba
     	   $('#dialog-label').html("Añadir una ronda");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
@@ -71,9 +73,9 @@ function showModal(type, data1, data2, data3){
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	
    	       });
-       } break;
+       } break;*/
        
-       case ("dupPRU"): { //Duplicar prueba
+       /*case ("dupPRU"): { //Duplicar prueba
     	   $('#dialog-label').html("Duplicar prueba");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
@@ -84,7 +86,7 @@ function showModal(type, data1, data2, data3){
    			    $("#dialog-body").html("Error al cargar datos");
    			  }	
    	       });
-       } break;
+       } break;*/
        
        case ("ediPRU"): { //Editar prueba
     	   $('#dialog-label').html("Editar prueba");
@@ -93,6 +95,8 @@ function showModal(type, data1, data2, data3){
     	   $.getJSON("./" + data1 + "/editar/"+data2, function(data, status){
    		      if (status = "success"){
    			    $("#dialog-body").html(data.message);
+   		        collectionHolder = $('#form-collection');
+		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
    			    $("#dialog-body").data('listener', 'pru_tprf');
    			    addListeners("pru_tprf");
    	          } else {

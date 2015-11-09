@@ -56,6 +56,7 @@ class Ronda {
 	 
 	public function __construct() {
 		$this->intentos = new ArrayCollection();
+		$this->num = 1;
 	}
 	 
 	public function getIntentos() {

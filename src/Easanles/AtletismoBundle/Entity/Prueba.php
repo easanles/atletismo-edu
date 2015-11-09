@@ -84,6 +84,7 @@ class Prueba {
 	public function __construct() {
 		$this->inscripciones = new ArrayCollection();
 		$this->rondas = new ArrayCollection();
+		$this->coste = 0.00;
 	}
 	 
 	public function getInscripciones() {
@@ -91,6 +92,14 @@ class Prueba {
 	}
 	public function getRondas() {
 		return $this->rondas;
+	}
+	
+	public function addRonda(Ronda $ron) {
+		$ron->setSidPru($this);
+		$this->rondas->add($ron);
+	}
+	public function removeRonda(Ronda $ron) {
+		$this->rondas->removeElement($ron);
 	}
 	
 

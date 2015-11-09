@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class PruebaRepository extends EntityRepository {
 	public function findAllFor($sidCom) {
 		return $this->getEntityManager()
-		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.ronda, pru.nombre FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.idCat ASC, pru.id ASC')
+		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.coste FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.idCat ASC, pru.id ASC')
 		->setParameter("sidcom", $sidCom)
 		->getResult();
 	}
@@ -55,6 +55,14 @@ class PruebaRepository extends EntityRepository {
 		          ->getQuery()->getResult();
 	}
 	
+	/**
+	 * @deprecated
+	 * @param unknown $sidCom
+	 * @param unknown $sidTprm
+	 * @param unknown $idCat
+	 * @param unknown $ronda
+	 * @return multitype:
+	 */
 	public function getNextRondas($sidCom, $sidTprm, $idCat, $ronda){
 		return $this->getEntityManager()->createQueryBuilder('pru')
 		->select('pru.sid, pru.ronda')

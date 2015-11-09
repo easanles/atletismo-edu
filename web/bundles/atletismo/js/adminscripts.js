@@ -47,22 +47,6 @@ function loadViews(content){
    }
 }
 
-//TIPOS DE PRUEBA
-function addFormRow(){
-   collectionHolder = $('#form-collection')
-    
-    prototype = collectionHolder.data('prototype');
-    index = collectionHolder.data('index');
-    collectionHolder.data('index', index + 1);
-    newForm = prototype.replace(/__name__/g, index);
-
-    collectionHolder.append(newForm);
-}
-
-function removeFormRow(button){
-   button.parentElement.parentElement.remove();
-}
-
 //CATEGORIAS
 function routeCatData(outdated){
 	if (outdated == true) return "./configuracion/categoria?outd=true";

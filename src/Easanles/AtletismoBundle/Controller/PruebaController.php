@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Form\Type\PruCopyType;
 use Easanles\AtletismoBundle\Entity\Categoria;
+use Easanles\AtletismoBundle\Entity\Ronda;
 
 class PruebaController extends Controller {
 	
@@ -54,23 +55,27 @@ class PruebaController extends Controller {
   			$pru['rondas'] = $rondas;
   		}
   		foreach($pruebas as &$pru){ //etiquetar como unica prueba de una ronda con rondas posteriores (mostrar aviso)
-  			$nextRondas = $repoPru->getNextRondas($sidCom, $pru['tprm'], $pru['cat'], $pru['ronda']);
-  		   $currentRondaCount = 0;
-  	      foreach ($nextRondas as $ronda){
-  	         if ($ronda['ronda'] == $pru['ronda']) $currentRondaCount++;
-  	         if ($currentRondaCount > 1) break;
-  	      }
-  	      $pru['unique'] = (($currentRondaCount == 1) && (count($nextRondas)) > 1);
+  			//$nextRondas = $repoPru->getNextRondas($sidCom, $pru['tprm'], $pru['cat'], $pru['ronda']);
+  		   //$currentRondaCount = 0;
+  	      //foreach ($nextRondas as $ronda){
+  	         //if ($ronda['ronda'] == $pru['ronda']) $currentRondaCount++;
+  	         //if ($currentRondaCount > 1) break;
+  	      //}
+  	      //$pru['unique'] = (($currentRondaCount == 1) && (count($nextRondas)) > 1);
   	      $pru['tprm'] = $repoTprm->find($pru['tprm']);
   	      $pru['cat'] = $repoCat->find($pru['cat']);
   		}
   		$parametros['pruebas'] = $pruebas;
-  		//exit(dump($pruebas));
   		
   		return $this->render('EasanlesAtletismoBundle:Prueba:list_prueba.html.twig', $parametros);
     }
-    
-    
+       
+    /**
+     * @deprecated
+     * @param unknown $sidCom
+     * @param Request $request
+     * @throws Exception
+     */
     private function crearPrimeraRonda($sidCom, Request $request) {
     	$pru = new Prueba();
     	$pru->setRonda(1);
@@ -93,6 +98,7 @@ class PruebaController extends Controller {
     			if ($pru->getIdCat()->getTFinVal() != null){
     				throw new Exception("Categoría caducada");
     			}
+    			
     			$em = $this->getDoctrine()->getManager();
     			$em->persist($pru);
     			$em->flush();
@@ -119,7 +125,14 @@ class PruebaController extends Controller {
     	]);
     } 
     
-    
+   /**
+    * @deprecated
+    * @param unknown $sidCom
+    * @param Request $request
+    * @param unknown $pruCopia
+    * @param unknown $copyMode
+    * @return \Symfony\Component\HttpFoundation\JsonResponse
+    */ 
    private function crearCopia($sidCom, Request $request, $pruCopia, $copyMode){
    	$pru = new Prueba();
    	
@@ -184,19 +197,71 @@ class PruebaController extends Controller {
    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
    		return $response;
    	}
-      $sidPru = $request->query->get('pru');
-      if ($sidPru != null) {
-     		$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-   	   $pruCopia = $repoPru->find($sidPru);
-   	   if ($pruCopia == null) {
-     			$response = new Response('No existe la prueba con el identificador "'.$sidPru.'" <a href="'.$this->generateUrl('listado_pruebas', array('sidCom' => $sidCom)).'">Volver</a>');
-     			$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_pruebas', array('sidCom' => $sidCom)));
-   		   return $response;
-   	   } else {
-     			$copyMode = $request->query->get('mod');
-   		   return $this->crearCopia($sidCom, $request, $pruCopia, $copyMode);
-   	   }
-      } else return $this->crearPrimeraRonda($sidCom, $request);
+   	$pru = new Prueba();
+   	$pru->setSidCom($com);
+   	$ron = new Ronda();
+   	$ron->setNum(1);
+   	$pru->addRonda($ron);
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+   	$pru->setId($repository->maxId($sidCom) + 1);
+   	$doctrine = $this->getDoctrine();
+   	$form = $this->createForm(new PruType($doctrine, null), $pru);
+   	
+   	$form->handleRequest($request);
+   	
+   	if ($form->isValid()) {
+   		try {
+   			if ($pru->getSidTprm() == null) {
+   				throw new Exception("Selecciona un tipo de prueba y una modalidad");
+   				//TODO: Mejorable. Mostrar error en el campo concreto.
+   			}
+   			if ($pru->getIdCat()->getTFinVal() != null){
+   				throw new Exception("Categoría caducada");
+   			}
+   			
+   			// Minimo una modalidad por tipo de prueba
+   			if ($pru->getRondas()->count() == 0)
+   				throw new Exception("Introduce al menos una ronda");
+   			
+   		   $rondas = $pru->getRondas();
+   		   $rondasUsadas = array();
+   		   $rondaFinal = 0;
+    			for ($i = 0; $i < count($rondas); $i++){
+    				$rondas[$i]->setId($i+1);
+    				$rondasUsadas[] = $rondas[$i]->getNum();
+    				if ($rondaFinal < $rondas[$i]->getNum()){
+    					$rondaFinal = $rondas[$i]->getNum();
+    				}
+    			}
+    			for ($i = 1; $i < $rondaFinal; $i++){
+    				if (!in_array($i, $rondasUsadas)){
+    					throw new Exception("La número de la ronda final es ".$rondaFinal." y no hay ninguna ronda ".$i);
+    				}
+    			}    			
+   			
+   			$em = $this->getDoctrine()->getManager();
+   			$em->persist($pru);
+   			$em->flush();
+   	
+   		} catch (\Exception $e) {
+   			$exception = $e->getMessage();
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
+   							array('form' => $form->createView(), 'sidCom' => $sidCom, 'mode' => 'new',
+   									'exception' => $exception))->getContent()
+   			]);
+   		}
+   		return new JsonResponse([
+   				'success' => true,
+   				'message' => "OK"
+   		]);
+   	}
+   	return new JsonResponse([
+   			'success' => false,
+   			'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
+   					array('form' => $form->createView(), 'sidCom' => $sidCom, 'mode' => 'new'))->getContent()
+   	]);
    }
    
    
@@ -251,19 +316,8 @@ class PruebaController extends Controller {
    		return $response;
    	}
    	
-   	if ($pru->getRonda() == 1){
-   		$template = 'EasanlesAtletismoBundle:Prueba:form_new_prueba.html.twig';
-   		$form = $this->createForm(new PruType($this->getDoctrine(), $pru->getSidTprm()), $pru);
-   	} else {
-   		$template = 'EasanlesAtletismoBundle:Prueba:form_copy_prueba.html.twig';
-   		$nombreTpr = $pru->getSidTprm()->getSidTprf()->getNombre().". ";
-   		if ($pru->getSidTprm()->getSexo() == 0) $nombreTpr = $nombreTpr."Masculino, ";
-   		else if ($pru->getSidTprm()->getSexo() == 1) $nombreTpr = $nombreTpr."Femenino, ";
-   		$nombreTpr = $nombreTpr.$pru->getSidTprm()->getEntorno();
-   		$nombreCat = $pru->getIdCat()->getNombre()." (".$pru->getIdCat()->getEdadMax().")";
-   		 
-   		$form = $this->createForm(new PruCopyType($nombreTpr, $nombreCat), $pru);
-   	}
+      $form = $this->createForm(new PruType($this->getDoctrine(), $pru->getSidTprm()), $pru);
+      
    	$form->handleRequest($request);
    	
    	if ($form->isValid()) {
@@ -275,6 +329,24 @@ class PruebaController extends Controller {
    			if ($pru->getIdCat()->getTFinVal() != null){
    				throw new Exception("Categoría caducada");
    			}
+   			
+   			$rondas = $pru->getRondas();
+   			$rondasUsadas = array();
+   			$rondaFinal = 0;
+   			$cuenta = 1;
+   			foreach($rondas as $ron){
+   				$ron->setId($cuenta++);
+   				$rondasUsadas[] = $ron->getNum();
+   				if ($rondaFinal < $ron->getNum()){
+   					$rondaFinal = $ron->getNum();
+   				}
+   			}
+   			for ($i = 1; $i < $rondaFinal; $i++){
+   				if (!in_array($i, $rondasUsadas)){
+   					throw new Exception("La número de la ronda final es ".$rondaFinal." y no hay ninguna ronda ".$i);
+   				}
+   			}
+   			
    			$em = $this->getDoctrine()->getManager();
    			$em->persist($pru);
    			$em->flush();
@@ -283,7 +355,7 @@ class PruebaController extends Controller {
    			$exception = $e->getMessage();
    			return new JsonResponse([
    					'success' => false,
-   					'message' => $this->render($template,
+   					'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
    							array('form' => $form->createView(), 'sidCom' => $sidCom,
    									'mode' => 'edit', 'sidPru' => $sidPru,
    									'exception' => $exception))->getContent()
@@ -296,7 +368,7 @@ class PruebaController extends Controller {
    	}
    	return new JsonResponse([
    			'success' => false,
-   			'message' => $this->render($template,
+   			'message' => $this->render('EasanlesAtletismoBundle:Prueba:form_prueba.html.twig',
    					array('form' => $form->createView(), 'sidCom' => $sidCom,
    							 'mode' => 'edit', 'sidPru' => $sidPru
    					))->getContent()

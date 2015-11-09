@@ -87,20 +87,20 @@
                      <tr>
                         <th>Prueba</th>
                         <th class="hidden-xs">Fecha de inscripción</th>
+                        <th class="hidden-xs">Inscrito por</th>
                         <th class="hidden-xs">Coste</th>
                         <th>Estado</th>
                         <th class="hidden-xs">Código de grupo</th>
-                        <th class="hidden-xs">Inscrito por</th>
                         <th>Registrar marca</th>
                      </tr>
                      {% for ins in atl.pruebas %}
                         <tr>
                            <td><span class="glyphicon glyphicon-chevron-right"></span> {{ ins.nombre }}. {% if ins.sexo == 0 %}Masculino, {% elseif ins.sexo == 1 %}Femenino, {% endif%}{{ ins.entorno }}</td>
                            <td class="hidden-xs">{{ ins.fecha|date('d/m/Y') }}</td>
+                           <td class="hidden-xs">{{ ins.origen }}</td>
                            <td class="hidden-xs">{{ ins.coste }}€</td>
                            <td>{{ ins.estado }}</td>
                            <td class="hidden-xs">{{ ins.codGrupo }}</td>
-                           <td class="hidden-xs">{{ ins.origen }}</td>
                            <td><button type="button" class="btn btn-xs btn-block btn-default" onClick="showModal()"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
                         </tr>
                      {% endfor %}

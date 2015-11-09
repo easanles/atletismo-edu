@@ -66,6 +66,21 @@ function toggleDropListTable(id, button){
 	   button.parent().closest("tr").attr("class", "");
    }
 }
+
+function addFormRow(){
+	collectionHolder = $('#form-collection')
+	    
+	prototype = collectionHolder.data('prototype');
+	index = collectionHolder.data('index');
+	collectionHolder.data('index', index + 1);
+	newForm = prototype.replace(/__name__/g, index);
+
+	collectionHolder.append(newForm);
+}
+
+function removeFormRow(button){
+   button.parentElement.parentElement.remove();
+}
 	
 $(document).ready(function(){
 	$(function () {

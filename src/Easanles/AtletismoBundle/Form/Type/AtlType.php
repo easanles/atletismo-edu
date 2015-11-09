@@ -17,7 +17,7 @@ class AtlType extends AbstractType
         ->add('fnac', 'date', array(
         		'label' => 'Fecha de nacimiento*',
         		'widget' => 'single_text',
-        		'format' => 'dd-MM-yyyy',
+        		'format' => 'dd/MM/yyyy',
         		'placeholder' => 'dd/mm/aaaa',
         		'invalid_message' => 'Fecha no válida. Formato: dd/mm/aaaa'))
         ->add('sexo', 'choice', array(
@@ -34,7 +34,7 @@ class AtlType extends AbstractType
         ->add('localidad', 'text', array('label' => 'Localidad','required' => false))
         ->add('provincia', 'text', array('label' => 'Provincia','required' => false))
         ->add('pais', 'text', array('label' => 'País','required' => false))
-        ->add('nacion', 'text', array('label' => 'Nacionalidad','required' => false))
+        ->add('nacion', 'country', array('label' => 'Nacionalidad','preferred_choices' => array('ES'), 'required' => false))
         ->add('lfga', 'text', array('label' => 'Licencia FGA','required' => false))
         ->add('lxogade', 'text', array('label' => 'Licencia XOGADE','required' => false))
         ->add('fotoFile', 'vich_image', array(
