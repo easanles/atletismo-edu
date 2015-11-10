@@ -8,8 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
  
-class CatType extends AbstractType
-{
+class CatType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre'))

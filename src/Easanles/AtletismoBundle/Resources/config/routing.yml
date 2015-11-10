@@ -94,6 +94,12 @@ editar_atleta:
 listado_inscripciones:
    path: /competiciones/{sidCom}/inscripciones
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:listadoInscripciones"}
+   
+
+#===================PARTICIPACIONES==================
+confirmar_participacion:
+   path: /competiciones/{sidCom}/participar
+   defaults: {_controller: "EasanlesAtletismoBundle:Participacion:confirmarParticipacion"}
      
 
 #====================CONFIGURACION===================

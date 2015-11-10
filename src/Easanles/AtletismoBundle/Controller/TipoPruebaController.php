@@ -38,14 +38,11 @@ class TipoPruebaController extends Controller {
    			$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
    			$testResult = $repository->checkData($nombre);
    			if ($testResult) throw new Exception("Ya existe un tipo de prueba con el nombre \"".$nombre."\"");
-
    			// Minimo una modalidad por tipo de prueba
    			if ($tprf->getModalidades()->count() == 0)
    		         throw new Exception("Introduce al menos una modalidad para este tipo de prueba");
-   			
    			// Restricciones en modalidades
    			$this->checkModalidades($tprf);
-   	
    			$em = $this->getDoctrine()->getManager();
             $em->persist($tprf);
    			$em->flush();
@@ -115,23 +112,16 @@ class TipoPruebaController extends Controller {
     				if ($testResult && !($prevNombre == $nombre)) {
     					throw new Exception("Ya existe el tipo de prueba \"".$nombre."\"");
     				}
-    				
     				// Minimo una modalidad por tipo de prueba
     				if ($tprf->getModalidades()->count() == 0)
     					throw new Exception("Introduce al menos una modalidad para este tipo de prueba");
-    				
     				// Restricciones en modalidades
     				$this->checkModalidades($tprf);
-    				
     				foreach ($originalTprms as $tprm) {
     					if (false === $tprf->getModalidades()->contains($tprm)) {
-    						// $tprm->getTasks()->removeElement($task);
-    						// $tprm->setTask(null);
-    						//$em->persist($tag);
     						$em->remove($tprm);
     					}
     				}
-    				
     				$em->flush();
     			} catch (\Exception $e) {
     				$exception = $e->getMessage();

@@ -62,19 +62,19 @@
             <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }}€</td>
             <td>{{ atl.estado }}</td>
             <td class="hidden-xs{% if atl.sidPar is not defined %} text-muted{% endif %}">{{ atl.dorsal }}</td>
-            <td class="hidden-xs"><input type="checkbox"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>
+            <td class="hidden-xs"><input id="asistCB-{{ atl.id }}" type="checkbox" onClick="toggleAsist(this, {{ atl.id }})"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
-                     <li><a href="#" onClick=""{% if atl.sidPar is not defined %} disabled{% endif %}><span class="glyphicon glyphicon-ok"></span> Asistencia</a></li>
-                     <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-bullhorn"></span> Confirmar participación</a></li>
+                     {% if atl.sidPar is defined %}<li><a id="asistLI-{{ atl.id }}" href="#" onClick="toggleAsist(this, {{ atl.id }})">{% if atl.asistencia == true %}<span class="glyphicon glyphicon-check"></span> Asistencia [SI]{% else %}<span class="glyphicon glyphicon-unchecked"></span> Asistencia [NO]{% endif %}</a></li>{% endif %}
+                     <li><a href="#" onClick="showModal('newPAR', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-bullhorn"></span> {% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}</a></li>
                      <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Desinscribir</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Confirmar participación" onClick="showModal()"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="{% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}" onClick="showModal('newPAR', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-bullhorn"></span></button>
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span></button>
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Desinscribir" onClick="showModal()"><span class="glyphicon glyphicon-remove-circle"></span></button>
                </div>
@@ -88,9 +88,10 @@
                         <th>Prueba</th>
                         <th class="hidden-xs">Fecha de inscripción</th>
                         <th class="hidden-xs">Inscrito por</th>
+                        <th class="hidden-xs">Código de grupo</th>
                         <th class="hidden-xs">Coste</th>
                         <th>Estado</th>
-                        <th class="hidden-xs">Código de grupo</th>
+                        <th class="hidden-xs">Registros</th>
                         <th>Registrar marca</th>
                      </tr>
                      {% for ins in atl.pruebas %}
@@ -98,9 +99,10 @@
                            <td><span class="glyphicon glyphicon-chevron-right"></span> {{ ins.nombre }}. {% if ins.sexo == 0 %}Masculino, {% elseif ins.sexo == 1 %}Femenino, {% endif%}{{ ins.entorno }}</td>
                            <td class="hidden-xs">{{ ins.fecha|date('d/m/Y') }}</td>
                            <td class="hidden-xs">{{ ins.origen }}</td>
+                           <td class="hidden-xs">{{ ins.codGrupo }}</td>
                            <td class="hidden-xs">{{ ins.coste }}€</td>
                            <td>{{ ins.estado }}</td>
-                           <td class="hidden-xs">{{ ins.codGrupo }}</td>
+                           <td class="hidden-xs">0</td>
                            <td><button type="button" class="btn btn-xs btn-block btn-default" onClick="showModal()"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
                         </tr>
                      {% endfor %}

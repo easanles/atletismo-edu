@@ -6,26 +6,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  
-class TprmType extends AbstractType{
+class ParType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder
-    	    ->add('sexo', 'choice', array('choices' => array(
-    	    		    '2' => 'Ambos',
-    	    		    '0' => 'Masculino',
-    	    		    '1' => 'Femenino',
-    	          ),
-    	    		 'expanded' => false,
-    	    		 'label' => 'Sexo', 'required' => true))
-    	    ->add('entorno', 'text', array('label' => 'Entorno'));
+    	    ->add('dorsal', 'text', array(
+    	    		 'label' => 'Dorsal recibido', 'required' => false))
+    	    ->add('asisten', 'checkbox', array('label' => 'Asistió al evento'));
     }
  
     public function getName(){
-        return 'tprm';
+        return 'par';
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver){
     	$resolver->setDefaults(array(
-    			'data_class' => 'Easanles\AtletismoBundle\Entity\TipoPruebaModalidad',
+    			'data_class' => 'Easanles\AtletismoBundle\Entity\Participacion',
     	));
     }
 }

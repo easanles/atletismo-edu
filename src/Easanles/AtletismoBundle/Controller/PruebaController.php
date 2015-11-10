@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Form\Type\PruType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Easanles\AtletismoBundle\Form\Type\PruCopyType;
 use Easanles\AtletismoBundle\Entity\Categoria;
 use Easanles\AtletismoBundle\Entity\Ronda;
 use Doctrine\Common\Collections\ArrayCollection;

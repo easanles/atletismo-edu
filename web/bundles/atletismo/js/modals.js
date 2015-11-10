@@ -121,6 +121,19 @@ function showModal(type, data1, data2, data3){
 		   $('#data1').html(data1);
 		   $('#confirmbutton').attr("href", data2);
 	   } break;
+	   
+	   case ("newPAR"): { //Confirmar participacion
+    	   $('#dialog-label').html("Confirmar participación");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-bullhorn\"></span> Confirmar</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
+    	   $.getJSON("./participar?atl=" + data1, function(data, status){
+   		      if (status = "success"){
+   			    $("#dialog-body").html(data.message);
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
        
        default: break;
 	}

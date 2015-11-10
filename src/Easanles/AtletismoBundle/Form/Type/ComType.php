@@ -6,8 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  
-class ComType extends AbstractType
-{
+class ComType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre de la competición'))

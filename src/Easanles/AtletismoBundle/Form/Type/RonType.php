@@ -6,10 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  
-class RonType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class RonType extends AbstractType{
+    public function buildForm(FormBuilderInterface $builder, array $options){
         $builder
     	    ->add('num', 'integer', array(
     	    		 'label' => 'Número',
@@ -17,13 +15,11 @@ class RonType extends AbstractType
     	    ->add('nombre', 'text', array('label' => 'Nombre'));
     }
  
-    public function getName()
-    {
+    public function getName(){
         return 'ron';
     }
     
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
+    public function setDefaultOptions(OptionsResolverInterface $resolver){
     	$resolver->setDefaults(array(
     			'data_class' => 'Easanles\AtletismoBundle\Entity\Ronda',
     	));

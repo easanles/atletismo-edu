@@ -5,12 +5,18 @@ namespace Easanles\AtletismoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Helpers\Helpers;
+use Symfony\Component\HttpFoundation\Response;
 
-class InscripcionController extends Controller
-{
+class InscripcionController extends Controller {
+	
     public function listadoInscripcionesAction($sidCom, Request $request) {
     	  $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	  $com = $repository->find($sidCom);
+    	  if ($com == null){
+    	  		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    	  		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    	  		return $response;
+    	  }
     	  $parametros = array('com' => $com);
     	  $atletaIds = $repository->findAtletasIns($sidCom);
     	  $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');

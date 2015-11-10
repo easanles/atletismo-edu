@@ -1,0 +1,21 @@
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span>{{ exception }}</span></div>
+   {% endif %}
+
+   <div id="data_form" class="row">
+
+{{ form_start(form, {'action': path('confirmar_participacion', {'sidCom': sidCom, 'atl': idAtl})}) }}
+
+     <div>
+       <div class="form_row col-xs-4">
+          {{ form_row(form.asisten) }}
+       </div>
+       <div class="form_row col-xs-8">
+          {{ form_row(form.dorsal) }}
+       </div>
+    </div>
+
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>

@@ -81,6 +81,22 @@ function addFormRow(){
 function removeFormRow(button){
    button.parentElement.parentElement.remove();
 }
+
+function toggleAsist(item, id){
+    if ($(item).attr("id").substring(0, 7) == "asistCB"){
+       cb = $(item);
+       li = $("#asistLI-" + $(item).attr("id").split("-")[1]);
+    } else if ($(item).attr("id").substring(0, 7) == "asistLI") {
+       cb = $("#asistCB-" + $(item).attr("id").split("-")[1]);
+       li = $(item);
+       cb.prop("checked", !cb.prop("checked"));
+    }
+    if (cb.prop("checked") == true){
+        li.html("<span class=\"glyphicon glyphicon-check\"></span> Asistencia [SI]")
+    } else {
+        li.html("<span class=\"glyphicon glyphicon-unchecked\"></span> Asistencia [NO]")
+    }
+}
 	
 $(document).ready(function(){
 	$(function () {

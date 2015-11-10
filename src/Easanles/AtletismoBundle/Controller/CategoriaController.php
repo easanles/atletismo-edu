@@ -11,8 +11,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 
-class CategoriaController extends Controller
-{
+class CategoriaController extends Controller{
+	
     public function listadoCategoriasAction(Request $request) {
     	$outdated = $request->query->get('outd');
     	
