@@ -48,7 +48,7 @@ class PruebaRepository extends EntityRepository {
 			$qb = $qb->andWhere('IDENTITY(pru.idCat) LIKE :idcat')
 			      ->setParameter('idcat', $idCat);
 		}
-		return $qb->select('pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.ronda, pru.nombre')
+		return $qb->select('pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.coste')
 		          ->from('EasanlesAtletismoBundle:Prueba', 'pru')
 		          ->orderBy("pru.idCat", "ASC")
 		          ->orderBy("pru.id", "ASC")

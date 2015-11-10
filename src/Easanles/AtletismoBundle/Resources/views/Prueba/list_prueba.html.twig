@@ -51,9 +51,14 @@
          </tr>
          
          {% for pru in pruebas %}
+         {% if pru.tprm.sexo == 0 %}
+            {% set tpr = pru.tprm.sidTprf.nombre ~ '. Masculino, ' ~ pru.tprm.entorno %}
+         {% elseif pru.tprm.sexo == 1 %}
+            {% set tpr = pru.tprm.sidTprf.nombre ~ '. Femenino, ' ~ pru.tprm.entorno %}
+         {% endif %}
          <tr>
             <td>{{ pru.id }}</td>
-            <td>{{ pru.tprm.sidTprf.nombre }}. {% if pru.tprm.sexo == 0 %}Masculino, {% elseif pru.tprm.sexo == 1 %}Femenino, {% endif%}{{ pru.tprm.entorno }}</td>
+            <td>{{ tpr }}</td>
             <td{% if selcat is defined %} class="hidden-xs"{% endif %}>{{ pru.cat.nombre }}</td>
             <td>{{ pru.rondas|length }}
                <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar rondas" onClick="toggleDropListTable({{ pru.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
@@ -64,14 +69,13 @@
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
-                     <li><a href="#" onClick="showModal('newRondaPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-plus-sign"></span> Añadir ronda</a></li>
                      <li><a href="#" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
-                     <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal('delPRU', {{ com.sid }}, {{ pru.sid }}, '{{ tpr }}')"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
-                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal()"><span class="glyphicon glyphicon-remove"></span></button>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU', {{ com.sid }}, {{ pru.sid }}, '{{ tpr }}')"><span class="glyphicon glyphicon-remove"></span></button>
                </div>
             </td>
          </tr>

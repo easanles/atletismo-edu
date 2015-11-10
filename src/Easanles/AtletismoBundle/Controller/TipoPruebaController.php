@@ -123,7 +123,6 @@ class TipoPruebaController extends Controller {
     				// Restricciones en modalidades
     				$this->checkModalidades($tprf);
     				
-    				
     				foreach ($originalTprms as $tprm) {
     					if (false === $tprf->getModalidades()->contains($tprm)) {
     						// $tprm->getTasks()->removeElement($task);

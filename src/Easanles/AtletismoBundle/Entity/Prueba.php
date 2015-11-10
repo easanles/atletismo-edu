@@ -34,20 +34,6 @@ class Prueba {
 	 */
 	private $sidCom;
 	
-	/**
-	 * @var integer
-	 * @ORM\Column(name="rondapru", type="smallint", nullable=true)
-	 * @deprecated
-	 */
-	private $ronda;
-
-	/**
-	 * @var string
-	 * @ORM\Column(name="nombrepru", type="string", length=255, nullable=true)
-	 * @deprecated
-	 */
-	private $nombre;
-	
     /**
      * @var string
      * @ORM\Column(name="costepru", type="decimal", precision=10, scale=2, options={"default":0.00})
@@ -124,28 +110,6 @@ class Prueba {
 	}
 	public function setSidCom($sidCom) {
 		$this->sidCom = $sidCom;
-		return $this;
-	}
-	/**
-	 *  @deprecated */
-	public function getRonda() {
-		return $this->ronda;
-	}
-	/**
-	 *  @deprecated */
-	public function setRonda($ronda) {
-		$this->ronda = $ronda;
-		return $this;
-	}
-	/**
-	 *  @deprecated */
-	public function getNombre() {
-		return $this->nombre;
-	}
-	/**
-	 *  @deprecated */
-	public function setNombre($nombre) {
-		$this->nombre = $nombre;
 		return $this;
 	}
 	public function getCoste() {
