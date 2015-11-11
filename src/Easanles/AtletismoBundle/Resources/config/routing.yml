@@ -100,6 +100,9 @@ listado_inscripciones:
 confirmar_participacion:
    path: /competiciones/{sidCom}/participar
    defaults: {_controller: "EasanlesAtletismoBundle:Participacion:confirmarParticipacion"}
+marcar_asistencia:
+   path: /competiciones/{sidCom}/asistencia
+   defaults: {_controller: "EasanlesAtletismoBundle:Participacion:marcarAsistencia"}
      
 
 #====================CONFIGURACION===================

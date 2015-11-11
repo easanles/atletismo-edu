@@ -57,7 +57,7 @@ class CompeticionRepository extends EntityRepository {
 		foreach ($result as &$com){ // & = Paso por referencia
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
 			$com['numpruebas'] = $numPruebas;
-			$com['numatletas'] = $this->countAtletasIns($com['sid']);
+			$com['numatletas'] = count($this->findAtletasIns($com['sid']));
 		}
 		return $result;
 	}

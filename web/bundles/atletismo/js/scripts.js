@@ -82,12 +82,13 @@ function removeFormRow(button){
    button.parentElement.parentElement.remove();
 }
 
-function toggleAsist(item, id){
-    if ($(item).attr("id").substring(0, 7) == "asistCB"){
+function toggleAsist(item, idPar){
+	itemData = $(item).attr("id").split("-");
+    if (itemData[0] == "asistCB"){
        cb = $(item);
-       li = $("#asistLI-" + $(item).attr("id").split("-")[1]);
-    } else if ($(item).attr("id").substring(0, 7) == "asistLI") {
-       cb = $("#asistCB-" + $(item).attr("id").split("-")[1]);
+       li = $("#asistLI-" + itemData[1]);
+    } else if (itemData[0] == "asistLI") {
+       cb = $("#asistCB-" + itemData[1]);
        li = $(item);
        cb.prop("checked", !cb.prop("checked"));
     }
@@ -96,6 +97,14 @@ function toggleAsist(item, id){
     } else {
         li.html("<span class=\"glyphicon glyphicon-unchecked\"></span> Asistencia [NO]")
     }
+	$.ajax({
+       type: "post",
+	   url: "./asistencia",
+	   data: {par: idPar, val: cb.prop("checked")},
+	   success: function(data) {
+          console.log(data);
+	   }
+    });
 }
 	
 $(document).ready(function(){
@@ -114,6 +123,9 @@ $(document).ready(function(){
 	      return false;
        }
 	});
+	$('input:checkbox').each(function(){
+		$(this).prop("checked", this.hasAttribute("checked"));
+	})
 })
 
 $(window).resize(function(){

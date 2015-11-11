@@ -67,4 +67,22 @@ class ParticipacionController extends Controller {
         ]);   	   
     }
     
+    public function marcarAsistenciaAction(Request $request){
+    	 $sidPar = $request->request->get('par');
+    	 $value = $request->request->get('val');
+    	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
+    	 $par = $repository->findOneBy(array("sid" => $sidPar));
+    	 if ($par == null){
+    	    return new Response("No existe la participacion con el identificador ". $sidPar);
+    	 } else if (($value != true) && ($value != false)) {
+    	 	 return new Response("Valor recibido no valido");
+    	 } else {
+    	 	 $par->setAsisten($value == "true" ? 1 : 0);
+    	 	 $em = $this->getDoctrine()->getManager();
+    	 	 $em->flush();
+    	 	 return new Response("OK");
+    	 }
+    	
+    }
+    
 }
