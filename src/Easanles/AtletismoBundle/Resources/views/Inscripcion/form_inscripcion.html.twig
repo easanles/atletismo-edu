@@ -1,0 +1,57 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}
+   Inscribir atletas
+{% endblock %}
+
+{% block navbar %}
+      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+  <li><a href="{{ path('ver_competicion', {'id': com.sid}) }}">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</a></li>
+  <li><a href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}">Inscripciones</a></li>
+  <li class="active">Inscribir atletas</li>
+{% endblock %}
+
+{% block container %}
+    <h1 id="container_title" class="row page-header">Inscribir atletas <small> - {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</small></h1>
+   
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+
+   {% if warning is defined %}
+   <div class="alert alert-warning alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong><span class="glyphicon glyphicon-alert"></span></strong><span> {{ warning }}</span></div>
+   {% endif %}
+   
+   <ul class="nav nav-pills">
+      <li role="presentation" id="inspill-atl" class="active"><a href="#" onClick="toggleInsPages('atl')">Atletas</a></li>
+      <li role="presentation" id="inspill-pru" class="disabled"><a href="#" onClick="toggleInsPages('pru')">Pruebas</a></li>
+      <li role="presentation" id="inspill-confirm" class="disabled"><a href="#" onClick="toggleInsPages('confirm')">Confirmación</a></li>
+   </ul>
+      
+   <div id="inspage-atl" class="pagecontent"></div>
+   <div id="inspage-pru" class="pagecontent" style="display:none"></div>
+   <div id="inspage-confirm" class="pagecontent" style="display:none"></div>
+
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   <script type="text/javascript">
+   $(document).ready(function(){
+      loadViews('atl');
+   });
+   </script>
+{% endblock %}
+

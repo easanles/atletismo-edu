@@ -72,4 +72,56 @@ class InscripcionController extends Controller {
     	   
         return $this->render('EasanlesAtletismoBundle:Inscripcion:list_inscripcion.html.twig', $parametros);
     }
+    
+    public function inscribirAtletasAction($sidCom){
+    	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 $com = $repository->find($sidCom);
+    	 if ($com == null){
+    		 $response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    		 return $response;
+    	 }
+    	 
+    	 return $this->render('EasanlesAtletismoBundle:Inscripcion:form_inscripcion.html.twig', array(
+    	 		'mode' => 'new', 'com' => $com
+    	 ));
+    }
+    
+    public function seleccionAtletasAction($sidCom, Request $request){
+    	$parametros = array('sidCom' => $sidCom);
+    	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    	//TODO: Codigo copiado de Atleta:listadoAtletas
+    	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    	$cat = $request->query->get('cat');
+    	$query = $request->query->get('q');
+    	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	
+    	if (($cat == null) && ($query == null)){
+    		$atletas = $repoAtl->findAllOrdered();
+    	} else {
+    		$catObj = $repoCat->findOneBy(array("id" => $cat));
+    		if ($catObj == null) {
+    			$atletas = $repoAtl->searchByParameters(null, null, $query);
+    		} else {
+    			$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
+    			$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
+    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query);
+    		}
+    	}
+    	$parametros['atletas'] = $atletas;    	
+    	$vigentes = $repoCat->findAllCurrent();
+    	$parametros['vigentes'] = $vigentes;    	
+    	$categorias = array();
+    	$fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
+    	foreach ($atletas as $atl){
+    		$categorias[] = Helpers::getCategoria($vigentes, $fechaRefCat, $atl['fnac']);
+    	}
+    	$parametros['categorias'] = $categorias;
+    	
+    	if ($cat != null) $parametros['cat'] = $cat;
+    	if ($query != null) $parametros['query'] = $query;
+    	return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_atleta.html.twig', $parametros);
+    	
+    }
 }

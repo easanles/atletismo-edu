@@ -12,7 +12,7 @@ function toggleContent(tab){
 
 function loadViews(content){
    icon = $(".updater");
-   icon.removeClass("hidden")
+   icon.removeClass("hidden");
 
    switch (content){
       case "tp": {

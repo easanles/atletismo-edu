@@ -20,19 +20,25 @@ function comSearch(temp, query){
 	goToUrl(path);
 }
 
-function atlSearch(cat, query){
-	path = "./atletas";
+function atlSearchParam(cat, query){
+	result = '';
 	if ((cat != null) && (cat != "")){
 		if ((query != null) && (query != "")){
-			path = path + "?cat=" + cat + "&q=" + query;
+			result = result + "?cat=" + cat + "&q=" + query;
 		} else {
-			path = path + "?cat=" + cat;
+			result = result + "?cat=" + cat;
 		}
 	} else {
 		if ((query != null) && (query != "")) {
-			path = path + "?q=" + query;
+			result = result + "?q=" + query;
 		}
 	}
+	return result;
+}
+
+function atlSearch(url, cat, query){
+	path = url;
+	path = path + atlSearchParam(cat, query);
 	goToUrl(path);
 }
 
@@ -105,6 +111,40 @@ function toggleAsist(item, idPar){
           console.log(data);
 	   }
     });
+}
+
+//FORMULARIO DE INSCRIPCION
+
+function toggleInsPages(tab){
+	if (!$("#inspill-" + tab).hasClass('disabled')){
+       $(".nav-pills li").removeClass("active");
+       $(".tabcontent").css("display", "none");
+    
+       $("#inspill-" + tab).addClass("active");
+       $("#inspage-" + tab).css("display", "inline");
+       if ((tab == "atl") || (tab == "pru")){
+          loadViews(tab);
+       }
+	}
+}
+
+function loadViews(tab){
+   //icon = $(".working");
+   //icon.removeClass("hidden");
+   switch (tab){
+      case "atl": {
+         $.get("./inscribir/atl", function(data, status){           
+            if (status = "success"){
+               $("#inspage-atl").html(data);
+            } else {
+               $("#inspage-atl").html("Error al cargar datos");
+            }
+            //icon.addClass("hidden");      
+         });      
+      } break;
+      default: break;
+   }
+   $('.dropdown-toggle').dropdown()
 }
 	
 $(document).ready(function(){
