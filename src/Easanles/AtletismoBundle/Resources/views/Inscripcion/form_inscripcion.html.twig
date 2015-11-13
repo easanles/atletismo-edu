@@ -32,22 +32,25 @@
    <div class="alert alert-warning alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong><span class="glyphicon glyphicon-alert"></span></strong><span> {{ warning }}</span></div>
    {% endif %}
    
-   <ul class="nav nav-pills">
-      <li role="presentation" id="inspill-atl" class="active"><a href="#" onClick="toggleInsPages('atl')">Atletas</a></li>
-      <li role="presentation" id="inspill-pru" class="disabled"><a href="#" onClick="toggleInsPages('pru')">Pruebas</a></li>
-      <li role="presentation" id="inspill-confirm" class="disabled"><a href="#" onClick="toggleInsPages('confirm')">Confirmación</a></li>
-   </ul>
-      
-   <div id="inspage-atl" class="pagecontent"></div>
-   <div id="inspage-pru" class="pagecontent" style="display:none"></div>
-   <div id="inspage-confirm" class="pagecontent" style="display:none"></div>
-
+   <div class="row">
+      <ul class="nav nav-pills col-xs-12">
+         <li role="presentation" id="inspill-atl" class="active"><a href="#" onClick="toggleInsPages('atl')">Atletas</a></li>
+         <li role="presentation" id="inspill-pru" class="disabled"><a href="#" onClick="toggleInsPages('pru')">Pruebas</a></li>
+         <li role="presentation" id="inspill-confirm" class="disabled"><a href="#" onClick="toggleInsPages('confirm')">Confirmación</a></li>
+      </ul>
+   </div>
+   <div class="row" style="margin-top: 1em">
+      <div id="inspage-atl" class="pagecontent col-xs-12"></div>
+      <div id="inspage-pru" class="pagecontent col-xs-12" style="display:none"></div>
+      <div id="inspage-confirm" class="pagecontent col-xs-12" style="display:none"></div>
+   </div>
    
 {% endblock %}
 
 {% block js %}
    <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
    <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/inscripciones.js') }}"></script>
    <script type="text/javascript">
    $(document).ready(function(){
       loadViews('atl');

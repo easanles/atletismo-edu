@@ -61,7 +61,7 @@
             <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }}€</td>
             <td>{{ atl.estado }}</td>
             <td class="hidden-xs{% if atl.sidPar is not defined %} text-muted{% endif %}">{{ atl.dorsal }}</td>
-            <td class="hidden-xs"><input id="asistCB-{{ atl.id }}" type="checkbox" onClick="toggleAsist(this, {{ atl.sidPar }})"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>
+            <td class="hidden-xs"><input id="asistCB-{{ atl.id }}" type="checkbox" onClick="toggleAsist(this, {% if atl.sidPar is defined %}{{ atl.sidPar }}{% else %}null{% endif %})"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>

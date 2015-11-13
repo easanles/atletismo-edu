@@ -112,40 +112,6 @@ function toggleAsist(item, idPar){
 	   }
     });
 }
-
-//FORMULARIO DE INSCRIPCION
-
-function toggleInsPages(tab){
-	if (!$("#inspill-" + tab).hasClass('disabled')){
-       $(".nav-pills li").removeClass("active");
-       $(".tabcontent").css("display", "none");
-    
-       $("#inspill-" + tab).addClass("active");
-       $("#inspage-" + tab).css("display", "inline");
-       if ((tab == "atl") || (tab == "pru")){
-          loadViews(tab);
-       }
-	}
-}
-
-function loadViews(tab){
-   //icon = $(".working");
-   //icon.removeClass("hidden");
-   switch (tab){
-      case "atl": {
-         $.get("./inscribir/atl", function(data, status){           
-            if (status = "success"){
-               $("#inspage-atl").html(data);
-            } else {
-               $("#inspage-atl").html("Error al cargar datos");
-            }
-            //icon.addClass("hidden");      
-         });      
-      } break;
-      default: break;
-   }
-   $('.dropdown-toggle').dropdown()
-}
 	
 $(document).ready(function(){
 	$(function () {

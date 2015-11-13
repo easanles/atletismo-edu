@@ -1,14 +1,55 @@
-      <div class="row">
-         <div class="col-xs-6 col-sm-4">
-            <select class="form-control" onChange="atlSearch('{{ path('inscribir_atletas_atletas', {'sidCom': sidCom}) }}', this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
+      <div class="row" style="margin-bottom: 1em">
+         <div class="col-xs-4 col-sm-6">
+            <select class="form-control" onChange="insAtlSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
                <option value="" {% if cat is not defined %}selected{% endif %}>Todas las categorías</option>
                {% for row in vigentes %}
                <option value="{{ row.id }}" {% if cat is defined %}{% if cat == row.id %}selected{% endif %}{% endif %}>{{ row.nombre }}{% if row.edadMax is not null %} ({{ row.edadMax }}){% endif %}</option>
                {% endfor %}
             </select>
          </div>
-         <div class="input-group col-xs-6 col-sm-4">
+         <div class="input-group col-xs-4 col-sm-4">
             <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)">
-            <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="atlSearch('{{ path('inscribir_atletas_atletas', {'sidCom': sidCom}) }}', {% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
+            <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
          </div>
+         <button class="btn btn-primary pull-right">Siguiente <span class="glyphicon glyphicon-arrow-right"></span></button>
       </div>
+      
+      <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
+      <tbody>
+         <tr>
+            <th class="hidden-xs">Id</th>
+            <th class="visible-xs">Licencias</th>
+            <th class="hidden-xs"><abbr title="Licencia FGA" class="visible-xs-block">L. FGA</abbr><div class="hidden-xs">Licencia FGA</div></th>
+            <th class="hidden-xs"><abbr title="Licencia XOGADE" class="visible-xs-block">L. XOGADE</abbr><div class="hidden-xs">Licencia XOGADE</div></th>
+            <th{% if cat is defined %} class="hidden-xs"{% endif %}><abbr title="Categoría" class="visible-xs-block">Categ.</abbr><div class="hidden-xs">Categoría</div></th>
+            <th>Apellidos</th>
+            <th>Nombre</th>
+            <th class="hidden-xs"><abbr title="Sexo">H/M</abbr></th>
+            <th class="hidden-xs"><abbr title="Fecha de nacimiento" class="visible-xs-block">F. nac.</abbr><div class="hidden-xs">Fecha de nacimiento</div></th>
+            <th>Nick</th>
+            <th><abbr title="Seleccionar" class="visible-xs-block">Selec.</abbr><div class="hidden-xs">Seleccionar</div></th>
+         </tr>
+         {% set catIndex = 0 %}
+         {% for atl in atletas %}
+         <tr>
+         <td class="hidden-xs">{{ atl.id }}</td>
+         <td class="visible-xs">
+            <small>{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
+            <small>{% if atl.lxogade is null or atl.lxogade == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lxogade }}{% endif %}</small>
+         </td>
+         <td class="hidden-xs">{% if atl.lfga is null or atl.lfga == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
+         <td class="hidden-xs">{% if atl.lxogade is null or atl.lxogade == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
+         <td{% if cat is defined %} class="hidden-xs"{% endif %}>{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
+         <td>{{ atl.apellidos }}</td>
+         <td>{{ atl.nombre }}</td>
+         <td class="hidden-xs">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
+         <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
+         <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
+         <td>
+            <button id="sel-atl-{{ atl.id }}" type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button>
+         </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+      
