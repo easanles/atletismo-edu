@@ -1,5 +1,7 @@
 
-var selAtl = {};
+var selAtl = [];
+var btnON  = "<span class=\"glyphicon glyphicon-check\"></span> <strong>SI</strong>";
+var btnOFF = "<span class=\"glyphicon glyphicon-unchecked\"></span> NO"; 
 
 //FORMULARIO DE INSCRIPCION
 
@@ -24,6 +26,7 @@ function loadViews(tab){
          $.get("./inscribir/atl", function(data, status){           
             if (status = "success"){
                $("#inspage-atl").html(data);
+               checkSelectedButtons();
             } else {
                $("#inspage-atl").html("Error al cargar datos");
             }
@@ -41,22 +44,50 @@ function insAtlSearch(cat, query){
     $.get("./inscribir/atl" + atlSearchParam(cat, query), function(data, status){           
         if (status = "success"){
            $("#inspage-atl").html(data);
+           checkSelectedButtons();
         } else {
            $("#inspage-atl").html("Error al cargar datos");
         }
     });     
 }
 
+function checkSelectedButtons(){
+	selButtons = $(".sel-btn");
+	$(selButtons).each(function(){
+		data = this.id.split("-");
+		if ($.inArray(data[2], selAtl) != -1){
+			$(this).removeClass("btn-default");
+			$(this).addClass("btn-info");
+			$(this).html(btnON);
+			$(this).button('toggle');
+		}
+	});
+}
+
 function toggleCheckButton(item){
 	data = item.id.split("-");
+	type = data[1];
+	id = data[2];
 	if ($(item).hasClass("btn-default")){ //ON
 		$(item).removeClass("btn-default");
 		$(item).addClass("btn-info");
-		$(item).html("<span class=\"glyphicon glyphicon-check\"></span> <strong>SI</strong>");
-		
+		$(item).html(btnON);
+        if (type == "atl"){
+    		selAtl.push(id);        	
+        }
 	} else { //OFF
 		$(item).removeClass("btn-info");
 		$(item).addClass("btn-default");
-		$(item).html("<span class=\"glyphicon glyphicon-unchecked\"></span> NO");
+		$(item).html(btnOFF);
+		if (type == "atl"){
+			selAtl.splice($.inArray(id, selAtl), 1);
+		}
+	}
+	if (selAtl.length != 0){
+		$("#inspill-pru").removeClass("disabled");
+		$("#btn-next").attr("disabled", false);
+	} else {
+		$("#inspill-pru").addClass("disabled");
+		$("#btn-next").attr("disabled", true);		
 	}
 }

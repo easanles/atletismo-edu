@@ -33,12 +33,14 @@
    {% endif %}
    
    <div class="row">
-      <ul class="nav nav-pills col-xs-12">
+      <ul class="nav nav-pills col-xs-9">
          <li role="presentation" id="inspill-atl" class="active"><a href="#" onClick="toggleInsPages('atl')">Atletas</a></li>
          <li role="presentation" id="inspill-pru" class="disabled"><a href="#" onClick="toggleInsPages('pru')">Pruebas</a></li>
          <li role="presentation" id="inspill-confirm" class="disabled"><a href="#" onClick="toggleInsPages('confirm')">Confirmación</a></li>
       </ul>
+      <button id="btn-next" class="btn btn-primary pull-right" onClick="$('inspill-pru').click()" disabled>Siguiente <span class="glyphicon glyphicon-arrow-right"></span></button>
    </div>
+   
    <div class="row" style="margin-top: 1em">
       <div id="inspage-atl" class="pagecontent col-xs-12"></div>
       <div id="inspage-pru" class="pagecontent col-xs-12" style="display:none"></div>
