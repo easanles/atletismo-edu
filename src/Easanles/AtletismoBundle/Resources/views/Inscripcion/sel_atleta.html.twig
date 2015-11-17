@@ -38,16 +38,17 @@
          </td>
          <td class="hidden-xs">{% if atl.lfga is null or atl.lfga == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
          <td class="hidden-xs">{% if atl.lxogade is null or atl.lxogade == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
-         <td{% if cat is defined %} class="hidden-xs"{% endif %}>{{ categorias[catIndex].nombre }}</td> {% set catIndex = catIndex + 1 %}
+         <td{% if cat is defined %} class="hidden-xs"{% endif %}>{{ categorias[catIndex].nombre }}</td>
          <td>{{ atl.apellidos }}</td>
          <td>{{ atl.nombre }}</td>
          <td class="hidden-xs">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
          <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
          <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
          <td>
-            <button id="sel-atl-{{ atl.id }}" type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button>
+            <button id="sel-atl-{{ atl.id }}" data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}" data-cat="{{ categorias[catIndex].nombre }}" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button>
          </td>
          </tr>
+         {% set catIndex = catIndex + 1 %}
          {% endfor %}
       </tbody>
    </table>

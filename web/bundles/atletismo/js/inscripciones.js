@@ -1,14 +1,16 @@
 
 var selAtl = [];
 var btnON  = "<span class=\"glyphicon glyphicon-check\"></span> <strong>SI</strong>";
-var btnOFF = "<span class=\"glyphicon glyphicon-unchecked\"></span> NO"; 
+var btnOFF = "<span class=\"glyphicon glyphicon-unchecked\"></span> NO";
+
+var selPruAtl = null;
 
 //FORMULARIO DE INSCRIPCION
 
 function toggleInsPages(tab){
 	if (!$("#inspill-" + tab).hasClass('disabled')){
        $(".nav-pills li").removeClass("active");
-       $(".tabcontent").css("display", "none");
+       $(".pagecontent").css("display", "none");
     
        $("#inspill-" + tab).addClass("active");
        $("#inspage-" + tab).css("display", "inline");
@@ -33,6 +35,21 @@ function loadViews(tab){
             //icon.addClass("hidden");      
          });      
       } break;
+      case "pru": {
+         $.ajax({
+    	    type: "post",
+    		url: "./inscribir/pru",
+    		data: {selAtl: selAtl},
+    		success: function(data, status) {
+                if (status = "success"){
+                    $("#inspage-pru").html(data);
+                 } else {
+                    $("#inspage-pru").html("Error al cargar datos");
+                 }
+                 //icon.addClass("hidden");      
+    	    }
+    	 });
+      } break;
       default: break;
    }
    $('.dropdown-toggle').dropdown();
@@ -52,10 +69,14 @@ function insAtlSearch(cat, query){
 }
 
 function checkSelectedButtons(){
+	atlIdArray = [];
+	for(i = 0; i < selAtl.length; i++){
+		atlIdArray.push(selAtl[i][0]);
+	}
 	selButtons = $(".sel-btn");
 	$(selButtons).each(function(){
 		data = this.id.split("-");
-		if ($.inArray(data[2], selAtl) != -1){
+		if ($.inArray(data[2], atlIdArray) != -1){
 			$(this).removeClass("btn-default");
 			$(this).addClass("btn-info");
 			$(this).html(btnON);
@@ -73,7 +94,9 @@ function toggleCheckButton(item){
 		$(item).addClass("btn-info");
 		$(item).html(btnON);
         if (type == "atl"){
-    		selAtl.push(id);        	
+        	nombre = $(item).data("nombre");
+        	cat = $(item).data("cat");
+    		selAtl.push([id, nombre, cat]);
         }
 	} else { //OFF
 		$(item).removeClass("btn-info");
@@ -89,5 +112,29 @@ function toggleCheckButton(item){
 	} else {
 		$("#inspill-pru").addClass("disabled");
 		$("#btn-next").attr("disabled", true);		
+	}
+}
+
+function toggleRadioButton(item){
+	if ($(item).hasClass("btn-default")){
+		data = item.id.split("-");
+		type = data[1];
+		id = data[2];
+		$(".radio-btn").each(function(){
+			$(this).removeClass("btn-info");
+			$(this).addClass("btn-default");
+			$(this).attr("aria-pressed", false);
+		})
+		$(item).removeClass("btn-default");
+		$(item).addClass("btn-info");
+		$(item).attr("aria-pressed", true);
+        $.get("./inscribir/pru?atl="+id, function(data, status){           
+            if (status = "success"){
+               $("#pru-for-atl").html(data);
+               checkSelectedButtons();
+            } else {
+               $("#pru-for-atl").html("Error al cargar datos");
+            }
+         }); 
 	}
 }

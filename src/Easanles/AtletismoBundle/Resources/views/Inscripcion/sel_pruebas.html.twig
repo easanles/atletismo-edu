@@ -1,0 +1,52 @@
+   <div class="row">
+      {% if selAtl|length > 1 %}
+      <div class="col-xs-12 col-sm-5">
+         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+            <tbody>
+               <tr>
+                  <th>Atleta</th>
+                  <th><abbr title="Categoría" class="visible-xs-block">Cat.</abbr><div class="hidden-xs">Categoría</th>
+                  <th><abbr title="Pruebas" class="visible-xs-block">Pru.</abbr><div class="hidden-xs">Pruebas</th>
+                  <th><abbr title="Selección" class="visible-xs-block">Sel.</abbr><div class="hidden-xs">Selección</div></th>
+               </tr>
+               {% for atl in selAtl %}
+                  <tr>
+                     <td>{{ atl[1] }}</td>
+                     <td>{{ atl[2] }}</td>
+                     <td>0</td>
+                     <td><button id="sel-pruatl-{{ atl[0] }}" class="btn btn-xs btn-block btn-default radio-btn" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+                  </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+      <div class="col-xs-12 col-sm-7">
+      {% else %}
+      <div class="col-xs-8">
+         <dl class="dl-horizontal">
+            <dt>Atleta seleccionado</dt><dd>{{ selAtl[0][1] }}</dd>
+            <dt>Categoría</dt><dd>{{ selAtl[0][2] }}</dd>
+         </dl>
+      </div>
+      <div class="col-xs-4">
+         <h3>Pruebas: 0</h3>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-xs-12">
+      {% endif %}
+         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+            <tbody>
+               <tr>
+                  <th>Prueba</th>
+                  <th class="hidden-xs">Coste</th>
+                  <th><abbr title="Selección" class="visible-xs-block">Sel.</abbr><div class="hidden-xs">Selección</div></th>
+               </tr>
+               <div id="pru-for-atl">
+
+               </div>
+            </tbody>
+         </table>
+      </div>
+   </div>
+      

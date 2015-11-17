@@ -1,0 +1,8 @@
+               {% for pru in listaPru %}
+                  <tr>
+                     <td>{{ pru.tprm }}</td>
+                     <td class="hidden-xs">{{ pru.coste }}€</td>
+                     <td><button type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick=""><span class="glyphicon glyphicon-unchecked"></span> NO</button></td>
+                  </tr>
+               {% endfor %}
+      

@@ -13,16 +13,6 @@ class PruebaRepository extends EntityRepository {
 		->setParameter("sidcom", $sidCom)
 		->getResult();
 	}
-	
-	/**
-	 * @deprecated
-	 */
-	public function findTprs($sidCom){
-		return $this->getEntityManager()
-		->createQuery('SELECT IDENTITY(pru.sidTprm) AS sidTprm FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom GROUP BY pru.sidTprm ORDER BY pru.sidTprm ASC')
-		->setParameter("sidcom", $sidCom)
-		->getResult();
-	}
 
 	public function findCats($sidCom){
 		return $this->getEntityManager()
@@ -54,29 +44,5 @@ class PruebaRepository extends EntityRepository {
 		          ->orderBy("pru.id", "ASC")
 		          ->getQuery()->getResult();
 	}
-	
-	/**
-	 * @deprecated
-	 * @param unknown $sidCom
-	 * @param unknown $sidTprm
-	 * @param unknown $idCat
-	 * @param unknown $ronda
-	 * @return multitype:
-	 */
-	public function getNextRondas($sidCom, $sidTprm, $idCat, $ronda){
-		return $this->getEntityManager()->createQueryBuilder('pru')
-		->select('pru.sid, pru.ronda')
-		->from('EasanlesAtletismoBundle:Prueba', 'pru')
-		->where('IDENTITY(pru.sidCom) LIKE :sidcom')
-		->setParameter('sidcom', $sidCom)
-		->andWhere('IDENTITY(pru.sidTprm) LIKE :sidtprm')
-		->setParameter('sidtprm', $sidTprm)
-		->andWhere('IDENTITY(pru.idCat) LIKE :idcat')
-		->setParameter('idcat', $idCat)
-		->andWhere('pru.ronda >= :ronda')
-		->setParameter('ronda', $ronda)
-		->getQuery()->getResult();
-	}
-	
 	
 }

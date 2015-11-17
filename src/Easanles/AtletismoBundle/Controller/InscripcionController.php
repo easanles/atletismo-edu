@@ -122,6 +122,16 @@ class InscripcionController extends Controller {
     	if ($cat != null) $parametros['cat'] = $cat;
     	if ($query != null) $parametros['query'] = $query;
     	return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_atleta.html.twig', $parametros);
-    	
+    }
+    
+    public function seleccionPruebasAction($sidCom, Request $request){
+    	 $parametros = array('sidCom' => $sidCom);
+    	 
+    	 $selAtl = $request->request->get('selAtl');
+    	 $parametros['selAtl'] = $selAtl;
+    	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+    	 $parametros['listaPru'] = $repoPru->findAllFor($sidCom);
+    	     	 
+    	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_pruebas.html.twig', $parametros);
     }
 }
