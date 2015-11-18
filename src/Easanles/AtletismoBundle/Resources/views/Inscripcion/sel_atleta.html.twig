@@ -45,7 +45,11 @@
          <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
          <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
          <td>
-            <button id="sel-atl-{{ atl.id }}" data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}" data-cat="{{ categorias[catIndex].nombre }}" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button>
+            <button id="sel-atl-{{ atl.id }}" 
+               data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}"
+               data-catnombre="{{ categorias[catIndex].nombre }}"
+               data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO
+            </button>
          </td>
          </tr>
          {% set catIndex = catIndex + 1 %}

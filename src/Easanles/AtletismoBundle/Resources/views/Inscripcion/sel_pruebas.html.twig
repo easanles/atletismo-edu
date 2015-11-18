@@ -13,8 +13,8 @@
                   <tr>
                      <td>{{ atl[1] }}</td>
                      <td>{{ atl[2] }}</td>
-                     <td>0</td>
-                     <td><button id="sel-pruatl-{{ atl[0] }}" class="btn btn-xs btn-block btn-default radio-btn" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+                     <td><span id="count-pru-{{ atl[0] }}">0</span></td>
+                     <td><button id="sel-pruatl-{{ atl[0] }}" class="btn btn-xs btn-block btn-default sel-pruatl" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
                   </tr>
                {% endfor %}
             </tbody>
@@ -29,22 +29,20 @@
          </dl>
       </div>
       <div class="col-xs-4">
-         <h3>Pruebas: 0</h3>
+         <h3>Pruebas: <span id="count-pru-{{ selAtl[0][0] }}">0</span></h3>
+         <button id="sel-pruatl-{{ selAtl[0][0] }}" class="hidden btn-default sel-pruatl" onClick="toggleRadioButton(this)"></button>
       </div>
    </div>
    <div class="row">
       <div class="col-xs-12">
       {% endif %}
-         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+         <table id="pru-for-atl" class="table table-hover table-bordered table-condensed table-striped table-responsive">
             <tbody>
                <tr>
                   <th>Prueba</th>
                   <th class="hidden-xs">Coste</th>
                   <th><abbr title="Selección" class="visible-xs-block">Sel.</abbr><div class="hidden-xs">Selección</div></th>
                </tr>
-               <div id="pru-for-atl">
-
-               </div>
             </tbody>
          </table>
       </div>

@@ -3,8 +3,6 @@ var selAtl = [];
 var btnON  = "<span class=\"glyphicon glyphicon-check\"></span> <strong>SI</strong>";
 var btnOFF = "<span class=\"glyphicon glyphicon-unchecked\"></span> NO";
 
-var selPruAtl = null;
-
 //FORMULARIO DE INSCRIPCION
 
 function toggleInsPages(tab){
@@ -43,6 +41,7 @@ function loadViews(tab){
     		success: function(data, status) {
                 if (status = "success"){
                     $("#inspage-pru").html(data);
+                    toggleRadioButton($(".sel-pruatl")[0]);
                  } else {
                     $("#inspage-pru").html("Error al cargar datos");
                  }
@@ -52,7 +51,7 @@ function loadViews(tab){
       } break;
       default: break;
    }
-   $('.dropdown-toggle').dropdown();
+   //$('.dropdown-toggle').dropdown();
    $('[data-toggle="tooltip"]').tooltip();
    $('abbr').tooltip();
 }
@@ -89,21 +88,30 @@ function toggleCheckButton(item){
 	data = item.id.split("-");
 	type = data[1];
 	id = data[2];
+	nombre = $(item).data("nombre");
+	catnombre = $(item).data("catnombre");
 	if ($(item).hasClass("btn-default")){ //ON
 		$(item).removeClass("btn-default");
 		$(item).addClass("btn-info");
 		$(item).html(btnON);
         if (type == "atl"){
-        	nombre = $(item).data("nombre");
-        	cat = $(item).data("cat");
-    		selAtl.push([id, nombre, cat]);
+    		selAtl.push([id, nombre, catnombre]);
+        } else if (type == "pru"){
+        	
         }
 	} else { //OFF
 		$(item).removeClass("btn-info");
 		$(item).addClass("btn-default");
 		$(item).html(btnOFF);
 		if (type == "atl"){
-			selAtl.splice($.inArray(id, selAtl), 1);
+			for (i = 0; i < selAtl.length; i++){
+				if (selAtl[i][0] == id){
+					selAtl.splice(i, 1);
+					break;
+				}
+			}
+		} else if (type == pru){
+			
 		}
 	}
 	if (selAtl.length != 0){
@@ -119,8 +127,8 @@ function toggleRadioButton(item){
 	if ($(item).hasClass("btn-default")){
 		data = item.id.split("-");
 		type = data[1];
-		id = data[2];
-		$(".radio-btn").each(function(){
+		idAtl = data[2];
+		$(".sel-pruatl").each(function(){
 			$(this).removeClass("btn-info");
 			$(this).addClass("btn-default");
 			$(this).attr("aria-pressed", false);
@@ -128,7 +136,7 @@ function toggleRadioButton(item){
 		$(item).removeClass("btn-default");
 		$(item).addClass("btn-info");
 		$(item).attr("aria-pressed", true);
-        $.get("./inscribir/pru?atl="+id, function(data, status){           
+        $.get("./inscribir/pru/"+idAtl, function(data, status){
             if (status = "success"){
                $("#pru-for-atl").html(data);
                checkSelectedButtons();

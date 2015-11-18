@@ -1,8 +1,22 @@
+            <tbody>
+               <tr>
+                  <th>Prueba</th>
+                  <th class="hidden-xs">Coste</th>
+                  <th><abbr title="Selección" class="visible-xs-block">Sel.</abbr><div class="hidden-xs">Selección</div></th>
+               </tr>
                {% for pru in listaPru %}
+                  {% if pru.sidTprm.sexo == 0 %}
+                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. Masculino, ' ~ pru.sidTprm.entorno %}
+                  {% elseif pru.sidTprm.sexo == 1 %}
+                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. Femenino, ' ~ pru.sidTprm.entorno %}
+                  {% endif %}
+               
                   <tr>
-                     <td>{{ pru.tprm }}</td>
+                     <td>{{ tpr }}</td>
                      <td class="hidden-xs">{{ pru.coste }}€</td>
-                     <td><button type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick=""><span class="glyphicon glyphicon-unchecked"></span> NO</button></td>
+                     <td><button id="sel-pru-{{ pru.sid }}" type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button></td>
                   </tr>
                {% endfor %}
+            </tbody>
+
       
