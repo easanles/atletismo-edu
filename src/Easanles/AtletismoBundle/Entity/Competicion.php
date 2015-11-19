@@ -110,13 +110,13 @@ class Competicion {
    * @var boolean
    * @ORM\Column(name="esfedercom", type="boolean", options={"default":0})
    */
-   private $esFeder = false;
+   private $esFeder;
    
    /**
    * @var boolean
    * @ORM\Column(name="esoficialcom", type="boolean", options={"default":0})
    */
-   private $esOficial = false;
+   private $esOficial;
    
    /********************* FOREIGN KEYS *****************************/
      
@@ -139,6 +139,8 @@ class Competicion {
    private $valoresRequisitos;
    
    public function __construct() {
+   	$this->esFeder = false;
+   	$this->esOficial = false;
    	$this->pruebas = new ArrayCollection();
    	$this->participaciones = new ArrayCollection();
    	$this->valoresRequisitos = new ArrayCollection();

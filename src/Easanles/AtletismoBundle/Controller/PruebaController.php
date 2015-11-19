@@ -27,14 +27,7 @@ class PruebaController extends Controller {
     		return $response;
     	}
   	   $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-  	   $listaTprs = $repoPru->findTprs($sidCom);
   	   $repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
-  	   foreach ($listaTprs as &$tpr){
-     		$tprm = $repoTprm->find($tpr['sidTprm']);
-  		   $tpr['sexo'] = $tprm->getSexo();
-  		   $tpr['entorno'] = $tprm->getEntorno();
-  		   $tpr['nombre'] = $tprm->getSidTprf()->getNombre();
-  	   }
   	   $listaCats = $repoPru->findCats($sidCom);
   	   $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
   	   foreach ($listaCats as &$c){
@@ -42,7 +35,7 @@ class PruebaController extends Controller {
   	   	$c['nombre'] = $cat->getNombre();
   	   }
      	 
-     	$parametros = array('com' => $com, 'tipospruebas' => $listaTprs, 'categorias' => $listaCats);
+  		$parametros = array('com' => $com, 'categorias' => $listaCats);
   		if ($selcat != null){
   	   	$parametros['selcat'] = $selcat;
   			$pruebas = $repoPru->searchByParameters($sidCom, $selcat);

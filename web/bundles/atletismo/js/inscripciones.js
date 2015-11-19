@@ -1,28 +1,71 @@
 
+//FORMULARIO DE INSCRIPCION
+
 var selAtl = [];
 var btnON  = "<span class=\"glyphicon glyphicon-check\"></span> <strong>SI</strong>";
 var btnOFF = "<span class=\"glyphicon glyphicon-unchecked\"></span> NO";
+var loadingIcon = "<span class=\"glyphicon glyphicon-refresh spinning\"></span>";
+var idAtlPruList = null;
+var selPru = [];
 
-//FORMULARIO DE INSCRIPCION
 
 function toggleInsPages(tab){
 	if (!$("#inspill-" + tab).hasClass('disabled')){
        $(".nav-pills li").removeClass("active");
+       if (tab != "confirm"){
+           $("#inspill-confirm").addClass("disabled");
+       }
        $(".pagecontent").css("display", "none");
-    
+       $(".pagecontent").html("");
        $("#inspill-" + tab).addClass("active");
        $("#inspage-" + tab).css("display", "inline");
-       if ((tab == "atl") || (tab == "pru")){
-          loadViews(tab);
-       }
+       checkPillStatus();
+       loadViews(tab);
+	}
+}
+
+function nextPill(){
+	if ($("#inspill-atl").hasClass("active")){
+		$('#inspill-pru a').click();
+	} else if ($("#inspill-pru").hasClass("active")){
+		$('#inspill-confirm a').click();
+	}
+}
+
+function checkPillStatus(){
+	if ($("#inspill-atl").hasClass('active')){
+		if (selAtl.length == 0){
+			$("#inspill-pru").addClass("disabled");
+			$("#inspill-confirm").addClass("disabled");
+            $("#btn-next").attr("disabled", true);		
+		} else {
+			$("#inspill-pru").removeClass("disabled");
+		    $("#btn-next").attr("disabled", false);
+		    if (selPru.length != 0){
+				$("#inspill-confirm").removeClass("disabled");
+		    }
+		}
+	} else if ($("#inspill-pru").hasClass('active')){
+		if (selPru.length == 0){
+			$("#inspill-confirm").addClass("disabled");
+            $("#btn-next").attr("disabled", true);
+		} else {
+			$("#inspill-confirm").removeClass("disabled");
+		    $("#btn-next").attr("disabled", false);
+		}
+	} 
+	if ($("#inspill-confirm").hasClass('active')){
+        $("#btn-next").attr("disabled", false);
+        $("#btn-next").html("<span class=\"glyphicon glyphicon-save\"></span> Inscribir");
+	} else {
+        $("#btn-next").html("Siguiente <span class=\"glyphicon glyphicon-arrow-right\"></span>");
 	}
 }
 
 function loadViews(tab){
-   //icon = $(".working");
-   //icon.removeClass("hidden");
    switch (tab){
       case "atl": {
+    	 $("#inspage-atl").html(loadingIcon);
          $.get("./inscribir/atl", function(data, status){           
             if (status = "success"){
                $("#inspage-atl").html(data);
@@ -30,10 +73,10 @@ function loadViews(tab){
             } else {
                $("#inspage-atl").html("Error al cargar datos");
             }
-            //icon.addClass("hidden");      
          });      
       } break;
       case "pru": {
+     	 $("#inspage-pru").html(loadingIcon);
          $.ajax({
     	    type: "post",
     		url: "./inscribir/pru",
@@ -42,21 +85,24 @@ function loadViews(tab){
                 if (status = "success"){
                     $("#inspage-pru").html(data);
                     toggleRadioButton($(".sel-pruatl")[0]);
+                    for (i = 0; i < selPru.length; i++){
+                    	countDiv = $("#count-pru-"+selPru[i][0]);
+                    	countDiv.html(parseInt(countDiv.html()) + 1);
+                    }
                  } else {
                     $("#inspage-pru").html("Error al cargar datos");
                  }
-                 //icon.addClass("hidden");      
     	    }
     	 });
       } break;
       default: break;
    }
-   //$('.dropdown-toggle').dropdown();
    $('[data-toggle="tooltip"]').tooltip();
    $('abbr').tooltip();
 }
 
 function insAtlSearch(cat, query){
+	$("#inspage-atl").html(loadingIcon);
     $.get("./inscribir/atl" + atlSearchParam(cat, query), function(data, status){           
         if (status = "success"){
            $("#inspage-atl").html(data);
@@ -68,14 +114,28 @@ function insAtlSearch(cat, query){
 }
 
 function checkSelectedButtons(){
-	atlIdArray = [];
-	for(i = 0; i < selAtl.length; i++){
-		atlIdArray.push(selAtl[i][0]);
-	}
 	selButtons = $(".sel-btn");
 	$(selButtons).each(function(){
+		doToggle = false;
 		data = this.id.split("-");
-		if ($.inArray(data[2], atlIdArray) != -1){
+		type = data[1];
+		id = data[2];
+		if (type == "atl"){
+			for (i = 0; i < selAtl.length; i++){
+				if (selAtl[i][0] == id){
+					doToggle = true;
+					break;
+				}
+			}
+		} else if (type == "pru"){
+			for (i = 0; i < selPru.length; i++){
+				if ((selPru[i][0] == idAtlPruList) && ((selPru[i][1] == id))){
+					doToggle = true;
+					break;
+				}
+			}
+		}
+		if (doToggle == true){
 			$(this).removeClass("btn-default");
 			$(this).addClass("btn-info");
 			$(this).html(btnON);
@@ -97,7 +157,9 @@ function toggleCheckButton(item){
         if (type == "atl"){
     		selAtl.push([id, nombre, catnombre]);
         } else if (type == "pru"){
-        	
+        	countDiv = $("#count-pru-"+idAtlPruList);
+        	countDiv.html(parseInt(countDiv.html()) + 1);
+        	selPru.push([idAtlPruList, id]);
         }
 	} else { //OFF
 		$(item).removeClass("btn-info");
@@ -110,17 +172,18 @@ function toggleCheckButton(item){
 					break;
 				}
 			}
-		} else if (type == pru){
-			
+		} else if (type == "pru"){
+        	countDiv = $("#count-pru-"+idAtlPruList);
+        	countDiv.html(parseInt(countDiv.html()) - 1);
+			for (i = 0; i < selPru.length; i++){
+				if ((selPru[i][0] == idAtlPruList) && ((selPru[i][1] == id))){
+					selPru.splice(i, 1);
+					break;
+				}
+			}
 		}
 	}
-	if (selAtl.length != 0){
-		$("#inspill-pru").removeClass("disabled");
-		$("#btn-next").attr("disabled", false);
-	} else {
-		$("#inspill-pru").addClass("disabled");
-		$("#btn-next").attr("disabled", true);		
-	}
+    checkPillStatus();
 }
 
 function toggleRadioButton(item){
@@ -136,9 +199,11 @@ function toggleRadioButton(item){
 		$(item).removeClass("btn-default");
 		$(item).addClass("btn-info");
 		$(item).attr("aria-pressed", true);
+    	$("#pru-for-atl").html(loadingIcon);
         $.get("./inscribir/pru/"+idAtl, function(data, status){
             if (status = "success"){
                $("#pru-for-atl").html(data);
+               idAtlPruList = idAtl;
                checkSelectedButtons();
             } else {
                $("#pru-for-atl").html("Error al cargar datos");

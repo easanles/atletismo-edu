@@ -163,9 +163,13 @@ class InscripcionController extends Controller {
     	 $listaPruObj = array();
     	 foreach($listaPru as $pruArr){
     	 	 $pruObj = $repoPru->find($pruArr['sid']);
-    	 	 if ($pruObj->getSidTprm()->getSexo() == $atl->getSexo()){
-    	 	 	  //TODO: Otras restricciones
-    	 	 	 $listaPruObj[] = $pruObj;
+    	 	 if ($pruObj->getSidTprm()->getSexo() == $atl->getSexo()){ //Mismo sexo (masculino, femenino)
+    	 	 	 //TODO: Otras restricciones
+    	 	 	 $pruFeder = $pruObj->getSidCom()->getEsFeder();
+    	 	 	 if (($pruFeder == false) ||  //Pruebas federadas solo para atletas FGA
+    	 	 	 		(($pruFeder == true) && (($atl->getLfga() != null) && ($atl->getLfga() != "")))){
+    	 	 	 	 $listaPruObj[] = $pruObj;
+    	 	 	 }
     	 	 }
     	 }
     	 $parametros = array("listaPru" => $listaPruObj);
