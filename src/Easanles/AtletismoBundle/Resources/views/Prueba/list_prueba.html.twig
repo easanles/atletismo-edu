@@ -28,15 +28,15 @@
    <div id="container_header" class="row">
       <a type="button" class="btn btn-m btn-default pull-left hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <button class="updater hidden" onClick="location.reload()"></button>
-      <div class="col-xs-4 col-sm-3">
-         <select class="form-control col-xs-3" onChange="pruSearch({{ com.sid }}, this.value)">
+      <div class="col-xs-6 col-sm-4">
+         <select class="form-control" onChange="pruSearch({{ com.sid }}, this.value)">
          <option value=""{% if selcat is not defined %} selected{% endif %}>Categoría</option>
          {% for cat in categorias %}
             <option value="{{ cat.idCat }}"{% if selcat is defined %}{% if selcat == cat.idCat %} selected{% endif %}{% endif %}>{{ cat.nombre }}</option>
          {% endfor %}
          </select>
       </div>
-      <button class="btn btn-primary" onClick="showModal('newPRU', {{ com.sid }}, null, null)"><span class="glyphicon glyphicon-plus"></span><span class="hidden-xs"> Agregar prueba</span></button>
+      <button class="btn btn-primary" onClick="showModal('newPRU', {{ com.sid }}, null, null)"><span class="glyphicon glyphicon-plus"></span> Agregar prueba</button>
    </div>
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
       <tbody>
@@ -45,7 +45,7 @@
             <th>Prueba</th>
             <th{% if selcat is defined %} class="hidden-xs"{% endif %}><abbr title="Categoría" class="visible-xs-block">Categ.</abbr><div class="hidden-xs">Categoría</div></th>
             <th>Rondas</th>
-            <th>Coste</th>
+            <th>Precio</th>
             <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
             <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>

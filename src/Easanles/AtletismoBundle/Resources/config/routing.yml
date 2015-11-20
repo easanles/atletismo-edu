@@ -140,7 +140,7 @@ inscribir_atletas_pruebas_disponibles:
       idAtl: \d+
 inscribir_atletas_confirmacion:
    path: /competiciones/{sidCom}/inscribir/confirm
-   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:confirmacion"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:pantallaConfirmacion"}
    requirements:
       sidCom: \d+
    

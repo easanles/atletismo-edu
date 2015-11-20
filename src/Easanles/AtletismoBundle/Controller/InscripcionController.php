@@ -173,7 +173,20 @@ class InscripcionController extends Controller {
     	 	 }
     	 }
     	 $parametros = array("listaPru" => $listaPruObj);
-    	 
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_pruebas_data.html.twig', $parametros);
+    }
+    
+    public function pantallaConfirmacionAction($sidCom, Request $request){
+    	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 $com = $repoCom->find($sidCom);
+    	 if ($com == null){
+    	 	 $response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    		 return $response;
+    	 }
+    	 $data = $request->request->get("data");
+    	 
+    	 $parametros = array("data" => $data);
+    	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_confirmar.html.twig', $parametros);
     }
 }

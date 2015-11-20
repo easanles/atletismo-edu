@@ -7,6 +7,7 @@ var btnOFF = "<span class=\"glyphicon glyphicon-unchecked\"></span> NO";
 var loadingIcon = "<span class=\"glyphicon glyphicon-refresh spinning\"></span>";
 var idAtlPruList = null;
 var selPru = [];
+var countPru = 0;
 
 
 function toggleInsPages(tab){
@@ -46,7 +47,7 @@ function checkPillStatus(){
 		    }
 		}
 	} else if ($("#inspill-pru").hasClass('active')){
-		if (selPru.length == 0){
+		if (countPru == 0){
 			$("#inspill-confirm").addClass("disabled");
             $("#btn-next").attr("disabled", true);
 		} else {
@@ -85,15 +86,45 @@ function loadViews(tab){
                 if (status = "success"){
                     $("#inspage-pru").html(data);
                     toggleRadioButton($(".sel-pruatl")[0]);
+                    countPru = 0;
                     for (i = 0; i < selPru.length; i++){
-                    	countDiv = $("#count-pru-"+selPru[i][0]);
-                    	countDiv.html(parseInt(countDiv.html()) + 1);
+                 		 for (j = 0; j < selAtl.length; j++){
+                   			if (selPru[i][0] == selAtl[j][0]){
+                            	countPru++;
+                            	countDiv = $("#count-pru-"+selPru[i][0]);
+                            	countDiv.html(parseInt(countDiv.html()) + 1);
+                   			} 
+                   		 }
                     }
                  } else {
                     $("#inspage-pru").html("Error al cargar datos");
                  }
     	    }
     	 });
+      } break;
+      case "confirm": {
+      	 $("#inspage-confirm").html(loadingIcon);
+      	 data = [];
+      	 for (i = 0; i < selPru.length; i++){
+      		 for (j = 0; j < selAtl.length; j++){
+      			if (selPru[i][0] == selAtl[j][0]){
+         	      	 data.push(selPru[i]);
+                     break;
+      			} 
+      		 }
+      	 }
+         $.ajax({
+    	    type: "post",
+    		url: "./inscribir/confirm",
+    		data: {data: data},
+    		success: function(data, status) {
+                if (status = "success"){
+                    $("#inspage-confirm").html(data);
+                 } else {
+                    $("#inspage-confirm").html("Error al cargar datos");
+                 }
+    	    }
+    	 });    	  
       } break;
       default: break;
    }
@@ -157,6 +188,7 @@ function toggleCheckButton(item){
         if (type == "atl"){
     		selAtl.push([id, nombre, catnombre]);
         } else if (type == "pru"){
+        	countPru++;
         	countDiv = $("#count-pru-"+idAtlPruList);
         	countDiv.html(parseInt(countDiv.html()) + 1);
         	selPru.push([idAtlPruList, id]);
@@ -173,6 +205,7 @@ function toggleCheckButton(item){
 				}
 			}
 		} else if (type == "pru"){
+			countPru--;
         	countDiv = $("#count-pru-"+idAtlPruList);
         	countDiv.html(parseInt(countDiv.html()) - 1);
 			for (i = 0; i < selPru.length; i++){
@@ -195,10 +228,12 @@ function toggleRadioButton(item){
 			$(this).removeClass("btn-info");
 			$(this).addClass("btn-default");
 			$(this).attr("aria-pressed", false);
+			$(this).parent().closest("tr").attr("class", "");
 		})
 		$(item).removeClass("btn-default");
 		$(item).addClass("btn-info");
 		$(item).attr("aria-pressed", true);
+		$(item).parent().closest("tr").attr("class", "info");
     	$("#pru-for-atl").html(loadingIcon);
         $.get("./inscribir/pru/"+idAtl, function(data, status){
             if (status = "success"){

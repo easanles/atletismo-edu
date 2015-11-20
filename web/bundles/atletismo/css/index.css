@@ -95,6 +95,11 @@ h1 {
   table.visible-xs {
     display: table !important;
   }
+  
+  .scrollable {
+     max-height: 13em;
+     overflow-y: auto; 
+  }
 }
 
 /*http://getbootstrap.com/examples/sticky-footer-navbar/*/

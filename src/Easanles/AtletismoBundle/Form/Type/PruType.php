@@ -27,7 +27,7 @@ class PruType extends AbstractType {
 	}
 	
     public function buildForm(FormBuilderInterface $builder, array $options) {  	
-    	   $builder->add('coste', 'money', array('label' => 'Coste estándar en euros', 'currency' => 'EUR', 'required' => true))
+    	   $builder->add('coste', 'money', array('label' => 'Precio estándar en euros', 'currency' => 'EUR', 'required' => true))
     	   ->add('rondas', 'collection', array('type' => new RonType(),
           		                                    'allow_add' => true,
           		                                    'allow_delete' => true,

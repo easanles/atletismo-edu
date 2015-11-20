@@ -1,6 +1,6 @@
    <div class="row">
       {% if selAtl|length > 1 %}
-      <div class="col-xs-12 col-sm-5">
+      <div class="col-xs-12 col-sm-5 scrollable">
          <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
             <tbody>
                <tr>
@@ -10,7 +10,7 @@
                   <th><abbr title="Selección" class="visible-xs-block">Sel.</abbr><div class="hidden-xs">Selección</div></th>
                </tr>
                {% for atl in selAtl %}
-                  <tr>
+                  <tr id="tr-atl-{{ atl[0] }}">
                      <td>{{ atl[1] }}</td>
                      <td>{{ atl[2] }}</td>
                      <td><span id="count-pru-{{ atl[0] }}">0</span></td>
@@ -20,7 +20,7 @@
             </tbody>
          </table>
       </div>
-      <div class="col-xs-12 col-sm-7">
+      <div class="col-xs-12 col-sm-7 scrollable">
       {% else %}
       <div class="col-xs-8">
          <dl class="dl-horizontal">
@@ -34,13 +34,13 @@
       </div>
    </div>
    <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 scrollable">
       {% endif %}
          <table id="pru-for-atl" class="table table-hover table-bordered table-condensed table-striped table-responsive">
             <tbody>
                <tr>
                   <th>Prueba</th>
-                  <th class="hidden-xs">Coste</th>
+                  <th class="hidden-xs">Precio</th>
                   <th><abbr title="Selección" class="visible-xs-block">Sel.</abbr><div class="hidden-xs">Selección</div></th>
                </tr>
             </tbody>
