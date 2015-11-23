@@ -94,9 +94,9 @@ Easanles\AtletismoBundle\Entity\Prueba:
            message: Este valor debe ser un número entero o con decimales
         - GreaterThanOrEqual:
            value: 0
-           message: No se puede asignar un coste negativo
+           message: No se puede asignar un precio negativo
         - NotBlank: 
-           message: Introduzca el coste de la prueba
+           message: Introduzca el precio de la prueba
            
 Easanles\AtletismoBundle\Entity\Ronda:
   properties:
@@ -153,4 +153,22 @@ Easanles\AtletismoBundle\Entity\Atleta:
      fotoFile:
         - Image: 
            mimeTypesMessage: El archivo recibido no es un archivo de imagen      
-  
+
+Easanles\AtletismoBundle\Entity\Inscripcion:
+  properties:
+     idAtl:
+        - NotNull: 
+           message: No puede ser nulo
+     sidPru:
+        - NotNull: 
+           message: No puede ser nulo
+     coste:
+        - Type: 
+           type: Float
+           message: Este valor debe ser un número entero o con decimales
+        - GreaterThanOrEqual:
+           value: 0
+           message: No se puede asignar un precio negativo
+        - NotBlank: 
+           message: Introduzca el precio de la prueba
+           

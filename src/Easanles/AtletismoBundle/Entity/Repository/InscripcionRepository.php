@@ -33,4 +33,12 @@ class InscripcionRepository extends EntityRepository {
 		->setParameter("idatl", $idAtl)
 		->getResult();
 	}
+	
+	public function maxCodGrupo(){
+		$query = $this->getEntityManager()
+		->createQuery('SELECT ins.codGrupo FROM EasanlesAtletismoBundle:Inscripcion ins GROUP BY ins.codGrupo ')
+		->getResult();
+		if (count($query) == 0) return 0;
+		else return max($query)['codGrupo'];
+	}
 }

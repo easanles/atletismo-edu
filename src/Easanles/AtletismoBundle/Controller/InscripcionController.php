@@ -186,7 +186,29 @@ class InscripcionController extends Controller {
     	 }
     	 $data = $request->request->get("data");
     	 
-    	 $parametros = array("data" => $data);
+    	 $inscripcionGrupal = false;
+    	 $temp = null;
+    	 $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+    	 $entradas = array();
+    	 foreach($data as $entrada){
+    	 	 if ($temp == null) $temp = $entrada[0];
+    	 	 else if ($temp != $entrada[0]) $inscripcionGrupal = true;
+    	    $atl = $repoAtl->find($entrada[0]);
+    	    if ($atl != null){
+    	    	 $pru = $repoPru->find($entrada[1]);
+    	    	 if ($pru != null){
+    	    	 	 $entradas[] = array("atl" => $atl, "pru" => $pru);
+    	    	 }
+    	    }
+    	 }
+    	 $parametros = array("entradas" => $entradas);
+    	 if ($inscripcionGrupal == true){
+    	 	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	 	 $codGrupo = $repoIns->maxCodGrupo() + 1;
+    	 	 $parametros['codGrupo'] = $codGrupo;
+    	 }
+    	 
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_confirmar.html.twig', $parametros);
     }
 }

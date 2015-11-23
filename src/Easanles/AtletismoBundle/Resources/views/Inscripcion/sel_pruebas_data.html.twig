@@ -13,7 +13,7 @@
                
                   <tr>
                      <td>{{ tpr }}</td>
-                     <td class="hidden-xs">{{ pru.coste }}€</td>
+                     <td class="hidden-xs">{{ pru.coste|number_format(2, ',', '.') }}€</td>
                      <td><button id="sel-pru-{{ pru.sid }}" type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button></td>
                   </tr>
                {% endfor %}

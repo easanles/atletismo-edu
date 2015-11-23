@@ -246,3 +246,35 @@ function toggleRadioButton(item){
          }); 
 	}
 }
+
+function toggleConfRow(cb){
+	idAtl = cb.id.split("-")[1];
+	sidPru = cb.id.split("-")[2];
+	if ($(cb).is(":checked")){
+		$("#tr-" + idAtl + "-" + sidPru).removeClass("warning");
+		$("#tr-" + idAtl + "-" + sidPru + " td").removeClass("text-muted");
+		$("#coste-" + idAtl + "-" + sidPru).attr("disabled", false);
+	} else {
+		$("#tr-" + idAtl + "-" + sidPru).addClass("warning");
+		$("#tr-" + idAtl + "-" + sidPru + " td").addClass("text-muted");
+		$("#coste-" + idAtl + "-" + sidPru).attr("disabled", true);
+	}
+	updateCosteTotal();
+}
+
+function updateCosteTotal(){
+	costeTotal = 0.00;
+	$(".coste-ins").each(function(){
+		idAtl = this.id.split("-")[1];
+		sidPru = this.id.split("-")[2];
+		if ($("#cb-" + idAtl + "-" + sidPru).is(":checked") == true){
+        	if (isNaN(parseFloat(this.value)) == true){
+				$(this).parent().addClass("has-error");
+			} else {
+				$(this).parent().removeClass("has-error");					
+				costeTotal += parseFloat(this.value);				
+			}
+		}
+	});
+	$("#coste-total").html(costeTotal.toFixed(2).replace('.', ',') + "€");
+}
