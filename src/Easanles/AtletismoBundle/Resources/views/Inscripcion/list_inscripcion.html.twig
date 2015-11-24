@@ -68,13 +68,13 @@
                   <ul class="dropdown-menu pull-right">
                      {% if atl.sidPar is defined %}<li><a id="asistLI-{{ atl.id }}" href="#" onClick="toggleAsist(this, {{ atl.sidPar }})">{% if atl.asistencia == true %}<span class="glyphicon glyphicon-check"></span> Asistencia [SI]{% else %}<span class="glyphicon glyphicon-unchecked"></span> Asistencia [NO]{% endif %}</a></li>{% endif %}
                      <li><a href="#" onClick="showModal('newPAR', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-bullhorn"></span> {% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}</a></li>
-                     <li><a href="#" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                     <li><a href="#" onClick="showModal('ediINS', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal()"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Desinscribir</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="{% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}" onClick="showModal('newPAR', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-bullhorn"></span></button>
-                  <button disabled type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal()"><span class="glyphicon glyphicon-edit"></span></button>
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediINS', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-edit"></span></button>
                   <button disabled type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Desinscribir" onClick="showModal()"><span class="glyphicon glyphicon-remove-circle"></span></button>
                </div>
             </td>

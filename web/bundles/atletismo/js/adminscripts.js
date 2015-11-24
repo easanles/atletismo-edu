@@ -17,7 +17,7 @@ function loadViews(content){
    switch (content){
       case "tp": {
         $.get("./configuracion/tipoprueba", function(data, status){
-           if (status = "success"){
+           if (status == "success"){
               $("#tpr-table").html(data);
           	  $('.droplist').each(function (){
         		$(this).data("height", $(this).height());
@@ -32,7 +32,7 @@ function loadViews(content){
       case "cat": {
     	 route = routeCatData($("#cat-showOutdated").is(':checked'));
          $.get(route, function(data, status){
-            if (status = "success"){
+            if (status == "success"){
                 $("#cat-table").html(data);
                 $('.dropdown-toggle').dropdown()
              } else {
@@ -83,7 +83,7 @@ function sendAction(path, icon){
 	   alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
 	   alerthtml_pos = "</span></div>";
 	   $.getJSON(path, function(data, status){
-	        if (status = "success"){
+	        if (status == "success"){
 	           if (data.success == true){
 	             $("#alert-div-comm").append(alerthtml_preok + data.message + alerthtml_pos);
 	           } else {

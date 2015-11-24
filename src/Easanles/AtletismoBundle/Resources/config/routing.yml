@@ -143,7 +143,17 @@ inscribir_atletas_confirmacion:
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:pantallaConfirmacion"}
    requirements:
       sidCom: \d+
-   
+inscribir_atletas_crear:
+   path: /competiciones/{sidCom}/inscribir/submit
+   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:crearInscripciones"}
+   requirements:
+      sidCom: \d+
+editar_inscripcion:
+   path: /competiciones/{sidCom}/inscripciones/editar
+   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:editarInscripcion"}
+   requirements:
+      sidCom: \d+
+
 
 #===================PARTICIPACIONES==================
 confirmar_participacion:

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\Response;
+use Easanles\AtletismoBundle\Entity\Inscripcion;
 
 class InscripcionController extends Controller {
 	
@@ -159,19 +160,23 @@ class InscripcionController extends Controller {
     	 $fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
        $cat = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-    	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']);
+    	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']); // Misma categoria
     	 $listaPruObj = array();
+    	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 foreach($listaPru as $pruArr){
     	 	 $pruObj = $repoPru->find($pruArr['sid']);
-    	 	 if ($pruObj->getSidTprm()->getSexo() == $atl->getSexo()){ //Mismo sexo (masculino, femenino)
-    	 	 	 //TODO: Otras restricciones
-    	 	 	 $pruFeder = $pruObj->getSidCom()->getEsFeder();
-    	 	 	 if (($pruFeder == false) ||  //Pruebas federadas solo para atletas FGA
-    	 	 	 		(($pruFeder == true) && (($atl->getLfga() != null) && ($atl->getLfga() != "")))){
+    	 	 if ($pruObj->getSidTprm()->getSexo() != $atl->getSexo()) continue; //Mismo sexo (masculino, femenino)
+    	 	 $checkIns = $repoIns->findOneBy(array("idAtl" => $idAtl, "sidPru" => $pruArr['sid']));
+    	 	 if ($checkIns != null) continue; // Atleta ya inscrito a esta prueba
+    	 	 
+    	 	 //TODO: Otras restricciones
+    	 	 $pruFeder = $pruObj->getSidCom()->getEsFeder();
+    	 	 if (($pruFeder == false) ||  //Pruebas federadas solo para atletas FGA
+    	 	 	(($pruFeder == true) && (($atl->getLfga() != null) && ($atl->getLfga() != "")))){
     	 	 	 	 $listaPruObj[] = $pruObj;
-    	 	 	 }
     	 	 }
-    	 }
+    	  }
+    	 
     	 $parametros = array("listaPru" => $listaPruObj);
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_pruebas_data.html.twig', $parametros);
     }
@@ -192,13 +197,13 @@ class InscripcionController extends Controller {
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
     	 $entradas = array();
     	 foreach($data as $entrada){
-    	 	 if ($temp == null) $temp = $entrada[0];
-    	 	 else if ($temp != $entrada[0]) $inscripcionGrupal = true;
     	    $atl = $repoAtl->find($entrada[0]);
     	    if ($atl != null){
     	    	 $pru = $repoPru->find($entrada[1]);
     	    	 if ($pru != null){
-    	    	 	 $entradas[] = array("atl" => $atl, "pru" => $pru);
+    	    	   if ($temp == null) $temp = $entrada[0];
+    	    	   else if ($temp != $entrada[0]) $inscripcionGrupal = true;  	    	
+    	    	 	$entradas[] = array("atl" => $atl, "pru" => $pru);
     	    	 }
     	    }
     	 }
@@ -210,5 +215,86 @@ class InscripcionController extends Controller {
     	 }
     	 
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_confirmar.html.twig', $parametros);
+    }
+    
+    public function crearInscripcionesAction($sidCom, Request $request){
+    	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 $com = $repoCom->find($sidCom);
+    	 if ($com == null){
+    		 $response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    		 return $response;
+    	 }
+    	 $data = $request->request->get("data");
+    	 
+    	 $inscripcionGrupal = false;
+    	 $temp = null;
+    	 $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+    	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	 $colaIns = array();
+    	 foreach($data as $elem){
+    	 	 $idAtl = $elem[0];
+    	 	 $sidPru = $elem[1];
+    	 	 $coste = $elem[2];
+    	 	 $atl = $repoAtl->find($idAtl);
+    	 	 if ($atl != null){
+    	 	 	$pru = $repoPru->find($sidPru);
+    	 	 	if ($pru != null){
+    	 	 		if ($temp == null) $temp = $idAtl;
+    	 	 		else if ($temp != $idAtl) $inscripcionGrupal = true;
+    	 	 		$checkIns = $repoIns->findOneBy(array("idAtl" => $idAtl, "sidPru" => $sidPru));
+    	 	 		if ($checkIns == null){
+    	 	 			$colaIns[] = array("atl" => $atl, "pru" => $pru, "coste" => $coste);
+    	 	 		}
+    	 	 	}
+    	 	 }
+    	 }
+    	 if ($inscripcionGrupal == true){
+    	 	$codGrupo = $repoIns->maxCodGrupo() + 1;
+    	 } else $codGrupo = null;
+    	 
+    	 $em = $this->getDoctrine()->getManager();
+    	 try {
+    	 	 foreach ($colaIns as $elem){
+    	 	    $ins = new Inscripcion();
+    	 		 $ins->setIdAtl($elem['atl'])
+    	 		 ->setSidPru($elem['pru'])
+    	 		 ->setCoste($elem['coste'])
+    	 		 ->setOrigen("admin") //TODO: nombre de usuario
+    	 		 ->setFecha(new \DateTime())
+    	 		 ->setEstado("Pendiente")
+    	 		 ->setCodGrupo($codGrupo);
+    	 		 $em->persist($ins);
+    	 	 }
+    	 	 $em->flush();
+    	 } catch (\Exception $e) {
+				$exception = $e->getMessage();
+				return new Response($exception);
+	    }
+    	 return new Response("OK");
+    }
+    
+    public function editarInscripcionAction($sidCom, Request $request){
+    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$com = $repoCom->find($sidCom);
+    	if ($com == null){
+    		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    		return $response;
+    	}
+    	$idAtl = $request->query->get("atl");
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	$atl = $repository->find($idAtl);
+    	if ($atl == null) {
+    		$response = new Response('No existe el atleta con identificador "'.$idAtl.'" <a href="'.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)).'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)));
+    		return $response;
+    	}
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	// GET INSCRIPCIONES
+    	// foreach inscripcion { new form}
+    	// ···
+    	return new Response("TEST");
     }
 }

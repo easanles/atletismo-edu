@@ -14,7 +14,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
     	   $.getJSON("./configuracion/tipoprueba/nuevo", function(data, status){
-    		  if (status = "success"){
+    		  if (status == "success"){
     		     $("#dialog-body").html(data.message);
     		     collectionHolder = $('#form-collection');
     		     collectionHolder.data('index', collectionHolder.find('.subform-row').length);
@@ -35,7 +35,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
     	   $.getJSON("./configuracion/tipoprueba/editar/" + data2, function(data, status){
-  		      if (status = "success"){
+  		      if (status == "success"){
   			    $("#dialog-body").html(data.message);
                 collectionHolder = $('#form-collection');
 		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
@@ -50,7 +50,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./" + data1 + "/nuevo", function(data, status){
-   		      if (status = "success"){
+   		      if (status == "success"){
    			    $("#dialog-body").html(data.message);
    		        collectionHolder = $('#form-collection');
 		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
@@ -67,7 +67,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./" + data1 + "/editar/"+data2, function(data, status){
-   		      if (status = "success"){
+   		      if (status == "success"){
    			    $("#dialog-body").html(data.message);
    		        collectionHolder = $('#form-collection');
 		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
@@ -90,7 +90,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./configuracion/categoria/nuevo", function(data, status){
-   		      if (status = "success"){
+   		      if (status == "success"){
    			    $("#dialog-body").html(data.message);
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
@@ -103,7 +103,7 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./configuracion/categoria/editar/" + data2, function(data, status){
-   		      if (status = "success"){
+   		      if (status == "success"){
    			    $("#dialog-body").html(data.message);
    	          } else {
    			    $("#dialog-body").html("Error al cargar datos");
@@ -127,8 +127,21 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-bullhorn\"></span> Confirmar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./participar?atl=" + data1, function(data, status){
-   		      if (status = "success"){
-   			    $("#dialog-body").html(data.message);
+   		      if (status == "success"){
+   			     $("#dialog-body").html(data.message);
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
+       
+	   case ("ediINS"): { //Editar inscripcion
+    	   $('#dialog-label').html("Editar inscripción");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
+    	   $.getJSON("./inscripciones/editar?atl=" + data1, function(data, status){
+   		      if (status == "success"){
+   			     $("#dialog-body").html(data.message);
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	
