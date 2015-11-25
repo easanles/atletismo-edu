@@ -7,6 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Entity\Inscripcion;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Easanles\AtletismoBundle\Form\Type\InsType;
+use Easanles\AtletismoBundle\Form\Type\InsTypeGroup;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class InscripcionController extends Controller {
 	
@@ -284,17 +288,46 @@ class InscripcionController extends Controller {
     		return $response;
     	}
     	$idAtl = $request->query->get("atl");
-    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-    	$atl = $repository->find($idAtl);
+    	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	$atl = $repoAtl->find($idAtl);
     	if ($atl == null) {
     		$response = new Response('No existe el atleta con identificador "'.$idAtl.'" <a href="'.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)).'">Volver</a>');
     		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)));
     		return $response;
     	}
-    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
-    	// GET INSCRIPCIONES
-    	// foreach inscripcion { new form}
-    	// ···
-    	return new Response("TEST");
+    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	$listaIns = $repoIns->findForAtl($sidCom, $idAtl);
+    	$inscripciones = array();
+    	foreach ($listaIns as $insArr){
+    		$ins = $repoIns->findOneBy(array('sid' => $insArr['sid']));
+    		$inscripciones[] = $ins;
+    	}
+    	 
+    	$form = $this->createForm(new InsTypeGroup($inscripciones));
+    	$form->handleRequest($request);
+    	
+    	if ($form->isValid()) {
+    		try {
+    			$em = $this->getDoctrine()->getManager();
+    			$em->flush();
+    		} catch (\Exception $e) {
+    			$exception = $e->getMessage();
+    			return new JsonResponse([
+    					'success' => false,
+    					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:edit_inscripcion.html.twig',
+    							array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'exception' => $exception))->getContent()
+    			]);
+    		}
+    		return new JsonResponse([
+    				'success' => true,
+    				'message' => "OK"
+    		]);
+    	}
+    	
+    	return new JsonResponse([
+    			'success' => false,
+    			'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:edit_inscripcion.html.twig',
+    					array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom))->getContent()
+    	]);
     }
 }

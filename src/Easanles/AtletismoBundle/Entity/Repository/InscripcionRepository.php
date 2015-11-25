@@ -21,8 +21,8 @@ class InscripcionRepository extends EntityRepository {
 	
 	public function findForAtl($sidCom, $idAtl){
 		return $this->getEntityManager()
-		->createQuery('SELECT ins.sid, ins.origen, ins.fecha, ins.estado, ins.coste, ins.codGrupo,
-				 pru.sid, tprf.nombre, tprm.sexo, tprm.entorno 
+		->createQuery('SELECT ins.sid AS sid, ins.origen, ins.fecha, ins.estado, ins.coste, ins.codGrupo,
+				 pru.sid AS sidPru, tprf.nombre, tprm.sexo, tprm.entorno 
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				JOIN ins.sidPru pru
 				JOIN pru.sidTprm tprm

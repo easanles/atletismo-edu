@@ -267,6 +267,7 @@ function toggleConfRow(cb){
 function updateCosteTotal(){
 	costeTotal = 0.00;
 	$("#btn-next").attr("disabled", false);
+	$("#btn-inscribir").attr("disabled", false);
 	$(".coste-ins").each(function(){
 		idAtl = this.id.split("-")[1];
 		sidPru = this.id.split("-")[2];
@@ -274,6 +275,7 @@ function updateCosteTotal(){
         	if (isNaN(parseFloat(this.value)) == true){
 				$(this).parent().addClass("has-error");
 				$("#btn-next").attr("disabled", true);
+				$("#btn-inscribir").attr("disabled", true);
 			} else {
 				$(this).parent().removeClass("has-error");					
 				costeTotal += parseFloat(this.value);				

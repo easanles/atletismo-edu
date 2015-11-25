@@ -11,10 +11,10 @@
                </tr>
                {% for atl in selAtl %}
                   <tr id="tr-atl-{{ atl[0] }}">
-                     <td>{{ atl[1] }}</td>
-                     <td>{{ atl[2] }}</td>
-                     <td><span id="count-pru-{{ atl[0] }}">0</span></td>
-                     <td><button id="sel-pruatl-{{ atl[0] }}" class="btn btn-xs btn-block btn-default sel-pruatl" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+                     <td class="clickable" onClick="toggleRadioButton($('#sel-pruatl-{{ atl[0] }}').get(0))">{{ atl[1] }}</td>
+                     <td class="clickable" onClick="toggleRadioButton($('#sel-pruatl-{{ atl[0] }}').get(0))">{{ atl[2] }}</td>
+                     <td class="clickable" onClick="toggleRadioButton($('#sel-pruatl-{{ atl[0] }}').get(0))"><span id="count-pru-{{ atl[0] }}">0</span></td>
+                     <td class="clickable" onClick="toggleRadioButton($('#sel-pruatl-{{ atl[0] }}').get(0))"><button id="sel-pruatl-{{ atl[0] }}" class="btn btn-xs btn-block btn-default sel-pruatl" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
                   </tr>
                {% endfor %}
             </tbody>

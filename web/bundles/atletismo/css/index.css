@@ -98,7 +98,12 @@ h1 {
   
   .scrollable {
      max-height: 13em;
-     overflow-y: auto; 
+     overflow-y: auto;
+     margin-bottom: 1em;
+  }
+  
+  .scrollable table{
+     margin-bottom: 0px;
   }
 }
 

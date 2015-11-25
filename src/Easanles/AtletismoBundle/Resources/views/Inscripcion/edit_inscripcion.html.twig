@@ -1,0 +1,46 @@
+
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+
+   <div id="data_form" class="row">
+
+{#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
+
+{% if mode == "edit" %}
+{{ form_start(form, {'action': path('editar_inscripcion', {'sidCom': sidCom})}) }}
+{% elseif mode == "del" %}
+{{ form_start(form, {'action': path('editar_inscripcion', {'sidCom': sidCom})}) }}
+{% endif %}
+
+    {{ form_errors(form) }}
+    
+    <div class="subform panel panel-default">
+       <div class="panel-heading">Lista de inscripciones</div>
+       <div class="panel-body">
+          <table class="table-responsive table-condensed">
+             <tbody id="form-collection">
+                <tr><th>Precio</th><th>Estado</th><th></th></tr>
+                {{ dump(form.inscripciones) }}
+                {% for ins in form.inscripciones %}
+                <tr class="subform-row">
+                   <td>TEST</td>
+                   {% if mode == "edit" %}
+                   <td>{{ form_widget(ins.coste) }}{{ form_errors(ins.coste) }}</td>
+                   <td>{{ form_widget(ins.estado) }}{{ form_errors(ins.estado) }}</td>
+                   {% elseif mode == "del" %}
+                   <td>ESTADO</td>
+                   <td><button type="button" class="btn btn-sm btn-danger" onClick=""><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                   {% endif %}
+                </tr>
+                {% endfor %}
+             </tbody>
+          </table>
+       </div>
+    </div>
+    
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>
+

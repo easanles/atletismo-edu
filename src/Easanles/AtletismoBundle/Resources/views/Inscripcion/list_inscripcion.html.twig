@@ -99,7 +99,7 @@
                            <td class="hidden-xs">{{ ins.fecha|date('d/m/Y') }}</td>
                            <td class="hidden-xs">{{ ins.origen }}</td>
                            <td class="hidden-xs">{{ ins.codGrupo }}</td>
-                           <td class="hidden-xs">{{ ins.coste }}€</td>
+                           <td class="hidden-xs">{{ ins.coste|number_format(2, ',', '.') }}€</td>
                            <td>{{ ins.estado }}</td>
                            <td class="hidden-xs">0</td>
                            <td><button disabled type="button" class="btn btn-xs btn-block btn-default" onClick="showModal()"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>

@@ -16,8 +16,7 @@ class InsType extends AbstractType{
     	    		    'Pendiente' => 'Pendiente',
     	    			 'Pagado' => 'Pagado'
     	    		  ), 
-    	    		 'required' => false))
-    	    ->add('eliminar', 'checkbox', array('label' => "Eliminar inscripción", 'mapped' => false));
+    	    		 'required' => false));
     }
  
     public function getName(){
