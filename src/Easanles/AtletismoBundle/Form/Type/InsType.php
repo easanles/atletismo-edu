@@ -12,6 +12,7 @@ class InsType extends AbstractType{
           ->add('coste', 'money', array('label' => 'Precio', 'currency' => 'EUR', 'required' => true))
     	    ->add('estado', 'choice', array(
     	    		 'label' => 'Estado de pago',
+    	    		 'empty_value' => false,
     	    		 'choices'=> array(
     	    		    'Pendiente' => 'Pendiente',
     	    			 'Pagado' => 'Pagado'

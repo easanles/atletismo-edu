@@ -123,7 +123,7 @@ function showModal(type, data1, data2, data3){
 	   } break;
 	   
 	   case ("newPAR"): { //Confirmar participacion
-    	   $('#dialog-label').html("Confirmar participación");
+    	   $('#dialog-label').html(data2);
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-bullhorn\"></span> Confirmar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./participar?atl=" + data1, function(data, status){

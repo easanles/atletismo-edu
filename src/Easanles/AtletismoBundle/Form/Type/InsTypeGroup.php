@@ -12,11 +12,12 @@ class InsTypeGroup extends AbstractType{
 	 private $inscripciones;
 	
     public function buildForm(FormBuilderInterface $builder, array $options){
-        $builder->add('inscripciones', 'collection', array('cascade_validation' => true));
-        $count = 0;
-        foreach($this->inscripciones as $ins){
-           $builder->get('inscripciones')->add('ins_'.$count++, new InsType($ins));           
-        }
+        $builder->add('inscripciones', 'collection', array(
+        		'type' => new InsType(),
+        		'mapped' => false,
+        		'cascade_validation' => true,
+        		'data' => $this->inscripciones
+        ));
     }
     
     public function __construct($listaIns) {

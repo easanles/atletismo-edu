@@ -42,13 +42,18 @@ class InscripcionController extends Controller {
     	     $atlData['pruebas'] = $pruebasIns;
     	     $costeTotal = 0.00;
     	     $estado = 0;
+    	     $unPendiente = false;
     	     foreach($pruebasIns as $ins){
     	        $costeTotal += $ins['coste'];
     	        if ($ins['estado'] == "Pagado"){
-    	           if ($estado == 0) $estado = 2;
+    	           if ($estado == 0){
+    	              if ($unPendiente == true) $estado = 1;
+    	              else $estado = 2;
+    	           } 
     	        }
     	        if ($ins['estado'] == "Pendiente"){
     	           if ($estado == 2) $estado = 1;
+    	           $unPendiente = true;
     	        }
     	     }
     	     $atlData['costetotal'] = $costeTotal;
@@ -315,7 +320,7 @@ class InscripcionController extends Controller {
     			return new JsonResponse([
     					'success' => false,
     					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:edit_inscripcion.html.twig',
-    							array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'exception' => $exception))->getContent()
+    							array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'exception' => $exception))->getContent()
     			]);
     		}
     		return new JsonResponse([
@@ -327,7 +332,7 @@ class InscripcionController extends Controller {
     	return new JsonResponse([
     			'success' => false,
     			'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:edit_inscripcion.html.twig',
-    					array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom))->getContent()
+    					array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'idAtl' => $idAtl))->getContent()
     	]);
     }
 }
