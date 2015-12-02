@@ -63,7 +63,7 @@
             <td>{{ pru.rondas|length }}
                <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar rondas" onClick="toggleDropListTable({{ pru.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
             </td>
-            <td>{{ pru.coste }}€</td>
+            <td>{{ pru.coste|number_format(2, ',', '.') }}€</td>
             <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-user"></span></button></td>
             <td>
                <div class="btn-group visible-xs-block">

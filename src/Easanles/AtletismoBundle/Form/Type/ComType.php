@@ -16,7 +16,7 @@ class ComType extends AbstractType{
     	    ->add('fecha', 'date', array(
     	    		'label' => 'Fecha de comienzo',
     	    		'widget' => 'single_text',
-    	    		'format' => 'dd-MM-yyyy',
+    	    		'format' => 'dd/MM/yyyy',
     	    		'placeholder' => 'dd/mm/aaaa',
     	    		'invalid_message' => 'Fecha no válida. Formato: dd/mm/aaaa',
     	    		'required' => false))

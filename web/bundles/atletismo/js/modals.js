@@ -135,8 +135,8 @@ function showModal(type, data1, data2, data3){
    	       });
        } break;
        
-	   case ("ediINS"): { //Editar inscripcion
-    	   $('#dialog-label').html("Editar inscripción");
+	   case ("ediINS"): { //Editar inscripciones
+    	   $('#dialog-label').html("Editar inscripciones");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./inscripciones/editar?atl=" + data1, function(data, status){
@@ -148,10 +148,59 @@ function showModal(type, data1, data2, data3){
    	       });
        } break;
        
-       default: break;
+	   case ("delINS"): { //Borrar inscripciones
+		   dataIns = [];
+    	   $('#dialog-label').html("Eliminar inscripciones");
+    	   $('#dialog-btn').html("<button id=\"btn-send\" class=\"btn btn-danger\" disabled><span class=\"glyphicon glyphicon-remove-sign\"></span> Desinscribir</button>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   $.getJSON("./inscripciones/borrar?atl=" + data1, function(data, status){
+   		      if (status == "success"){
+   			     $("#dialog-body").html(data.message);
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+    	   $('#dialog-btn').click(function(){
+    	      $.ajax({
+    		     type        : "post",
+    			 url         : "./inscripciones/borrar?atl=" + data1,
+    		     data        : {data: dataIns},
+    			 success     : function(data) {
+    			    if (data.success == false){
+    				   $('#dialog-body').html(data.message);
+			    	} else if (data.success == true){
+     	               $("#modal-dismiss").click();
+    				   location.reload();
+    				}
+    		     }
+    	      })
+    	   });
+
+       } break;
+	   
+	   default: break;
 	}
 	
 	modal.modal();
+}
+
+function modalToggleButton(item){
+	id = item.id.split("-")[1];
+	if ($(item).hasClass("btn-default")){
+		$(item).removeClass("btn-default");
+		$(item).addClass("btn-danger");
+		$(item).html("<span class=\"glyphicon glyphicon-remove-sign\"></span> <strong>SI</strong>");
+		dataIns.push(id);
+		$("#btn-send").attr("disabled", false);
+	} else {
+		$(item).removeClass("btn-danger");
+		$(item).addClass("btn-default");		
+		$(item).html("<span class=\"glyphicon glyphicon-remove-sign\"></span> NO");
+		dataIns.splice($.inArray(id, dataIns), 1);
+		if (dataIns.length == 0){
+			$("#btn-send").attr("disabled", true);
+		}
+	}
 }
 
 //funcion para modificar datos de formulario en funcion de una seleccion previa

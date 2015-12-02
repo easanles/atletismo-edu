@@ -1,0 +1,28 @@
+
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+
+   <div id="data_form" class="row">
+    
+    <div class="subform panel panel-default">
+       <div class="panel-heading">Lista de inscripciones</div>
+       <div class="panel-body">
+          <table class="table-responsive table-condensed">
+             <tbody id="form-collection">
+                <tr><th>Prueba</th><th>Precio</th><th>Estado</th><th>Desinscribir</th></tr>
+                {% for ins in inscripciones %}
+                <tr class="subform-row">
+                   <td>{{ ins.sidPru.sidTprm.sidTprf.nombre }}. {% if ins.sidPru.sidTprm.sexo == 0 %}Masculino, {% elseif ins.sidPru.sidTprm.sexo == 1 %}Femenino, {% endif%}{{ ins.sidPru.sidTprm.entorno }}</td>
+                   <td>{{ ins.coste|number_format(2, ",", ".") }}€</td>
+                   <td>{{ ins.estado }}</td>
+                   <td><button id="btnins-{{ ins.sid }}" type="button" class="btn btn-sm btn-default btn-block" data-toggle="button" onClick="modalToggleButton(this)"><span class="glyphicon glyphicon-remove-sign"></span> NO</button></td>
+                </tr>
+                {% endfor %}
+             </tbody>
+          </table>
+       </div>
+    </div>
+   
+   </div>
+

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Form\Type\InsType;
 use Easanles\AtletismoBundle\Form\Type\InsTypeGroup;
 use Doctrine\Common\Collections\ArrayCollection;
+use Easanles\AtletismoBundle\Entity\Participacion;
 
 class InscripcionController extends Controller {
 	
@@ -320,7 +321,7 @@ class InscripcionController extends Controller {
     			return new JsonResponse([
     					'success' => false,
     					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:edit_inscripcion.html.twig',
-    							array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'exception' => $exception))->getContent()
+    							array('form' => $form->createView(), 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'exception' => $exception))->getContent()
     			]);
     		}
     		return new JsonResponse([
@@ -332,7 +333,69 @@ class InscripcionController extends Controller {
     	return new JsonResponse([
     			'success' => false,
     			'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:edit_inscripcion.html.twig',
-    					array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'idAtl' => $idAtl))->getContent()
+    					array('form' => $form->createView(), 'sidCom' => $sidCom, 'idAtl' => $idAtl))->getContent()
     	]);
+    }
+    
+    public function borrarInscripcionAction($sidCom, Request $request){
+    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$com = $repoCom->find($sidCom);
+    	if ($com == null){
+    		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    		return $response;
+    	}
+    	$idAtl = $request->query->get("atl");
+    	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	$atl = $repoAtl->find($idAtl);
+    	if ($atl == null) {
+    		$response = new Response('No existe el atleta con identificador "'.$idAtl.'" <a href="'.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)).'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)));
+    		return $response;
+    	}
+    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	$listaIns = $repoIns->findForAtl($sidCom, $idAtl);
+    	$inscripciones = array();
+    	foreach ($listaIns as $insArr){
+    		$ins = $repoIns->findOneBy(array('sid' => $insArr['sid']));
+    		$inscripciones[] = $ins;
+    	}
+    	
+      $data = $request->request->get("data");
+      $em = $this->getDoctrine()->getManager();
+      if ($data != null){
+      	try {
+      		if (sizeof($listaIns) == sizeof($data)){
+      			$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
+      			$par = $repoPar->findOneBy(array("idAtl" => $idAtl, "sidCom" => $sidCom));
+      			if ($par != null){
+      				$em->remove($par);
+      			}
+      		}
+      		foreach($data as $sidIns){
+      			$ins = $repoIns->find($sidIns);
+      			$em->remove($ins);
+      		}
+      		$em->flush();
+      	} catch (\Exception $e) {
+      		$exception = $e->getMessage();
+      		return new JsonResponse([
+      				'success' => false,
+      				'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:borr_inscripcion.html.twig',
+      						array('inscripciones' => $inscripciones, 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'exception' => $exception))->getContent()
+      		]);
+      	}
+      	return new JsonResponse([
+      			'success' => true,
+      			'message' => "OK"
+      	]);
+      	
+      } else {
+      	return new JsonResponse([
+      			'success' => false,
+      			'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:borr_inscripcion.html.twig',
+      					array('inscripciones' => $inscripciones, 'sidCom' => $sidCom, 'idAtl' => $idAtl))->getContent()
+      	]);
+      }
     }
 }

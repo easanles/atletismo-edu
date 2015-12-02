@@ -153,6 +153,11 @@ editar_inscripcion:
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:editarInscripcion"}
    requirements:
       sidCom: \d+
+borrar_inscripcion:
+   path: /competiciones/{sidCom}/inscripciones/borrar
+   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:borrarInscripcion"}
+   requirements:
+      sidCom: \d+
 
 
 #===================PARTICIPACIONES==================
