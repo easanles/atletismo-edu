@@ -43,18 +43,56 @@ class PruebaController extends Controller {
   			$pruebas = $repoPru->findAllFor($sidCom);
   		}
   		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
+  		$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
   		foreach($pruebas as &$pru){
   			$rondas = $repoRon->findBy(array("sidPru" => $pru['sid']));
   			$pru['rondas'] = $rondas;
-  		}
-  		foreach($pruebas as &$pru){ 
-  	      $pru['tprm'] = $repoTprm->find($pru['tprm']);
-  	      $pru['cat'] = $repoCat->find($pru['cat']);
+  			$pru['tprm'] = $repoTprm->find($pru['tprm']);
+  			$pru['cat'] = $repoCat->find($pru['cat']);
+  			$pru['inscritos'] = $repoIns->countInsForPru($pru['sid']);
   		}
   		$parametros['pruebas'] = $pruebas;
   		
   		return $this->render('EasanlesAtletismoBundle:Prueba:list_prueba.html.twig', $parametros);
     }
+    
+   public function listarInscritosPruebaAction($sidCom, Request $request){
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$com = $repository->find($sidCom);
+   	if ($com == null){
+   		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+   		return $response;
+   	}
+   	$sidPru = $request->query->get('pru');
+   	$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+   	$pru = $repoPru->find($sidPru);
+   	if ($pru == null){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "<div class=\"alert alert-danger\" role=\"alert\"><span>No existe la prueba con el identificador \"".$sidPru."\"</span></div>"
+   		]);
+   	}
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$listaIns = $repoIns->findInsForPru($sidPru);
+   	if (sizeof($listaIns) == 0){
+   		$responseText = "No hay atletas inscritos";
+   	} else {
+   		$responseText = "<ul>";
+   		foreach($listaIns as $ins){
+   			$responseText .= "<li>".$ins['apellidos'].", ".$ins['nombre'];
+   			if (($ins['nick'] != null) && ($ins['nick'] != "")){
+   				$responseText .= " (".$ins['nick'].")";
+   			}
+   			$responseText .= "</li>";
+   		}
+   		$responseText .= "</ul>";
+   	}
+   	return new JsonResponse([
+   			'success' => true,
+   			'message' => $responseText
+   	]);
+   }
     
    public function crearPruebaAction($sidCom, Request $request) {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');

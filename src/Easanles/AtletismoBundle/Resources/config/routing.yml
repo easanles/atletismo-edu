@@ -53,6 +53,11 @@ editar_prueba:
    requirements:
       sidCom: \d+
       sidPru: \d+
+listar_inscritos_prueba:
+   path: /pruebas/{sidCom}/listar
+   defaults: {_controller: "EasanlesAtletismoBundle:Prueba:listarInscritosPrueba"}
+   requirements:
+      sidCom: \d+
             
     
 #==================TIPOS DE PRUEBAS==================

@@ -64,7 +64,7 @@
                <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar rondas" onClick="toggleDropListTable({{ pru.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
             </td>
             <td>{{ pru.coste|number_format(2, ',', '.') }}€</td>
-            <td>0<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" disabled><span class="glyphicon glyphicon-user"></span></button></td>
+            <td>{{ pru.inscritos }}<button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Lista de inscritos" onClick="showModal('showINS', {{ com.sid }}, '{{ tpr }}', {{ pru.sid }})"><span class="glyphicon glyphicon-user"></span></button></td>
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>

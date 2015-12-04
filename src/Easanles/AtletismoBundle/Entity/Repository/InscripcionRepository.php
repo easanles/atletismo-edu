@@ -34,6 +34,26 @@ class InscripcionRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function countInsForPru($sidPru){
+		$query = $this->getEntityManager()
+		->createQuery('SELECT ins.sid AS sid
+				FROM EasanlesAtletismoBundle:Inscripcion ins
+				WHERE IDENTITY(ins.sidPru) LIKE :sidpru')
+					->setParameter("sidpru", $sidPru)
+					->getResult();
+		return count($query);
+	}
+	
+	public function findInsForPru($sidPru){
+		return $this->getEntityManager()
+		->createQuery('SELECT atl.apellidos, atl.nombre, atl.nick
+				FROM EasanlesAtletismoBundle:Inscripcion ins
+				JOIN ins.idAtl atl
+				WHERE IDENTITY(ins.sidPru) LIKE :sidpru')
+					->setParameter("sidpru", $sidPru)
+					->getResult();
+	}
+	
 	public function maxCodGrupo(){
 		$query = $this->getEntityManager()
 		->createQuery('SELECT ins.codGrupo FROM EasanlesAtletismoBundle:Inscripcion ins GROUP BY ins.codGrupo ')
