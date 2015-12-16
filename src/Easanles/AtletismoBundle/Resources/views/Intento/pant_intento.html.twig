@@ -1,0 +1,99 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}
+   Registrar marcas
+{% endblock %}
+
+{% block css %}
+    {{ parent() }}
+   <style> .vich-image img {max-width: 200px} </style>
+{% endblock %}
+
+{% block navbar %}
+      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li><a class="inactive">Records</a></li>
+      <li><a class="inactive">Informes</a></li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li class="active">Registrar marcas</li>
+{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="row page-header">Registrar marcas</h1>
+
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}   
+   
+   <div class="row">
+      <div class="col-xs-12 col-sm-5">
+         <div class="form-group">
+            <label for="select-com">Competiciones temporada {{ currentTemp }}/{{ (currentTemp + 1)|slice(2, 2) }}</label>
+            <select id="select-com" class="form-control">
+               <option value=""></option>
+               {% for com in coms %}
+                  <option value="{{ com.sid }}"{% if selCom is defined %}{% if selCom == com.sid%} selected{% endif %}{% endif %}>{{ com.nombre }}</option>
+               {% endfor %}
+            </select>
+         </div>
+      </div>
+      <div class="col-xs-8 col-sm-5">
+         <div class="form-group">
+            <label for="select-pru">Pruebas</label>
+            <select id="select-pru" class="form-control" disabled>
+               <option value=""></option>
+            </select>
+         </div>
+      </div>
+      <div class="col-xs-4 col-sm-2">
+         <div class="form-group">
+            <label for="select-cat">Categorías</label>
+            <select id="select-cat" class="form-control" disabled>
+               <option value=""></option>
+            </select>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-xs-12 col-sm-5">
+         <label>Atletas inscritos</label>
+         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+            <tbody>
+               <tr>
+                  <th>Nombre</th><th>Selec.</th>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="col-xs-12 col-sm-7">
+         <label>Rondas</label>
+         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+            <tbody>
+               <tr>
+                  <th>Id</th><th>#</th><th>Nombre</th><th>Marca</th><th>Registrar</th>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   
+   <div id="data_form" class="row">
+   </div>
+   
+   
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/marcas.js') }}"></script>
+
+{% endblock %}
+
+
+

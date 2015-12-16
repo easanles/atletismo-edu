@@ -176,6 +176,15 @@ marcar_asistencia:
    defaults: {_controller: "EasanlesAtletismoBundle:Participacion:marcarAsistencia"}
    requirements:
       sidCom: \d+
+      
+      
+#======================INTENTOS======================
+registrar_intentos:
+   path: /marcas
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:pantallaIntentos"}
+intentos_pruebas:
+   path: /marcas/getpru
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerPruebas"}
      
 
 #====================CONFIGURACION===================

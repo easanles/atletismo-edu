@@ -24,7 +24,9 @@
    {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
 
 {% block container %}
-   <h1 id="container_title" class="row page-header">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</h1>
+   <h1 id="container_title" class="page-header">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})
+      <span><a type="button" class="btn btn-lg btn-primary pull-right" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span> Registrar marcas</a></span>
+   </h1>
     
    <div class="row">
       <div class="col-xs-12 col-sm-8 col-sm-push-4">

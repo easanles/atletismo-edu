@@ -189,19 +189,6 @@ function showModal(type, data1, data2, data3){
    			  }	
    	       });
        } break;
-       
-	   case ("newINT"): { //Registrar intentos
-    	   $('#dialog-label').html("Registrar marca <small>- " + data2 + "</small>");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
-    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
-    	   $.getJSON("", function(data, status){
-   		      if (status == "success"){
-   			     $("#dialog-body").html(data.message);
-   	          } else {
-   			     $("#dialog-body").html("Error al cargar datos");
-   			  }	
-   	       });
-       } break;
 	   
 	   default: break;
 	}

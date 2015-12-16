@@ -20,6 +20,14 @@ class CompeticionRepository extends EntityRepository {
 		return $result;
 	}
 	
+	public function findTempComs($temp){
+		$result = $this->getEntityManager()
+		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha FROM EasanlesAtletismoBundle:Competicion com WHERE com.temp = :temp ORDER BY com.fecha DESC')
+		->setParameter('temp', $temp)
+		->getResult();
+		return $result;
+	}
+	
 	public function findAtletasIns($sidCom){
 		return $this->getEntityManager()
 		->createQuery('SELECT IDENTITY (ins.idAtl)

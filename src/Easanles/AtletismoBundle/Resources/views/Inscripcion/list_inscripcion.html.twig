@@ -91,7 +91,7 @@
                         <th class="hidden-xs">Precio</th>
                         <th>Estado</th>
                         <th>Registros</th>
-                        <th class="hidden-xs">Registrar marca</th>
+                        <th class="hidden-xs">Registrar marcas</th>
                      </tr>
                      {% for ins in atl.pruebas %}
                         {% if ins.sexo == 0 %}
@@ -106,8 +106,8 @@
                            <td class="hidden-xs">{% if ins.codGrupo is not null %}{{ ins.codGrupo }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar grupo" onClick="showModal()"><span class="glyphicon glyphicon-info-sign"></span></button>{% endif %}</td>
                            <td class="hidden-xs">{{ ins.coste|number_format(2, ',', '.') }}€</td>
                            <td>{{ ins.estado }}</td>
-                           <td>0 <button type="button" class="btn btn-xs btn-default pull-right visible-xs" onClick="showModal('newINT', {{ ins.sid }}, '{{ nombrePru }}', null)"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
-                           <td class="hidden-xs"><button type="button" class="btn btn-xs btn-block btn-default" onClick="showModal('newINT', {{ ins.sid }}, '{{ nombrePru }}', null)"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
+                           <td>0 <button type="button" class="btn btn-xs btn-default pull-right visible-xs" onClick=""><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
+                           <td class="hidden-xs"><button type="button" class="btn btn-xs btn-block btn-default" onClick=""><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
                         </tr>
                      {% endfor %}
                   </tbody>
