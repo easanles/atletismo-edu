@@ -13,6 +13,13 @@ class PruebaRepository extends EntityRepository {
 		->setParameter("sidcom", $sidCom)
 		->getResult();
 	}
+	
+	public function findAllOrderedFor($sidCom) {
+		return $this->getEntityManager()
+		->createQuery('SELECT pru.sid, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.sidTprm ASC, pru.idCat ASC')
+		->setParameter("sidcom", $sidCom)
+		->getResult();
+	}
 
 	public function findCats($sidCom){
 		return $this->getEntityManager()

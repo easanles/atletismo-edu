@@ -34,7 +34,7 @@
       <div class="col-xs-12 col-sm-5">
          <div class="form-group">
             <label for="select-com">Competiciones temporada {{ currentTemp }}/{{ (currentTemp + 1)|slice(2, 2) }}</label>
-            <select id="select-com" class="form-control">
+            <select id="select-com" class="form-control" onChange="loadPru(this.value)">
                <option value=""></option>
                {% for com in coms %}
                   <option value="{{ com.sid }}"{% if selCom is defined %}{% if selCom == com.sid%} selected{% endif %}{% endif %}>{{ com.nombre }}</option>
@@ -45,7 +45,7 @@
       <div class="col-xs-8 col-sm-5">
          <div class="form-group">
             <label for="select-pru">Pruebas</label>
-            <select id="select-pru" class="form-control" disabled>
+            <select id="select-pru" class="form-control" onChange="showCats(this.value)" disabled>
                <option value=""></option>
             </select>
          </div>
@@ -53,7 +53,7 @@
       <div class="col-xs-4 col-sm-2">
          <div class="form-group">
             <label for="select-cat">Categorías</label>
-            <select id="select-cat" class="form-control" disabled>
+            <select id="select-cat" class="form-control" onChange="loadAtls(this.value)" disabled>
                <option value=""></option>
             </select>
          </div>
@@ -63,7 +63,7 @@
       <div class="col-xs-12 col-sm-5">
          <label>Atletas inscritos</label>
          <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
-            <tbody>
+            <tbody id="select-atl">
                <tr>
                   <th>Nombre</th><th>Selec.</th>
                </tr>

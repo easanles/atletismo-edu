@@ -185,6 +185,9 @@ registrar_intentos:
 intentos_pruebas:
    path: /marcas/getpru
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerPruebas"}
+intentos_atletas:
+   path: /marcas/getatl
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerAtletasInscritos"}
      
 
 #====================CONFIGURACION===================

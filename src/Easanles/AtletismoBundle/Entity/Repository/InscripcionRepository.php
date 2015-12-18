@@ -46,7 +46,7 @@ class InscripcionRepository extends EntityRepository {
 	
 	public function findInsForPru($sidPru){
 		return $this->getEntityManager()
-		->createQuery('SELECT atl.apellidos, atl.nombre, atl.nick
+		->createQuery('SELECT atl.id, atl.apellidos, atl.nombre, atl.nick
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				JOIN ins.idAtl atl
 				WHERE IDENTITY(ins.sidPru) LIKE :sidpru')
