@@ -118,6 +118,18 @@ class Competicion {
    */
    private $esOficial;
    
+   /**
+   * @var boolean
+   * @ORM\Column(name="esvisiblecom", type="boolean", options={"default":0})
+   */
+   private $esVisible;
+   
+   /**
+   * @var boolean
+   * @ORM\Column(name="esinscribcom", type="boolean", options={"default":0})
+   */
+   private $esInscrib;
+   
    /********************* FOREIGN KEYS *****************************/
      
    /**
@@ -132,18 +144,13 @@ class Competicion {
     **/
    private $participaciones;
    
-   /**
-    * @var array_collection
-    * ORM\OneToMany(targetEntity="ValorRequisito", mappedBy="sid", cascade={"all"})
-    **/
-   private $valoresRequisitos;
-   
    public function __construct() {
    	$this->esFeder = false;
    	$this->esOficial = false;
+   	$this->esVisible = false;
+   	$this->esInscrib = false;
    	$this->pruebas = new ArrayCollection();
    	$this->participaciones = new ArrayCollection();
-   	$this->valoresRequisitos = new ArrayCollection();
    }
    
    public function getPruebas() {
@@ -151,9 +158,6 @@ class Competicion {
    }
 	public function getParticipaciones() {
 		return $this->participaciones;
-	}
-	public function getValoresRequisitos() {
-		return $this->valoresRequisitos;
 	}
 	   
    /******************* GETTERS & SETTERS **************************/
@@ -280,6 +284,20 @@ class Competicion {
 		$this->esOficial = $esOficial;
 		return $this;
 	}
+	public function getEsVisible() {
+		return $this->esVisible;
+	}
+	public function setEsVisible($esVisible) {
+		$this->esVisible = $esVisible;
+		return $this;
+	}
+	public function getEsInscrib() {
+		return $this->esInscrib;
+	}
+	public function setEsInscrib($esInscrib) {
+		$this->esInscrib = $esInscrib;
+		return $this;
+	}
 	
 	/********************** VALIDACION ***********************/
 	
@@ -290,28 +308,7 @@ class Competicion {
 		$this->nombre = strip_tags($this->nombre);
 		if (($this->esFeder == true) && ($this->esOficial == false)) {
 			$this->esOficial = true;
-		/*   if ($this->unique == null) $texto = "null";
-		   else if ($this->unique == false) $texto = "false";
-		   else if ($this->unique == true) $texto = "true";
-			$context->buildViolation($texto)
-				->atPath('nombre')
-				->addViolation();
-	   if ($this->unique == null) {
-			//throw new Exception("This entity hasn't been checked for unique condition");
-		} else if ($this->unique != false) {
-			$context->buildViolation('Ya existe una competición con este nombre para la temporada '.$this->temp)
-				->atPath('nombre')
-				->addViolation();
-		} else {
-			$this->nombre = strip_tags($this->nombre);
-			if (($this->esFeder == true) && ($this->esOficial == false)) {
-				$this->esOficial = true;
-	   	}
-		}
-		*/
 		}
 	}
-
-	
    
 }

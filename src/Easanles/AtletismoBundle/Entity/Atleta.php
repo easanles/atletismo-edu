@@ -163,7 +163,7 @@ class Atleta
     
     /**
      * @var array_collection
-     * ORM\OneToMany(targetEntity="Intento", mappedBy="sid", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="Intento", mappedBy="idAtl", cascade={"all"})
      **/
     private $intentos;
      

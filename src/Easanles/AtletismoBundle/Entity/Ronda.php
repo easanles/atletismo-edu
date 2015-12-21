@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * Ronda
  * 
  * @ORM\Table(name="ron")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\RondaRepository")
  */
 class Ronda {
 	
@@ -51,6 +51,7 @@ class Ronda {
 	 
 	/**
 	 * @var array_collection
+	 * @ORM\OneToMany(targetEntity="Intento", mappedBy="sidRon", cascade={"all"})
 	 **/
 	private $intentos;
 	 

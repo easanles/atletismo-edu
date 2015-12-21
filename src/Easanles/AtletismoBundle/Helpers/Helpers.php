@@ -13,6 +13,7 @@ use Easanles\AtletismoBundle\Entity\Atleta;
 use Easanles\AtletismoBundle\Entity\Inscripcion;
 use Easanles\AtletismoBundle\Entity\Participacion;
 use Easanles\AtletismoBundle\Entity\Ronda;
+use Easanles\AtletismoBundle\Entity\Intento;
 
 class Helpers {
 	
@@ -483,6 +484,20 @@ class Helpers {
 		$ron->setId(1)
 		->setSidPru($pru)
 		->setNum(1)
+		->setNombre("Semifinal A");
+		$em->persist($ron);
+		
+		$ron = new Ronda();
+		$ron->setId(2)
+		->setSidPru($pru)
+		->setNum(1)
+		->setNombre("Semifinal B");
+		$em->persist($ron);
+		
+		$ron = new Ronda();
+		$ron->setId(3)
+		->setSidPru($pru)
+		->setNum(2)
 		->setNombre("Final");
 		$em->persist($ron);
 		
@@ -511,15 +526,29 @@ class Helpers {
 		$em->persist($pru);
 		$em->flush();
 		
-		$ron = new Ronda();
-		$ron->setId(1)
+		$ron1 = new Ronda();
+		$ron1->setId(1)
 		->setSidPru($pru)
 		->setNum(1)
+		->setNombre("Semifinal A");
+		$em->persist($ron1);
+		
+		$ron = new Ronda();
+		$ron->setId(2)
+		->setSidPru($pru)
+		->setNum(1)
+		->setNombre("Semifinal B");
+		$em->persist($ron);
+		
+		$ron = new Ronda();
+		$ron->setId(3)
+		->setSidPru($pru)
+		->setNum(2)
 		->setNombre("Final");
 		$em->persist($ron);
 		
-		$atl = new Atleta();
-		$atl->setNombre("Nombre1")
+		$atl1 = new Atleta();
+		$atl1->setNombre("Nombre1")
 		->setApellidos("ApellidoA ApellidoB")
 		->setSexo(false)
 		->setFnac(new \DateTime("1990/07/22"))
@@ -527,10 +556,10 @@ class Helpers {
 		->setDni("1234567A")
 		->setLfga("AG-1234567")
 		->setLxogade("ABC123456");
-		$em->persist($atl);
+		$em->persist($atl1);
 		
 		$ins = new Inscripcion();
-		$ins->setIdAtl($atl)
+		$ins->setIdAtl($atl1)
 		->setSidPru($pru)
 		->setFecha(new \DateTime)
 		->setOrigen("test")
@@ -632,6 +661,24 @@ class Helpers {
 		->setFnac(new \DateTime("2012/07/22"))
 		->setDni("9999999Z");
 		$em->persist($atl);
+		
+		$int = new Intento();
+		$int->setIdAtl($atl1)
+		->setSidRon($ron1)
+		->setNum(1)
+		->setValidez(false)
+		->setOrigen("test")
+		->setMarca(3.40);
+		$em->persist($int);
+		
+		$int = new Intento();
+		$int->setIdAtl($atl1)
+		->setSidRon($ron1)
+		->setNum(2)
+		->setValidez(true)
+		->setOrigen("test")
+		->setMarca(3.40);
+		$em->persist($int);
 		
 		$em->flush();
 	}

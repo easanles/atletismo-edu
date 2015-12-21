@@ -2,8 +2,8 @@
                   <th>Nombre</th><th>Selec.</th>
                </tr>
                {% for atl in atletas %}
-               <tr>
-                  <td>{{ atl.apellidos }}, {{ atl.nombre }}</td>
-                  <td class="clickable" onClick=""><button id="sel-atl-{{ atl.id }}" class="btn btn-xs btn-block btn-default sel-atl" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
+               <tr id="tr-atl-{{ atl.id }}">
+                  <td class="clickable" onClick="toggleRadioButton($('#sel-atl-{{ atl.id }}').get(0))">{{ atl.apellidos }}, {{ atl.nombre }}</td>
+                  <td class="clickable" onClick="toggleRadioButton($('#sel-atl-{{ atl.id }}').get(0))"><button id="sel-atl-{{ atl.id }}" class="btn btn-xs btn-block btn-default sel-atl" onClick="toggleRadioButton(this)"><span class="glyphicon glyphicon-arrow-right"></span></button></td>
                </tr>
                {% endfor %}

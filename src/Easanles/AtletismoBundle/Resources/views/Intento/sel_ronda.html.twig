@@ -1,0 +1,12 @@
+               <tr>
+                  <th>Id</th><th>#</th><th>Nombre</th><th>Marca</th><th>Registrar</th>
+               </tr>
+               {% for ron in rondas %}
+               <tr>
+                  <td>{{ ron.id }}</td>
+                  <td>{{ ron.num }}</td>
+                  <td>{{ ron.nombre }}</td>
+                  <td>{{ ron.marca }}</td>
+                  <td><button class="btn btn-xs btn-block btn-default" onClick="showModal()"><span class="glyphicon glyphicon-dashboard"></span></button></td>
+               </tr>
+               {% endfor %}

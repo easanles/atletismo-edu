@@ -188,7 +188,10 @@ intentos_pruebas:
 intentos_atletas:
    path: /marcas/getatl
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerAtletasInscritos"}
-     
+intentos_rondas:
+   path: /marcas/getron
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerRondas"}
+        
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion

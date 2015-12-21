@@ -47,23 +47,14 @@ class TipoPruebaModalidad
 	 
 	 /**
 	  * @var array_collection
-	  **/
-	 private $requisitos;
-	 
-	 /**
-	  * @var array_collection
 	  * @ORM\OneToMany(targetEntity="Prueba", mappedBy="sidTprm", cascade={"all"})
 	  **/
 	 private $pruebas;
 	 
 	 public function __construct() {
-	 	$this->requisitos = new ArrayCollection();
 	 	$this->pruebas = new ArrayCollection();
 	 }
 	  
-	 public function getRequisitos() {
-	 	return $this->requisitos;
-	 }
 	 public function getPruebas() {
 	 	return $this->pruebas;
 	 }

@@ -112,13 +112,11 @@ class ConfiguracionController extends Controller {
     	   $sql = '
     	   		DELETE FROM `par`;
     	   		DELETE FROM `ins`;
-    	   		DELETE FROM `int`;
+    	   		DELETE FROM `int_`;
     	   		DELETE FROM `atl`;
     	   		DELETE FROM `ron`;
     	   		DELETE FROM `pru`;
     	   		DELETE FROM `cat`;
-    	   		DELETE FROM `vrq`;
-    	   		DELETE FROM `req`;
     	   		DELETE FROM `tprm`;
     	   		DELETE FROM `tprf`;
     	   		DELETE FROM `com`;

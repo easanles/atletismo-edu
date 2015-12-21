@@ -53,7 +53,7 @@ class IntentoController extends Controller {
 			} else if ($pru['tprm'] != $currentTprm){
 				$tprm = $repoTprm->find($currentTprm);
 				$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
-				$nombre = $tprm->getSidTprf()->getNombre().".".$sexo.", ".$tprm->getEntorno();
+				$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
 				$result[] = array("tprm" => $nombre, "cats" => $cats);
 				$currentTprm = $pru['tprm'];
 				$cats = array();
@@ -87,7 +87,16 @@ class IntentoController extends Controller {
 	}
 	
 	public function obtenerRondasAction(Request $request){
-	
+		$sidPru = $request->query->get('pru');
+		$idAtl = $request->query->get('atl');
+		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
+		$rondas = $repoRon->findAllFor($sidPru);
+		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+		foreach($rondas as &$ron){
+			$ron['marca'] = $repoInt->getMarcaFor($idAtl, $ron['sid']);
+		}
+		
+      return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array("rondas" => $rondas));
 	}
 	
 	public function crearIntentoAction(Request $request){

@@ -7,44 +7,36 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Intento
  *
- * @ORM\Table(name="int")
- * @ORM\Entity
+ * @ORM\Table(name="int_")
+ * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\IntentoRepository")
  */
-class Intento
-{
+class Intento {
+	
+	 /**
+	  * @var integer
+	  * @ORM\Column(name="sidint", type="integer")
+	  * @ORM\Id
+	  * @ORM\GeneratedValue(strategy="AUTO")
+	  */
+	 private $sid;
+	
     /**
      * @var integer
-     * @ORM\Column(name="idatl", type="integer")
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="intentos", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Atleta", inversedBy="intentos")
+     * @ORM\JoinColumn(name="idatl", referencedColumnName="idatl")
      */
     private $idAtl;
 
     /**
      * @var integer
-     * @ORM\Column(name="idpru", type="integer")
-     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity="Ronda", inversedBy="intentos")
+     * @ORM\JoinColumn(name="sidron", referencedColumnName="sidron")
      */
-    private $idPru;
-    
-    /**
-     * @var string
-     * @ORM\Column(name="nombrecom", type="string", length=255)
-     * @ORM\Id
-     */
-    private $nombreCom;
-    
-    /**
-     * @var integer
-     * @ORM\Column(name="tempcom", type="smallint")
-     * @ORM\Id
-     */
-    private $tempCom;
+    private $sidRon;
     
     /**
      * @var integer
      * @ORM\Column(name="numint", type="smallint")
-     * @ORM\Id
      */
     private $num;
     
@@ -62,44 +54,37 @@ class Intento
     
     /**
      * @var string
-     * @ORM\Column(name="origenint", type="string", length=255)
+     * @ORM\Column(name="origenint", type="string", length=255, nullable=true)
      */
     private $origen;
     
     /**
      * @var string
-     * @ORM\Column(name="premiosint", type="string", length=255)
+     * @ORM\Column(name="premiosint", type="string", length=255, nullable=true)
      */
     private $premios;
     
     /******************* GETTERS & SETTERS **************************/
     
-	public function getIdAtl() {
+	public function getSid() {
+		return $this->sid;
+	}
+	public function setSid($sid) {
+		$this->sid = $sid;
+		return $this;
+	}
+    public function getIdAtl() {
 		return $this->idAtl;
 	}
 	public function setIdAtl($idAtl) {
 		$this->idAtl = $idAtl;
 		return $this;
 	}
-	public function getIdPru() {
-		return $this->idPru;
+	public function getSidRon() {
+		return $this->sidRon;
 	}
-	public function setIdPru($idPru) {
-		$this->idPru = $idPru;
-		return $this;
-	}
-	public function getNombreCom() {
-		return $this->nombreCom;
-	}
-	public function setNombreCom($nombreCom) {
-		$this->nombreCom = $nombreCom;
-		return $this;
-	}
-	public function getTempCom() {
-		return $this->tempCom;
-	}
-	public function setTempCom($tempCom) {
-		$this->tempCom = $tempCom;
+	public function setSidRon($sidRon) {
+		$this->sidRon = $sidRon;
 		return $this;
 	}
 	public function getNum() {
@@ -136,8 +121,6 @@ class Intento
 	public function setPremios($premios) {
 		$this->premios = $premios;
 		return $this;
-	}
-	
-    
+	}	
     
 }

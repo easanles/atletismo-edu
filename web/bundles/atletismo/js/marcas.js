@@ -3,13 +3,20 @@
 
 var pruData = null;
 var loadingIcon = "<span class=\"glyphicon glyphicon-refresh spinning\"></span>";
+var selectedPru = null;
 
 
 function loadPru(com){
+    $("#select-cat").html("");
+    $("#select-cat").attr("disabled", true);		
+    $("#select-atl").html("");	
+    selectedPru = null;
+
 	if ((com == null) || com == ""){
         $("#select-pru").html("");
         $("#select-pru").attr("disabled", true);		
 	} else {
+		
 		$.ajax({
 		    type: "get",
 			url: "./marcas/getpru?com="+com,
@@ -29,6 +36,9 @@ function loadPru(com){
 }
 
 function showCats(pru){
+    $("#select-atl").html("");
+    selectedPru = null;
+
 	if ((pru == null) || pru == ""){
         $("#select-cat").html("");
         $("#select-cat").attr("disabled", true);		
@@ -50,10 +60,36 @@ function loadAtls(pru){
 		success: function(data, status) {
 	        if (status == "success"){
 	            $("#select-atl").html(data);
+	            selectedPru = pru;
 	        }
 	    }
 	});	
-	
+}
+
+function toggleRadioButton(item){
+	if ($(item).hasClass("btn-default")){
+		data = item.id.split("-");
+		type = data[1];
+		idAtl = data[2];
+		$(".sel-atl").each(function(){
+			$(this).removeClass("btn-info");
+			$(this).addClass("btn-default");
+			$(this).attr("aria-pressed", false);
+			$(this).parent().closest("tr").attr("class", "");
+		})
+		$(item).removeClass("btn-default");
+		$(item).addClass("btn-info");
+		$(item).attr("aria-pressed", true);
+		$(item).parent().closest("tr").attr("class", "info");
+    	$("#select-ron").html(loadingIcon);
+        $.get("./marcas/getron?pru="+ selectedPru + "&atl=" + idAtl, function(data, status){
+            if (status == "success"){
+               $("#select-ron").html(data);
+            } else {
+               $("#select-ron").html("Error al cargar datos");
+            }
+         }); 
+	}
 }
 
 
