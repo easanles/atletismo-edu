@@ -6,7 +6,13 @@
                   <td>{{ ron.id }}</td>
                   <td>{{ ron.num }}</td>
                   <td>{{ ron.nombre }}</td>
-                  <td>{{ ron.marca }}</td>
-                  <td><button class="btn btn-xs btn-block btn-default" onClick="showModal()"><span class="glyphicon glyphicon-dashboard"></span></button></td>
+                  <td>{% if ron.marca is not null %}
+                     {% if ron.unidades == "segundos" %}{{ ron.marca / 3600 }}:{{ (ron.marca / 60) % 60 }}:{{ ron.marca % 60 }}
+                     {% elseif ron.unidades == "metros" %}{{ ron.marca|number_format(3, ',', '.') }} m.
+                     {% elseif ron.unidades == "puntosdesc" %}{{ ron.marca|number_format(0, ',', '.') }} ptos.
+                     {% elseif ron.unidades == "puntosasc" %}{{ ron.marca|number_format(0, ',', '.') }} ptos.
+                     {% endif %}
+                  {% endif %}
+                  <td><button class="btn btn-xs btn-block btn-default" onClick="showModal('newINT', {{ ron.sid }}, {{ selAtl }}, null)"><span class="glyphicon glyphicon-dashboard"></span></button></td>
                </tr>
                {% endfor %}

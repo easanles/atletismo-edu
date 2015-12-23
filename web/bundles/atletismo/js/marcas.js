@@ -11,6 +11,7 @@ function loadPru(com){
     $("#select-cat").attr("disabled", true);		
     $("#select-atl").html("");	
     selectedPru = null;
+    $("#select-ron").html("");	
 
 	if ((com == null) || com == ""){
         $("#select-pru").html("");
@@ -38,6 +39,7 @@ function loadPru(com){
 function showCats(pru){
     $("#select-atl").html("");
     selectedPru = null;
+    $("#select-ron").html("");	
 
 	if ((pru == null) || pru == ""){
         $("#select-cat").html("");
@@ -53,7 +55,9 @@ function showCats(pru){
 }
 
 function loadAtls(pru){
-    $("#select-atl").html(loadingIcon);	
+    $("#select-ron").html("");
+	
+    $("#select-atl").html(loadingIcon);
 	$.ajax({
 	    type: "get",
 		url: "./marcas/getatl?pru="+pru,

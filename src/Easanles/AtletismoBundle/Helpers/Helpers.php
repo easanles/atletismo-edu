@@ -190,7 +190,7 @@ class Helpers {
 		
 		$tprf = new TipoPruebaFormato();
 		$tprf->setNombre("100 metros lisos")
-		->setUnidades("Segundos")
+		->setUnidades("segundos")
 		->setNumInt(1);
 		$em->persist($tprf);
 		$em->flush();
@@ -221,7 +221,7 @@ class Helpers {
 		
 		$tprf = new TipoPruebaFormato();
 		$tprf->setNombre("Salto de altura")
-		->setUnidades("Metros")
+		->setUnidades("metros")
 		->setNumInt("3");
 		$em->persist($tprf);
 		
@@ -239,7 +239,7 @@ class Helpers {
 		
 		$tprf = new TipoPruebaFormato();
 		$tprf->setNombre("Maratón")
-		->setUnidades("Segundos")
+		->setUnidades("segundos")
 		->setNumInt(1);
 		$em->persist($tprf);
 		$em->flush();
@@ -258,7 +258,7 @@ class Helpers {
 		
 		$tprf = new TipoPruebaFormato();
 		$tprf->setNombre("Prueba por puntos")
-		->setUnidades("Puntos")
+		->setUnidades("puntosdesc")
 		->setNumInt(1);
 		$em->persist($tprf);
 		$em->flush();
@@ -271,7 +271,7 @@ class Helpers {
 		
 		$tprf = new TipoPruebaFormato();
 		$tprf->setNombre("200 metros lisos")
-		->setUnidades("Segundos")
+		->setUnidades("segundos")
 		->setNumInt(1);
 		$em->persist($tprf);
 		$em->flush();

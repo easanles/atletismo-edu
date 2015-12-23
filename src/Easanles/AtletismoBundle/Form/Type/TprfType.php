@@ -10,8 +10,17 @@ class TprfType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre de la prueba'))
-    	    ->add('unidades', 'text', array('label' => 'Unidades'))
-    	    ->add('numint', 'integer', array('label' => 'Intentos por prueba'))
+          ->add('unidades', 'choice', array(
+        		'label' => 'Unidades',
+            'choices' => array(
+               'segundos' => 'Segundos',
+               'metros' => 'Metros',
+            	'puntosdesc' => 'Puntos (de más a menos)',
+            	'puntosasc' => 'Puntos (de menos a más)'
+            ),
+        		'expanded' => false
+          ))
+     	    ->add('numint', 'integer', array('label' => 'Intentos por prueba'))
           ->add('modalidades', 'collection', array('type' => new TprmType(),
           		                                    'allow_add' => true,
           		                                    'allow_delete' => true,

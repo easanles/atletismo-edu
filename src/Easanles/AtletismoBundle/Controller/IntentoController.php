@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Easanles\AtletismoBundle\Entity\Intento;
+use Easanles\AtletismoBundle\Form\Type\IntType;
+use Easanles\AtletismoBundle\Form\Type\IntTypeGroup;
 
 class IntentoController extends Controller {
 	
@@ -89,17 +92,78 @@ class IntentoController extends Controller {
 	public function obtenerRondasAction(Request $request){
 		$sidPru = $request->query->get('pru');
 		$idAtl = $request->query->get('atl');
+		$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+		$pru = $repoPru->find($sidPru);
+		if ($pru == null) return new Response("No existe la prueba con identificador ".$sidPru);
+		else $unidades = $pru->getSidTprm()->getSidTprf()->getUnidades();
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$rondas = $repoRon->findAllFor($sidPru);
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		foreach($rondas as &$ron){
 			$ron['marca'] = $repoInt->getMarcaFor($idAtl, $ron['sid']);
+			$ron['unidades'] = $unidades;
 		}
 		
-      return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array("rondas" => $rondas));
+      return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array("rondas" => $rondas, "selAtl" => $idAtl));
 	}
 	
 	public function crearIntentoAction(Request $request){
+		$sidRon = $request->query->get('ron');
+		$idAtl = $request->query->get('atl');
+		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
+		$ron = $repoRon->find($sidRon);
+		if ($ron == null){
+			return new JsonResponse([
+					'success' => false,
+					'message' => "No existe la prueba con identificador ".$sidRon
+			]);
+		}
+		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$atl = $repoRon->find($idAtl);
+		if ($atl == null){
+			return new JsonResponse([
+					'success' => false,
+					'message' => "No existe el atleta con identificador ".$idAtl
+			]);
+		}
+		$numIntentos = $ron->getSidPru()->getSidTprm()->getSidTprf()->getNumint();
+		$arrayForms = array();
+		for($i = 1; $i <= $numIntentos; $i++){
+			$int = new Intento();
+			$int->setSidRon($ron);
+			$int->setIdAtl($atl);
+			$int->setOrigen("admin"); //TODO: nombre de usuario
+			$int->setNum($i);
+			$arrayForms[] = $this->createForm(new IntType(), $int);
+		}
 		
+		$form = $this->createForm(new IntTypeGroup($arrayForms));
+		$form->handleRequest($request);
+		 
+		if ($form->isValid()) {
+			try {
+				
+				// ···
+				//$em = $this->getDoctrine()->getManager();
+				//$em->persist($int);
+				//$em->flush();
+			} catch (\Exception $e) {
+				$exception = $e->getMessage();
+				return new JsonResponse([
+						'success' => false,
+						'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig',
+								array('form' => $form->createView(), 'mode' => 'new', 'exception' => $exception))->getContent()
+				]);
+			}
+			return new JsonResponse([
+					'success' => true,
+					'message' => "OK"
+			]);
+		}
+		return new JsonResponse([
+				'success' => false,
+				'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig',
+						array('form' => $form->createView(), 'mode' => 'new'))->getContent()
+		]);
 	}
 }

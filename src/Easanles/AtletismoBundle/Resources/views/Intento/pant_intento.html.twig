@@ -23,6 +23,10 @@
   <li class="active">Registrar marcas</li>
 {% endblock %}
 
+   {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
+
 {% block container %}
    <h1 id="container_title" class="row page-header">Registrar marcas</h1>
 
@@ -81,8 +85,6 @@
    
    <div id="data_form" class="row">
    </div>
-   
-   
    
 {% endblock %}
 

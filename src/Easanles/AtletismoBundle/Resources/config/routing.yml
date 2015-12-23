@@ -191,6 +191,9 @@ intentos_atletas:
 intentos_rondas:
    path: /marcas/getron
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerRondas"}
+crear_intento:
+   path: /marcas/nuevo
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:crearIntento"}
         
 
 #====================CONFIGURACION===================
