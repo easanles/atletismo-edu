@@ -10,7 +10,7 @@ class IntType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
     	    ->add('marca', 'text', array('label' => 'Marca', 'required' => false))
-    	    ->add('validez', 'checkbox', array('label' => 'Marca válida'))
+    	    ->add('validez', 'checkbox', array('label' => 'Válido'))
     	    ->add('premios', 'text', array('label' => 'Premios','required' => false));
     }
  

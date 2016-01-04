@@ -56,7 +56,6 @@ function showCats(pru){
 
 function loadAtls(pru){
     $("#select-ron").html("");
-	
     $("#select-atl").html(loadingIcon);
 	$.ajax({
 	    type: "get",
@@ -70,30 +69,37 @@ function loadAtls(pru){
 	});	
 }
 
+function loadRons(){
+	item = $('.btn-info')[0];
+	data = item.id.split("-");
+	type = data[1];
+	idAtl = data[2];
+	$("#select-ron").html(loadingIcon);
+    $.get("./marcas/getron?pru="+ selectedPru + "&atl=" + idAtl, function(data, status){
+        if (status == "success"){
+           $("#select-ron").html(data);
+        } else {
+           $("#select-ron").html("Error al cargar datos");
+        }
+     }); 
+}
+
 function toggleRadioButton(item){
 	if ($(item).hasClass("btn-default")){
-		data = item.id.split("-");
-		type = data[1];
-		idAtl = data[2];
 		$(".sel-atl").each(function(){
 			$(this).removeClass("btn-info");
+			$(this).removeClass("updater");
 			$(this).addClass("btn-default");
 			$(this).attr("aria-pressed", false);
 			$(this).parent().closest("tr").attr("class", "");
 		})
 		$(item).removeClass("btn-default");
 		$(item).addClass("btn-info");
+		$(item).addClass("updater");
 		$(item).attr("aria-pressed", true);
 		$(item).parent().closest("tr").attr("class", "info");
-    	$("#select-ron").html(loadingIcon);
-        $.get("./marcas/getron?pru="+ selectedPru + "&atl=" + idAtl, function(data, status){
-            if (status == "success"){
-               $("#select-ron").html(data);
-            } else {
-               $("#select-ron").html("Error al cargar datos");
-            }
-         }); 
 	}
+	loadRons();
 }
 
 

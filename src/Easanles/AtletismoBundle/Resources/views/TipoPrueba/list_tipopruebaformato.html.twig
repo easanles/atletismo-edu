@@ -12,11 +12,13 @@
                      <td>{{ row.modalidades.toArray()|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleDropListTable({{ row.sid }}, $(this))" {% if row.modalidades.toArray()|length == 0 %}disabled{% endif %}><span class="glyphicon glyphicon-collapse-down"></span></button>
                      </td>
                      <td>
-                     {% if row.unidades == "segundos" %}Segundos
-                     {% elseif row.unidades == "metros" %}Metros
-                     {% elseif row.unidades == "puntosdesc" %}Puntos (de más a menos)
-                     {% elseif row.unidades == "puntosasc" %}Puntos (de menos a más)
-                     {% endif %}</td><td>{{ row.numint }}</td>
+                        {% if row.unidades == "segundos" %}Segundos
+                        {% elseif row.unidades == "metros" %}Metros
+                        {% elseif row.unidades == "puntosdesc" %}Puntos (de más a menos)
+                        {% elseif row.unidades == "puntosasc" %}Puntos (de menos a más)
+                        {% endif %}
+                     </td>
+                     <td>{{ row.numint }}</td>
                      <td>
                         <div class="btn-group visible-xs-block">
                            <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>

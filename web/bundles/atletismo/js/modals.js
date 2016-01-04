@@ -197,6 +197,7 @@ function showModal(type, data1, data2, data3){
     	   $.getJSON("./marcas/nuevo?ron=" + data1 + "&atl=" + data2, function(data, status){
    		      if (status == "success"){
    			     $("#dialog-body").html(data.message);
+   			     $('abbr').tooltip()
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	

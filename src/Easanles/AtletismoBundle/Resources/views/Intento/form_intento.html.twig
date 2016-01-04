@@ -1,19 +1,52 @@
-
+   
+   <div class="well">
+      <h4 class="text-center">{{ atleta }}</h4>
+      <div class="text-center">{{ ronda }}</div>
+   </div>
+   
    {% if exception is defined %}
    <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
    {% endif %}
 
    <div id="data_form" class="row">
 
-{#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
-
-{% if mode == "new" %}
-{{ form_start(form, {'action': path('crear_intento')}) }}
-{% elseif mode == "edit" %}
-{{ form_start(form, {'action': path('editar_intento', {'id': id})}) }}
-{% endif %}
+{{ form_start(form, {'action': path('crear_intento', {'ron': sidRon, 'atl': idAtl})}) }}
 
     {{ form_errors(form) }}
+    
+    <table class="table">
+       <tbody>
+          <tr>
+             <th{% if numIntentos == 1 %} class="hidden"{% endif %}><abbr title="Número de intento"># int.</abbr></th><th>Marca</th>
+             {% if numIntentos > 1 %}<th>Validez<div class="text-muted" style="font-size: 11px;"><abbr title="Intentos inválidos máximos para fijar marca">Int. máx.</abbr>: {{ numIntentos }}</div></th>{% endif %}
+             <th>Premios</th>
+          </tr>
+          {% set i = 1 %}
+          {% for int in form.intentos %}
+             <tr class="subform-row">
+                <td{% if numIntentos == 1 %} class="hidden"{% endif %}>{{ i }}</td>{% set i = i + 1 %}
+                <td>
+                   {% if unidades == "segundos" %}
+                      {{ form_widget(int.marca) }}
+                   {% else %}
+                      <div class="input-group">
+                         {{ form_widget(int.marca) }}
+                            <div class="input-group-addon">
+                               {% if unidades == "metros"%} m.
+                               {% elseif unidades == "puntosdesc" %} ptos.
+                               {% elseif unidades == "puntosasc" %} ptos.
+                               {% endif %}
+                            </div>
+                      </div>
+                   {% endif %}                
+                   {{ form_errors(int.marca) }}
+                </td>
+                <td{% if numIntentos == 1 %} class="hidden"{% endif %}>{{ form_widget(int.validez) }}{{ form_errors(int.validez) }}</td>
+                <td>{{ form_widget(int.premios) }}{{ form_errors(int.premios) }}</td>
+             </tr>
+          {% endfor %}
+       </tbody>
+    </table>
     
     {{ form_rest(form) }}
  

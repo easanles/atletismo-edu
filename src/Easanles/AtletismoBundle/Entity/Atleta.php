@@ -378,7 +378,7 @@ class Atleta
 		$this->lfga = strtoupper($this->lfga);
 		$this->lxogade = strtoupper($this->lxogade);
 		if ($this->getLxogade() != null){
-			$edad = Helpers::getEdad($this->getFnac());
+			$edad = Helpers::getEdad($this->getFnac(), null);
 			if (($edad < 6) || ($edad > 16)) {
 				$context->buildViolation("Solo personas de entre 6 y 16 años pueden tener licencia XOGADE")
 				->atPath('lxogade')

@@ -126,33 +126,53 @@ class IntentoController extends Controller {
 					'message' => "No existe el atleta con identificador ".$idAtl
 			]);
 		}
+		$parametros = array('sidRon' => $sidRon, 'idAtl' => $idAtl, 'atleta' => $atl->getApellidos().", ".$atl->getNombre());
+		$sexo = "";
+		if ($ron->getSidPru()->getSidTprm()->getSexo() == 0) $sexo = "masculino";
+	   else if ($ron->getSidPru()->getSidTprm()->getSexo() == 1) $sexo = "femenino";
+		$parametros['ronda'] =
+	         $ron->getSidPru()->getSidTprm()->getSidTprf()->getNombre()
+	         .", ".$sexo.". "
+	         .$ron->getSidPru()->getIdCat()->getNombre().". "
+		      .((($ron->getNombre() == null) || ($ron->getNombre() == "")) ? "Ronda ".$ron->getNum() : $ron->getNombre());
+		$parametros['unidades'] = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
 		$numIntentos = $ron->getSidPru()->getSidTprm()->getSidTprf()->getNumint();
-		$arrayForms = array();
-		for($i = 1; $i <= $numIntentos; $i++){
+		$parametros['numIntentos'] = $numIntentos;
+		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+		$prevInts = $repoInt->findOrderedBy($idAtl, $sidRon);
+		$arrayInts = array();
+		if (count($prevInts) > 0){
+			foreach ($prevInts as $intData){
+				$arrayInts[] = $repoInt->find($intData['sid']);
+			}
+		} else {
+			$arrayInts = array();
 			$int = new Intento();
 			$int->setSidRon($ron);
 			$int->setIdAtl($atl);
 			$int->setOrigen("admin"); //TODO: nombre de usuario
-			$int->setNum($i);
-			$arrayForms[] = $this->createForm(new IntType(), $int);
+			$int->setNum(1);
+			if ($numIntentos == 1) $int->setValidez(true);
+			$arrayInts[] = $int;
 		}
 		
-		$form = $this->createForm(new IntTypeGroup($arrayForms));
+		$form = $this->createForm(new IntTypeGroup($arrayInts));
 		$form->handleRequest($request);
 		 
 		if ($form->isValid()) {
 			try {
 				
-				// ···
-				//$em = $this->getDoctrine()->getManager();
-				//$em->persist($int);
-				//$em->flush();
+				$em = $this->getDoctrine()->getManager();
+				foreach($arrayInts as $int){
+					$em->persist($int);
+				}
+				$em->flush();
 			} catch (\Exception $e) {
-				$exception = $e->getMessage();
+				$parametros['exception'] = $e->getMessage();
+				$parametros['form'] = $form->createView();
 				return new JsonResponse([
 						'success' => false,
-						'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig',
-								array('form' => $form->createView(), 'mode' => 'new', 'exception' => $exception))->getContent()
+						'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig', $parametros)->getContent()
 				]);
 			}
 			return new JsonResponse([
@@ -160,10 +180,10 @@ class IntentoController extends Controller {
 					'message' => "OK"
 			]);
 		}
+		$parametros['form'] = $form->createView();
 		return new JsonResponse([
 				'success' => false,
-				'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig',
-						array('form' => $form->createView(), 'mode' => 'new'))->getContent()
+				'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig', $parametros)->getContent()
 		]);
 	}
 }

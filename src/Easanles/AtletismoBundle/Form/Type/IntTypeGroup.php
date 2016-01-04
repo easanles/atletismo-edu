@@ -14,6 +14,8 @@ class IntTypeGroup extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder->add('intentos', 'collection', array(
         		'type' => new IntType(),
+        		'allow_add' => true,
+        		'allow_delete' => true,
         		'mapped' => false,
         		'cascade_validation' => true,
         		'data' => $this->intentos
