@@ -80,11 +80,15 @@ function addFormRow(){
 	index = collectionHolder.data('index');
 	collectionHolder.data('index', index + 1);
 	newForm = prototype.replace(/__name__/g, index);
-
 	collectionHolder.append(newForm);
+	$(".count-td").last().html(index + 1);
 }
 
 function removeFormRow(button){
+   collectionHolder = $('#form-collection')
+   index = collectionHolder.data('index');
+   collectionHolder.data('index', index - 1);
+
    button.parentElement.parentElement.remove();
 }
 

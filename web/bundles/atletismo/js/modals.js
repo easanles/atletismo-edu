@@ -198,6 +198,8 @@ function showModal(type, data1, data2, data3){
    		      if (status == "success"){
    			     $("#dialog-body").html(data.message);
    			     $('abbr').tooltip()
+    		     collectionHolder = $('#form-collection');
+ 		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	

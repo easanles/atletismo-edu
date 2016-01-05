@@ -19,7 +19,6 @@ class IntentoRepository extends EntityRepository {
 			foreach($query as $int){
 			   if ($int['validez'] == true){
 			   	$result = $int['marca'];
-			   	break;
 			   }
 			}
 			return $result;

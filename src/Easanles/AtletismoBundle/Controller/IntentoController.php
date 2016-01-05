@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Entity\Intento;
 use Easanles\AtletismoBundle\Form\Type\IntType;
 use Easanles\AtletismoBundle\Form\Type\IntTypeGroup;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class IntentoController extends Controller {
 	
@@ -161,9 +162,8 @@ class IntentoController extends Controller {
 		 
 		if ($form->isValid()) {
 			try {
-				
 				$em = $this->getDoctrine()->getManager();
-				foreach($arrayInts as $int){
+				foreach($arrayInts as $int){					
 					$em->persist($int);
 				}
 				$em->flush();
