@@ -90,6 +90,12 @@ function removeFormRow(button){
    collectionHolder.data('index', index - 1);
 
    button.parentElement.parentElement.remove();
+   
+   count = 1;
+   $(".count-td").each(function(){
+      this.innerHTML = count;
+      count++;
+   });
 }
 
 function toggleAsist(item, idPar){

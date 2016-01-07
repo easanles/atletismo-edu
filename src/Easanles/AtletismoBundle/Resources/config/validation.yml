@@ -171,4 +171,11 @@ Easanles\AtletismoBundle\Entity\Inscripcion:
            message: No se puede asignar un precio negativo
         - NotBlank: 
            message: Introduzca el precio de la prueba
+
+Easanles\AtletismoBundle\Entity\Intento:
+  properties:
+     marca:
+        - Type: 
+           type: Float
+           message: Este valor debe ser un número entero o con decimales
            

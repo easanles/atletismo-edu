@@ -102,6 +102,28 @@ function toggleRadioButton(item){
 	loadRons();
 }
 
+function checkIntentos(){
+	button = $("#btn-addInt");
+	button.prop("disabled", false);
+	maxNumInt = parseInt($('#max-num-int').html());
+	inputGroups = $('.input-group');
+	$('.has-success').removeClass("has-success");
+	checkboxes = $('input:checkbox');
+	countInvalidos = 0;
+	for (i = 0; i < checkboxes.length; i++){
+		if ($(checkboxes[i]).is(":checked")){
+			$('.has-success').removeClass("has-success");
+			$(inputGroups[i]).addClass("has-success");
+			countInvalidos = 0;
+		} else countInvalidos++;
+		if (countInvalidos >= maxNumInt){
+			button.prop("disabled", true);
+			break;
+		}
+	}
+}
+
+
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()

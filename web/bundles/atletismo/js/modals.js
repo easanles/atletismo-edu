@@ -191,7 +191,7 @@ function showModal(type, data1, data2, data3){
        } break;
        
 	   case ("newINT"): { //Registrar nueva marca (intento)
-    	   $('#dialog-label').html("Registrar marca");
+    	   $('#dialog-label').html("Registrar marcas");
     	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./marcas/nuevo?ron=" + data1 + "&atl=" + data2, function(data, status){
@@ -200,6 +200,7 @@ function showModal(type, data1, data2, data3){
    			     $('abbr').tooltip()
     		     collectionHolder = $('#form-collection');
  		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
+ 		         checkIntentos(); //marcas.js
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	

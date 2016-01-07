@@ -44,7 +44,11 @@
                 {% for mod in form.modalidades %}
                 <tr class="subform-row">
                    <td>{{ form_widget(mod.sexo) }}{{ form_errors(mod.sexo) }}</td>
-                   <td>{{ form_widget(mod.entorno) }}{{ form_errors(mod.entorno) }}</td>
+                   <td>
+                      {% if form_errors(mod.entorno) != "" %}<div class="form-group has-error">{% endif %}
+                         {{ form_widget(mod.entorno) }}{{ form_errors(mod.entorno) }}
+                      {% if form_errors(mod.entorno) != "" %}</div>{% endif %}
+                   </td>
                    <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this)"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
                 </tr>
                 {% endfor %}

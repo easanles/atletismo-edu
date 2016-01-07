@@ -30,4 +30,10 @@ class IntTypeGroup extends AbstractType{
         return 'intGroup';
     }
     
+    public function setDefaultOptions(OptionsResolverInterface $resolver){
+    	$resolver->setDefaults(array(
+    			'cascade_validation' => true
+    	));
+    }
+    
 }

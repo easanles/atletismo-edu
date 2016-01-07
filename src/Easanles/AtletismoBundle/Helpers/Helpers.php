@@ -607,11 +607,10 @@ class Helpers {
 		$atl->setNombre("Nombre3")
 		->setApellidos("ApellidoA ApellidoB")
 		->setSexo(true)
-		->setFnac(new \DateTime("1992/07/22"))
+		->setFnac(new \DateTime("1972/07/22"))
 		->setNick("Nick3")
 		->setDni("1234569C")
-		->setLfga("AG-1234569")
-		->setLxogade("ABC123458");
+		->setLfga("AG-1234569");
 		$em->persist($atl);
 		
 		$atl = new Atleta();

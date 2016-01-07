@@ -42,7 +42,7 @@
           <tr>
              <th class="hidden-xs{% if numIntentos == 1 %} hidden{% endif %}"><abbr title="Número de intento"># int.</abbr></th>
              <th colspan="2">Marca</th>
-             {% if numIntentos > 1 %}<th>Validez<div class="text-muted" style="font-size: 11px;"><abbr title="Intentos inválidos máximos para fijar marca">Int. máx.</abbr>: {{ numIntentos }}</div></th>{% endif %}
+             {% if numIntentos > 1 %}<th>Validez<div class="text-muted" style="font-size: 10px;"><abbr title="Intentos inválidos máximos para fijar marca">I. máx.</abbr>: <span id="max-num-int">{{ numIntentos }}</span></div></th>{% endif %}
              <th>Premios</th>
              {% if numIntentos > 1 %}
              <th><abbr title="Eliminar intento">Elim.</abbr></th>
@@ -56,22 +56,24 @@
                    {% if unidades == "segundos" %}
                       {{ form_widget(int.marca) }}
                    {% else %}
-                      <div class="input-group">
-                         {{ form_widget(int.marca) }}
+                      <div{% if form_errors(int.marca) != "" %} class="has-error"{% endif %}>
+                         <div class="input-group">
+                            {{ form_widget(int.marca) }}
                             <div class="input-group-addon">
                                {% if unidades == "metros"%} m.
                                {% elseif unidades == "puntosdesc" %} ptos.
                                {% elseif unidades == "puntosasc" %} ptos.
                                {% endif %}
                             </div>
-                      </div>
-                   {% endif %}                
-                   {{ form_errors(int.marca) }}
+                         </div>
+                      {% endif %}                
+                      {{ form_errors(int.marca) }}
+                   </div>
                 </td>
-                <td{% if numIntentos == 1 %} class="hidden"{% endif %}>{{ form_widget(int.validez) }}{{ form_errors(int.validez) }}</td>
+                <td{% if numIntentos == 1 %} class="hidden"{% endif %}><div onClick="checkIntentos()">{{ form_widget(int.validez) }}</div>{{ form_errors(int.validez) }}</td>
                 <td>{{ form_widget(int.premios) }}{{ form_errors(int.premios) }}</td>
                 {% if numIntentos > 1 %}
-                <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this)"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this);checkIntentos()"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
                 {% endif %}
              </tr>
           {% endfor %}
@@ -80,7 +82,7 @@
     </table>
     </div>
     {% if numIntentos > 1 %}
-       <div style="text-align: center"><button type="button" class="btn btn-default" onClick="addFormRow()"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir intento</button></td>
+       <div style="text-align: center"><button id="btn-addInt" type="button" class="btn btn-default" onClick="addFormRow();checkIntentos()"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir intento</button></td>
     {% endif %}
     
     {{ form_rest(form) }}

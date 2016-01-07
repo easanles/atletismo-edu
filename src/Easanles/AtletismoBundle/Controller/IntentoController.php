@@ -140,14 +140,13 @@ class IntentoController extends Controller {
 		$numIntentos = $ron->getSidPru()->getSidTprm()->getSidTprf()->getNumint();
 		$parametros['numIntentos'] = $numIntentos;
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
-		$prevInts = $repoInt->findOrderedBy($idAtl, $sidRon);
+		$prevData = $repoInt->findOrderedBy($idAtl, $sidRon);
 		$arrayInts = array();
-		if (count($prevInts) > 0){
-			foreach ($prevInts as $intData){
+		if (count($prevData) > 0){
+			foreach ($prevData as $intData){
 				$arrayInts[] = $repoInt->find($intData['sid']);
 			}
 		} else {
-			$arrayInts = array();
 			$int = new Intento();
 			$int->setSidRon($ron);
 			$int->setIdAtl($atl);
@@ -163,8 +162,45 @@ class IntentoController extends Controller {
 		if ($form->isValid()) {
 			try {
 				$em = $this->getDoctrine()->getManager();
-				foreach($arrayInts as $int){					
-					$em->persist($int);
+				$data = $form->get('intentos')->getData();
+				//Validacion
+				if ($numIntentos > 1){
+					$countInvalidos = 0;
+				   foreach($data as $int){
+				   	if ($countInvalidos >= $numIntentos){
+				   		throw new Exception("El número máximo de intentos inválidos para fijar marca es ".$numIntentos.".");
+				   	}
+				   	if ($int->getValidez() == false){
+				   		$countInvalidos++;
+				   	} else $countInvalidos = 0;
+				   }
+				} else if (count($data) > 0){
+					$data[0]->setValidez(true);
+				}
+				//Cambios
+				if (count($data) < count($arrayInts)){
+					foreach($arrayInts as $prevInt){
+						if(!\in_array($prevInt, $data)){
+							$em->remove($prevInt);
+						}
+					}
+				}
+				if ($numIntentos == 1){
+					if (count($data) > 0){
+						$data[0]->setOrigen("admin"); //TODO: nombre de usuario
+						$data[0]->setNum(1);
+						$em->persist($data[0]);
+					}
+				} else {
+					$count = 1;
+				   foreach($data as $int){
+   					$int->setSidRon($ron);
+	   				$int->setIdAtl($atl);
+		   			$int->setOrigen("admin"); //TODO: nombre de usuario
+			   		$int->setNum($count);
+			   		$count++;
+				   	$em->persist($int);
+				   }
 				}
 				$em->flush();
 			} catch (\Exception $e) {

@@ -3,6 +3,8 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Intento
@@ -121,6 +123,19 @@ class Intento {
 	public function setPremios($premios) {
 		$this->premios = $premios;
 		return $this;
-	}	
+	}
+	
+	/********************** VALIDACION ***********************/
+	
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+		if (($this->validez == true) && (($this->marca == null) || ($this->marca == ""))) {
+			$context->buildViolation("Si el intento es válido, introduzca una marca")
+			->atPath('marca')
+			->addViolation();
+		}
+	}
     
 }
