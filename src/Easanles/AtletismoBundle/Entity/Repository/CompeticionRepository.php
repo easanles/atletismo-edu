@@ -12,10 +12,10 @@ class CompeticionRepository extends EntityRepository {
 		$result = $this->getEntityManager()
 		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
 		->getResult();
-		foreach ($result as &$com){ // & = Paso por referencia
+		foreach ($result as $key => $com){
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
-			$com['numpruebas'] = $numPruebas;
-			$com['numatletas'] = count($this->findAtletasIns($com['sid']));
+			$result[$key]['numpruebas'] = $numPruebas;
+			$result[$key]['numatletas'] = count($this->findAtletasIns($com['sid']));
 		}
 		return $result;
 	}
@@ -62,10 +62,10 @@ class CompeticionRepository extends EntityRepository {
 		->addOrderBy('com.fecha', 'DESC')
 		->getQuery()->getResult();
 		
-		foreach ($result as &$com){ // & = Paso por referencia
+		foreach ($result as $key => $com){
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
-			$com['numpruebas'] = $numPruebas;
-			$com['numatletas'] = count($this->findAtletasIns($com['sid']));
+			$result[$key]['numpruebas'] = $numPruebas;
+			$result[$key]['numatletas'] = count($this->findAtletasIns($com['sid']));
 		}
 		return $result;
 	}

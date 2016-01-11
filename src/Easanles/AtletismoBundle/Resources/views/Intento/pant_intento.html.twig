@@ -32,8 +32,8 @@
 
    {% if exception is defined %}
    <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
-   {% endif %}   
-   
+   {% endif %}
+      
    <div class="row">
       <div class="col-xs-12 col-sm-5">
          <div class="form-group">
@@ -89,10 +89,17 @@
 {% endblock %}
 
 {% block js %}
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
    <script src="{{ asset('bundles/atletismo/js/marcas.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   {% if selPru is defined %}<script type="text/javascript">
+      var autoSelectPru = {{ selPru }}
+      {% if selAtl is defined %}
+         var autoSelectAtl = {{ selAtl }}
+      {% endif %}
+   </script>{% endif %}
    
+   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+
 {% endblock %}
 
 

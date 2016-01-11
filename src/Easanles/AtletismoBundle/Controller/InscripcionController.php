@@ -16,21 +16,22 @@ use Easanles\AtletismoBundle\Entity\Participacion;
 class InscripcionController extends Controller {
 	
     public function listadoInscripcionesAction($sidCom, Request $request) {
-    	  $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	  $com = $repository->find($sidCom);
+    	  $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	  $com = $repoCom->find($sidCom);
     	  if ($com == null){
     	  		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
     	  		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
     	  		return $response;
     	  }
     	  $parametros = array('com' => $com);
-    	  $atletaIds = $repository->findAtletasIns($sidCom);
+    	  $atletaIds = $repoCom->findAtletasIns($sidCom);
     	  $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
     	  $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	  $vigentes = $repoCat->findAllCurrent();
     	  $fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
     	  $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	  $repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
+    	  $repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
     	  $atletas = array();
     	  foreach ($atletaIds as $idAtl){
     	  	  $atlData = array('id' => $idAtl[1]);
@@ -40,6 +41,9 @@ class InscripcionController extends Controller {
     	     $atlData['nombre'] = $atl->getNombre();
     	     $atlData['categoria'] = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac())['nombre'];
     	     $pruebasIns = $repoIns->findForAtl($sidCom, $idAtl);
+    	     foreach($pruebasIns as $key => $ins){
+    	        $pruebasIns[$key]['numRegistros'] = $repoInt->countEntriesFor($idAtl, $ins['sidPru']);
+    	     }
     	     $atlData['pruebas'] = $pruebasIns;
     	     $costeTotal = 0.00;
     	     $estado = 0;

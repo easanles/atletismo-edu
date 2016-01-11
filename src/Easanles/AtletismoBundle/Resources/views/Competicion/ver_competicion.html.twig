@@ -49,10 +49,11 @@
             </tbody>
          </table>
          {% if com.esfeder is same as(true) %}
-         <p class="text-center"><strong>COMPETICIÓN FEDERADA</strong></p>
+         <p class="text-center text-info bg-info"><strong>COMPETICIÓN FEDERADA</strong></p>
          {% elseif com.esoficial is same as(true) %}
-         <p class="text-center"><strong>COMPETICIÓN OFICIAL DEL CLUB</strong></p>
+         <p class="text-center text-info bg-info"><strong>COMPETICIÓN OFICIAL DEL CLUB</strong></p>
          {% endif %}
+         <p><a type="button" class="btn btn-lg btn-default center-block" href=""><span class="glyphicon glyphicon-list"></span> Resultados</a></p>
          <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
          <a type="button" class="btn btn-m btn-default" href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
          <a type="button" class="btn btn-m btn-{% if com.pruebas.toArray()|length == 0 %}warning{% else %}default{% endif %}" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span> Lista de pruebas <span class="badge">{{ com.pruebas.toArray()|length }}</span></a>

@@ -106,8 +106,8 @@
                            <td class="hidden-xs">{% if ins.codGrupo is not null %}{{ ins.codGrupo }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar grupo" onClick="showModal()"><span class="glyphicon glyphicon-info-sign"></span></button>{% endif %}</td>
                            <td class="hidden-xs">{{ ins.coste|number_format(2, ',', '.') }}€</td>
                            <td>{{ ins.estado }}</td>
-                           <td>0 <button type="button" class="btn btn-xs btn-default pull-right visible-xs" onClick=""><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
-                           <td class="hidden-xs"><button type="button" class="btn btn-xs btn-block btn-default" onClick=""><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></button></td>
+                           <td>{{ ins.numRegistros }} <a type="button" class="btn btn-xs btn-default pull-right visible-xs" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'atl': atl.id, 'pru': ins.sidPru}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
+                           <td class="hidden-xs"><a type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'atl': atl.id, 'pru': ins.sidPru}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
                         </tr>
                      {% endfor %}
                   </tbody>

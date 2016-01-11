@@ -30,9 +30,9 @@ class PruebaController extends Controller {
   	   $repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
   	   $listaCats = $repoPru->findCats($sidCom);
   	   $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-  	   foreach ($listaCats as &$c){
+  	   foreach ($listaCats as $key => $c){
   	   	$cat = $repoCat->find($c['idCat']);
-  	   	$c['nombre'] = $cat->getNombre();
+  	   	$listaCats[$key]['nombre'] = $cat->getNombre();
   	   }
      	 
   		$parametros = array('com' => $com, 'categorias' => $listaCats);
@@ -44,12 +44,20 @@ class PruebaController extends Controller {
   		}
   		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
   		$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
-  		foreach($pruebas as &$pru){
+  		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+  		foreach($pruebas as $key => $pru){
   			$rondas = $repoRon->findBy(array("sidPru" => $pru['sid']));
-  			$pru['rondas'] = $rondas;
-  			$pru['tprm'] = $repoTprm->find($pru['tprm']);
-  			$pru['cat'] = $repoCat->find($pru['cat']);
-  			$pru['inscritos'] = $repoIns->countInsForPru($pru['sid']);
+  			$numAtletas = array();
+  			$count = 0;
+  			foreach($rondas as $ron){
+  				$numAtletas[$count] = $repoInt->countAtlsFor($ron->getSid());
+  				$count++;
+  			}
+  			$pruebas[$key]['rondas'] = $rondas;
+  			$pruebas[$key]['numAtletas'] = $numAtletas;
+  			$pruebas[$key]['tprm'] = $repoTprm->find($pru['tprm']);
+  			$pruebas[$key]['cat'] = $repoCat->find($pru['cat']);
+  			$pruebas[$key]['inscritos'] = $repoIns->countInsForPru($pru['sid']);
   		}
   		$parametros['pruebas'] = $pruebas;
   		

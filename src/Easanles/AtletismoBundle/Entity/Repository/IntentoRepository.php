@@ -34,4 +34,28 @@ class IntentoRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function countEntriesFor($idAtl, $sidPru){
+		$query = $this->getEntityManager()
+		->createQuery('SELECT int.sid
+				 FROM EasanlesAtletismoBundle:Intento int
+				 JOIN int.sidRon ron
+				 WHERE IDENTITY(int.idAtl) LIKE :idatl
+				 AND IDENTITY(ron.sidPru) LIKE :sidpru')
+		->setParameter("idatl", $idAtl)
+		->setParameter("sidpru", $sidPru)
+		->getResult();
+		return count($query);
+	}
+	
+	public function countAtlsFor($sidRon){
+		$query = $this->getEntityManager()
+		->createQuery('SELECT IDENTITY (int.idAtl)
+				 FROM EasanlesAtletismoBundle:Intento int
+				 WHERE IDENTITY(int.sidRon) LIKE :sidron
+				 GROUP BY int.idAtl')
+					 ->setParameter("sidron", $sidRon)
+					 ->getResult();
+		return count($query);
+	}
+	
 }

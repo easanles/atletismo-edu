@@ -30,6 +30,24 @@ function loadPru(com){
 		            }
 		            $("#select-pru").html(html);
 		            $("#select-pru").attr("disabled", false);
+		            
+		    		if ((typeof autoSelectPru !== 'undefined') && (autoSelectPru != null)){
+		    			ok = false;
+		    			for(i = 0; i < pruData.length; i++){
+		    				for(j = 0; j < pruData[i]['cats'].length; j++ ){
+		    					if (pruData[i]['cats'][j]['sid'] == autoSelectPru){
+		    						$('#select-pru').val(i);
+		    						showCats(i);
+		    						$('#select-cat').val(autoSelectPru);
+		    						ok = true;
+		    						break;
+		    					}
+		    				}
+		    				if (ok) break;
+		    			}
+		    			loadAtls(autoSelectPru);
+		    			autoSelectPru = null;
+		    		}
 		        }
 		    }
 		});	
@@ -64,6 +82,10 @@ function loadAtls(pru){
 	        if (status == "success"){
 	            $("#select-atl").html(data);
 	            selectedPru = pru;
+    			if ((typeof autoSelectAtl !== 'undefined') && (autoSelectAtl != null)){
+    				toggleRadioButton($('#sel-atl-' + autoSelectAtl));
+    				autoSelectAtl = null;
+    			}
 	        }
 	    }
 	});	

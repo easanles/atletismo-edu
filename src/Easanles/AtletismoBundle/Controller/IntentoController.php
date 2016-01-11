@@ -17,10 +17,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 class IntentoController extends Controller {
 	
 	public function pantallaIntentosAction(Request $request) {
-		$sidCom = $request->query->get('com');
-		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		$parametros = array();
-		$getPruebas = false;
+		$sidPru = $request->query->get('pru');
+		if (($sidPru != null) && ($sidPru != "")){
+			$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+			$pru = $repoPru->find($sidPru);
+			if ($pru == null){
+				$response = new Response('No existe la prueba con el identificador "'.$sidPru.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+				$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+				return $response;
+			} else {
+				$sidCom = $pru->getSidCom()->getSid();
+				$parametros['selPru'] = $sidPru;
+				$idAtl = $request->query->get('atl');
+				if (($idAtl != null) && ($idAtl != "")){
+					$parametros['selAtl'] = $idAtl;
+				}
+			}
+		} else {
+			$sidCom = $request->query->get('com');
+		}
+		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		if (($sidCom != null) && ($sidCom != "")){
 			$com = $repoCom->find($sidCom);
 			if ($com == null){
@@ -30,16 +47,12 @@ class IntentoController extends Controller {
 			}
 			else {
 				$parametros["selCom"] = $sidCom;
-				$getPruebas = true;
 			}
 		}
 		$temp = Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y'));
 		$parametros["currentTemp"] = $temp;
 		$comDisponibles = $repoCom->findTempComs($temp);
 		$parametros["coms"] = $comDisponibles;
-		if ($getPruebas){
-
-		}
       return $this->render('EasanlesAtletismoBundle:Intento:pant_intento.html.twig', $parametros);
 	}
 	
@@ -100,9 +113,9 @@ class IntentoController extends Controller {
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$rondas = $repoRon->findAllFor($sidPru);
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
-		foreach($rondas as &$ron){
-			$ron['marca'] = $repoInt->getMarcaFor($idAtl, $ron['sid']);
-			$ron['unidades'] = $unidades;
+		foreach($rondas as $key => $ron){
+			$rondas[$key]['marca'] = $repoInt->getMarcaFor($idAtl, $ron['sid']);
+			$rondas[$key]['unidades'] = $unidades;
 		}
 		
       return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array("rondas" => $rondas, "selAtl" => $idAtl));
