@@ -6,8 +6,21 @@
 {% block navbar %}
       <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
       <li class="active"><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
-      <li><a class="inactive">Records</a></li>
-      <li><a class="inactive">Informes</a></li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a class="inactive" href="#">Records masculinos</a></li>
+            <li><a class="inactive" href="#">Records femeninos</a></li>
+         </ul>
+      </li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a class="inactive" href="#">Asistencia a eventos</a></li>
+            <li><a class="inactive" href="#">Pagos</a></li>
+         </ul>
+      </li>
       <li><a href="{{ path('configuracion') }}">Configuración</a></li>
 {% endblock %}
 
@@ -64,14 +77,14 @@
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>
                   <ul class="dropdown-menu pull-right">
-                     <li><a href=""><span class="glyphicon glyphicon-list"></span> Resultados</a></li>
+                     <li><a href="{{ path('pantalla_resultados', {'com': com.sid}) }}"><span class="glyphicon glyphicon-list"></span> Resultados</a></li>
                      <li><a href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span> Registrar marcas</a></li>
                      <li><a href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Resultados" href=""><span class="glyphicon glyphicon-list"></span></a>
+                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Resultados" href="{{ path('pantalla_resultados', {'com': com.sid}) }}"><span class="glyphicon glyphicon-list"></span></a>
                   <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span></a>
                   <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span></a>
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><span class="glyphicon glyphicon-remove"></span></button>

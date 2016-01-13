@@ -195,6 +195,15 @@ crear_intento:
    path: /marcas/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:crearIntento"}
         
+        
+#======================INFORMES======================
+pantalla_resultados:
+   path: /informes/resultados
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaResultados"}
+resultados_competiciones:
+   path: /informes/resultados/getcom
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerCompeticiones"}
+
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion
