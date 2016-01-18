@@ -51,7 +51,7 @@
    <div class="row">
       <div class="col-xs-12 col-sm-4">
          <div class="form-group">
-            <select id="select-temp" class="form-control" onChange="">
+            <select id="select-temp" class="form-control" onChange="showComs(this.value)">
                {% for row in temps %}
                <option value="{{ row.temp }}" {% if selTemp is defined %}{% if selTemp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}/{{ (row.temp + 1)|slice(2, 2)}}</option>
                {% endfor %}
@@ -59,7 +59,7 @@
          </div>
          <div class="form-group">
             <label for="select-com">Competición</label>
-            <select id="select-com" class="form-control" onChange="">
+            <select id="select-com" class="form-control" onChange="loadComData(); loadCartel()">
             {% if selTemp is defined %}
                {% for com in coms[selTemp]['coms'] %}
                   <option value="{{ com.sid }}" {% if selCom is defined %}{% if selCom.sid == com.sid %}selected{% endif %}{% endif %}>{{ com.nombre }}</option>
@@ -72,13 +72,22 @@
          <div class="row">
             <div class="form-group col-xs-8">
                <label for="select-pru">Prueba</label>
-               <select id="select-pru" class="form-control" onChange="">
+               <select id="select-pru" class="form-control" onChange="showCats(this.value)" disabled>
                </select>
             </div>
             <div class="form-group col-xs-4">
                <label for="select-cat">Categoría</label>
-               <select id="select-cat" class="form-control" onChange="">
+               <select id="select-cat" class="form-control" onChange="loadRons()" disabled>
                </select>
+            </div>
+         </div>
+         <div class="row">
+            <div class="form-group">
+               <label for="select-ron" class="control-label col-xs-2 col-sm-offset-2 text-right">Ronda</label>
+               <div class="col-xs-10 col-sm-6">
+                  <select id="select-ron" class="form-control" onChange="getTable(this.value)" disabled>
+                  </select>
+               </div>
             </div>
          </div>
       </div>
@@ -87,22 +96,19 @@
       <div class="col-xs-12 col-sm-4">
          <div class="hidden-xs">
             {% if selCom is defined %}
-            <a id="pic-link"href="{{ vich_uploader_asset(selCom, 'cartelFile') }}"><img id="pic-img" src="{{ vich_uploader_asset(selCom, 'cartelFile') }}" alt="{{ selCom.nombre }}" class="img-responsive thumbnail"/></a>
+            <a id="pic-link" href="{{ vich_uploader_asset(selCom, 'cartelFile') }}"><img id="pic-img" src="{{ vich_uploader_asset(selCom, 'cartelFile') }}" alt="{{ selCom.nombre }}" class="img-responsive thumbnail"/></a>
             {% else %}
-            <a id="pic-link" href=""><img id="pic-img" src="" alt="" class="img-responsive thumbnail"/></a>
+            <a id="pic-link" href="#"><img id="pic-img" src="" alt="" class="img-responsive thumbnail"/></a>
             {% endif %}
          </div>
       </div>
       <div class="col-xs-12 col-sm-8">
          <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
-            <tbody>
-               <tr>
-                  <th>TEST</th>
-               </tr>
+            <tbody id="data-table">
             </tbody>
          </table>
       </div>
-   </div>   
+   </div>
 {% endblock %}
 
 {% block js %} 
@@ -111,14 +117,16 @@
       {% for temp in coms %}
          coms = [];
          {% for com in temp.coms %}
-            coms['sidCom'] = {{ com.sid }};
-            coms['nombre'] = "{{ com.nombre }}";
+            com = [];
+            com['sidCom'] = {{ com.sid }};
+            com['nombre'] = "{{ com.nombre }}";
+            coms.push(com);
          {% endfor %}
-         comData[{{ temp.temp }}] = coms;
+         comData['{{ temp.temp }}'] = coms;
       {% endfor %} 
    </script>
    <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/resultados.js') }}"></script>
 {% endblock %}
 
 

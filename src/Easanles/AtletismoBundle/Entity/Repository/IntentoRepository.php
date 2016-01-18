@@ -58,4 +58,14 @@ class IntentoRepository extends EntityRepository {
 		return count($query);
 	}
 	
+	public function findAllEntriesFor($sidRon, $orden){
+		return $this->getEntityManager()
+		->createQuery('SELECT int.sid, IDENTITY (int.idAtl), int.num, int.marca, int.validez, int.origen, int.premios
+				 FROM EasanlesAtletismoBundle:Intento int
+				 WHERE IDENTITY(int.sidRon) LIKE :sidron
+				 ORDER BY int.marca '.$orden)
+		->setParameter("sidron", $sidRon)
+		->getResult();
+	}
+	
 }

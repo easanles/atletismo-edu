@@ -56,39 +56,9 @@ class IntentoController extends Controller {
       return $this->render('EasanlesAtletismoBundle:Intento:pant_intento.html.twig', $parametros);
 	}
 	
-	private function obtenerPruebas($sidCom){
-		$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
-		$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-		$prus = $repoPru->findAllOrderedFor($sidCom);
-		$result = array();
-		$cats = array();
-		$currentTprm = null;
-		foreach($prus as $pru){
-			if ($currentTprm == null){
-				$currentTprm = $pru['tprm'];
-			} else if ($pru['tprm'] != $currentTprm){
-				$tprm = $repoTprm->find($currentTprm);
-				$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
-				$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
-				$result[] = array("tprm" => $nombre, "cats" => $cats);
-				$currentTprm = $pru['tprm'];
-				$cats = array();
-			}
-			$cats[] = array("sid" => $pru['sid'], "nombre" => $repoCat->find($pru['cat'])->getNombre());
-		}
-		if (count($prus) > 0 ){
-			$tprm = $repoTprm->find($currentTprm);
-			$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
-			$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
-			$result[] = array("tprm" => $nombre, "cats" => $cats);
-		}
-		return $result;
-	}
-	
 	public function obtenerPruebasAction(Request $request){
 		$sidCom = $request->query->get('com');
-	   $resultados = $this->obtenerPruebas($sidCom);
+	   $resultados = Helpers::obtenerPruebas($this->getDoctrine(), $sidCom);
 	   return new JsonResponse([
 	   		'result' => $resultados
 	   ]);
@@ -149,7 +119,8 @@ class IntentoController extends Controller {
 	         .", ".$sexo.". "
 	         .$ron->getSidPru()->getIdCat()->getNombre().". "
 		      .((($ron->getNombre() == null) || ($ron->getNombre() == "")) ? "Ronda ".$ron->getNum() : $ron->getNombre());
-		$parametros['unidades'] = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
+		$unidades = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
+		$parametros['unidades'] = $unidades;
 		$numIntentos = $ron->getSidPru()->getSidTprm()->getSidTprf()->getNumint();
 		$parametros['numIntentos'] = $numIntentos;
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
@@ -169,7 +140,7 @@ class IntentoController extends Controller {
 			$arrayInts[] = $int;
 		}
 		
-		$form = $this->createForm(new IntTypeGroup($arrayInts));
+		$form = $this->createForm(new IntTypeGroup($arrayInts, $unidades));
 		$form->handleRequest($request);
 		 
 		if ($form->isValid()) {

@@ -22,6 +22,9 @@ function loadViews(content){
           	  $('.droplist').each(function (){
         		$(this).data("height", $(this).height());
         		$(this).css("height", "0px");
+        		$('[data-toggle="tooltip"]').tooltip()
+                $('abbr').tooltip()
+        		$('.dropdown-toggle').dropdown()
         	  });
            } else {
               $("#tabcontent-tp").html("Error al cargar datos");
@@ -34,6 +37,8 @@ function loadViews(content){
          $.get(route, function(data, status){
             if (status == "success"){
                 $("#cat-table").html(data);
+                $('[data-toggle="tooltip"]').tooltip()
+                $('abbr').tooltip()
                 $('.dropdown-toggle').dropdown()
              } else {
                 $("#tabcontent-cat").html("Error al cargar datos");
@@ -43,7 +48,6 @@ function loadViews(content){
          
       } break;
       default: break;
-      $('.dropdown-toggle').dropdown()
    }
 }
 

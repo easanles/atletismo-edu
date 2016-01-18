@@ -161,6 +161,41 @@ class Helpers {
 	}
 	
 	/**
+	 * Obtiene la lista de pruebas de una competición agrupando por tipo de prueba y categoría
+	 * @param unknown $doctrine El servicio Doctrine
+	 * @param unknown $sidCom El código identificador de la competición
+	 */
+	public static function obtenerPruebas($doctrine, $sidCom){
+		$repoPru = $doctrine->getRepository('EasanlesAtletismoBundle:Prueba');
+		$repoTprm = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+		$repoCat = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
+		$prus = $repoPru->findAllOrderedFor($sidCom);
+		$result = array();
+		$cats = array();
+		$currentTprm = null;
+		foreach($prus as $pru){
+			if ($currentTprm == null){
+				$currentTprm = $pru['tprm'];
+			} else if ($pru['tprm'] != $currentTprm){
+				$tprm = $repoTprm->find($currentTprm);
+				$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
+				$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
+				$result[] = array("tprm" => $nombre, "cats" => $cats);
+				$currentTprm = $pru['tprm'];
+				$cats = array();
+			}
+			$cats[] = array("sid" => $pru['sid'], "nombre" => $repoCat->find($pru['cat'])->getNombre());
+		}
+		if (count($prus) > 0 ){
+			$tprm = $repoTprm->find($currentTprm);
+			$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
+			$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
+			$result[] = array("tprm" => $nombre, "cats" => $cats);
+		}
+		return $result;
+	}
+	
+	/**
 	 * Llena la base de datos con datos de ejemplo para realizar pruebas
 	 * @param $em El Entity Manager
 	 */

@@ -200,7 +200,7 @@ function showModal(type, data1, data2, data3){
    			     $('abbr').tooltip()
     		     collectionHolder = $('#form-collection');
  		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
- 		         checkIntentos(); //marcas.js
+ 		         if (data3 == true) checkIntentos(); //marcas.js
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	

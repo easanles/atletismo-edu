@@ -59,9 +59,9 @@ function showCats(pru){
     selectedPru = null;
     $("#select-ron").html("");	
 
-	if ((pru == null) || pru == ""){
+	if ((pru == null) || (pru == "")){
         $("#select-cat").html("");
-        $("#select-cat").attr("disabled", true);		
+        $("#select-cat").attr("disabled", true);
 	} else {
         html = "<option value=\"\"> </option>";
         for (i = 0; i < pruData[pru]['cats'].length; i++){

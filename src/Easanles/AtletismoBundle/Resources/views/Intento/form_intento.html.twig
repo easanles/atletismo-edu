@@ -53,21 +53,26 @@
              <tr class="subform-row">
                 <td class="hidden-xs count-td{% if numIntentos == 1 %} hidden{% endif %}">{{ i }}</td>{% set i = i + 1 %}
                 <td colspan="2">
-                   {% if unidades == "segundos" %}
-                      {{ form_widget(int.marca) }}
-                   {% else %}
-                      <div{% if form_errors(int.marca) != "" %} class="has-error"{% endif %}>
-                         <div class="input-group">
-                            {{ form_widget(int.marca) }}
-                            <div class="input-group-addon">
-                               {% if unidades == "metros"%} m.
-                               {% elseif unidades == "puntosdesc" %} ptos.
-                               {% elseif unidades == "puntosasc" %} ptos.
-                               {% endif %}
+                   <div{% if form_errors(int.marca) != "" %} class="has-error"{% endif %}>
+                      <div class="input-group">
+                         {{ form_widget(int.marca) }}
+                         {% if unidades == "segundos" %}
+                            <div class="nested-group">
+                               <input type="number" class="form-control" id="marca-horas" placeholder="Horas">
+                               <input type="number" class="form-control" id="marca-minutos" placeholder="Minutos">
+                               <input type="number" class="form-control" id="marca-segundos" placeholder="Segundos">
+                               <input type="number" class="form-control" id="marca-milesimas" placeholder="Milésimas">
                             </div>
+                         {% else %}
+                         <div class="input-group-addon">
+                            {% if unidades == "metros"%} m.
+                            {% elseif unidades == "puntosdesc" %} ptos.
+                            {% elseif unidades == "puntosasc" %} ptos.
+                            {% endif %}
                          </div>
-                      {% endif %}                
-                      {{ form_errors(int.marca) }}
+                      </div>
+                   {% endif %}                
+                   {{ form_errors(int.marca) }}
                    </div>
                 </td>
                 <td{% if numIntentos == 1 %} class="hidden"{% endif %}><div onClick="checkIntentos()">{{ form_widget(int.validez) }}</div>{{ form_errors(int.validez) }}</td>

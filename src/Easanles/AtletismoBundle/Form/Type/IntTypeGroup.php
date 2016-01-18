@@ -10,10 +10,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class IntTypeGroup extends AbstractType{
 	
 	 private $intentos;
+	 private $unidades;
 	
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder->add('intentos', 'collection', array(
-        		'type' => new IntType(),
+        		'type' => new IntType($this->unidades),
         		'allow_add' => true,
         		'allow_delete' => true,
         		'mapped' => false,
@@ -22,8 +23,9 @@ class IntTypeGroup extends AbstractType{
         ));
     }
     
-    public function __construct($listaInt) {
+    public function __construct($listaInt, $unidades) {
     	 $this->intentos = $listaInt;
+    	 $this->unidades = $unidades;
     }
  
     public function getName(){

@@ -200,9 +200,18 @@ crear_intento:
 pantalla_resultados:
    path: /informes/resultados
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaResultados"}
-resultados_competiciones:
-   path: /informes/resultados/getcom
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerCompeticiones"}
+resultados_pruebas:
+   path: /informes/resultados/getpru
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerPruebas"}
+resultados_cartel:
+   path: /informes/resultados/getcartel
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerCartel"}
+resultados_rondas:
+   path: /informes/resultados/getron
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerRondas"}
+resultados_tabla:
+   path: /informes/resultados/tabla
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerTablaResultados"}
 
 
 #====================CONFIGURACION===================

@@ -7,12 +7,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  
 class IntType extends AbstractType{
+	 private $unidades;
+	
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-    	    ->add('marca', 'number', array('label' => 'Marca', 'required' => false))
     	    ->add('validez', 'checkbox', array('label' => 'Vál.', 'required' => false))
     	    ->add('premios', 'text', array('label' => 'Premios','required' => false));
+        if ($this->unidades == "segundos"){
+        	  $builder->add('marca', 'hidden', array('required' => false));
+        } else {
+           $builder->add('marca', 'number', array('label' => 'Marca', 'required' => false));
+        }
     }
+    
+    public function __construct($unidades) {
+    	$this->unidades = $unidades;
+    }
+    
  
     public function getName() {
         return 'int';

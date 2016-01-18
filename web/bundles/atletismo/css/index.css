@@ -121,7 +121,7 @@ h1 {
 }
 
 
-/* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state*/
+/* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state */
 .glyphicon.spinning {
     animation: spin 1s infinite linear;
     -webkit-animation: spin2 1s infinite linear;
@@ -137,4 +137,23 @@ h1 {
     to { -webkit-transform: rotate(360deg);}
 }
 
+
+    .nested-group input:first-child {
+        border-bottom-right-radius: 0px !important;
+        border-top-right-radius: 0px !important;
+        border-top-left-radius: 4px !important;
+        border-bottom-left-radius: 4px !important;
+    }
+
+    .nested-group input:last-child {
+        border-bottom-right-radius: 4px !important;
+        border-top-right-radius: 4px !important;
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .nested-group input {
+        border-radius: 0px !important;
+        width: 25% !important;
+    }
 
