@@ -8,11 +8,14 @@ $(document).ready(function(){
 		  $('[data-toggle="tooltip"]').tooltip()
 		  $('abbr').tooltip()
           $('.dropdown-toggle').dropdown()
-          loadComData();
+          alert("antes");
+          showComs();
+          alert("despues")
     });
 })
 
-function showComs(temp){
+function showComs(){
+	temp = $("#select-temp").val();
 	html = ""
 	for (i = 0; i < comData[temp].length; i++){
         html = html + "<option value=" + comData[temp][i]['sidCom'] + ">" + comData[temp][i]['nombre'] + "</option>";
@@ -48,6 +51,7 @@ function loadComData(){
     $("#select-cat").html("");
     $("#select-ron").attr("disabled", true);
     $("#select-ron").html("");
+    $("#data-table").html("");
 	$.ajax({
 	    type: "get",
 		url: "./resultados/getpru?com=" + sidCom,
@@ -68,6 +72,7 @@ function loadComData(){
 function showCats(pru){
     $("#select-ron").attr("disabled", true);
     $("#select-ron").html("");
+    $("#data-table").html("");
 	if ((pru == null) || (pru == "")){
         $("#select-cat").html("");
         $("#select-cat").attr("disabled", true);		
@@ -83,9 +88,10 @@ function showCats(pru){
 
 function loadRons(){
 	sidPru = $("#select-cat").val();
+	$("#data-table").html("");
 	if ((sidPru == null) || (sidPru == "")){
         $("#select-ron").html("");
-        $("#select-ron").attr("disabled", true);		
+        $("#select-ron").attr("disabled", true);
 	} else {
 		$.ajax({
 		    type: "get",

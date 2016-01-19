@@ -57,11 +57,11 @@
                       <div class="input-group">
                          {{ form_widget(int.marca) }}
                          {% if unidades == "segundos" %}
-                            <div class="nested-group">
-                               <input type="number" class="form-control" id="marca-horas" placeholder="Horas">
-                               <input type="number" class="form-control" id="marca-minutos" placeholder="Minutos">
-                               <input type="number" class="form-control" id="marca-segundos" placeholder="Segundos">
-                               <input type="number" class="form-control" id="marca-milesimas" placeholder="Milésimas">
+                            <div class="nested-group" onkeypress="validateFields()">
+                               <input type="number" class="form-control" id="marca-horas" min="0" step="1" placeholder="Horas" onchange="validateFields()">
+                               <input type="number" class="form-control" id="marca-minutos" min="0" max="59" step="1" maxlength="2" placeholder="Minutos" onchange="validateFields()" onkeyup="autoFocusNextField('marca-minutos')">
+                               <input type="number" class="form-control" id="marca-segundos" min="0" max="59" step="1" maxlength="2" placeholder="Segundos" onchange="validateFields()" onkeyup="autoFocusNextField('marca-segundos')">
+                               <input type="number" class="form-control" id="marca-milesimas" min="0" max="999" step="1" maxlength="3" size="3" pattern="[0-9][0-9][0-9]" placeholder="Milésimas" onchange="validateFields()">
                             </div>
                          {% else %}
                          <div class="input-group-addon">

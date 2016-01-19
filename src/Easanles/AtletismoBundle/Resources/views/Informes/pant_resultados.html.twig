@@ -51,7 +51,7 @@
    <div class="row">
       <div class="col-xs-12 col-sm-4">
          <div class="form-group">
-            <select id="select-temp" class="form-control" onChange="showComs(this.value)">
+            <select id="select-temp" class="form-control" onChange="showComs()">
                {% for row in temps %}
                <option value="{{ row.temp }}" {% if selTemp is defined %}{% if selTemp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}/{{ (row.temp + 1)|slice(2, 2)}}</option>
                {% endfor %}

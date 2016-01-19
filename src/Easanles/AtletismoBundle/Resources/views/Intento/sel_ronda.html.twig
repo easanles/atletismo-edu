@@ -7,7 +7,8 @@
                   <td>{{ ron.num }}</td>
                   <td>{{ ron.nombre }}</td>
                   <td>{% if ron.marca is not null %}
-                     {% if ron.unidades == "segundos" %}{{ ron.marca / 3600 }}:{{ (ron.marca / 60) % 60 }}:{{ ron.marca % 60 }}
+                     {% if ron.unidades == "segundos" %}
+                        {{ (ron.marca / 3600)|round(0, "floor") }}{% set resto = ron.marca % 3600 %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = ron.marca % 60 %}:{{ "%06.3f"|format(resto) }}
                      {% elseif ron.unidades == "metros" %}{{ ron.marca|number_format(3, ',', '.') }} m.
                      {% elseif ron.unidades == "puntosdesc" %}{{ ron.marca|number_format(0, ',', '.') }} ptos.
                      {% elseif ron.unidades == "puntosasc" %}{{ ron.marca|number_format(0, ',', '.') }} ptos.

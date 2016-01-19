@@ -206,12 +206,70 @@ function showModal(type, data1, data2, data3){
    			  }	
    	       });
        } break;
-
 	   
 	   default: break;
 	}
 	
 	modal.modal();
+}
+
+function validateFields(){
+	error = false;
+
+	function checkIndivField(id){
+		number = parseInt($(id).val());
+		valid = $(id).prop("validity").valid;
+		if (!valid || (number < 0)
+				|| ( ((id == "#marca-minutos") || (id == "#marca-segundos")) && (number > 59))
+				|| ((id == "#marca-milesimas") && (number > 999))){
+		   $(id).addClass("has-error");
+		   return true;
+		} else {
+		   $(id).removeClass("has-error");
+		   return false;
+		}
+	}
+	
+	if (checkIndivField("#marca-horas")) error = true;
+	if (checkIndivField("#marca-minutos")) error = true;
+	if (checkIndivField("#marca-segundos")) error = true;
+	if (checkIndivField("#marca-milesimas")) error = true;
+	if (error) {
+	   $("#dialog-btn a").attr("disabled", true);
+	} else {
+	   $("#dialog-btn a").attr("disabled", false);
+	   input = document.getElementById("marca-milesimas")
+	   if (input.value.length == 1){
+	      input.value = "00" + input.value;
+	   } else if (input.value.length == 2){
+		  input.value = "0" + input.value;
+	   }
+	   valor = 0;
+	   aux = parseInt($("#marca-horas").val());
+	   if (!isNaN(aux)) valor += aux * 3600;
+	   aux = parseInt($("#marca-minutos").val());
+	   if (!isNaN(aux)) valor += aux * 60;
+	   aux = parseInt($("#marca-segundos").val());
+	   if (!isNaN(aux)) valor += aux;
+	   aux = parseInt($("#marca-milesimas").val());
+	   if (!isNaN(aux)) valor += aux / 1000;
+	   $("#intGroup_intentos_0_marca").val(valor);
+	}
+}
+
+function autoFocusNextField(id){
+	switch (id){
+	   case ("marca-minutos"): {
+		   if ($("#marca-minutos").val().length == 2){
+		      $("#marca-segundos").focus();
+		   }
+	   } break;
+	   case ("marca-segundos"): {
+		   if ($("#marca-segundos").val().length == 2){
+		      $("#marca-milesimas").focus();
+		   }
+	   } break;
+	}
 }
 
 function modalToggleButton(item){

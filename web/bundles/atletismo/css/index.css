@@ -156,4 +156,14 @@ h1 {
         border-radius: 0px !important;
         width: 25% !important;
     }
+    
+    .nested-group input.has-error {
+       border-color: #a94442;
+       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    }
+    
+    .nested-group input.has-error:focus {
+       border-color: #843534;
+       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #ce8483;
+    }
 

@@ -174,8 +174,5 @@ Easanles\AtletismoBundle\Entity\Inscripcion:
 
 Easanles\AtletismoBundle\Entity\Intento:
   properties:
-     marca:
-        - Type: 
-           type: Float
-           message: Este valor debe ser un número entero o con decimales
+
            
