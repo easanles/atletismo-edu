@@ -8,9 +8,7 @@ $(document).ready(function(){
 		  $('[data-toggle="tooltip"]').tooltip()
 		  $('abbr').tooltip()
           $('.dropdown-toggle').dropdown()
-          alert("antes");
           showComs();
-          alert("despues")
     });
 })
 

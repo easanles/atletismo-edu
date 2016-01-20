@@ -12,7 +12,13 @@
    {% set pos = pos + 1 %}
    <tr>
       <td{% if pos == 1 %} style="font-weight: bold; font-size:large; color: #fc0"{% elseif pos == 2 %} style="font-weight: bold; font-size:large; color: #aaa"{% elseif pos == 3 %} style="font-weight: bold; font-size:large; color: #c63"{% endif %}>{{ pos }}</td>
-      <td>{{ marca.marca }}</td>
+      <td>
+      {% if numIntentos == 1 %}
+         {{ (marca.marca / 3600)|round(0, "floor") }}{% set resto = marca.marca - ((marca.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+      {% else %}
+      {{ marca.marca }}
+      {% endif %}
+      </td>
       <td>{{ marca.premios }}</td>
       <td>Nombre</td>
       {% if numIntentos > 1 %}

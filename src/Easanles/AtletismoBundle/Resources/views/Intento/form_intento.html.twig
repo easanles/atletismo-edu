@@ -41,7 +41,7 @@
              '{% endif %}>
           <tr>
              <th class="hidden-xs{% if numIntentos == 1 %} hidden{% endif %}"><abbr title="Número de intento"># int.</abbr></th>
-             <th colspan="2">Marca</th>
+             <th colspan="2">Marca{% if numIntentos == 1 %} <small class="text-muted">(Horas / minutos / segundos / milésimas)</small>{% endif %}</th>
              {% if numIntentos > 1 %}<th>Validez<div class="text-muted" style="font-size: 10px;"><abbr title="Intentos inválidos máximos para fijar marca">I. máx.</abbr>: <span id="max-num-int">{{ numIntentos }}</span></div></th>{% endif %}
              <th>Premios</th>
              {% if numIntentos > 1 %}
@@ -58,10 +58,10 @@
                          {{ form_widget(int.marca) }}
                          {% if unidades == "segundos" %}
                             <div class="nested-group" onkeypress="validateFields()">
-                               <input type="number" class="form-control" id="marca-horas" min="0" step="1" placeholder="Horas" onchange="validateFields()">
-                               <input type="number" class="form-control" id="marca-minutos" min="0" max="59" step="1" maxlength="2" placeholder="Minutos" onchange="validateFields()" onkeyup="autoFocusNextField('marca-minutos')">
-                               <input type="number" class="form-control" id="marca-segundos" min="0" max="59" step="1" maxlength="2" placeholder="Segundos" onchange="validateFields()" onkeyup="autoFocusNextField('marca-segundos')">
-                               <input type="number" class="form-control" id="marca-milesimas" min="0" max="999" step="1" maxlength="3" size="3" pattern="[0-9][0-9][0-9]" placeholder="Milésimas" onchange="validateFields()">
+                               <input type="number" class="form-control" id="marca-horas" min="0" step="1" placeholder="Horas" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()">
+                               <input type="number" class="form-control" id="marca-minutos" min="0" max="59" step="1" maxlength="2" placeholder="Minutos" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()" onkeyup="autoFocusNextField('marca-minutos')">
+                               <input type="number" class="form-control" id="marca-segundos" min="0" max="59" step="1" maxlength="2" placeholder="Segundos" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()" onkeyup="autoFocusNextField('marca-segundos')">
+                               <input type="number" class="form-control" id="marca-milesimas" min="0" max="999" step="1" maxlength="3" size="3" pattern="[0-9][0-9][0-9]" placeholder="Milésimas" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()">
                             </div>
                          {% else %}
                          <div class="input-group-addon">
