@@ -7,22 +7,31 @@
          <th><abbr title="Historial de intentos">Hist.</abbr></th>
       {% endif %}
    </tr>
-   {% set pos = 0 %}
+   {% set pos = 1 %}{% set row = 0 %}
    {% for marca in tablaPrincipal %}
-   {% set pos = pos + 1 %}
+   {% set row = row + 1 %}
+   {% if currentMarca is not defined %}
+      {% set currentMarca = marca.marca %}
+   {% else %}
+      {% if currentMarca != marca.marca %}
+         {% set pos = row %}
+         {% set currentMarca = marca.marca %}
+     {% endif %}
+   {% endif %}
    <tr>
       <td{% if pos == 1 %} style="font-weight: bold; font-size:large; color: #fc0"{% elseif pos == 2 %} style="font-weight: bold; font-size:large; color: #aaa"{% elseif pos == 3 %} style="font-weight: bold; font-size:large; color: #c63"{% endif %}>{{ pos }}</td>
       <td>
-      {% if numIntentos == 1 %}
+      {% if unidades == "segundos" %}
          {{ (marca.marca / 3600)|round(0, "floor") }}{% set resto = marca.marca - ((marca.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
       {% else %}
-      {{ marca.marca }}
+      {{ marca.marca|number_format(3, ',', '.') }}
       {% endif %}
       </td>
       <td>{{ marca.premios }}</td>
-      <td>Nombre</td>
+      <td>{{ marca.apellidos }}, {{ marca.nombre }}</td>
       {% if numIntentos > 1 %}
-         <td><button>ver</button></td>
+         <td><button type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Ver historial de intentos" onClick="showModal('showINT', {{ marca.idAtl }}, {{ sidRon }}, null)"><span class="glyphicon glyphicon-book"></span></button>
+         </td>
       {% endif %}
    </tr>
    {% endfor %}

@@ -216,6 +216,20 @@ function showModal(type, data1, data2, data3){
    			  }	
    	       });
        } break;
+       
+	   case ("showINT"): { //Historico de intentos del atleta en una ronda
+    	   $('#dialog-label').html("Histórico de intentos");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span> OK</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
+    	   $.get("./resultados/intentos?atl=" + data1 + "&ron=" + data2, function(data, status){
+   		      if (status == "success"){
+   			     $("#dialog-body").html(data);
+   			     $('[data-toggle="popover"]').popover()
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
 	   
 	   default: break;
 	}

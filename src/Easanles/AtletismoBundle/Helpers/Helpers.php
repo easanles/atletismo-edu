@@ -178,8 +178,10 @@ class Helpers {
 				$currentTprm = $pru['tprm'];
 			} else if ($pru['tprm'] != $currentTprm){
 				$tprm = $repoTprm->find($currentTprm);
-				$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
-				$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
+				if ($tprm->getSexo() == 0) $sexo = ", masculino";
+				else if ($tprm->getSexo() == 1) $sexo = ", femenino";
+				else $sexo = "";
+				$nombre = $tprm->getSidTprf()->getNombre().$sexo.". ".$tprm->getEntorno();
 				$result[] = array("tprm" => $nombre, "cats" => $cats);
 				$currentTprm = $pru['tprm'];
 				$cats = array();
@@ -188,8 +190,10 @@ class Helpers {
 		}
 		if (count($prus) > 0 ){
 			$tprm = $repoTprm->find($currentTprm);
-			$sexo = ($tprm->getSexo() == 0) ? "Masculino" : "Femenino";
-			$nombre = $tprm->getSidTprf()->getNombre().". ".$sexo.", ".$tprm->getEntorno();
+				if ($tprm->getSexo() == 0) $sexo = ", masculino";
+				else if ($tprm->getSexo() == 1) $sexo = ", femenino";
+				else $sexo = "";
+				$nombre = $tprm->getSidTprf()->getNombre().$sexo.". ".$tprm->getEntorno();
 			$result[] = array("tprm" => $nombre, "cats" => $cats);
 		}
 		return $result;

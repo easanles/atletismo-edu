@@ -107,6 +107,11 @@ h1 {
   }
 }
 
+.reduceheight {
+     max-height: 16em;
+     overflow-y: auto;
+}
+
 /*http://getbootstrap.com/examples/sticky-footer-navbar/*/
 .footer {
     background-color: #f5f5f5;

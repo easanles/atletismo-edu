@@ -197,6 +197,7 @@ crear_intento:
         
         
 #======================INFORMES======================
+#---------------------Resultados---------------------
 pantalla_resultados:
    path: /informes/resultados
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaResultados"}
@@ -212,6 +213,9 @@ resultados_rondas:
 resultados_tabla:
    path: /informes/resultados/tabla
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerTablaResultados"}
+resultados_intentos:
+   path: /informes/resultados/intentos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:mostrarIntentos"}
 
 
 #====================CONFIGURACION===================

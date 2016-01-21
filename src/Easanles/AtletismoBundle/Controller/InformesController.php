@@ -83,9 +83,11 @@ class InformesController extends Controller {
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$ron = $repoRon->find($sidRon);
 		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
-		$parametros = array();
+		$parametros = array("sidRon" => $sidRon);
 		$tprf = $ron->getSidPru()->getSidTprm()->getSidTprf();
-		switch ($tprf->getUnidades()){
+		$unidades = $tprf->getUnidades();
+		$parametros['unidades'] = $unidades;
+		switch ($unidades){
 			case "segundos": $orden = "ASC"; break;
 			case "metros": $orden = "DESC"; break;
 			case "puntosdesc": $orden = "DESC"; break;
@@ -95,10 +97,40 @@ class InformesController extends Controller {
 		$numIntentos = $tprf->getNumint();
 		$parametros["numIntentos"] = $numIntentos;
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
-		$entradas = $repoInt->findAllEntriesFor($sidRon, $orden);
-		$parametros["tablaPrincipal"] = $entradas; //debug
+		$entradas = $repoInt->findBestMarcas($sidRon, $orden);
+		$parametros["tablaPrincipal"] = $entradas;
 		
 		return $this->render('EasanlesAtletismoBundle:Informes:tabla_resultados.html.twig', $parametros);
+	}
+	
+	public function mostrarIntentosAction(Request $request){
+		$idAtl = $request->query->get('atl');
+		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$atl = $repoAtl->find($idAtl);
+		if ($atl == null) return new Response("No existe el atleta con identificador ".$idAtl);
+		$sidRon = $request->query->get('ron');
+		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
+		$ron = $repoRon->find($sidRon);
+		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
+		$parametros = array("atl" => $atl, "ron" => $ron);
+		$parametros['unidades'] = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
+		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+		$listaIntentos = $repoInt->findMarcaIntentos($idAtl, $sidRon);
+		$datos = array();
+		$marcaActual = null;
+		$intentosMarca = array();
+		foreach($listaIntentos as $int){
+			if ($marcaActual == null) $marcaActual = $int['marca'];
+			if ($marcaActual != $int['marca']){
+				$datos[] = array("marca" => $marcaActual, "intentos" => $intentosMarca);
+				$marcaActual = $int['marca'];
+				$intentosMarca = array();
+			}
+			$intentosMarca[] = $int;
+		}
+		$datos[] = array("marca" => $marcaActual, "intentos" => $intentosMarca);
+		$parametros['datos'] = $datos;
+		return $this->render('EasanlesAtletismoBundle:Informes:hist_intentos.html.twig', $parametros);
 	}
 	
 }

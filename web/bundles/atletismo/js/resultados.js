@@ -127,6 +127,7 @@ function getTable(ron){
 		        if (status == "success"){
 		            $("#data-table").html(data);
 		  		    $('abbr').tooltip()
+		  		    $('[data-toggle="tooltip"]').tooltip()
 		        }
 		    }
 		});			

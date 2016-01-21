@@ -60,12 +60,51 @@ class IntentoRepository extends EntityRepository {
 	
 	public function findAllEntriesFor($sidRon, $orden){
 		return $this->getEntityManager()
-		->createQuery('SELECT int.sid, IDENTITY (int.idAtl), int.num, int.marca, int.validez, int.origen, int.premios
+		->createQuery('SELECT int.sid, IDENTITY (int.idAtl), atl.nombre, atl.apellidos, int.num, int.marca, int.validez, int.origen, int.premios
 				 FROM EasanlesAtletismoBundle:Intento int
+				 JOIN int.idAtl atl
 				 WHERE IDENTITY(int.sidRon) LIKE :sidron
-				 ORDER BY int.marca '.$orden)
+				 ORDER BY int.idAtl, int.marca '.$orden.', int.validez ASC')
 		->setParameter("sidron", $sidRon)
 		->getResult();
 	}
+	
+	/**
+	 * $sidRon debe estar validado previamente como numero entero
+	 */
+	public function findBestMarcas($sidRon, $orden){
+      //Unica forma de hacer funcionar subconsultas en Doctrine. 
+		return $this->getEntityManager()->getConnection()->fetchAll(
+		      'SELECT sidint AS sid, idatl AS idAtl, nombreatl AS nombre, apellidosatl AS apellidos, marcaint AS marca, origenint AS origen, premiosint AS premios
+             FROM (
+                SELECT sidint, idatl, marcaint, origenint, premiosint
+                FROM (
+                   SELECT idatl, MAX(numint) AS numint
+                   FROM int_
+                   WHERE sidron LIKE '.$sidRon.' AND validezint = 1
+                   GROUP BY idatl
+                ) aux1
+                NATURAL JOIN (
+                   SELECT sidint, idatl, marcaint, origenint, premiosint, numint
+                   FROM int_
+                   WHERE sidron LIKE '.$sidRon.' AND validezint = 1
+                ) aux2
+             ) aux
+             NATURAL JOIN atl
+             ORDER BY marca '.$orden);
+	}
+	
+	public function findMarcaIntentos($idAtl, $sidRon){
+		return $this->getEntityManager()
+		->createQuery('SELECT int.marca, int.validez, int.num, int.origen, int.premios
+				 FROM EasanlesAtletismoBundle:Intento int
+				 WHERE IDENTITY(int.sidRon) LIKE :sidron AND IDENTITY(int.idAtl) LIKE :idatl
+				 ORDER BY int.num ASC')
+		->setParameter("idatl", $idAtl)
+		->setParameter("sidron", $sidRon)
+		->getResult();
+		
+	}
+	
 	
 }

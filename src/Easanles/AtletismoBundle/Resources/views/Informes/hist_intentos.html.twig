@@ -1,0 +1,33 @@
+  <dl class="dl-horizontal">
+     <dt>Atleta</dt><dd>{{ atl.apellidos }}, {{ atl.nombre }}</dd>
+     <dt>Prueba</dt><dd>{{ ron.sidPru.sidTprm.sidTprf.nombre }}{% if ron.sidPru.sidTprm.sexo == 0 %}, masculino{% elseif ron.sidPru.sidTprm.sexo == 1 %}, femenino{% endif %}. {{ ron.sidPru.sidTprm.entorno }}</dd>
+     <dt>Categoría</dt><dd>{{ ron.sidPru.idCat.nombre }}</dd>
+     <dt>Ronda</dt><dd>{{ ron.num }}{% if ron.nombre != "" %} - {{ ron.nombre }}{% else %}{% endif %}</dd>
+  </dl>
+  <div class="reduceheight">
+  <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+     <tbody>
+        <tr>
+           <th>Marca</th>
+           <th>Intentos</th>
+        </tr>
+        {% for marca in datos %}
+        <tr>
+           <td>
+           {% if unidades == "segundos" %}
+              {{ (marca.marca / 3600)|round(0, "floor") }}{% set resto = marca.marca - ((marca.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+              {% elseif unidades == "metros" %}{{ marca.marca|number_format(3, ',', '.') }} m.
+              {% elseif unidades == "puntosdesc" %}{{ marca.marca|number_format(0, ',', '.') }} ptos.
+              {% elseif unidades == "puntosasc" %}{{ marca.marca|number_format(0, ',', '.') }} ptos.
+           {% endif %}
+           </td>
+           <td>
+           {% for intento in marca.intentos %}
+                 <span style="cursor: default;" data-toggle="popover" data-placement="top" onmouseover="$(this).popover('show')" onmouseout="$(this).popover('hide')" data-html="true" data-content="<strong>Número intento:</strong> {{ intento.num }}<br>{% if intento.premios != "" %}<strong>Premios:</strong> {{ intento.premios }}<br>{% endif %}<strong>Registrado por:</strong> {{ intento.origen }}" class="glyphicon {% if intento.validez == 0 %}glyphicon-remove text-danger{% elseif intento.validez == 1 %}glyphicon-ok text-success{% endif %}"></span>
+           {% endfor %}
+           </td>
+        </tr>
+        {% endfor %}
+     </tbody>
+  </table>
+  </div>
