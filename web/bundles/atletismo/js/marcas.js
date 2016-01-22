@@ -13,7 +13,7 @@ function loadPru(com){
     selectedPru = null;
     $("#select-ron").html("");	
 
-	if ((com == null) || com == ""){
+	if ((com == null) || com === ""){
         $("#select-pru").html("");
         $("#select-pru").attr("disabled", true);		
 	} else {
@@ -59,7 +59,7 @@ function showCats(pru){
     selectedPru = null;
     $("#select-ron").html("");	
 
-	if ((pru == null) || (pru == "")){
+	if ((pru == null) || (pru === "")){
         $("#select-cat").html("");
         $("#select-cat").attr("disabled", true);
 	} else {

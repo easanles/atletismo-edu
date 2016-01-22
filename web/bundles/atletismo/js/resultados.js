@@ -19,6 +19,11 @@ function showComs(){
         html = html + "<option value=" + comData[temp][i]['sidCom'] + ">" + comData[temp][i]['nombre'] + "</option>";
 	}
     $('#select-com').html(html);
+    
+	if ((typeof autoSelectCom !== 'undefined') && (autoSelectCom != null)){
+		$('#select-com').val(autoSelectCom);
+		autoSelectCom = null;
+	}
     loadComData();
     loadCartel();
 }
@@ -62,6 +67,24 @@ function loadComData(){
 	            }
 	            $("#select-pru").html(html);
 	            $("#select-pru").attr("disabled", false);
+	            
+	    		if ((typeof autoSelectPru !== 'undefined') && (autoSelectPru != null)){
+	    			ok = false;
+	    			for(i = 0; i < pruData.length; i++){
+	    				for(j = 0; j < pruData[i]['cats'].length; j++ ){
+	    					if (pruData[i]['cats'][j]['sid'] == autoSelectPru){
+	    						$('#select-pru').val(i);
+	    						showCats(i);
+	    						$('#select-cat').val(autoSelectPru);
+	    						ok = true;
+	    						break;
+	    					}
+	    				}
+	    				if (ok) break;
+	    			}
+	    			loadRons();
+	    			autoSelectPru = null;
+	    		}
 	        }
 	    }
 	});
@@ -71,7 +94,7 @@ function showCats(pru){
     $("#select-ron").attr("disabled", true);
     $("#select-ron").html("");
     $("#data-table").html("");
-	if ((pru == null) || (pru == "")){
+	if ((pru == null) || (pru === "")){
         $("#select-cat").html("");
         $("#select-cat").attr("disabled", true);		
 	} else {
@@ -87,7 +110,7 @@ function showCats(pru){
 function loadRons(){
 	sidPru = $("#select-cat").val();
 	$("#data-table").html("");
-	if ((sidPru == null) || (sidPru == "")){
+	if ((sidPru == null) || (sidPru === "")){
         $("#select-ron").html("");
         $("#select-ron").attr("disabled", true);
 	} else {
@@ -109,6 +132,12 @@ function loadRons(){
 		            }
 		            $("#select-ron").html(html);
 		            $("#select-ron").attr("disabled", false);
+		            
+		    		if ((typeof autoSelectRon !== 'undefined') && (autoSelectRon != null)){
+		    			$('#select-ron').val(autoSelectRon);
+		    			getTable(autoSelectRon);
+		    			autoSelectRon = null;
+		    		}
 		        }
 		    }
 		});
@@ -117,7 +146,7 @@ function loadRons(){
 
 function getTable(ron){
     $("#data-table").html(loadingIcon);
-	if ((ron == null) || (ron == "")){
+	if ((ron == null) || (ron === "")){
         $("#data-table").html("");
 	} else {
 		$.ajax({

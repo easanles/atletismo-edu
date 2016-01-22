@@ -82,14 +82,14 @@
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
-                     <li><a href=""><span class="glyphicon glyphicon-list"></span> Resultados</a></li>
+                     <li><a href="{{ path('pantalla_resultados', {'pru': pru.sid}) }}"><span class="glyphicon glyphicon-list"></span> Resultados</a></li>
                      <li><a href="{{ path('registrar_intentos', {'pru': pru.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span> Registrar marcas</a></li>
                      <li><a href="#" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal('delPRU', {{ com.sid }}, {{ pru.sid }}, '{{ tpr }}')"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Resultados" href=""><span class="glyphicon glyphicon-list"></span></a>
+                  <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Resultados" href="{{ path('pantalla_resultados', {'pru': pru.sid}) }}"><span class="glyphicon glyphicon-list"></span></a>
                   <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'pru': pru.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span></a>
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediPRU', {{ com.sid }}, {{ pru.sid }}, null)"><span class="glyphicon glyphicon-edit"></span></button>
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delPRU', {{ com.sid }}, {{ pru.sid }}, '{{ tpr }}')"><span class="glyphicon glyphicon-remove"></span></button>
@@ -114,7 +114,7 @@
                            <td>{{ ron.nombre }}</td>
                            <td>
                               {{ pru.numAtletas[index] }} <span class="hidden-xs">atleta{% if pru.numAtletas[index] != 1 %}s{% endif %}</span>
-                              <button disabled type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Ver resultados" onClick="showModal()"><span class="glyphicon glyphicon-list-alt"></span><span class="hidden-xs"> Ver resultados</span></button>
+                              <a type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Ver resultados" href="{{ path('pantalla_resultados', {'ron': ron.sid}) }}"{% if pru.numAtletas[index] == 0 %} disabled{% endif %}><span class="glyphicon glyphicon-list-alt"></span><span class="hidden-xs"> Ver resultados</span></a>
                            </td>
                         </tr>
                      {% set index = index + 1 %}                     

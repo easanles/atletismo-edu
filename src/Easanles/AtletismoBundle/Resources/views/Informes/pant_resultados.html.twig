@@ -60,11 +60,6 @@
          <div class="form-group">
             <label for="select-com">Competición</label>
             <select id="select-com" class="form-control" onChange="loadComData(); loadCartel()">
-            {% if selTemp is defined %}
-               {% for com in coms[selTemp]['coms'] %}
-                  <option value="{{ com.sid }}" {% if selCom is defined %}{% if selCom.sid == com.sid %}selected{% endif %}{% endif %}>{{ com.nombre }}</option>
-               {% endfor %}
-            {% endif %}
             </select>
          </div>
       </div>
@@ -111,7 +106,7 @@
    </div>
 {% endblock %}
 
-{% block js %} 
+{% block js %}
    <script type="text/javascript">
       var comData = [];
       {% for temp in coms %}
@@ -123,8 +118,17 @@
             coms.push(com);
          {% endfor %}
          comData['{{ temp.temp }}'] = coms;
-      {% endfor %} 
-   </script>
+      {% endfor %}
+      {% if selCom is defined %}
+         var autoSelectCom = {{ selCom.sid }};
+      {% endif %}
+      {% if selPru is defined %}
+         var autoSelectPru = {{ selPru.sid }};
+      {% endif %}
+      {% if selRon is defined %}
+         var autoSelectRon = {{ selRon.sid }};
+      {% endif %}
+      </script>
    <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
    <script src="{{ asset('bundles/atletismo/js/resultados.js') }}"></script>
 {% endblock %}
