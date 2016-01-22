@@ -217,6 +217,14 @@ resultados_intentos:
    path: /informes/resultados/intentos
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:mostrarIntentos"}
 
+#----------------------Records-----------------------
+pantalla_records_masc:
+   path: /records/masculinos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 0}
+pantalla_records_fem:
+   path: /records/femeninos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 1}
+
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion

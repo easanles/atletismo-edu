@@ -10,6 +10,10 @@ use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class InformesController extends Controller {
+
+//##########################################################################
+//######################### PANTALLA DE RESULTADOS #########################
+//##########################################################################
 	
 	public function pantallaResultadosAction(Request $request) {
 		$parametros = array();
@@ -164,4 +168,11 @@ class InformesController extends Controller {
 		return $this->render('EasanlesAtletismoBundle:Informes:hist_intentos.html.twig', $parametros);
 	}
 	
+//####################################################################
+//######################### RECORDS DEL CLUB #########################
+//####################################################################	
+	
+	public function pantallaRecordsAction($sexo){
+		return $this->render('EasanlesAtletismoBundle:Informes:pant_records.html.twig', array("sexo" => $sexo));
+	}
 }
