@@ -249,7 +249,8 @@ configuracion_asseticdump:
     path: /configuracion/asseticdump
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:assetic_dump"}     
     
-    
+
+#========================OTROS=======================    
 homepage: #portada
     path: /{name}
     defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}

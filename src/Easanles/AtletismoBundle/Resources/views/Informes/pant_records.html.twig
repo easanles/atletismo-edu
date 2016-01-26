@@ -5,6 +5,8 @@
    Records {% if sexo == 0 %}masculinos{% elseif sexo == 1 %}femeninos{% endif %}
 {% endblock %}
 
+{% block onload %}selectEntorno($('#sel-entorno').val()){% endblock %}
+
 {% block navbar %}
       <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
       <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
@@ -43,10 +45,62 @@
    <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
    {% endif %}
    
+   <div class="form-horizontal">
+      <div class="form-group">
+         <label for="sel-entorno" class="col-sm-2 col-sm-offset-2 control-label">Entorno</label>
+         <div class="col-sm-6">
+            <select class="form-control" id="sel-entorno" onChange="selectEntorno(this.value)">
+            {% set count = 0 %}
+            {% for entorno in entornos %}
+               {% set count = count + 1 %}
+               <option value="{{ count }}">{{ entorno.entorno }}</option>
+            {% endfor %}
+            </select>
+         </div>
+      </div>
+  </div>
+  {% set count = 0 %}
+  {% for entorno in tablas %}
+  {% set count = count + 1 %}
+  <table id="tabla-entorno-{{ count }}" class="table table-hover table-bordered table-condensed table-striped table-responsive hidden">
+     <tbody>
+        <tr>
+           <th>Prueba</th>
+           <th><abbr class="visible-xs" title="Premios">P.</abbr><div class="hidden-xs">Premios</div></th>
+           <th>Marca</th>
+           <th>Atleta</th>
+           <th><abbr class="visible-xs" title="Categoría">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
+           <th>Fecha</th>
+           <th class="hidden-xs">Localidad</th>
+        </tr>
+        {% for row in entorno.tabla %}
+        <tr>
+           <td>{{ row.prueba }}</td>
+           <td>{{ row.premios }}</td>
+           <td><strong>
+           {% if row.unidades == "segundos" %}
+              {{ (row.marca / 3600)|round(0, "floor") }}{% set resto = row.marca - ((row.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+           {% elseif row.unidades == "metros" %}{{ row.marca|number_format(3, ',', '.') }} m.
+           {% elseif row.unidades == "puntosdesc" %}{{ row.marca|number_format(0, ',', '.') }} ptos.
+           {% elseif row.unidades == "puntosasc" %}{{ row.marca|number_format(0, ',', '.') }} ptos.
+           {% endif %}
+           </strong></td>
+           <td>{{ row.atleta }}</td>
+           <td>{{ row.categoria }}</td>
+           <td>{% if row.fecha is null %} <em class="text-muted">Sin fecha</em> {% elseif row.fecha != "" %} {{ row.fecha|date('d/m/Y') }} {% endif %}</td>
+           <td>{{ row.ubicacion }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+  </table>
+  {% endfor %}
+
+   
 {% endblock %}
 
 {% block js %}
    <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
 {% endblock %}
 
 

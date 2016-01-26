@@ -122,6 +122,13 @@ function toggleAsist(item, idPar){
 	   }
     });
 }
+
+function selectEntorno(index){
+	$("table").each(function(){
+		$(this).addClass("hidden");
+	});
+	$("#tabla-entorno-" + index).removeClass("hidden");
+}
 	
 $(document).ready(function(){
 	$(function () {

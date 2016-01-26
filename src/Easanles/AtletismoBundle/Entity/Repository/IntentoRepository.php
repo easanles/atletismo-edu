@@ -106,5 +106,33 @@ class IntentoRepository extends EntityRepository {
 		
 	}
 	
-	
+	public function findRecordFor($sexo, $entorno, $tprf){
+		switch($tprf['unidades']){
+			case "segundos": $orden = "ASC"; break;
+			case "metros": $orden = "DESC"; break;
+			case "puntosdesc": $orden = "DESC"; break;
+		   case "puntosasc": $orden = "ASC"; break;
+		   default: $orden = "ASC";
+		}
+		$query = $this->getEntityManager()
+		->createQuery('SELECT int.premios, int.marca, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.ubicacion
+				 FROM EasanlesAtletismoBundle:Intento int
+				 JOIN int.sidRon ron
+				 JOIN ron.sidPru pru
+				 JOIN pru.idCat cat
+				 JOIN pru.sidCom com
+				 JOIN pru.sidTprm tprm
+				 JOIN int.idAtl atl
+				 WHERE atl.sexo LIKE :sexo AND tprm.entorno LIKE :entorno AND int.validez = 1
+				    AND IDENTITY(tprm.sidTprf) LIKE :sidtprf
+				 ORDER BY int.marca '.$orden.', int.sid ASC')
+		->setParameter("sexo", $sexo)
+		->setParameter("entorno", $entorno)
+		->setParameter("sidtprf", $tprf['sid'])
+		->setMaxResults(1)
+		->getResult();
+		if (count($query > 0)) return array_values($query);
+		else return null;
+	}
+
 }

@@ -14,6 +14,12 @@ class TipoPruebaModalidadRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function findAllEntornos(){
+		return $this->getEntityManager()
+   	->createQuery('SELECT tprm.entorno FROM EasanlesAtletismoBundle:TipoPruebaModalidad tprm GROUP BY tprm.entorno')
+   	->getResult();
+	}
+	
 	/*
 	public function countFor($tprf) {
 		return $this->getEntityManager()

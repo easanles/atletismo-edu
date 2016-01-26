@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 
 class InformesController extends Controller {
 
@@ -173,6 +174,59 @@ class InformesController extends Controller {
 //####################################################################	
 	
 	public function pantallaRecordsAction($sexo){
-		return $this->render('EasanlesAtletismoBundle:Informes:pant_records.html.twig', array("sexo" => $sexo));
+		$parametros = array("sexo" => $sexo); 
+		
+		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+		$listaEntornos = $repoTprm->findAllEntornos();
+		$parametros["entornos"] = $listaEntornos;
+		$repoTprf = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
+		$listaTprfs = $repoTprf->findAllOrdered();
+		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+		$tablas = array();
+		foreach ($listaEntornos as $entorno){
+			$tabla = array();
+			foreach($listaTprfs as $tprf){
+				$query = $repoInt->findRecordFor($sexo, $entorno, $tprf);
+				if ($query != null){
+					$datos = array("premios" => $query[0]['premios'],
+							"marca" => $query[0]['marca'],
+							"atleta" => $query[0]['apellidos'].", ".$query[0]['nombre'],
+							"categoria" => $query[0]['categoria'],
+							"fecha" => $query[0]['fecha'],
+							"ubicacion" => $query[0]['ubicacion'],
+							"unidades" => $tprf['unidades']
+					);
+				} else {
+					$datos = array("premios" => "",
+							"marca" => "",
+							"atleta" => "",
+							"categoria" => "",
+							"fecha" => "",
+							"ubicacion" => "",
+							"unidades" => null
+					);
+				}
+				$datos['prueba'] = $tprf['nombre'];
+				$tabla[] = $datos;
+			} 
+			$tablas[] = array("entorno" => $entorno, "tabla" => $tabla);
+		}
+		$parametros["tablas"] = $tablas;
+		
+		return $this->render('EasanlesAtletismoBundle:Informes:pant_records.html.twig', $parametros);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
