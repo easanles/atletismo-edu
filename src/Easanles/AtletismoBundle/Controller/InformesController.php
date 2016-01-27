@@ -179,12 +179,11 @@ class InformesController extends Controller {
 		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$listaEntornos = $repoTprm->findAllEntornos();
 		$parametros["entornos"] = $listaEntornos;
-		$repoTprf = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
-		$listaTprfs = $repoTprf->findAllOrdered();
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		$tablas = array();
 		foreach ($listaEntornos as $entorno){
 			$tabla = array();
+			$listaTprfs = $repoTprm->findUsedTprfsFor($entorno['entorno']);
 			foreach($listaTprfs as $tprf){
 				$query = $repoInt->findRecordFor($sexo, $entorno, $tprf);
 				if ($query != null){

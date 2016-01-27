@@ -20,6 +20,17 @@ class TipoPruebaModalidadRepository extends EntityRepository {
    	->getResult();
 	}
 	
+	public function findUsedTprfsFor($entorno){
+		return $this->getEntityManager()
+		->createQuery('SELECT tprf.sid, tprf.nombre, tprf.unidades
+				 FROM EasanlesAtletismoBundle:TipoPruebaModalidad tprm
+				 JOIN tprm.sidTprf tprf
+				 WHERE tprm.entorno LIKE :entorno
+				 GROUP BY tprm.sidTprf')
+	   ->setParameter("entorno", $entorno)
+		->getResult();
+	}
+	
 	/*
 	public function countFor($tprf) {
 		return $this->getEntityManager()

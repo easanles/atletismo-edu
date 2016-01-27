@@ -111,6 +111,8 @@
                            {% set nombrePru = ins.nombre ~ '. Masculino, ' ~ ins.entorno %}
                         {% elseif ins.sexo == 1 %}
                            {% set nombrePru = ins.nombre ~ '. Femenino, ' ~ ins.entorno %}
+                        {% elseif ins.sexo == 2 %}
+                           {% set nombrePru = ins.nombre ~ '. ' ~ ins.entorno %}
                         {% endif %}
                         <tr>
                            <td><span class="glyphicon glyphicon-chevron-right"></span> {{ nombrePru }}</td>

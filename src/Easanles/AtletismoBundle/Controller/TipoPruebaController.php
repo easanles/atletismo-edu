@@ -27,6 +27,12 @@ class TipoPruebaController extends Controller {
    	$tprf = new TipoPruebaFormato();
    	$tprm = new TipoPruebaModalidad();
    	$tprf->addModalidad($tprm);
+   	$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+   	$listaEntornos = $repoTprm->findAllEntornos();
+   	$entornos = array();
+   	foreach($listaEntornos as $entorno){
+   		$entornos[] = $entorno['entorno'];
+   	}
    	$form = $this->createForm(new TprfType(), $tprf);
    	
    	$form->handleRequest($request);
@@ -51,7 +57,8 @@ class TipoPruebaController extends Controller {
          	return new JsonResponse([
    		   	'success' => false,
    		   	'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-   		   	array('form' => $form->createView(), 'mode' => 'new', 'exception' => $exception))->getContent()
+   		   	      array('form' => $form->createView(), 'mode' => 'new', 'exception' => $exception))->getContent(),
+         		'entornos' => $entornos
    	      ]);
    		}
    		return new JsonResponse([
@@ -63,7 +70,8 @@ class TipoPruebaController extends Controller {
       return new JsonResponse([
    	   	'success' => false,
    	   	'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:form_tipopruebaformato.html.twig',
-   	  	array('form' => $form->createView(), 'mode' => 'new'))->getContent()
+   	            array('form' => $form->createView(), 'mode' => 'new'))->getContent(),
+      		'entornos' => $entornos
       ]);
    }
    

@@ -88,7 +88,7 @@
            <td>{{ row.atleta }}</td>
            <td>{{ row.categoria }}</td>
            <td>{% if row.fecha is null %} <em class="text-muted">Sin fecha</em> {% elseif row.fecha != "" %} {{ row.fecha|date('d/m/Y') }} {% endif %}</td>
-           <td>{{ row.ubicacion }}</td>
+           <td class="hidden-xs">{{ row.ubicacion }}</td>
         </tr>
         {% endfor %}
         </tbody>

@@ -79,13 +79,15 @@ class IntentoController extends Controller {
 		$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
 		$pru = $repoPru->find($sidPru);
 		if ($pru == null) return new Response("No existe la prueba con identificador ".$sidPru);
-		else $unidades = $pru->getSidTprm()->getSidTprf()->getUnidades();
+		$unidades = $pru->getSidTprm()->getSidTprf()->getUnidades();
+		$numIntentos = $pru->getSidTprm()->getSidTprf()->getNumint();
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$rondas = $repoRon->findAllFor($sidPru);
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		foreach($rondas as $key => $ron){
 			$rondas[$key]['marca'] = $repoInt->getMarcaFor($idAtl, $ron['sid']);
 			$rondas[$key]['unidades'] = $unidades;
+			$rondas[$key]['numIntentos'] = $numIntentos;
 		}
 		
       return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array("rondas" => $rondas, "selAtl" => $idAtl));

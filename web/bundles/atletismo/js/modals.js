@@ -18,6 +18,7 @@ function showModal(type, data1, data2, data3){
     		     $("#dialog-body").html(data.message);
     		     collectionHolder = $('#form-collection');
     		     collectionHolder.data('index', collectionHolder.find('.subform-row').length);
+    		     addAutoComplete(".subform-row input", data.entornos); //scripts.js
     	      } else {
     			 $("#dialog-body").html("Error al cargar datos");
     	      }	
@@ -39,6 +40,7 @@ function showModal(type, data1, data2, data3){
   			    $("#dialog-body").html(data.message);
                 collectionHolder = $('#form-collection');
 		        collectionHolder.data('index', collectionHolder.find('.subform-row').length);
+   		        addAutoComplete(".subform-row input", data.entornos); //scripts.js
   	          } else {
   			     $("#dialog-body").html("Error al cargar datos");
   			  }	

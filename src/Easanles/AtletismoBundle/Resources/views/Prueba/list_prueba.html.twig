@@ -62,12 +62,14 @@
             <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
             <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
-         
+
          {% for pru in pruebas %}
          {% if pru.tprm.sexo == 0 %}
             {% set tpr = pru.tprm.sidTprf.nombre ~ '. Masculino, ' ~ pru.tprm.entorno %}
          {% elseif pru.tprm.sexo == 1 %}
             {% set tpr = pru.tprm.sidTprf.nombre ~ '. Femenino, ' ~ pru.tprm.entorno %}
+         {% elseif pru.tprm.sexo == 2 %}
+            {% set tpr = pru.tprm.sidTprf.nombre ~ '. ' ~ pru.tprm.entorno %}
          {% endif %}
          <tr>
             <td>{{ pru.id }}</td>

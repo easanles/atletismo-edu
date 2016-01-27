@@ -1,4 +1,5 @@
 
+var autoCompleteData;
 
 function goToUrl(path){
 	window.location.href = path;
@@ -128,6 +129,21 @@ function selectEntorno(index){
 		$(this).addClass("hidden");
 	});
 	$("#tabla-entorno-" + index).removeClass("hidden");
+}
+
+function addAutoComplete(selector, data){
+	if (data != null) autoCompleteData = data;
+	$(selector).autoComplete({
+	    minChars: 1,
+	    source: function(term, suggest){
+	        term = term.toLowerCase();
+	        var choices = autoCompleteData;
+	        var matches = [];
+	        for (i=0; i<choices.length; i++)
+	            if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
+	        suggest(matches);
+	    }
+ });
 }
 	
 $(document).ready(function(){

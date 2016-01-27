@@ -16,6 +16,8 @@
                {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ '. Masculino, ' ~ ent.pru.sidTprm.entorno %}
             {% elseif ent.pru.sidTprm.sexo == 1 %}
                {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ '. Femenino, ' ~ ent.pru.sidTprm.entorno %}
+            {% elseif ent.pru.sidTprm.sexo == 2 %}
+               {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ '. ' ~ ent.pru.sidTprm.entorno %}
             {% endif %}
             {% set precioTotal = precioTotal + ent.pru.coste %}
             <tr id="tr-{{ ent.atl.id }}-{{ ent.pru.sid }}">

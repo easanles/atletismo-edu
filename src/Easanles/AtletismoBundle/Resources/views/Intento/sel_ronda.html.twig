@@ -14,6 +14,6 @@
                      {% elseif ron.unidades == "puntosasc" %}{{ ron.marca|number_format(0, ',', '.') }} ptos.
                      {% endif %}
                   {% endif %}
-                  <td><button class="btn btn-xs btn-block btn-default" onClick="showModal('newINT', {{ ron.sid }}, {{ selAtl }}, {% if ron.unidades == "segundos" %}false{% else %}true{% endif %})"><span class="glyphicon glyphicon-dashboard"></span></button></td>
+                  <td><button class="btn btn-xs btn-block btn-default" onClick="showModal('newINT', {{ ron.sid }}, {{ selAtl }}, {% if ron.numIntentos == 1 %}false{% else %}true{% endif %})"><span class="glyphicon glyphicon-dashboard"></span></button></td>
                </tr>
                {% endfor %}

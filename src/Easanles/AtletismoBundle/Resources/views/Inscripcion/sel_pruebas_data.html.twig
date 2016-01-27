@@ -9,6 +9,8 @@
                      {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. Masculino, ' ~ pru.sidTprm.entorno %}
                   {% elseif pru.sidTprm.sexo == 1 %}
                      {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. Femenino, ' ~ pru.sidTprm.entorno %}
+                  {% elseif pru.sidTprm.sexo == 2 %}
+                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. ' ~ pru.sidTprm.entorno %}
                   {% endif %}
                
                   <tr>
