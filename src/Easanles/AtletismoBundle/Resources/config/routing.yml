@@ -1,8 +1,3 @@
-#miembro: #informacion de un miembro
-    #path:     /miembro/{id}
-   #defaults: {_controller: "EasanlesAtletismoBundle:Miembro:mostrar", id: 1}
-   # requirements:
-       # id:  \d+ #numeros enteros
         
 symfony_demo:
    path: /demo
@@ -11,21 +6,21 @@ symfony_demo:
    
 #===================COMPETICIONES====================
 listado_competiciones: #portada competiciones
-   path: /competiciones
+   path: /admin/competiciones
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:listadoCompeticiones"}
 crear_competicion:
-   path: /competiciones/nuevo
+   path: /admin/competiciones/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:crearCompeticion"}
 borrar_competicion:
-   path: /competiciones/borrar
+   path: /admin/competiciones/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:borrarCompeticion"}
 editar_competicion:
-   path: /competiciones/editar/{id}
+   path: /admin/competiciones/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:editarCompeticion"}
    requirements:
       id: \d+
 ver_competicion:
-   path: /competiciones/{id}
+   path: /admin/competiciones/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
    requirements:
       id: \d+
@@ -33,28 +28,28 @@ ver_competicion:
 
 #======================PRUEBAS=======================
 listado_pruebas:
-   path: /pruebas/{sidCom}
+   path: /admin/pruebas/{sidCom}
    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:listadoPruebas"}
    requirements:
       sidCom: \d+
 crear_prueba:
-   path: /pruebas/{sidCom}/nuevo
+   path: /admin/pruebas/{sidCom}/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:crearPrueba"}
    requirements:
       sidCom: \d+
 borrar_prueba:
-   path: /pruebas/{sidCom}/borrar
+   path: /admin/pruebas/{sidCom}/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:borrarPrueba"}
    requirements:
       sidCom: \d+
 editar_prueba:
-   path: /pruebas/{sidCom}/editar/{sidPru}
+   path: /admin/pruebas/{sidCom}/editar/{sidPru}
    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:editarPrueba"}
    requirements:
       sidCom: \d+
       sidPru: \d+
 listar_inscritos_prueba:
-   path: /pruebas/{sidCom}/listar
+   path: /admin/pruebas/{sidCom}/listar
    defaults: {_controller: "EasanlesAtletismoBundle:Prueba:listarInscritosPrueba"}
    requirements:
       sidCom: \d+
@@ -62,16 +57,16 @@ listar_inscritos_prueba:
     
 #==================TIPOS DE PRUEBAS==================
 listado_tipopruebaformato:
-   path: /configuracion/tipoprueba
+   path: /admin/configuracion/tipoprueba
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:listadoTipoPruebaFormato"}
 crear_tipopruebaformato:
-   path: /configuracion/tipoprueba/nuevo
+   path: /admin/configuracion/tipoprueba/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:crearTipoPruebaFormato"}
 borrar_tipopruebaformato:
-   path: /configuracion/tipoprueba/borrar
+   path: /admin/configuracion/tipoprueba/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:borrarTipoPruebaFormato"}
 editar_tipopruebaformato:
-   path: /configuracion/tipoprueba/editar/{id}
+   path: /admin/configuracion/tipoprueba/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:TipoPrueba:editarTipoPruebaFormato"}
    requirements:
       id: \d+
@@ -79,38 +74,38 @@ editar_tipopruebaformato:
    
 #=====================CATEGORIAS=====================
 listado_categorias:
-   path: /configuracion/categoria
+   path: /admin/configuracion/categoria
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:listadoCategorias"}
 crear_categoria:
-   path: /configuracion/categoria/nuevo
+   path: /admin/configuracion/categoria/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:crearCategoria"}
 editar_categoria:
-   path: /configuracion/categoria/editar/{id}
+   path: /admin/configuracion/categoria/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:editarCategoria"}
    requirements:
       id: \d+
 caducar_categoria:
-   path: /configuracion/categoria/caducar
+   path: /admin/configuracion/categoria/caducar
    defaults: {_controller: "EasanlesAtletismoBundle:Categoria:caducarCategoria"}   
 
 
 #=======================ATLETAS======================
 listado_atletas:
-   path: /atletas
+   path: /admin/atletas
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:listadoAtletas"}
 crear_atleta:
-   path: /atletas/nuevo
+   path: /admin/atletas/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:crearAtleta"}
 ver_atleta:
-   path: /atletas/{id}
+   path: /admin/atletas/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:verAtleta"}
    requirements:
       id: \d+
 borrar_atleta:
-   path: /atleta/borrar
+   path: /admin/atleta/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:borrarAtleta"}   
 editar_atleta:
-   path: /atleta/editar/{id}
+   path: /admin/atleta/editar/{id}
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:editarAtleta"}
    requirements:
       id: \d+
@@ -118,48 +113,48 @@ editar_atleta:
     
 #====================INSCRIPCIONES===================
 listado_inscripciones:
-   path: /competiciones/{sidCom}/inscripciones
+   path: /admin/competiciones/{sidCom}/inscripciones
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:listadoInscripciones"}
    requirements:
       sidCom: \d+
 inscribir_atletas:
-   path: /competiciones/{sidCom}/inscribir
+   path: /admin/competiciones/{sidCom}/inscribir
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:inscribirAtletas"}
    requirements:
       sidCom: \d+
 inscribir_atletas_atletas:
-   path: /competiciones/{sidCom}/inscribir/atl
+   path: /admin/competiciones/{sidCom}/inscribir/atl
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:seleccionAtletas"}
    requirements:
       sidCom: \d+
 inscribir_atletas_pruebas:
-   path: /competiciones/{sidCom}/inscribir/pru
+   path: /admin/competiciones/{sidCom}/inscribir/pru
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:seleccionPruebas"}
    requirements:
       sidCom: \d+
 inscribir_atletas_pruebas_disponibles:
-   path: /competiciones/{sidCom}/inscribir/pru/{idAtl}
+   path: /admin/competiciones/{sidCom}/inscribir/pru/{idAtl}
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:pruebasDisponibles"}
    requirements:
       sidCom: \d+
       idAtl: \d+
 inscribir_atletas_confirmacion:
-   path: /competiciones/{sidCom}/inscribir/confirm
+   path: /admin/competiciones/{sidCom}/inscribir/confirm
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:pantallaConfirmacion"}
    requirements:
       sidCom: \d+
 inscribir_atletas_crear:
-   path: /competiciones/{sidCom}/inscribir/submit
+   path: /admin/competiciones/{sidCom}/inscribir/submit
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:crearInscripciones"}
    requirements:
       sidCom: \d+
 editar_inscripcion:
-   path: /competiciones/{sidCom}/inscripciones/editar
+   path: /admin/competiciones/{sidCom}/inscripciones/editar
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:editarInscripcion"}
    requirements:
       sidCom: \d+
 borrar_inscripcion:
-   path: /competiciones/{sidCom}/inscripciones/borrar
+   path: /admin/competiciones/{sidCom}/inscripciones/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:borrarInscripcion"}
    requirements:
       sidCom: \d+
@@ -167,12 +162,12 @@ borrar_inscripcion:
 
 #===================PARTICIPACIONES==================
 confirmar_participacion:
-   path: /competiciones/{sidCom}/participar
+   path: /admin/competiciones/{sidCom}/participar
    defaults: {_controller: "EasanlesAtletismoBundle:Participacion:confirmarParticipacion"}
    requirements:
       sidCom: \d+
 marcar_asistencia:
-   path: /competiciones/{sidCom}/asistencia
+   path: /admin/competiciones/{sidCom}/asistencia
    defaults: {_controller: "EasanlesAtletismoBundle:Participacion:marcarAsistencia"}
    requirements:
       sidCom: \d+
@@ -180,19 +175,19 @@ marcar_asistencia:
       
 #======================INTENTOS======================
 registrar_intentos:
-   path: /marcas
+   path: /admin/marcas
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:pantallaIntentos"}
 intentos_pruebas:
-   path: /marcas/getpru
+   path: /admin/marcas/getpru
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerPruebas"}
 intentos_atletas:
-   path: /marcas/getatl
+   path: /admin/marcas/getatl
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerAtletasInscritos"}
 intentos_rondas:
-   path: /marcas/getron
+   path: /admin/marcas/getron
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerRondas"}
 crear_intento:
-   path: /marcas/nuevo
+   path: /admin/marcas/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:crearIntento"}
         
         
@@ -228,30 +223,42 @@ pantalla_records_fem:
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion
-    path: /configuracion
+    path: /admin/configuracion
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:menu_configuracion"}
 configuracion_cambiar_ajustes: #ajustes
-    path: /configuracion/ajustes
+    path: /admin/configuracion/ajustes
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:cambiarAjustes"}
 configuracion_poblarbd: #poblar base de datos con datos de prueba
-    path: /configuracion/poblarbd
+    path: /admin/configuracion/poblarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:poblar_bd"}
 configuracion_borrarbd: #borrar datos de la base de datos
-    path: /configuracion/borrarbd
+    path: /admin/configuracion/borrarbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:borrar_bd"}
 configuracion_rehacerbd: #drop tables y schema update
-    path: /configuracion/rehacerbd
+    path: /admin/configuracion/rehacerbd
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:rehacer_bd"}    
 configuracion_limpiarcache: #Limpiar archivos cache
-    path: /configuracion/limpiarcache
+    path: /admin/configuracion/limpiarcache
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:limpiar_cache"}
 configuracion_asseticdump:
-    path: /configuracion/asseticdump
+    path: /admin/configuracion/asseticdump
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:assetic_dump"}     
     
 
 #========================OTROS=======================    
-homepage: #portada
-    path: /{name}
-    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}
+homepage: #portada anonimos + users
+    path: /
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", role: "user", name: "Anonimo"}
+homepage_admin: #portada admins
+    path: /admin/
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", role: "admin", name: "Admin"}
+login:
+    path: /login
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:login"}
+login_check:
+    path: /login_check
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:loginCheck"}
+logout:
+    path: /logout
+
     

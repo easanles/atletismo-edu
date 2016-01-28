@@ -126,6 +126,15 @@ h1 {
 }
 
 
+#login-form {
+   padding: 1em;
+}
+
+#login-form > input {
+   margin: 0.5em 0em;
+}
+
+
 /* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state */
 .glyphicon.spinning {
     animation: spin 1s infinite linear;
@@ -171,4 +180,6 @@ h1 {
        border-color: #843534;
        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #ce8483;
     }
+    
+
 

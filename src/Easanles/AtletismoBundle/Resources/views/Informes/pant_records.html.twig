@@ -8,8 +8,8 @@
 {% block onload %}selectEntorno($('#sel-entorno').val()){% endblock %}
 
 {% block navbar %}
-      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
-      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
       <li class="dropdown active">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
@@ -17,15 +17,15 @@
             <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
          </ul>
       </li>
-      <li class="dropdown">
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
             <li><a class="inactive" href="#">Asistencia a eventos</a></li>
             <li><a class="inactive" href="#">Pagos</a></li>
          </ul>
-      </li>
-      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+      </li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
