@@ -16,7 +16,7 @@ class InformesController extends Controller {
 //######################### PANTALLA DE RESULTADOS #########################
 //##########################################################################
 	
-	public function pantallaResultadosAction(Request $request) {
+	public function pantallaResultadosAction(Request $request, $rol) {
 		$parametros = array();
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		$listaTemps = $repoCom->findTemps();
@@ -72,7 +72,7 @@ class InformesController extends Controller {
 		return $this->render('EasanlesAtletismoBundle:Informes:pant_resultados.html.twig', $parametros);
 	}
 	
-	public function obtenerPruebasAction(Request $request){
+	public function obtenerPruebasAction(Request $request, $rol){
 		$sidCom = $request->query->get('com');
 		$resultados = Helpers::obtenerPruebas($this->getDoctrine(), $sidCom);
 		return new JsonResponse([
@@ -80,7 +80,7 @@ class InformesController extends Controller {
 		]);
 	}
 	
-	public function obtenerCartelAction(Request $request){
+	public function obtenerCartelAction(Request $request, $rol){
 		$sidCom = $request->query->get('com');
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		$com = $repoCom->find($sidCom);
@@ -98,7 +98,7 @@ class InformesController extends Controller {
 		]);
 	}
 	
-	public function obtenerRondasAction(Request $request){
+	public function obtenerRondasAction(Request $request, $rol){
 		$sidPru = $request->query->get('pru');
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$listaRon = $repoRon->findBy(array("sidPru" => $sidPru));
@@ -114,7 +114,7 @@ class InformesController extends Controller {
 		]);
 	}
 	
-	public function obtenerTablaResultadosAction(Request $request){
+	public function obtenerTablaResultadosAction(Request $request, $rol){
 		$sidRon = $request->query->get('ron');
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$ron = $repoRon->find($sidRon);
@@ -139,7 +139,7 @@ class InformesController extends Controller {
 		return $this->render('EasanlesAtletismoBundle:Informes:tabla_resultados.html.twig', $parametros);
 	}
 	
-	public function mostrarIntentosAction(Request $request){
+	public function mostrarIntentosAction(Request $request, $rol){
 		$idAtl = $request->query->get('atl');
 		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$atl = $repoAtl->find($idAtl);

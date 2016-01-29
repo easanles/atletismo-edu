@@ -1,11 +1,12 @@
 
 {% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Iniciar sesión{% endblock %}
 
 {% block navbar %}
-      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
-      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      {% if app.user is not null and is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}<li><a class="inactive" href="#">Mis competiciones</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
       <li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
@@ -13,41 +14,64 @@
             <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
          </ul>
       </li>
-      <li class="dropdown">
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
             <li><a class="inactive" href="#">Asistencia a eventos</a></li>
             <li><a class="inactive" href="#">Pagos</a></li>
          </ul>
-      </li>
-      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+      </li>{% endif %}
+      {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
-  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
-  <li class="active">Login</li>
+  <li><a href="{{ path('homepage') }}">Portada</a></li>
+  <li class="active">Iniciar sesión</li>
 {% endblock %}
 
 {% block container %}   
 
+   <h1 id="container_title" class="row page-header">Iniciar sesión</h1>
+
    {% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+      <div class="alert alert-danger alert-dismissible fade in col-sm-8 col-sm-offset-2" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span></button>
+      <span>
+      {% if (error.messageKey|trans(error.messageData, 'security')) == "Invalid credentials." %}
+         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Usuario o contraseña no válidos.
+      {% else %}
+         <strong>Error:</strong> {{ error.messageKey|trans(error.messageData, 'security') }}
+      {% endif %}
+      </span></div>
    {% endif %}
 
-   <form action="{{ path('login_check') }}" method="post" class="form-inline">
-       <label for="username">Usuario:</label>
-       <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
+   <div class="well col-sm-6 col-sm-offset-3">
+   <form action="{{ path('login_check') }}" method="post" class="">
+       <div class="form-group">
+          <label for="username">Usuario:</label>
+          <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
+       </div>
 
-       <label for="password">Contraseña:</label>
-       <input class="form-control" type="password" id="password" name="_password" />
+       <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input class="form-control" type="password" id="password" name="_password" />
+       </div>
+       <div class="checkbox">
+          <label>
+             <input type="checkbox" id="remember_me" name="_remember_me"> Recordarme
+          </label>
+       </div>
 
-       <button class="btn btn-lg btn-primary" type="submit">Entrar</button>
+       <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
        <p><small class="muted-text">
           user: "userpass"<br>
           admin: "adminpass"
        </small></p>
    </form>
+   </div>
    
 {% endblock %}
 

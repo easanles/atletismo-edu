@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller{
-    public function indexAction($role, $name){
-        return $this->render('EasanlesAtletismoBundle:Default:index.html.twig', array('role' => $role, 'name' => $name));
+    public function indexAction($name){
+        return $this->render('EasanlesAtletismoBundle:Default:index.html.twig', array('name' => $name));
     }
     
     

@@ -17,32 +17,22 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-#       login:
-#           pattern:  ^/demo/secured/login$
-#           security: false
-
-        #login:
-            #pattern:  ^/login
-            #security: false
             
         secured_area:
-#           pattern:    ^/demo/secured/
-#           form_login:
-#               check_path: _security_check
-#               login_path: _demo_login
-#           logout:
-#               path:   _demo_logout
-#               target: _demo
             anonymous: ~
             provider: in_memory
             form_login:
                 login_path: /login
                 check_path: /login_check
+                require_previous_session: false
+            remember_me:
+                key:   '%secret%'
             logout:
                 path: /logout
                 target: /
 
     access_control:
+        #Descomentar la siguiente linea para activar la conexion segura al enviar credenciales.
+        #HTTPS debe estar correctamente configurado en el servidor Apache
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/admin, roles: ROLE_ADMIN }

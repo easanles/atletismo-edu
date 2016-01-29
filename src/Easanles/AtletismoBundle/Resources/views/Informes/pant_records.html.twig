@@ -8,6 +8,7 @@
 {% block onload %}selectEntorno($('#sel-entorno').val()){% endblock %}
 
 {% block navbar %}
+      {% if app.user is not null and is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}<li><a class="inactive" href="#">Mis competiciones</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
       <li class="dropdown active">
@@ -25,12 +26,17 @@
             <li><a class="inactive" href="#">Pagos</a></li>
          </ul>
       </li>{% endif %}
+      {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
-  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
-  <li>Records</li>
+  {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+     <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  {% else %}
+     <li><a href="{{ path('homepage') }}">Portada</a></li>
+  {% endif %}
+  {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li>Records</li>{% endif %}
   <li class="active">Records {% if sexo == 0 %}masculinos{% elseif sexo == 1 %}femeninos{% endif %}</li>
 {% endblock %}
 

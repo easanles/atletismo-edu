@@ -49,6 +49,7 @@
          <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                {% block navbar %}
+               {% if app.user is not null and is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}<li><a class="inactive" href="#">Mis competiciones</a></li>{% endif %}
                {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
                {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
                <li class="dropdown">
@@ -66,28 +67,29 @@
                      <li><a class="inactive" href="#">Pagos</a></li>
                   </ul>
                </li>{% endif %}
+               {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
                {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
                {% endblock %}
             </ul>
             {% block userAuth %}
             <ul class="nav navbar-nav navbar-right">
-               {% if app.user is not null and is_granted('IS_AUTHENTICATED_FULLY') %}
+               {% if app.user is not null and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.username }} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                     <li><a href="{{ path('logout') }}">Logout</a></li>
-                     <li><a class="inactive" href="#">Datos</a></li>
+                     <li><a class="inactive" href="#">Cuenta</a></li>
+                     <li><a href="{{ path('logout') }}">Cerrar sesión</a></li>
                   </ul>
                </li>
                {% else %}
                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Iniciar sesión <span class="caret"></span></a>
                   <div class="dropdown-menu">
                      <form id="login-form" action="{{ path('login_check') }}" method="post">
                         <input class="form-control input-sm" type="text" id="username" name="_username" placeholder="Usuario">
                         <input class="form-control input-sm" type="password" id="password" name="_password" placeholder="Contraseña">
-                        <div class="checkbox"><label><input type="checkbox" value=""><small>Recordarme</small></label></div>
-                        <button class="btn btn-sm btn-primary btn-block" type="submit">Enviar</button>
+                        <div class="checkbox"><label><input type="checkbox" id="remember_me" name="_remember_me"><small>Recordarme</small></label></div>
+                        <button class="btn btn-sm btn-primary btn-block" type="submit">Entrar</button>
                         <p><small class="muted-text">
                            user: "userpass"<br>
                            admin: "adminpass"
@@ -105,7 +107,7 @@
     <div class="container">
        <ol class="breadcrumb">
        {% block breadcrumb %}
-          <li class="active">Portada{% if role == "admin" %} Admin{% endif %}</li>
+          <li class="active">Portada</li>
        {% endblock %}
        </ol>
        {% block dumpv %}{% if dumpv is defined %}{{ dump(dumpv) }}{% endif %}{% endblock %}

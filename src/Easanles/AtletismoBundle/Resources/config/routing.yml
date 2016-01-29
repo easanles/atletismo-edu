@@ -1,9 +1,10 @@
-        
-symfony_demo:
-   path: /demo
-   defaults: {_controller: "AcmeDemoBundle:Demo:index"}
-   
-   
+
+
+#####################################################
+################### ADMINISTRACION ##################
+#####################################################
+
+
 #===================COMPETICIONES====================
 listado_competiciones: #portada competiciones
    path: /admin/competiciones
@@ -194,31 +195,23 @@ crear_intento:
 #======================INFORMES======================
 #---------------------Resultados---------------------
 pantalla_resultados:
-   path: /informes/resultados
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaResultados"}
+   path: /admin/informes/resultados
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaResultados", rol: "admin"}
 resultados_pruebas:
-   path: /informes/resultados/getpru
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerPruebas"}
+   path: /admin/informes/resultados/getpru
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerPruebas", rol: "admin"}
 resultados_cartel:
-   path: /informes/resultados/getcartel
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerCartel"}
+   path: /admin/informes/resultados/getcartel
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerCartel", rol: "admin"}
 resultados_rondas:
-   path: /informes/resultados/getron
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerRondas"}
+   path: /admin/informes/resultados/getron
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerRondas", rol: "admin"}
 resultados_tabla:
-   path: /informes/resultados/tabla
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerTablaResultados"}
+   path: /admin/informes/resultados/tabla
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerTablaResultados", rol: "admin"}
 resultados_intentos:
-   path: /informes/resultados/intentos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:mostrarIntentos"}
-
-#----------------------Records-----------------------
-pantalla_records_masc:
-   path: /records/masculinos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 0}
-pantalla_records_fem:
-   path: /records/femeninos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 1}
+   path: /admin/informes/resultados/intentos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:mostrarIntentos", rol: "admin"}
 
 
 #====================CONFIGURACION===================
@@ -242,16 +235,61 @@ configuracion_limpiarcache: #Limpiar archivos cache
     defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:limpiar_cache"}
 configuracion_asseticdump:
     path: /admin/configuracion/asseticdump
-    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:assetic_dump"}     
+    defaults: {_controller: "EasanlesAtletismoBundle:Configuracion:assetic_dump"}
     
+    
+    
+#####################################################
+###################### USUARIOS #####################
+#####################################################
+      
+      
+#=================MIS COMPETICIONES==================
 
-#========================OTROS=======================    
+
+
+#####################################################
+################### TODOS & OTROS ###################
+#####################################################
+
+
+#======================RECORDS=======================
+pantalla_records_masc:
+   path: /records/masculinos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 0}
+pantalla_records_fem:
+   path: /records/femeninos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 1}
+
+
+#=======RESULTADOS CON COMPETICIONES OCULTAS=========
+users_pantalla_resultados:
+   path: /resultados
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaResultados", rol: "user"}
+users_resultados_pruebas:
+   path: /resultados/getpru
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerPruebas", rol: "user"}
+users_resultados_cartel:
+   path: /resultados/getcartel
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerCartel", rol: "user"}
+users_resultados_rondas:
+   path: /resultados/getron
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerRondas", rol: "user"}
+users_resultados_tabla:
+   path: /resultados/tabla
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerTablaResultados", rol: "user"}
+users_resultados_intentos:
+   path: /resultados/intentos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:mostrarIntentos", rol: "user"}
+   
+   
+#=======================OTROS========================
 homepage: #portada anonimos + users
     path: /
-    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", role: "user", name: "Anonimo"}
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}
 homepage_admin: #portada admins
     path: /admin/
-    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", role: "admin", name: "Admin"}
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Admin"}
 login:
     path: /login
     defaults: {_controller: "EasanlesAtletismoBundle:Default:login"}

@@ -23,8 +23,9 @@
       <td>
       {% if unidades == "segundos" %}
          {{ (marca.marca / 3600)|round(0, "floor") }}{% set resto = marca.marca - ((marca.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
-      {% else %}
-      {{ marca.marca|number_format(3, ',', '.') }}
+      {% elseif unidades == "metros" %}{{ marca.marca|number_format(3, ',', '.') }} m.
+      {% elseif unidades == "puntosdesc" %}{{ marca.marca|number_format(0, ',', '.') }} ptos.
+      {% elseif unidades == "puntosasc" %}{{ marca.marca|number_format(0, ',', '.') }} ptos.
       {% endif %}
       </td>
       <td>{{ marca.premios }}</td>
