@@ -5,7 +5,7 @@ function toggleContent(tab){
     
     $("#navtab-" + tab).addClass("active");
     $("#tabcontent-" + tab).css("display", "inline");
-    if ((tab == "tp") || (tab == "cat")){
+    if ((tab == "usu") ||(tab == "tp") || (tab == "cat")){
     	loadViews(tab);
     }
 }
@@ -15,6 +15,19 @@ function loadViews(content){
    icon.removeClass("hidden");
 
    switch (content){
+      case "usu": {
+         $.get("./configuracion/usuario", function(data, status){
+            if (status == "success"){
+               $("#usu-table").html(data);
+       		   $('[data-toggle="tooltip"]').tooltip()
+               $('abbr').tooltip()
+       		   $('.dropdown-toggle').dropdown()
+             } else {
+                $("#tabcontent-usu").html("Error al cargar datos");
+             }
+             icon.addClass("hidden");      
+         });      
+      } break;
       case "tp": {
         $.get("./configuracion/tipoprueba", function(data, status){
            if (status == "success"){
@@ -22,10 +35,10 @@ function loadViews(content){
           	  $('.droplist').each(function (){
         		$(this).data("height", $(this).height());
         		$(this).css("height", "0px");
-        		$('[data-toggle="tooltip"]').tooltip()
-                $('abbr').tooltip()
-        		$('.dropdown-toggle').dropdown()
         	  });
+      		  $('[data-toggle="tooltip"]').tooltip()
+              $('abbr').tooltip()
+    		  $('.dropdown-toggle').dropdown()
            } else {
               $("#tabcontent-tp").html("Error al cargar datos");
            }

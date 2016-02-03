@@ -166,6 +166,12 @@ class Atleta
      * @ORM\OneToMany(targetEntity="Intento", mappedBy="idAtl", cascade={"all"})
      **/
     private $intentos;
+    
+    /**
+     * @var integer
+     * @ORM\OneToOne(targetEntity="Usuario", mappedBy="idAtl")
+     **/
+    private $nombreUsu;
      
     public function __construct() {
     	$this->participaciones = new ArrayCollection();
@@ -184,6 +190,16 @@ class Atleta
     public function getIntentos() {
     	return $this->intentos;
     }
+    
+    public function getNombreUsu() {
+    	return $this->nombreUsu;
+    }
+    
+    public function setNombreUsu($nombreUsu) {
+    	$this->nombreUsu = $nombreUsu;
+    	return $this;
+    }
+    
     
     /******************* GETTERS & SETTERS **************************/
     
@@ -321,7 +337,8 @@ class Atleta
 		return $this;
 	}
 	
-	//*******VICH**********
+	//************************ VICH **************************/
+	
 	public function getUpdatedAt() {
 		return $this->updatedAt;
 	}
@@ -348,25 +365,25 @@ class Atleta
 	/**
 	 * @var string
 	 */
-	private $warn_dni;
+	private $warnDni;
 	
 	/**
 	 * @var string
 	 */
-	private $warn_nick;
+	private $warnNick;
 	
 	public function getWarnDni() {
-		return $this->warn_dni;
+		return $this->warnDni;
 	}
-	public function setWarnDni($warn_dni) {
-		$this->warn_dni = $warn_dni;
+	public function setWarnDni($warnDni) {
+		$this->warnDni = $warnDni;
 		return $this;
 	}
 	public function getWarnNick() {
-		return $this->warn_nick;
+		return $this->warnNick;
 	}
-	public function setWarnNick($warn_nick) {
-		$this->warn_nick = $warn_nick;
+	public function setWarnNick($warnNick) {
+		$this->warnNick = $warnNick;
 		return $this;
 	}
 	
@@ -386,7 +403,5 @@ class Atleta
 			}
 		}
 	}
-
-	
     
 }

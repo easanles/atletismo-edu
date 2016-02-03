@@ -1,0 +1,38 @@
+               <tbody>
+                  <tr>
+                     <th>Usuario</th>
+                     <th>Rol</th>
+                     <th><abbr title="Atleta asociado" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atleta asociado</div></th>
+                     <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
+                  </tr>
+                  {% for usu in usuarios %}
+                  <tr>
+                     <td>{{ usu.nombre }}</td>
+                     <td>
+                        {% if usu.rol == "coordinador" %}Coordinador
+                        {% elseif usu.rol == "socio" %}Socio
+                        {% else %}{{ usu.rol }}
+                        {% endif %}
+                     </td>
+                     <td>{% if usu.idAtl is null %}
+                        <em class="text-muted">Ninguno</em> 
+                     {% else %}
+                        <a href="{{ path("ver_atleta", {"id": usu.idAtl.id}) }}">{{ usu.idAtl.apellidos }}, {{ usu.idAtl.nombre }}</a>
+                     {% endif %}</td>
+                     <td>
+                        <div class="btn-group visible-xs-block">
+                           <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
+                           <ul class="dropdown-menu pull-right">
+                              <li><a href="#" onClick="showModal('ediUSU', '{{ usu.nombre }}', null, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                              <li><a class="bg-danger" href="#" onClick="showModal('delUSU', '{{ usu.nombre }}', null, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                           </ul>
+                        </div>
+                        <div class="hidden-xs">
+                           <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediUSU', '{{ usu.nombre }}', null, null)"><span class="glyphicon glyphicon-edit"></span></button>
+                           <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delUSU', '{{ usu.nombre }}', null, null)"><span class="glyphicon glyphicon-remove"></span></button>
+                        </div>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+

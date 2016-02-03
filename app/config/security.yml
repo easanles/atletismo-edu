@@ -1,17 +1,23 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User: plaintext #Para borrar
+        Easanles\AtletismoBundle\Entity\Usuario:
+            algorithm: bcrypt
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        in_memory:
+        in_memory:  #Para borrar
             memory:
                 users:
                     user:  { password: userpass, roles: [ 'ROLE_USER' ] }
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        db_provider:
+            entity:
+                class: EasanlesAtletismoBundle:Usuario
+                property: nombre
 
     firewalls:
         dev:
@@ -20,7 +26,8 @@ security:
             
         secured_area:
             anonymous: ~
-            provider: in_memory
+#            provider: in_memory  #Para borrar
+            provider: db_provider
             form_login:
                 login_path: /login
                 check_path: /login_check

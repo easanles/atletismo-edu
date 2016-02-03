@@ -14,6 +14,7 @@ use Easanles\AtletismoBundle\Entity\Inscripcion;
 use Easanles\AtletismoBundle\Entity\Participacion;
 use Easanles\AtletismoBundle\Entity\Ronda;
 use Easanles\AtletismoBundle\Entity\Intento;
+use Easanles\AtletismoBundle\Entity\Usuario;
 
 class Helpers {
 	
@@ -674,15 +675,15 @@ class Helpers {
 		->setLxogade("ABC124556");
 		$em->persist($atl);
 		
-		$atl = new Atleta();
-		$atl->setNombre("Nombre6")
+		$atl6 = new Atleta();
+		$atl6->setNombre("Nombre6")
 		->setApellidos("ApellidoA ApellidoB")
 		->setSexo(false)
 		->setFnac(new \DateTime("1976/12/01"))
 		->setNick("Nick6")
 		->setDni("5234567A")
 		->setLfga("AG-4234567");
-		$em->persist($atl);
+		$em->persist($atl6);
 		
 		$atl = new Atleta();
 		$atl->setNombre("Nombre7")
@@ -699,6 +700,14 @@ class Helpers {
 		->setFnac(new \DateTime("2012/07/22"))
 		->setDni("9999999Z");
 		$em->persist($atl);
+		
+		$atl9 = new Atleta();
+		$atl9->setNombre("Nombre9")
+		->setApellidos("Otros Apellidos")
+		->setSexo(false)
+		->setFnac(new \DateTime("1981/04/18"))
+		->setDni("63526420F");
+		$em->persist($atl9);
 		
 		$int = new Intento();
 		$int->setIdAtl($atl1)
@@ -717,6 +726,34 @@ class Helpers {
 		->setOrigen("test")
 		->setMarca(3.40);
 		$em->persist($int);
+		
+		$usu = new Usuario();
+		$usu->setNombre("usuario6")
+		->setContra('$2a$04$H5G9G/lmx5QLL/Zm3fOyTu92bPmI4/RKnyZrWH48EXJRcA6qXh1yO')
+		->setRol("socio")
+		->setIdAtl($atl6);
+		$em->persist($usu);
+		
+		$usu = new Usuario();
+		$usu->setNombre("user")
+		->setContra('$2a$04$WT1Ed.63TVkKNpPMQZivquS6e4NJlTTo9HRxbrYPYnCV/NqeVlQDa')
+		->setRol("socio")
+		->setIdAtl(null);
+		$em->persist($usu);
+		
+		$usu = new Usuario();
+		$usu->setNombre("coordinador")
+		->setContra('$2a$04$9jIBy4sJT/qCpXNcJYHOMek..3ZA.EIqF7zrzYIzQrHwaTjUwvt9q')
+		->setRol("coordinador")
+		->setIdAtl($atl9);
+		$em->persist($usu);
+
+		$usu = new Usuario();
+		$usu->setNombre("admin")
+		->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')
+		->setRol("coordinador")
+		->setIdAtl(null);
+		$em->persist($usu);
 		
 		$em->flush();
 	}

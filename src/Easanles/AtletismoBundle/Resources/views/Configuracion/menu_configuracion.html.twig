@@ -3,6 +3,8 @@
 
 {% block title %}Configuración de la aplicación{% endblock %}
 
+{% block onload %}toggleContent('usu'){% endblock %}
+
 {% block navbar %}
       <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
       <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
@@ -36,12 +38,27 @@
 {% block container %}
    <h1 id="container_title" class="row page-header">Configuración de la aplicación</h1>
    <ul id="config-nav" class="nav nav-tabs">
+      <li id="navtab-usu" role="presentation" onClick="toggleContent('usu')"><a class="clickable">Usuarios</a></li>
       <li id="navtab-tp" role="presentation" onClick="toggleContent('tp')"><a class="clickable">Tipos de pruebas</a></li>
       <li id="navtab-cat" role="presentation" onClick="toggleContent('cat')"><a class="clickable">Categorías</a></li>
       <li id="navtab-aj" role="presentation" onClick="toggleContent('aj')"><a class="clickable">Ajustes</a></li>
       <li id="navtab-comm" role="presentation" onClick="toggleContent('comm')"><a class="clickable">Comandos</a></li>
    </ul>
    <div class="config-content">
+      <div id="tabcontent-usu" class="tabcontent" style="display:none">
+         <div class="row">
+            <button type="button" class="btn btn-primary" onClick="showModal('newUSU', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
+            <button class="btn btn-default updater hidden" onClick="loadViews('usu')"><span class="glyphicon glyphicon-refresh spinning"></span></button>
+            <div class="input-group col-xs-6 col-sm-4 pull-right">
+               <input disabled id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
+               <div class="input-group-btn"><button disabled id="search-button" class="btn btn-default" type="button" onClick="usuSearch()"><span class="glyphicon glyphicon-search"></span></button></div>
+            </div>
+         </div>
+         <div class="row">
+            <table id="usu-table" class="table table-hover table-bordered table-condensed table-striped table-responsive"></table>
+         </div>
+      </div>
+   
       <div id="tabcontent-tp" class="tabcontent" style="display:none">
          <div class="row">
             <button type="button" class="btn btn-primary" onClick="showModal('newTPR', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>

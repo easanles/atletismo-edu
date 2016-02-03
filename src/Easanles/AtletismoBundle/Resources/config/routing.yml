@@ -212,7 +212,23 @@ resultados_tabla:
 resultados_intentos:
    path: /admin/informes/resultados/intentos
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:mostrarIntentos", rol: "admin"}
-
+   
+   
+#======================USUARIOS======================
+listado_usuarios:
+   path: /admin/configuracion/usuario
+   defaults: {_controller: "EasanlesAtletismoBundle:Usuario:listadoUsuario"}
+crear_usuario:
+   path: /admin/configuracion/usuario/nuevo
+   defaults: {_controller: "EasanlesAtletismoBundle:Usuario:crearUsuario"}
+borrar_usuario:
+   path: /admin/configuracion/usuario/borrar
+   defaults: {_controller: "EasanlesAtletismoBundle:Usuario:borrarUsuario"}
+editar_usuario:
+   path: /admin/configuracion/usuario/editar/{id}
+   defaults: {_controller: "EasanlesAtletismoBundle:Usuario:editarUsuario"}
+   requirements:
+      id: \d+
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion
@@ -240,7 +256,7 @@ configuracion_asseticdump:
     
     
 #####################################################
-###################### USUARIOS #####################
+################# USUARIOS NORMALES #################
 #####################################################
       
       

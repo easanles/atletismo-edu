@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Table(name="cfg")
  * @ORM\Entity
  */
-class Config
-{
+class Config {
+	
     /**
      * @var string
      * @ORM\Column(name="clavecfg", type="string", length=255)

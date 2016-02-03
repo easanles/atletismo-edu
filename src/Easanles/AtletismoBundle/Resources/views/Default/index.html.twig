@@ -85,11 +85,11 @@
                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Iniciar sesión <span class="caret"></span></a>
                   <div class="dropdown-menu">
-                     <form id="login-form" action="{{ path('login_check') }}" method="post">
-                        <input class="form-control input-sm" type="text" id="username" name="_username" placeholder="Usuario">
-                        <input class="form-control input-sm" type="password" id="password" name="_password" placeholder="Contraseña">
+                     <form id="login-form" action="{{ path('login_check') }}" method="post" style="width: 15em">
+                        <input class="form-control" type="text" id="username" name="_username" placeholder="Usuario">
+                        <input class="form-control" type="password" id="password" name="_password" placeholder="Contraseña">
                         <div class="checkbox"><label><input type="checkbox" id="remember_me" name="_remember_me"><small>Recordarme</small></label></div>
-                        <button class="btn btn-sm btn-primary btn-block" type="submit">Entrar</button>
+                        <button class="btn btn-primary btn-block" type="submit">Entrar</button>
                         <p><small class="muted-text">
                            user: "userpass"<br>
                            admin: "adminpass"
