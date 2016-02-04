@@ -9,10 +9,9 @@ use Easanles\AtletismoBundle\Helpers\Helpers;
 
 class AtletaRepository extends EntityRepository {
 	public function findAllOrdered()	{
-		$result = $this->getEntityManager()
+		return $this->getEntityManager()
 		->createQuery('SELECT atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade FROM EasanlesAtletismoBundle:Atleta atl ORDER BY atl.fnac DESC')
 		->getResult();
-		return $result;
 	}
 	
 	public function searchByParameters($fnacIni, $fnacFin, $string) {	
@@ -47,6 +46,12 @@ class AtletaRepository extends EntityRepository {
 		->getQuery()->getResult();
 		
 		return $result;
+	}
+	
+	public function findBloques(){
+		return $this->getEntityManager()
+		->createQuery('SELECT atl.bloque FROM EasanlesAtletismoBundle:Atleta atl WHERE atl.bloque IS NOT NULL GROUP BY atl.bloque')
+		->getResult();
 	}
 	
 }

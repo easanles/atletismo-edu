@@ -140,12 +140,29 @@ function addAutoComplete(selector, data){
 	        var choices = autoCompleteData;
 	        var matches = [];
 	        for (i=0; i<choices.length; i++)
-	            if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
+	              if (~choices[i].toLowerCase().indexOf(term))
+	                    matches.push(choices[i]);
 	        suggest(matches);
 	    }
- });
+    });
 }
 	
+function checkIdAtl(path, id){
+	$.getJSON(path + "?id=" + id, function(data, status){
+	   if (status == "success"){
+	      if (data.success == true){
+		     $("#idatl-help").attr("class", "text-info");
+	         $("#idatl-help").html("<p style=\"margin-top: 5px\"><span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span> " + data.atl + "</p>");
+	      } else {
+    	     $("#idatl-help").attr("class", "text-danger");
+	         $("#idatl-help").html("<p style=\"margin-top: 5px\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> " + data.atl + "</p>");
+	      }
+	   } else {
+	      $("#idatl-help").html("Error");
+	   }
+	});
+}
+
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()

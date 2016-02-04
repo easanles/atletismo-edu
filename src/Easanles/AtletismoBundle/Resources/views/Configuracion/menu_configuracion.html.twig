@@ -49,9 +49,14 @@
          <div class="row">
             <button type="button" class="btn btn-primary" onClick="showModal('newUSU', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
             <button class="btn btn-default updater hidden" onClick="loadViews('usu')"><span class="glyphicon glyphicon-refresh spinning"></span></button>
-            <div class="input-group col-xs-6 col-sm-4 pull-right">
+            <div class="input-group col-xs-5 col-sm-4 pull-right">
                <input disabled id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
                <div class="input-group-btn"><button disabled id="search-button" class="btn btn-default" type="button" onClick="usuSearch()"><span class="glyphicon glyphicon-search"></span></button></div>
+            </div>
+            <div class="col-xs-4 col-sm-3 pull-right">
+               <select class="form-control">
+                  <option>Todos</option>
+               </select>
             </div>
          </div>
          <div class="row">

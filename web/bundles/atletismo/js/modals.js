@@ -232,6 +232,20 @@ function showModal(type, data1, data2, data3){
    			  }	
    	       });
        } break;
+       
+       case ("newUSU"): { //Nuevo usuario
+    	   $('#dialog-label').html("Nuevo usuario");
+    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   $.getJSON("./configuracion/usuario/nuevo", function(data, status){
+    		  if (status == "success"){
+    		     $("#dialog-body").html(data.message);
+    			 $('[data-toggle="tooltip"]').tooltip()
+    	      } else {
+    			 $("#dialog-body").html("Error al cargar datos");
+    	      }	
+    	   });
+       } break;
 	   
 	   default: break;
 	}

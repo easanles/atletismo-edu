@@ -113,7 +113,6 @@ class ConfiguracionController extends Controller {
     	   		DELETE FROM `par`;
     	   		DELETE FROM `ins`;
     	   		DELETE FROM `int_`;
-    	   		DELETE FROM `usu`;
     	   		DELETE FROM `atl`;
     	   		DELETE FROM `ron`;
     	   		DELETE FROM `pru`;

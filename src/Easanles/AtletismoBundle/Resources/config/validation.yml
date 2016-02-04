@@ -174,5 +174,15 @@ Easanles\AtletismoBundle\Entity\Inscripcion:
 
 Easanles\AtletismoBundle\Entity\Intento:
   properties:
-
-           
+  
+Easanles\AtletismoBundle\Entity\Usuario:
+  properties:
+     nombre:
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     contra:
+        - NotBlank: 
+           message: Este campo no debe estar en blanco
+     rol:
+        - NotNull: 
+           message: Seleccione un rol         

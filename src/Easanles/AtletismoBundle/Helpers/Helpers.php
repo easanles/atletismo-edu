@@ -158,6 +158,12 @@ class Helpers {
 		$catAsig = new Config();
 		$catAsig->setClave("catAsig")->setValor("year"); //Asignacion al inicio del año
 		$em->persist($catAsig);
+		$defaultUsu = new Usuario();
+		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.
+		   ->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')
+		   ->setRol("coordinador")
+		   ->setIdAtl(null);
+		$em->persist($defaultUsu);
 		$em->flush();
 	}
 	
@@ -593,7 +599,7 @@ class Helpers {
 		->setSexo(false)
 		->setFnac(new \DateTime("1990/07/22"))
 		->setNick("Nick1")
-		->setDni("1234567A")
+		->setDni("12345678A")
 		->setLfga("AG-1234567")
 		->setLxogade("ABC123456");
 		$em->persist($atl1);
@@ -613,7 +619,7 @@ class Helpers {
 		->setSexo(false)
 		->setFnac(new \DateTime("1988/07/22"))
 		->setNick("Nick2")
-		->setDni("1234568B")
+		->setDni("12345689B")
 		->setLfga("AG-1234568")
 		->setLxogade("ABC123457");
 		$em->persist($atl);
@@ -649,7 +655,7 @@ class Helpers {
 		->setSexo(true)
 		->setFnac(new \DateTime("1972/07/22"))
 		->setNick("Nick3")
-		->setDni("1234569C")
+		->setDni("12345698C")
 		->setLfga("AG-1234569");
 		$em->persist($atl);
 		
@@ -659,7 +665,7 @@ class Helpers {
 		->setSexo(false)
 		->setFnac(new \DateTime("1994/07/22"))
 		->setNick("Nick4")
-		->setDni("1234242C")
+		->setDni("12342424C")
 		->setLfga("AG-1233426")
 		->setLxogade("ABC123454");
 		$em->persist($atl);
@@ -670,7 +676,7 @@ class Helpers {
 		->setSexo(true)
 		->setFnac(new \DateTime("1996/07/22"))
 		->setNick("Nick5")
-		->setDni("1234560G")
+		->setDni("12345600G")
 		->setLfga("AG-1764567")
 		->setLxogade("ABC124556");
 		$em->persist($atl);
@@ -681,7 +687,7 @@ class Helpers {
 		->setSexo(false)
 		->setFnac(new \DateTime("1976/12/01"))
 		->setNick("Nick6")
-		->setDni("5234567A")
+		->setDni("52345675A")
 		->setLfga("AG-4234567");
 		$em->persist($atl6);
 		
@@ -690,7 +696,7 @@ class Helpers {
 		->setApellidos("ApellidoA ApellidoB")
 		->setSexo(true)
 		->setFnac(new \DateTime("2006/07/22"))
-		->setDni("9234567A");
+		->setDni("92345678A");
 		$em->persist($atl);
 		
 		$atl = new Atleta();
@@ -698,7 +704,7 @@ class Helpers {
 		->setApellidos("ApellidoA ApellidoB")
 		->setSexo(false)
 		->setFnac(new \DateTime("2012/07/22"))
-		->setDni("9999999Z");
+		->setDni("99999999Z");
 		$em->persist($atl);
 		
 		$atl9 = new Atleta();
@@ -746,13 +752,6 @@ class Helpers {
 		->setContra('$2a$04$9jIBy4sJT/qCpXNcJYHOMek..3ZA.EIqF7zrzYIzQrHwaTjUwvt9q')
 		->setRol("coordinador")
 		->setIdAtl($atl9);
-		$em->persist($usu);
-
-		$usu = new Usuario();
-		$usu->setNombre("admin")
-		->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')
-		->setRol("coordinador")
-		->setIdAtl(null);
 		$em->persist($usu);
 		
 		$em->flush();

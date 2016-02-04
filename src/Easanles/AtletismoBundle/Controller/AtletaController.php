@@ -10,6 +10,7 @@ use Easanles\AtletismoBundle\Form\Type\AtlType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Entity\Categoria;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AtletaController extends Controller {
 	
@@ -49,6 +50,12 @@ class AtletaController extends Controller {
 	}
 	
 	public function crearAtletaAction(Request $request) {
+		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$listaBloques = $repository->findBloques();
+		$bloques = array();
+		foreach($listaBloques as $bloque){
+			$bloques[] = $bloque['bloque'];
+		}
 		$atl = new Atleta();
 		$form = $this->createForm(new AtlType(), $atl);
 	
@@ -56,8 +63,6 @@ class AtletaController extends Controller {
 		 
 		if ($form->isValid()) {
 			try {
-				$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-					
 				$query = $repository->findOneBy(array(
 						'apellidos' => $atl->getApellidos(),
 				      'nombre' => $atl->getNombre()
@@ -79,7 +84,7 @@ class AtletaController extends Controller {
 				}
 				
 				$mensaje = "";
-				$parametros = array('mode' => "new");
+				$parametros = array('mode' => "new", "bloques" => $bloques);
 				$doWarn = false;
 				$dni = $atl->getDni();
 				if ($dni != null){
@@ -127,7 +132,7 @@ class AtletaController extends Controller {
 		}
 	
 		return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-				array('form' => $form->createView(), 'mode' => "new"));
+				array('form' => $form->createView(), 'mode' => "new", 'bloques' => $bloques));
 	}
 	
 	public function verAtletaAction($id){
@@ -171,6 +176,11 @@ class AtletaController extends Controller {
 	
 	public function editarAtletaAction(Request $request, $id){
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+	   $listaBloques = $repository->findBloques();
+		$bloques = array();
+		foreach($listaBloques as $bloque){
+			$bloques[] = $bloque['bloque'];
+		}
 		$atl = $repository->find($id);
 	
 		if ($atl != null) {
@@ -218,7 +228,7 @@ class AtletaController extends Controller {
 		         }
 		         
 				$mensaje = "";
-				$parametros = array('mode' => "edit", "editando" => $editando);
+				$parametros = array('mode' => "edit", "editando" => $editando, "bloques" => $bloques);
 				$doWarn = false;
 				$dni = $atl->getDni();
 				if (($dni != null) && !($prevDni == $dni)){
@@ -266,6 +276,23 @@ class AtletaController extends Controller {
 		   }
 		}
 		return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-				array('form' => $form->createView(), 'mode' => "edit", "editando" => $editando));
+				array('form' => $form->createView(), 'mode' => "edit", "editando" => $editando, "bloques" => $bloques));
+	}
+	
+	public function buscarIdAction(Request $request){
+		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$idAtl = $request->query->get('id');
+		$atl = $repoAtl->find($idAtl);
+		if ($atl != null){
+	      return new JsonResponse([
+    			'success' => true,
+    			'atl' => $atl->getApellidos().", ".$atl->getNombre()
+    	   ]);
+		} else {
+			return new JsonResponse([
+					'success' => false,
+					'atl' => "No encontrado"
+			]);
+		}
 	}
 }

@@ -118,26 +118,26 @@ $(document).ready(function(){
    $("#btn_poblarbd").click(function(){
       icon = $(this).find("span");
       icon.addClass("spinning");
-         sendAction("./configuracion/poblarbd", icon);
+      sendAction("./configuracion/poblarbd", icon);
    });
 
-    $("#btn_borrarbd").click(function(){
-       icon = $(this).find("span");
+   $("#btn_borrarbd").click(function(){
+      icon = $(this).find("span");
       icon.addClass("spinning");
-       sendAction("./configuracion/borrarbd", icon);
-    });
+      sendAction("./configuracion/borrarbd", icon);
+   });
    
-    $("#btn_rehacerbd").click(function(){
-       icon = $(this).find("span");
+   $("#btn_rehacerbd").click(function(){
+      icon = $(this).find("span");
       icon.addClass("spinning");
-       sendAction("./configuracion/rehacerbd", icon);
-    });
+      sendAction("./configuracion/rehacerbd", icon);
+   });
     
-    $("#btn_limpiarcache").click(function(){
-       icon = $(this).find("span");
+   $("#btn_limpiarcache").click(function(){
+      icon = $(this).find("span");
       icon.addClass("spinning");
-       sendAction("./configuracion/limpiarcache", icon);
-    });
+      sendAction("./configuracion/limpiarcache", icon);
+   });
     
     $("#btn_asseticdump").click(function(){
        //icon = $(this).find("span");

@@ -1,0 +1,46 @@
+
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+
+   <div id="data_form" class="row">
+
+{% if mode == "new" %}
+{{ form_start(form, {'action': path('crear_usuario')}) }}
+{% elseif mode == "edit" %}
+{{ form_start(form, {'action': path('editar_usuario', {'id': id})}) }}
+{% endif %}
+
+    {{ form_errors(form) }}
+    
+       <div class="col-xs-12 col-sm-6">
+          <div class="form_row">
+             {{ form_row(form.nombre) }}
+          </div>
+          <div class="form_row">
+             {{ form_row(form.contra) }}
+          </div>
+       </div>
+       <div class="col-xs-12 col-sm-6">
+          <div class="form_row">
+             {{ form_row(form.rol) }}
+          </div>
+          <div class="form_row">
+             {{ form_label(form.idAtl) }}
+             <div class="input-group">
+                {{ form_widget(form.idAtl) }}
+                <span class="input-group-btn">
+                   <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Comprobar" onClick="checkIdAtl('{{ path("comprobar_id_atleta")}}', $('#usu_idAtl').val())"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </span>
+             </div>
+             {{ form_errors(form.idAtl) }}
+             <div id="idatl-help">
+                <p class="help-block">Comprueba el identificador de los atletas en el <a href="{{ path("listado_atletas") }}" target="_blank">Listado de Atletas</a></p>
+             </div>
+          </div>
+       </div>
+    
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>

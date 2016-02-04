@@ -221,6 +221,9 @@ listado_usuarios:
 crear_usuario:
    path: /admin/configuracion/usuario/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Usuario:crearUsuario"}
+comprobar_id_atleta:
+   path: /admin/configuracion/usuario/comprobarid
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:buscarId"}
 borrar_usuario:
    path: /admin/configuracion/usuario/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:Usuario:borrarUsuario"}
@@ -229,6 +232,7 @@ editar_usuario:
    defaults: {_controller: "EasanlesAtletismoBundle:Usuario:editarUsuario"}
    requirements:
       id: \d+
+
 
 #====================CONFIGURACION===================
 configuracion: #portada configuracion
