@@ -113,6 +113,7 @@ class ConfiguracionController extends Controller {
     	   		DELETE FROM `par`;
     	   		DELETE FROM `ins`;
     	   		DELETE FROM `int_`;
+    	   		DELETE FROM `usu` WHERE usu.nombreusu NOT LIKE "admin";
     	   		DELETE FROM `atl`;
     	   		DELETE FROM `ron`;
     	   		DELETE FROM `pru`;

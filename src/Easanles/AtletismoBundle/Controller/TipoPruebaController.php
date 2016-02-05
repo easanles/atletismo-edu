@@ -77,22 +77,34 @@ class TipoPruebaController extends Controller {
    
    public function borrarTipoPruebaFormatoAction(Request $request){
     	 $id = $request->query->get('i');
-    	 
+    	 if(($id == null) || ($id === "")){
+    	 	return new JsonResponse([
+    	 			'success' => false,
+    	 			'message' => "No se ha recibido el parámetro necesario."
+    	 	]);
+    	 }
     	 $em = $this->getDoctrine()->getManager();
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
     	 $tprf = $repository->find($id);
     	 if ($tprf != null){
-    	    $em->remove($tprf);
     	    try {
+    	    	 $em->remove($tprf);
     	       $em->flush();
     	    } catch (\Exception $e) {
-    	       return new Response($e->getMessage());
+   			 return new JsonResponse([
+   				 'success' => false,
+   				 'message' => $e->getMessage()
+   			 ]);
     	    }
-    	    return $this->redirect($this->generateUrl('configuracion'));
+    	    return new JsonResponse([
+   		    'success' => true,
+   		    'message' => "OK"
+   	    ]);
     	 } else {
-       	 $response = new Response('No existe el tipo de prueba con el identificador "'.$id.'" <a href="../">Volver</a>');
-       	 $response->headers->set('Refresh', '2; url=../');
-          return $response;
+          return new JsonResponse([
+          		'success' => false,
+          		'message' => "No existe el tipo de prueba con el identificador \"".$id."\"."
+          ]);
        }
     }
     

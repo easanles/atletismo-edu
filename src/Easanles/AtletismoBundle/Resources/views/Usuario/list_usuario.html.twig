@@ -17,7 +17,7 @@
                      <td>{% if usu.idAtl is null %}
                         <em class="text-muted">Ninguno</em> 
                      {% else %}
-                        <a href="{{ path("ver_atleta", {"id": usu.idAtl.id}) }}">{{ usu.idAtl.apellidos }}, {{ usu.idAtl.nombre }}</a>
+                        <a href="{{ path("ver_atleta", {"id": usu.atl.id}) }}">{{ usu.atl.apellidos }}, {{ usu.atl.nombre }}</a>
                      {% endif %}</td>
                      <td>
                         <div class="btn-group visible-xs-block">

@@ -9,16 +9,12 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
  
 class UsuType extends AbstractType{
+	
+	 private $mode = "";
+	
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
     	    ->add('nombre', 'text', array('label' => 'Nombre de usuario'))
-          ->add('contra', 'repeated', array(
-             'type' => 'password',
-             'invalid_message' => 'Los campos no coinciden',
-             'options' => array('attr' => array('class' => 'password-field')),
-             'required' => true,
-             'first_options'  => array('label' => 'Contraseña'),
-             'second_options' => array('label' => 'Repetir contraseña')))
     	    ->add('rol', 'choice', array(
         		'label' => 'Rol',
             'choices' => array(
@@ -30,6 +26,28 @@ class UsuType extends AbstractType{
     	  				 'label' => 'ID atleta asociado',
     	    		    'mapped' => false,
     	  				 'required' => false));
+    	  if ($this->mode === "new"){
+    	  	  $builder->add('contra', 'repeated', array(
+             'type' => 'password',
+             'invalid_message' => 'Los campos no coinciden',
+             'options' => array('attr' => array('class' => 'password-field')),
+             'required' => true,
+             'first_options'  => array('label' => 'Contraseña'),
+             'second_options' => array('label' => 'Repetir contraseña')));
+    	  } else if ($this->mode === "edit"){
+    	  	  $builder->add('contra', 'repeated', array(
+    	  			'type' => 'password',
+    	  			'invalid_message' => 'Los campos no coinciden',
+    	  			'options' => array('attr' => array('class' => 'password-field')),
+    	  			'required' => false,
+    	  	  		'mapped' => false,
+    	  			'first_options'  => array('label' => 'Cambiar contraseña'),
+    	  			'second_options' => array('label' => 'Repetir contraseña')));
+    	  }
+    }
+    
+    public function __construct($mode) {
+    	 $this->mode = $mode;
     }
  
     public function getName() {

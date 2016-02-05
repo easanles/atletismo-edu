@@ -11,7 +11,7 @@ function showModal(type, data1, data2, data3){
 	   
        case ("newTPR"): { //Nuevo tipo de prueba
     	   $('#dialog-label').html("Nuevo tipo de prueba");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
     	   $.getJSON("./configuracion/tipoprueba/nuevo", function(data, status){
     		  if (status == "success"){
@@ -28,12 +28,12 @@ function showModal(type, data1, data2, data3){
        case ("delTPR"):{ //Borrar tipo de prueba
     	   $('#dialog-label').html("Borrar tipo de prueba");
 		   $("#dialog-body").html("¿Está seguro de borrar el tipo de prueba <strong>" + data1 + "</strong>?");
-		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./configuracion/tipoprueba/borrar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</a>");           
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./configuracion/tipoprueba/borrar?i=" + data2 + "')\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</button>");           
        } break;
        
        case ("ediTPR"): { //Editar tipo de prueba
     	   $('#dialog-label').html("Editar tipo de prueba <small> - " + data1 + "</small>");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
     	   $.getJSON("./configuracion/tipoprueba/editar/" + data2, function(data, status){
   		      if (status == "success"){
@@ -49,7 +49,7 @@ function showModal(type, data1, data2, data3){
        
        case ("newPRU"): { //Nueva prueba
     	   $('#dialog-label').html("Agregar prueba");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./" + data1 + "/nuevo", function(data, status){
    		      if (status == "success"){
@@ -66,7 +66,7 @@ function showModal(type, data1, data2, data3){
        
        case ("ediPRU"): { //Editar prueba
     	   $('#dialog-label').html("Editar prueba");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./" + data1 + "/editar/"+data2, function(data, status){
    		      if (status == "success"){
@@ -89,7 +89,7 @@ function showModal(type, data1, data2, data3){
 	   
        case ("newCAT"): { //Nueva categoria
     	   $('#dialog-label').html("Agregar categoría");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./configuracion/categoria/nuevo", function(data, status){
    		      if (status == "success"){
@@ -102,7 +102,7 @@ function showModal(type, data1, data2, data3){
        
        case ("ediCAT"): { //Editar categoria
     	   $('#dialog-label').html("Editar categoría <small> - " + data1 + "</small>");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./configuracion/categoria/editar/" + data2, function(data, status){
    		      if (status == "success"){
@@ -116,7 +116,7 @@ function showModal(type, data1, data2, data3){
 	   case ("cadCAT"): { //Caducar categoria
     	   $('#dialog-label').html("Caducar categoría");
     	   $("#dialog-body").html("¿Está seguro de marcar como caducada la categoría <strong>" + data1 + "</strong>?");
-		   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"./configuracion/categoria/caducar?i=" + data2 + "\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</a>");           
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./configuracion/categoria/caducar?i=" + data2 + "')\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</button>");           
 	   } break;
 	   
 	   case ("delATL"): { //Borrar atleta
@@ -126,7 +126,7 @@ function showModal(type, data1, data2, data3){
 	   
 	   case ("newPAR"): { //Confirmar participacion
     	   $('#dialog-label').html(data2);
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-bullhorn\"></span> Confirmar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-bullhorn\"></span> Confirmar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./participar?atl=" + data1, function(data, status){
    		      if (status == "success"){
@@ -139,7 +139,7 @@ function showModal(type, data1, data2, data3){
        
 	   case ("ediINS"): { //Editar inscripciones
     	   $('#dialog-label').html("Editar inscripciones");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./inscripciones/editar?atl=" + data1, function(data, status){
    		      if (status == "success"){
@@ -181,7 +181,7 @@ function showModal(type, data1, data2, data3){
        
 	   case ("showINS"): { //Mostrar inscripciones a una prueba
     	   $('#dialog-label').html("Lista de atletas inscritos <small>- " + data2 + "</small>");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span> OK</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span> OK</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./" + data1 + "/listar?pru=" + data3, function(data, status){
    		      if (status == "success"){
@@ -194,7 +194,7 @@ function showModal(type, data1, data2, data3){
        
 	   case ("newINT"): { //Registrar nueva marca (intento)
     	   $('#dialog-label').html("Registrar marcas");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("./marcas/nuevo?ron=" + data1 + "&atl=" + data2, function(data, status){
    		      if (status == "success"){
@@ -221,7 +221,7 @@ function showModal(type, data1, data2, data3){
        
 	   case ("showINT"): { //Historico de intentos del atleta en una ronda
     	   $('#dialog-label').html("Histórico de intentos");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span> OK</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span> OK</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.get("./resultados/intentos?atl=" + data1 + "&ron=" + data2, function(data, status){
    		      if (status == "success"){
@@ -235,7 +235,7 @@ function showModal(type, data1, data2, data3){
        
        case ("newUSU"): { //Nuevo usuario
     	   $('#dialog-label').html("Nuevo usuario");
-    	   $('#dialog-btn').html("<a class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</a>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
     	   $.getJSON("./configuracion/usuario/nuevo", function(data, status){
     		  if (status == "success"){
@@ -247,6 +247,25 @@ function showModal(type, data1, data2, data3){
     	   });
        } break;
 	   
+	   case ("delUSU"): { //Borrar usuario
+    	   $('#dialog-label').html("Borrar usuario");
+    	   $("#dialog-body").html("¿Está seguro de borrar el usuario <strong>" + data1 + "</strong>? Perderá el acceso a la aplicación.");
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./configuracion/usuario/borrar?usu=" + data1 + "')\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</button>");           
+	   } break;
+	   
+       case ("ediUSU"): { //Editar usuario
+    	   $('#dialog-label').html("Editar usuario<small> - " + data1 + "</small>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   $.getJSON("./configuracion/usuario/editar/" + data1, function(data, status){
+    		  if (status == "success"){
+    		     $("#dialog-body").html(data.message);
+    	      } else {
+    			 $("#dialog-body").html("Error al cargar datos");
+    	      }	
+    	   });
+       } break;
+       
 	   default: break;
 	}
 	
@@ -311,7 +330,7 @@ function addListeners(name){
 
 function submitDialogForm(){
 	  var values = {};
-	  form = $('form');
+	  form = $('.modal-dialog form');
 	  $.each( form.serializeArray(), function(i, field) {
 	    values[field.name] = field.value;
 	  });
@@ -324,12 +343,39 @@ function submitDialogForm(){
 	    	if (data.success == false){
 	  	       $('#dialog-body').html(data.message);
 			   addListeners($("#dialog-body").data('listener'));
+  			   $('[data-toggle="tooltip"]').tooltip();
 	    	} else if (data.success == true){
 	    	   $("#modal-dismiss").click();
-	    	   $(".updater").click();
+	    	   $(".updater").each(function(){
+	    		  if ($(this).is(":disabled") == false){
+	    			  $(this).click();
+	    		  } 
+	    	   });
 	    	}
 	    }
 	  });
+}
+
+function submitDialogAction(url){
+   alerthtml_pre = "<div class=\"alert alert-danger\" role=\"alert\"><strong>Error: </strong><span>";
+   alerthtml_pos = "</span></div>";
+   $.ajax({
+      type        : "GET",
+	  url         : url,
+	  success     : function(data) {
+	   	if (data.success == false){
+	       $('#dialog-body').html(alerthtml_pre + data.message + alerthtml_pos);
+	       $("#dialog-btn button").attr("disabled", true);
+		} else if (data.success == true){
+		   $("#modal-dismiss").click();
+    	   $(".updater").each(function(){
+	    	  if ($(this).is(":disabled") == false){
+	    	     $(this).click();
+	    	  } 
+	       });
+    	}
+      }
+   });
 }
 
 

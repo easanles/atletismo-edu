@@ -228,10 +228,8 @@ borrar_usuario:
    path: /admin/configuracion/usuario/borrar
    defaults: {_controller: "EasanlesAtletismoBundle:Usuario:borrarUsuario"}
 editar_usuario:
-   path: /admin/configuracion/usuario/editar/{id}
+   path: /admin/configuracion/usuario/editar/{nombre}
    defaults: {_controller: "EasanlesAtletismoBundle:Usuario:editarUsuario"}
-   requirements:
-      id: \d+
 
 
 #====================CONFIGURACION===================

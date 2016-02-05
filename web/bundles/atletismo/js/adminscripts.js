@@ -5,7 +5,9 @@ function toggleContent(tab){
     
     $("#navtab-" + tab).addClass("active");
     $("#tabcontent-" + tab).css("display", "inline");
+    $(".updater").attr("disabled", true);
     if ((tab == "usu") ||(tab == "tp") || (tab == "cat")){
+        $("#updater-"+tab).attr("disabled", false);
     	loadViews(tab);
     }
 }
