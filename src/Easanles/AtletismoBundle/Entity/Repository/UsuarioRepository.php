@@ -13,4 +13,17 @@ class UsuarioRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function searchByParameter($query) {
+		return $this->getEntityManager()
+		->createQuery('SELECT usu.nombre, usu.rol, IDENTITY(usu.idAtl) as idAtl
+				 FROM EasanlesAtletismoBundle:Usuario usu
+				 LEFT JOIN usu.idAtl atl
+				 WHERE usu.nombre LIKE :query
+				 OR atl.nombre LIKE :query
+				 OR atl.apellidos LIKE :query
+				 ORDER BY usu.rol ASC, usu.nombre ASC')
+	   ->setParameter("query", "%".$query."%")
+		->getResult();
+	}
+	
 }

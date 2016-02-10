@@ -110,7 +110,15 @@ editar_atleta:
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:editarAtleta"}
    requirements:
       id: \d+
-    
+asignar_usuario:
+   path: /admin/atletas/nuevo/usuario
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:asignarUsuario"}
+comprobar_usuario:
+   path: /admin/atleta/editar/{id}/checkusu
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:comprobarUsuario"}
+   requirements:
+      id: \d+
+   
     
 #====================INSCRIPCIONES===================
 listado_inscripciones:

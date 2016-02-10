@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Entity\Categoria;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Easanles\AtletismoBundle\Entity\Usuario;
+use Easanles\AtletismoBundle\Form\Type\UsuType;
 
 class AtletaController extends Controller {
 	
@@ -82,7 +84,6 @@ class AtletaController extends Controller {
 						throw new Exception("Ya existe un atleta con este código de licencia XOGADE");
 					}
 				}
-				
 				$mensaje = "";
 				$parametros = array('mode' => "new", "bloques" => $bloques);
 				$doWarn = false;
@@ -118,15 +119,30 @@ class AtletaController extends Controller {
 					$parametros['warning'] = $mensaje."Confirme la operación volviendo a enviar el formulario";
 					return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig', $parametros);
 				}
-								
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($atl);
-	
 				$em->flush();
+				
+				//Crear y asignar usuario previamente validado
+				if (($form->get('usu_nombre') != null) && ($form->get('usu_nombre') !== "")){
+					$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
+					$checkUsu = $repoUsu->find($form->get('usu_nombre')->getData());
+					if ($checkUsu != null){
+						$usu = new Usuario();
+						$usu->setNombre($form->get('usu_nombre')->getData());
+						$encoder = $this->container->get('security.password_encoder');
+						$encoded = $encoder->encodePassword($usu, $form->get('usu_contra')->getData());
+						$usu->setContra($encoded);
+						$usu->setRol($form->get('usu_rol')->getData());
+						$usu->setIdAtl($atl);
+						$em->persist($usu);
+						$em->flush();
+					}
+				}
 			} catch (\Exception $e) {
 				$exception = $e->getMessage();
 				return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-						array('form' => $form->createView(), 'mode' => "new", 'exception' => $exception));
+						array('form' => $form->createView(), 'mode' => "new", 'bloques' => $bloques, 'exception' => $exception));
 			}
 			return $this->redirect($this->generateUrl('listado_atletas'));
 		}
@@ -197,6 +213,10 @@ class AtletaController extends Controller {
 			if ($atl->getSexo() == false){
 				$form->get("sexo")->setData("0");
 			}
+			if ($atl->getNombreUsu() != null){
+				$form->get("usu_nombre")->setData($atl->getNombreUsu()->getNombre());
+				$form->get("usu_rol")->setData($atl->getNombreUsu()->getRol());
+			}
 			 
 			$form->handleRequest($request);
 			 
@@ -262,11 +282,11 @@ class AtletaController extends Controller {
 					$parametros['warning'] = $mensaje."Confirme la operación volviendo a enviar el formulario";
 					return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig', $parametros);
 				}
-		         
 		         $em = $this->getDoctrine()->getManager();
 			      $em->persist($atl);
-	
 				   $em->flush();
+				   
+				   
 			   } catch (\Exception $e) {
 				   $exception = $e->getMessage();
 				   return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
@@ -295,4 +315,62 @@ class AtletaController extends Controller {
 			]);
 		}
 	}
+	
+	public function asignarUsuarioAction(Request $request){
+	   $usu = new Usuario();
+   	$usu->setRol("socio");
+   	$form = $this->createForm(new UsuType("new", true), $usu);
+   	
+   	$form->handleRequest($request);
+   	 
+   	if ($form->isValid()) {
+   		try {
+   			$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
+   			$checkUsu = $repoUsu->find($usu->getNombre());
+   			if ($checkUsu != null){
+   				throw new Exception("Ya existe el usuario con el nombre \"".$usu->getNombre()."\"");
+   			}
+   		} catch (\Exception $e) {
+   			$exception = $e->getMessage();
+         	return new JsonResponse([
+   		   	'success' => false,
+   		   	'message' => $this->render('EasanlesAtletismoBundle:Atleta:form_usuario.html.twig',
+   		   	      array('form' => $form->createView(), 'mode' => 'new', 'exception' => $exception))->getContent()
+   	      ]);
+   		}
+   		return new JsonResponse([
+   		   	'success' => true,
+   		   	'message' => array(
+   		   			"nombre" => $usu->getNombre(),
+   		   			"contra" => $usu->getContra(),
+   		   			"rol" => $usu->getRol()
+   		   	)
+   	   ]);
+   	}
+      return new JsonResponse([
+   	   	'success' => false,
+   	   	'message' => $this->render('EasanlesAtletismoBundle:Atleta:form_usuario.html.twig',
+   	            array('form' => $form->createView(), 'mode' => 'new'))->getContent()
+      ]);
+   }
+   
+   public function comprobarUsuarioAction($id){
+   	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+   	$atl = $repoAtl->find($id);
+   	$arrayUsu = null;
+   	if ($atl != null){
+   		if ($atl->getNombreUsu() != null){
+   			$arrayUsu = array("nombre" => $atl->getNombreUsu()->getNombre(),
+   					            "rol" => $atl->getNombreUsu()->getRol()
+   			);
+   		}
+   		return new JsonResponse([
+   				'success' => true,
+   				'usu' => $arrayUsu
+   		]);
+   	} else
+      return new JsonResponse([
+   	   	'success' => false
+      ]);
+   }
 }

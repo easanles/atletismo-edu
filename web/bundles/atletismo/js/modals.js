@@ -237,10 +237,14 @@ function showModal(type, data1, data2, data3){
     	   $('#dialog-label').html("Nuevo usuario");
     	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
-    	   $.getJSON("./configuracion/usuario/nuevo", function(data, status){
+    	   $.getJSON(data1, function(data, status){
     		  if (status == "success"){
     		     $("#dialog-body").html(data.message);
     			 $('[data-toggle="tooltip"]').tooltip()
+    			 if (data2 != null){
+    				 $("#usu_idAtl").val(data2);
+    				 $("#usu_idAtl").attr("readonly", true);
+    			 }
     	      } else {
     			 $("#dialog-body").html("Error al cargar datos");
     	      }	
@@ -249,15 +253,33 @@ function showModal(type, data1, data2, data3){
 	   
 	   case ("delUSU"): { //Borrar usuario
     	   $('#dialog-label').html("Borrar usuario");
-    	   $("#dialog-body").html("¿Está seguro de borrar el usuario <strong>" + data1 + "</strong>? Perderá el acceso a la aplicación.");
-		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./configuracion/usuario/borrar?usu=" + data1 + "')\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</button>");           
+    	   $("#dialog-body").html("¿Está seguro de borrar el usuario <strong>" + data2 + "</strong>? Perderá el acceso a la aplicación.");
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('"+ data1 + "?usu=" + data2 + "')\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</button>");           
 	   } break;
 	   
        case ("ediUSU"): { //Editar usuario
-    	   $('#dialog-label').html("Editar usuario<small> - " + data1 + "</small>");
+    	   $('#dialog-label').html("Editar usuario<small> - " + data2 + "</small>");
     	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
-    	   $.getJSON("./configuracion/usuario/editar/" + data1, function(data, status){
+    	   $.getJSON(data1 + data2, function(data, status){
+    		  if (status == "success"){
+    		     $("#dialog-body").html(data.message);
+    			 $('[data-toggle="tooltip"]').tooltip()
+    			 if (data3 != null){
+    				 $("#usu_idAtl").val(data3);
+    				 $("#usu_idAtl").attr("readonly", true);
+    			 }
+    	      } else {
+    			 $("#dialog-body").html("Error al cargar datos");
+    	      }	
+    	   });
+       } break;
+       
+       case ("asigUSU"): { //Asignar usuario a un nuevo atleta desde el formulario de atletas
+    	   $('#dialog-label').html(data1);
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"updateForm('atl')\"><span class=\"glyphicon glyphicon-ok\"></span> Aceptar</button>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   $.getJSON("./nuevo/usuario", function(data, status){
     		  if (status == "success"){
     		     $("#dialog-body").html(data.message);
     	      } else {
@@ -376,6 +398,42 @@ function submitDialogAction(url){
     	}
       }
    });
+}
+
+//funcion para modificar datos de un formulario desde otro formulario
+function updateForm(formName){
+	  var values = {};
+	  form = $('.modal-dialog form');
+	  $.each( form.serializeArray(), function(i, field) {
+	    values[field.name] = field.value;
+	  });
+	 
+	  $.ajax({
+	    type        : form.attr( 'method' ),
+	    url         : form.attr( 'action' ),
+	    data        : values,
+	    success     : function(data) {
+	    	if (data.success == false){
+	  	       $('#dialog-body').html(data.message);
+	    	} else if (data.success == true){
+	    	   switch (formName){
+	    		   case("atl"): {
+	    	          $('#atl_usu_nombre').val(data.message.nombre);
+	    	          $('#atl_usu_contra').val(data.message.contra);
+	    	          $('#atl_usu_rol').val(data.message.rol);
+	    	          html = data.message.nombre;
+	    	          if (data.message.rol === "coordinador"){
+		    	          html = html + " <strong class=\"text-info\">Coordinador</strong>";
+	    	          }
+	    	          $('#usu_nombre_display').html(html);
+	    	          $('#clear_usu').removeClass("hidden");
+	    		   } break;
+	    		   default: break;
+	    	   }	
+	    	   $("#modal-dismiss").click();
+	    	}
+	    }
+	  });
 }
 
 

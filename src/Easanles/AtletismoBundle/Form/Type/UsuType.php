@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormEvent;
 class UsuType extends AbstractType{
 	
 	 private $mode = "";
+	 private $newAtl = false;
 	
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
@@ -21,11 +22,13 @@ class UsuType extends AbstractType{
                'socio' => 'Socio',
                'coordinador' => 'Coordinador (control total)'
              ),
-        		'expanded' => true))
-    	    ->add('idAtl', 'text', array(
-    	  				 'label' => 'ID atleta asociado',
-    	    		    'mapped' => false,
-    	  				 'required' => false));
+        		'expanded' => true));
+    	  if ($this->newAtl == false){
+    	  	  $builder->add('idAtl', 'text', array(
+    	  			'label' => 'ID atleta asociado',
+    	  			'mapped' => false,
+    	  			'required' => false));
+    	  }
     	  if ($this->mode === "new"){
     	  	  $builder->add('contra', 'repeated', array(
              'type' => 'password',
@@ -46,8 +49,9 @@ class UsuType extends AbstractType{
     	  }
     }
     
-    public function __construct($mode) {
+    public function __construct($mode, $newAtl) {
     	 $this->mode = $mode;
+    	 $this->newAtl = $newAtl;
     }
  
     public function getName() {

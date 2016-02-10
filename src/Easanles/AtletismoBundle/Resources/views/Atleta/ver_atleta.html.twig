@@ -50,7 +50,7 @@
                <tr><td><strong>Nacionalidad:</strong></td><td colspan="2">{{ atl.nacion }}</td><td><strong>Sexo:</strong></td><td colspan="2">{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td></tr>
                <tr><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
-               <tr><td><strong>Email de contacto:</strong></td><td colspan="5"><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td></tr>
+               <tr><td><strong>Email de contacto:</strong></td><td colspan="2"><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td><td><strong>Usuario:</strong></td><td colspan="2">{% if atl.nombreUsu == null %}<em class="text-muted">Ninguno</em>{% else %}{{ atl.nombreUsu.nombre }}{% if atl.nombreUsu.rol == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}{% endif %}</td></tr>
                <tr><td colspan="6"><strong>Notas:</strong></td></tr>
                <tr><td colspan="6">{{ atl.notas|nl2br }}</td></tr>
             </tbody>
@@ -68,7 +68,7 @@
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td></tr>
                <tr><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td></tr>
                <tr><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
-               <tr><td><strong>Email:</strong></td><td colspan="3"><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td></tr>
+               <tr><td><strong>Email:</strong></td><td><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td><td><strong>Usuario:</strong></td><td>{% if atl.nombreUsu == null %}<em class="text-muted">Ninguno</em>{% else %}{{ atl.nombreUsu.nombre }}{% if atl.nombreUsu.rol == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}{% endif %}</td></tr>
                <tr><td colspan="4"><strong>Notas:</strong></td></tr>
                <tr><td colspan="4">{{ atl.notas|nl2br }}</td></tr>
             </tbody>

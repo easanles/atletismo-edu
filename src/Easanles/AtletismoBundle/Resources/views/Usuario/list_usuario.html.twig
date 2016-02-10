@@ -23,13 +23,13 @@
                         <div class="btn-group visible-xs-block">
                            <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                            <ul class="dropdown-menu pull-right">
-                              <li><a href="#" onClick="showModal('ediUSU', '{{ usu.nombre }}', null, null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
-                              <li><a class="bg-danger" href="#" onClick="showModal('delUSU', '{{ usu.nombre }}', null, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                              <li><a href="#" onClick="showModal('ediUSU', './configuracion/usuario/editar/', '{{ usu.nombre }}', null)"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
+                              <li><a class="bg-danger" href="#" onClick="showModal('delUSU', './configuracion/usuario/borrar', '{{ usu.nombre }}', null)"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                            </ul>
                         </div>
                         <div class="hidden-xs">
-                           <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediUSU', '{{ usu.nombre }}', null, null)"><span class="glyphicon glyphicon-edit"></span></button>
-                           <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delUSU', '{{ usu.nombre }}', null, null)"><span class="glyphicon glyphicon-remove"></span></button>
+                           <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediUSU', './configuracion/usuario/editar/', '{{ usu.nombre }}', null)"><span class="glyphicon glyphicon-edit"></span></button>
+                           <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delUSU', './configuracion/usuario/borrar', '{{ usu.nombre }}', null)"><span class="glyphicon glyphicon-remove"></span></button>
                         </div>
                      </td>
                   </tr>

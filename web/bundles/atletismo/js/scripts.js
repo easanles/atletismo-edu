@@ -163,6 +163,42 @@ function checkIdAtl(path, id){
 	});
 }
 
+function clearUsu(){
+    $('#atl_usu_nombre').val("");
+    $('#atl_usu_contra').val("");
+    $('#atl_usu_rol').val("");
+    $('#usu_nombre_display').html("<em class=\"text-muted\">Ninguno</em>");
+    $('#clear_usu').addClass("hidden");
+}
+
+function updateUsuRow(id){
+	$.getJSON("./" + id + "/" + "checkusu", function(data, status){
+       if (status == "success"){
+	      if (data.success == true){
+	    	  if (data.usu != null){
+	    		  nombreHTML = data.usu.nombre;
+	    		  if (data.usu.rol === "coordinador"){
+	    			  nombreHTML = nombreHTML + " <strong class=\"text-info\">Coordinador</strong>";
+	    		  }
+		    	  $("#usu_nombre_display").html(nombreHTML);
+		    	  $("#asig_usu").addClass("hidden");
+		    	  $("#del_usu").removeClass("hidden");
+		    	  $("#edi_usu").removeClass("hidden");
+	    	  } else {
+		    	  $("#usu_nombre_display").html("<em class=\"text-muted\">Ninguno</em>");
+		    	  $("#asig_usu").removeClass("hidden");
+		    	  $("#del_usu").addClass("hidden");
+		    	  $("#edi_usu").addClass("hidden");
+	    	  } 
+	      } else {
+	    	  $("#usu_nombre_display").html("No existe el atleta")
+	      }
+	   } else {
+          $("#usu_nombre_display").html("Error");
+	   }
+	});
+}
+
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()

@@ -12,9 +12,14 @@ use Easanles\AtletismoBundle\Form\Type\UsuType;
 
 class UsuarioController extends Controller {
     
-   public function listadoUsuarioAction() {
+   public function listadoUsuarioAction(Request $request) {
    	$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
-   	$usuarios = $repoUsu->findAllOrdered();
+   	$query = $request->query->get('q');
+   	if (($query != null) && ($query !== "")){
+   		$usuarios = $repoUsu->searchByParameter($query);
+   	} else {
+   		$usuarios = $repoUsu->findAllOrdered();
+   	}
    	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
    	foreach($usuarios as $key => $usu){
    		if ($usu['idAtl'] != null){
@@ -29,7 +34,7 @@ class UsuarioController extends Controller {
    public function crearUsuarioAction(Request $request) {
    	$usu = new Usuario();
    	$usu->setRol("socio");
-   	$form = $this->createForm(new UsuType("new"), $usu);
+   	$form = $this->createForm(new UsuType("new", false), $usu);
    	
    	$form->handleRequest($request);
    	 
@@ -126,7 +131,7 @@ class UsuarioController extends Controller {
    	}
    	$prevNombre = $usu->getNombre();
    	$prevAtl = $usu->getIdAtl();
-   	$form = $this->createForm(new UsuType("edit"), $usu);
+   	$form = $this->createForm(new UsuType("edit", false), $usu);
    	$atl = $usu->getIdAtl();
    	if ($atl != null){
    		$form->get('idAtl')->setData($atl->getId());

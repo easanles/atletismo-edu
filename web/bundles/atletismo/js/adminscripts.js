@@ -1,4 +1,6 @@
 
+var usuPath = "./configuracion/usuario";
+
 function toggleContent(tab){   
     $("#config-nav li").removeClass("active");
     $(".tabcontent").css("display", "none");
@@ -18,7 +20,7 @@ function loadViews(content){
 
    switch (content){
       case "usu": {
-         $.get("./configuracion/usuario", function(data, status){
+         $.get(usuPath, function(data, status){
             if (status == "success"){
                $("#usu-table").html(data);
        		   $('[data-toggle="tooltip"]').tooltip()
@@ -65,6 +67,17 @@ function loadViews(content){
       default: break;
    }
 }
+
+//USUARIOS
+function usuSearch(str){
+	if ((str != null) && (str != "")) {
+	   usuPath = "./configuracion/usuario?q=" + str;
+	} else {
+	   usuPath = "./configuracion/usuario";
+	}
+	loadViews("usu");
+}
+
 
 //CATEGORIAS
 function routeCatData(outdated){

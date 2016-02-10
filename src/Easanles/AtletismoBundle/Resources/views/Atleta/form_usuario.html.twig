@@ -1,0 +1,35 @@
+   <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Se creará el usuario al enviar el formulario del atleta.</div>
+
+   {% if exception is defined %}
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   {% endif %}
+   
+
+   <div id="data_form" class="row">
+
+{% if mode == "new" %}
+{{ form_start(form, {'action': path('asignar_usuario')}) }}
+{% elseif mode == "edit" %}
+{{ form_start(form, {'action': path('editar_usuario', {'nombre': nombre})}) }}
+{% endif %}
+
+    {{ form_errors(form) }}
+    
+       <div class="col-xs-12">
+          <div class="form_row">
+             {{ form_row(form.nombre) }}
+          </div>
+          <div class="row">
+             <div class="form_row col-xs-12 col-sm-6">
+                {{ form_row(form.contra) }}
+             </div>
+             <div class="form_row col-xs-12 col-sm-6">
+                {{ form_row(form.rol) }}
+             </div>
+          </div>
+       </div>
+    
+    {{ form_rest(form) }}
+ 
+{{ form_end(form) }}
+   </div>

@@ -44,6 +44,18 @@ class AtlType extends AbstractType{
         ))
         ->add('notas', 'textarea', array('label' => 'Notas','required' => false))
         ->add('email', 'email', array('label' => 'Email de contacto','required' => false))
+        ->add('usu_nombre', 'hidden', array(
+        		'mapped' => false,
+        		'required' => false
+        ))
+        ->add('usu_contra', 'hidden', array(
+        		'mapped' => false,
+        		'required' => false
+        ))
+        ->add('usu_rol', 'hidden', array(
+        		'mapped' => false,
+        		'required' => false
+        ))
         ->add('warn_dni', 'hidden', array(
         		'required' => false
         ))
