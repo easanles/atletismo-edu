@@ -127,7 +127,7 @@ class AtletaController extends Controller {
 				if (($form->get('usu_nombre') != null) && ($form->get('usu_nombre') !== "")){
 					$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
 					$checkUsu = $repoUsu->find($form->get('usu_nombre')->getData());
-					if ($checkUsu != null){
+					if ($checkUsu == null){
 						$usu = new Usuario();
 						$usu->setNombre($form->get('usu_nombre')->getData());
 						$encoder = $this->container->get('security.password_encoder');
