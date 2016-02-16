@@ -26,4 +26,12 @@ class UsuarioRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	public function countCoordinadores(){
+		$query = $this->getEntityManager()
+		->createQuery('SELECT usu.nombre FROM EasanlesAtletismoBundle:Usuario usu WHERE usu.rol = :rolcoordinador')
+		->setParameter("rolcoordinador", "coordinador")
+		->getResult();
+		return count($query);
+	}
+	
 }

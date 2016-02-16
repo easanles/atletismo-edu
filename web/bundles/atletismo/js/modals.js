@@ -121,7 +121,19 @@ function showModal(type, data1, data2, data3){
 	   
 	   case ("delATL"): { //Borrar atleta
 		   $('#data1').html(data1);
-		   $('#confirmbutton').attr("href", data2);
+		   if (data3 != null){
+			   $('#data3').html(data3);
+			   $('#cascade-del-usu-prompt').css("display", "inline")
+			   $('#confirmbutton').click(function(){
+				   window.location.href = data2 + "&cascade=" + $('#cascade-del-usu').is(":checked"); 
+			   });
+		   } else {
+			   $('#data3').html("");
+			   $('#cascade-del-usu-prompt').css("display", "none")
+			   $('#confirmbutton').click(function(){
+				   window.location.href = data2; 
+			   });
+		   }
 	   } break;
 	   
 	   case ("newPAR"): { //Confirmar participacion

@@ -124,7 +124,7 @@ class AtletaController extends Controller {
 				$em->flush();
 				
 				//Crear y asignar usuario previamente validado
-				if (($form->get('usu_nombre') != null) && ($form->get('usu_nombre') !== "")){
+				if (($form->get('usu_nombre')->getData() != null) && ($form->get('usu_nombre')->getData() !== "")){
 					$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
 					$checkUsu = $repoUsu->find($form->get('usu_nombre')->getData());
 					if ($checkUsu == null){
@@ -154,12 +154,11 @@ class AtletaController extends Controller {
 	public function verAtletaAction($id){
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$atl = $repository->find($id);
-		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-		$vigentes = $repository->findAllCurrent();
-		$fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
-		$categoria = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
-	
 		if ($atl != null) {
+		   $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+		   $vigentes = $repository->findAllCurrent();
+		   $fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
+		   $categoria = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
 			return $this->render('EasanlesAtletismoBundle:Atleta:ver_atleta.html.twig',
 					array('atl' => $atl, 'categoria' => $categoria, 'edad' => Helpers::getEdad($atl->getFnac(), null)));
 		} else {
@@ -173,11 +172,21 @@ class AtletaController extends Controller {
 		$id = $request->query->get('i');
 	
 		$em = $this->getDoctrine()->getManager();
-		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-		$atl = $repository->find($id);
+		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+		$atl = $repoAtl->find($id);
 		if ($atl != null){
 			try {
 				$em->remove($atl);
+				$cascade = $request->query->get('cascade');
+				if (($cascade != null) && ($cascade == "true")){
+					if ($atl->getNombreUsu() != null){
+						$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
+						if (($atl->getNombreUsu()->getRol() !== "coordinador") //Al menos un coordinador
+								 || (($atl->getNombreUsu()->getRol() === "coordinador") && ($repoUsu->countCoordinadores() > 1))){					
+							$em->remove($atl->getNombreUsu());
+						}
+					}
+				}				
 				$em->flush();
 			} catch (\Exception $e) {
 				return new Response($e->getMessage());

@@ -315,7 +315,7 @@ homepage: #portada anonimos + users
     defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Anonimo"}
 homepage_admin: #portada admins
     path: /admin/
-    defaults: {_controller: "EasanlesAtletismoBundle:Default:index", name: "Admin"}
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:adminIndex"}
 login:
     path: /login
     defaults: {_controller: "EasanlesAtletismoBundle:Default:login"}

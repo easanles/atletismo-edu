@@ -33,8 +33,9 @@
    {% block modallabel %}Confirmar borrado{% endblock %}
    {% block modalbody %}
    <p>¿Confirmar borrado del atleta <strong id="data1">***</strong>?</p>
+   <p id="cascade-del-usu-prompt"><input id="cascade-del-usu" type="checkbox" checked><label for="cascade-del-usu" style="font-weight: normal; margin-left: 0.5em"> Borrar también el usuario asociado "<span id="data3"></span>"</span></p>
    {% endblock %}
-   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+   {% block modalprimary %}<button id="confirmbutton" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</button>{% endblock %}
 
 {% block container %}
    <h1 id="container_title" class="row page-header">Atleta: <small>{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</small></h1>
@@ -75,7 +76,7 @@
          </table>
          <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
          <a type="button" class="btn btn-m btn-default" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
-         <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', null)"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
+         <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu.nombre }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
       </div>
       <div class="col-xs-12 col-sm-3 col-sm-pull-9">
          <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/></a>

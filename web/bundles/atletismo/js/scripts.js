@@ -176,7 +176,7 @@ function updateUsuRow(id){
        if (status == "success"){
 	      if (data.success == true){
 	    	  if (data.usu != null){
-	    		  nombreHTML = data.usu.nombre;
+	    		  nombreHTML = "<span id=\"nombre_usu\">" + data.usu.nombre + "</span>";
 	    		  if (data.usu.rol === "coordinador"){
 	    			  nombreHTML = nombreHTML + " <strong class=\"text-info\">Coordinador</strong>";
 	    		  }

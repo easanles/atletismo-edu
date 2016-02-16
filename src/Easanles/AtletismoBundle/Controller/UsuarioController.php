@@ -93,8 +93,8 @@ class UsuarioController extends Controller {
    		]);
    	}
    	$em = $this->getDoctrine()->getManager();
-   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
-   	$usu = $repository->find($nombreUsu);
+   	$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
+   	$usu = $repoUsu->find($nombreUsu);
    	if ($usu == null){
          return new JsonResponse([
    		   'success' => false,
@@ -102,6 +102,9 @@ class UsuarioController extends Controller {
    	   ]);
    	} else {		 
    		try {
+   			if (($usu->getRol() === "coordinador") && ($repoUsu->countCoordinadores() == 1)){
+   				throw new Exception("No se puede borrar el último coordinador");
+   			}
    		   $em->remove($usu);
    			$em->flush();
    		} catch (\Exception $e) {
@@ -131,6 +134,7 @@ class UsuarioController extends Controller {
    	}
    	$prevNombre = $usu->getNombre();
    	$prevAtl = $usu->getIdAtl();
+   	$prevRol = $usu->getRol();
    	$form = $this->createForm(new UsuType("edit", false), $usu);
    	$atl = $usu->getIdAtl();
    	if ($atl != null){
@@ -163,6 +167,9 @@ class UsuarioController extends Controller {
    				$usu->setIdAtl($atl);
    			} else {
    				$usu->setIdAtl(null);
+   			}
+   			if (($prevRol === "coordinador") && ($usu->getRol() !== "coordinador") && ($repoUsu->countCoordinadores() == 1)){
+   				throw new Exception("Debe haber al menos un coordinador");
    			}
    			$contra = $form->get("contra")->getData();
    			if (($contra != null) && ($contra !== "")) {

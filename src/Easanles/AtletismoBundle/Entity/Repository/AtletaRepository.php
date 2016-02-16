@@ -10,7 +10,10 @@ use Easanles\AtletismoBundle\Helpers\Helpers;
 class AtletaRepository extends EntityRepository {
 	public function findAllOrdered()	{
 		return $this->getEntityManager()
-		->createQuery('SELECT atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade FROM EasanlesAtletismoBundle:Atleta atl ORDER BY atl.fnac DESC')
+		->createQuery('SELECT atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade, usu.nombre AS nombreUsu, usu.rol
+				 FROM EasanlesAtletismoBundle:Atleta atl
+				 LEFT JOIN atl.nombreUsu usu
+				 ORDER BY atl.fnac DESC, atl.id ASC')
 		->getResult();
 	}
 	
@@ -40,9 +43,11 @@ class AtletaRepository extends EntityRepository {
 			$qb = $qb->andWhere('atl.fnac < :fnacfin')
 			->setParameter('fnacfin', $fnacFin->format("Y-m-d"));
 		}
-		$result = $qb->select('atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade')
+		$result = $qb->select('atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade, usu.nombre AS nombreUsu, usu.rol')
 		->from('EasanlesAtletismoBundle:Atleta', 'atl')
+		->leftJoin('atl.nombreUsu', 'usu')
 		->orderBy('atl.fnac', 'DESC')
+		->orderBy('atl.id', 'ASC')
 		->getQuery()->getResult();
 		
 		return $result;

@@ -79,4 +79,14 @@ class CompeticionRepository extends EntityRepository {
 		->getResult();
       return ($comCheck != null);
 	}
+	
+	public function findNextComs($fecha){
+		return $this->getEntityManager()
+		->createQuery('SELECT com.sid, com.nombre, com.temp, com.fecha, com.sede, com.ubicacion, com.esFeder, com.esOficial, com.esVisible, com.esInscrib, com.cartel 
+				 FROM EasanlesAtletismoBundle:Competicion com
+				 WHERE com.fecha >= :fecha
+				 ORDER BY com.fecha ASC')
+		->setParameter('fecha', $fecha)
+		->getResult();
+	}
 }

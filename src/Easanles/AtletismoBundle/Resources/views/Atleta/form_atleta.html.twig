@@ -154,7 +154,7 @@
                 <label class="control-label">Usuario </label>
                 <span id="usu_nombre_display">
                 {% if form.usu_nombre.vars.value == "" %}<em class="text-muted">Ninguno</em>
-                {% else %}{{ form.usu_nombre.vars.value }}{% if form.usu_rol.vars.value == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}
+                {% else %}<span id="nombre_usu">{{ form.usu_nombre.vars.value }}</span>{% if form.usu_rol.vars.value == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}
                 {% endif %}
                 </span>
                 {% if mode == "new" %}
@@ -163,8 +163,8 @@
                 {% elseif mode == "edit" %}
                    <button type="button" class="updater hidden" onClick="updateUsuRow({{ form.vars.value.id }})">
                    <button id="asig_usu" type="button" class="btn btn-default pull-right{% if form.usu_nombre.vars.value != "" %} hidden{% endif %}" onClick="showModal('newUSU', '../../configuracion/usuario/nuevo', {{ form.vars.value.id }}, null)">Crear usuario</button>
-                   <button id="del_usu" type="button" class="btn btn-danger pull-right{% if form.usu_nombre.vars.value == "" %} hidden{% endif %}" onClick="showModal('delUSU', '../../configuracion/usuario/borrar', '{{ form.usu_nombre.vars.value }}', {{ form.vars.value.id }})">Borrar</button>   
-                   <button id="edi_usu" type="button" class="btn btn-default pull-right{% if form.usu_nombre.vars.value == "" %} hidden{% endif %}" onClick="showModal('ediUSU', '../../configuracion/usuario/editar/', '{{ form.usu_nombre.vars.value }}', {{ form.vars.value.id }})">Editar</button>   
+                   <button id="del_usu" type="button" class="btn btn-danger pull-right{% if form.usu_nombre.vars.value == "" %} hidden{% endif %}" onClick="showModal('delUSU', '../../configuracion/usuario/borrar', $('#nombre_usu').html(), {{ form.vars.value.id }})">Borrar</button>   
+                   <button id="edi_usu" type="button" class="btn btn-default pull-right{% if form.usu_nombre.vars.value == "" %} hidden{% endif %}" onClick="showModal('ediUSU', '../../configuracion/usuario/editar/', $('#nombre_usu').html(), {{ form.vars.value.id }})">Editar</button>   
                 {% endif %}
              </div>
           </div>

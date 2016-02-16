@@ -32,6 +32,7 @@
    {% block modallabel %}Confirmar borrado{% endblock %}
    {% block modalbody %}
    <p>¿Confirmar borrado del atleta <strong id="data1">***</strong>?</p>
+   <p id="cascade-del-usu-prompt"><input id="cascade-del-usu" type="checkbox" checked><label for="cascade-del-usu" style="font-weight: normal; margin-left: 0.5em"> Borrar también el usuario asociado "<span id="data3"></span>"</span></p>
    {% endblock %}
    {% block modalprimary %}<button id="confirmbutton" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</button>{% endblock %}
 
@@ -71,7 +72,7 @@
          </tr>
          {% set catIndex = 0 %}
          {% for atl in atletas %}
-         <tr>
+         <tr{% if atl.nombreUsu is not null %}{% if atl.rol == "coordinador" %} class="text-info" style="font-weight: bold;"{% endif %}{% endif %}>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.id }}</td>
          <td class="visible-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">
             <small>{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
@@ -90,12 +91,12 @@
                <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>
                <ul class="dropdown-menu pull-right">
                   <li><a href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a></li>
-                  <li><a class="bg-danger" href="#" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', null)"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                  <li><a class="bg-danger" href="#" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu }}'{% else %}null{% endif %})"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                </ul>
             </div>
             <div class="hidden-xs">
                <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-edit"></span></a>
-               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', null)"><span class="glyphicon glyphicon-remove"></span></button>
+               <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
          </td>
          </tr>

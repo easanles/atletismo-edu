@@ -1,0 +1,90 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Portada Admin{% endblock %}
+
+{% block navbar %}
+      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user is not null and app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+         </ul>
+      </li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a class="inactive" href="#">Asistencia a eventos</a></li>
+            <li><a class="inactive" href="#">Pagos</a></li>
+         </ul>
+      </li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="active">Portada Admin</li>
+{% endblock %}
+
+{% block container %}   
+
+   <h2>Próximas competiciones</h2>
+   <table class="table table-hover table-bordered table-striped table-responsive">
+   <tbody>
+      <tr>
+         <th>Competición</th>
+         <th class="hidden-xs">Sede</th>
+         <th>Fecha</th>
+         <th class="hidden-xs">Núm. inscritos</div></th>
+         <th class="hidden-xs">Estado</th>
+         <th>Visible</th>
+         <th><abbr title="Tipo / abrir inscripciones" class="visible-xs-block">Tipo/abrir</abbr><div class="hidden-xs">Tipo / Abrir insc.</div></th>
+         <th><abbr title="Registrar marcas" class="visible-xs-block">Reg. mar.</abbr><div class="hidden-xs">Registrar marcas</div></th>
+         <th><abbr title="Control de asistencia" class="visible-xs-block">Asist.</abbr><div class="hidden-xs">Control asistencia</div></th>
+      </tr>
+      {% for com in sigComs %}
+         <tr>
+            <td><img id="pic-img" width="20" src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" /> <span>{{ com.nombre }}</span></td>
+            <td class="hidden-xs">{{ com.sede }}</td>
+            <td>{% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
+            <td class="hidden-xs">{{ com.numInscritos }}</td>
+            <td class="hidden-xs">Estado</td>
+            <td>Control</td>
+            <td>Control</td>
+            <td><a type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
+            <td><a type="button" disabled class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Control de asistencia" href="#"><span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span></a></td>
+         </tr>
+      {% endfor %}
+   </tbody>
+   </table>
+   <h2>Resultados recientes</h2>
+   <table class="table table-hover table-bordered table-striped table-responsive">
+   <tbody>
+      <tr>
+         <th>Competición</th>
+         <th class="hidden-xs">Sede</th>
+         <th>Fecha</th>
+         <th class="hidden-xs">Núm. atletas</div></th>
+         <th><abbr title="Ver resultados" class="visible-xs-block">Res.</abbr><div class="hidden-xs">Ver resultados</div></th>
+      </tr>
+   </tbody>
+   </table>
+   
+   <div class="row">
+      <div class="col-xs-12 col-sm-8">
+         <h2>Participaciones por confirmar</h2>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+         <h2>Avisos</h2>
+      </div>
+   </div>  
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+{% endblock %}
+
