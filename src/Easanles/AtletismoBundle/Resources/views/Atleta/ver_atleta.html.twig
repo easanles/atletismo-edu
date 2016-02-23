@@ -79,7 +79,13 @@
          <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu.nombre }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
       </div>
       <div class="col-xs-12 col-sm-3 col-sm-pull-9">
+         {% if atl.foto is not null %}
          <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/></a>
+         {% else %}
+            {% image '@EasanlesAtletismoBundle/Resources/assets/img/sinfoto.jpg' %}
+            <img src="{{ asset_url }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/>
+            {% endimage %}
+         {% endif %}
       </div>
    </div>
    

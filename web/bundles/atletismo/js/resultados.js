@@ -38,9 +38,17 @@ function loadCartel(){
 		url: "./resultados/getcartel?com=" + sidCom,
 		success: function(data, status) {
 	        if (status == "success"){
-	            $("#pic-link").attr("href", data['cartel']);
-	            $("#pic-img").attr("src", data['cartel']);
-	            $("#pic-img").attr("alt", data['nombre']);
+	        	if (data['cartel'] == null){
+	        		$('#pic-div').css("display", "none");
+	        		$('#no-pic-div').css("display", "block");
+	        	} else {
+		            $("#pic-link").attr("href", data['cartel']);
+		            $("#pic-img").attr("src", data['cartel']);
+		            $("#pic-img").attr("alt", data['nombre']);
+	        		$('#pic-div').css("display", "block");
+	        		$('#no-pic-div').css("display", "none");
+	        	}
+
 	        }
 	    }
 	});

@@ -74,7 +74,13 @@
          <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
       </div>
       <div class="col-xs-12 col-sm-4 col-sm-pull-8">
+         {% if com.cartel is not null %}
          <a href="{{ vich_uploader_asset(com, 'cartelFile') }}"><img src="{{ vich_uploader_asset(com, 'cartelFile') }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/></a>
+         {% else %}
+            {% image '@EasanlesAtletismoBundle/Resources/assets/img/sincartel.jpg' %}
+            <img src="{{ asset_url }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/>
+            {% endimage %}
+         {% endif %}
       </div>
    </div>
    

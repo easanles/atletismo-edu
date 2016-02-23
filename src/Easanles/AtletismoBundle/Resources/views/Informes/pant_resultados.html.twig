@@ -97,11 +97,18 @@
    <div class="row">
       <div class="col-xs-12 col-sm-4">
          <div class="hidden-xs">
+            <div id="pic-div"{% if selCom is defined %}{% if selCom.cartel is null %} style="display:none"{% endif %}{% endif %}>
             {% if selCom is defined %}
             <a id="pic-link" href="{{ vich_uploader_asset(selCom, 'cartelFile') }}"><img id="pic-img" src="{{ vich_uploader_asset(selCom, 'cartelFile') }}" alt="{{ selCom.nombre }}" class="img-responsive thumbnail"/></a>
             {% else %}
             <a id="pic-link" href="#"><img id="pic-img" src="" alt="" class="img-responsive thumbnail"/></a>
             {% endif %}
+            </div>
+            <div id="no-pic-div"{% if selCom is defined %}{% if selCom.cartel is not null %} style="display:none"{% endif %}{% endif %}>
+               {% image '@EasanlesAtletismoBundle/Resources/assets/img/sincartel.jpg' %}
+               <img src="{{ asset_url }}" alt="{{ selCom.nombre }}" class="img-responsive thumbnail"/>
+               {% endimage %}
+            </div>
          </div>
       </div>
       <div class="col-xs-12 col-sm-8">
