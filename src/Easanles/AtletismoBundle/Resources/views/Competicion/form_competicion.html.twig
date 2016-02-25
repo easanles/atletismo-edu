@@ -113,6 +113,14 @@
              </div>
           </div>
           <div class="row">
+             <div class="form_row col-xs-6">
+                {{ form_row(form.esvisible) }}
+             </div>
+             <div class="form_row col-xs-6">
+                {{ form_row(form.esinscrib) }}
+             </div>
+          </div>
+          <div class="row">
               {% if mode == "new" %}
               <a type="button" class="btn btn-m btn-default col-xs-3" href={{ path('listado_competiciones') }}><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
               <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Crear</button>
@@ -136,13 +144,28 @@
       $(document).ready(function(){
     	    $("#com_esfeder").click(function(){
      	       cb = document.getElementById('com_esoficial');
-        	    if ($('#com_esfeder').is(':checked') == true){
+     	       cb2 = document.getElementById('com_esinscrib');
+     	       if ($(this).is(':checked') == true){
         	       cb.checked = true;
         	       cb.disabled = true;
+        	       cb2.checked = false;
+        	       cb2.disabled = true;
              } else {
                 cb.disabled = false;
+                if ($(cb2).is(':checked') == true){
+                   cb2.disabled = false;
+                }
              }
     	    });
+    	    $("#com_esoficial").click(function(){
+      	     cb = document.getElementById('com_esinscrib');
+         	  if ($(this).is(':checked') == true){
+         	     cb.checked = false;
+         	     cb.disabled = true;
+              } else {
+                 cb.disabled = false;
+              }
+     	    });
       });
    </script>
 

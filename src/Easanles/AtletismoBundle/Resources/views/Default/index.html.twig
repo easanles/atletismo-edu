@@ -4,13 +4,9 @@
 {% block title %}Atletismo{% endblock %}
 
 {% block css %}
-   {#
-   {% stylesheets 'atletismo/css/*' filter='cssrewrite' %}
-      <link rel="stylesheet" href="{{ index.css }}" />
+   {% stylesheets '@EasanlesAtletismoBundle/Resources/assets/css/index.css' %}
+   <link rel="stylesheet" href="{{ asset_url }}" />
    {% endstylesheets %}
-   #}
-   {# {% stylesheets '@EasanlesAtletismoBundle/Resources/assets/css/index.css' %}{% endstylesheets %}#}
-   <link rel="stylesheet" href="{{ asset('bundles/atletismo/css/index.css') }}" />
    
 {% endblock%}
 

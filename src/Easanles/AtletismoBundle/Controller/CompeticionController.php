@@ -9,6 +9,7 @@ use Easanles\AtletismoBundle\Form\Type\ComType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Helpers\Helpers;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class CompeticionController extends Controller {
@@ -135,4 +136,34 @@ class CompeticionController extends Controller {
     	 	return $response;
     	 }
     }
+    
+    public function flagsCompeticionAction(Request $request){
+    	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 $sidCom = $request->query->get('com');
+    	 $valor = $request->query->get('v');
+    	 $tipo = $request->query->get('t');
+    	 if (($sidCom != null) && ($valor != null) && ($tipo != null)){
+    	 	 $com = $repoCom->find($sidCom);
+    	 	 if ($com != null){
+    	 	 	 switch ($tipo){
+    	 	 	 	case "vis": {
+    	 	 	 		$com->setEsVisible($valor == 1 ? true : false);
+    	 	 	 	} break;
+    	 	 	 	case "ins": {
+    	 	 	 		$com->setEsInscrib($valor == 1 ? true : false);
+    	 	 	 	} break;
+    	 	 	 	default: return new JsonResponse(['success' => false]);
+    	 	 	 }
+    	 	 	 try {
+    	 	 	 	 $em = $this->getDoctrine()->getManager();
+    	 	 	 	 $em->flush();
+    	 	 	 } catch (\Exception $e){
+    	 	 	 	 return new JsonResponse(['success' => false]);
+    	 	 	 }
+    	 	 	 return new JsonResponse(['success' => true]);
+    	 	 }
+    	 }
+    	 return new JsonResponse(['success' => false]);	 
+    }
+    
 }

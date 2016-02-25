@@ -67,7 +67,7 @@
          {% for com in competiciones %}
          <tr>
             <td class="clickable{% if temp is defined %} hidden-xs{% endif %}" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>
-            <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.nombre }}</td>
+            <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.nombre }}{% if com.esVisible == 0 %} <span class="glyphicon glyphicon-eye-close text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Oculto"></span>{% endif %}</td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">
 {% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
             <td class="clickable hidden-xs" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.sede }}</td>

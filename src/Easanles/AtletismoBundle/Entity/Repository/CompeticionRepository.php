@@ -10,7 +10,7 @@ use Composer\Autoload\ClassLoader;
 class CompeticionRepository extends EntityRepository {
 	public function findAllOrdered()	{
 		$result = $this->getEntityManager()
-		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.sede FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
+		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.sede, com.esVisible FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
 		->getResult();
 		foreach ($result as $key => $com){
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
@@ -56,7 +56,7 @@ class CompeticionRepository extends EntityRepository {
 			$qb = $qb->andWhere('com.temp = :temp')
 			->setParameter('temp', $temp);
 		}
-		$result = $qb->select('com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede')
+		$result = $qb->select('com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.sede, com.esVisible')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
 		->orderBy('com.temp', 'DESC')
 		->addOrderBy('com.fecha', 'DESC')
@@ -81,12 +81,18 @@ class CompeticionRepository extends EntityRepository {
 	}
 	
 	public function findNextComs($fecha){
-		return $this->getEntityManager()
+		$result = $this->getEntityManager()
 		->createQuery('SELECT com.sid, com.nombre, com.temp, com.fecha, com.sede, com.ubicacion, com.esFeder, com.esOficial, com.esVisible, com.esInscrib, com.cartel 
 				 FROM EasanlesAtletismoBundle:Competicion com
 				 WHERE com.fecha >= :fecha
 				 ORDER BY com.fecha ASC')
 		->setParameter('fecha', $fecha)
 		->getResult();
+		foreach ($result as $key => $com){
+			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
+			$result[$key]['numpruebas'] = $numPruebas;
+			$result[$key]['numatletas'] = count($this->findAtletasIns($com['sid']));
+		}
+		return $result;
 	}
 }

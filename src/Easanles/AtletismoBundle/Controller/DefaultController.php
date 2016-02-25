@@ -16,13 +16,10 @@ class DefaultController extends Controller{
     
     public function adminIndexAction(){
     	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	 $ayer = new \DateTime();
-    	 $ayer = $ayer->sub(new \DateInterval("P1D"));
+    	 $hoy = new \DateTime();
+    	 $ayer = $hoy->sub(new \DateInterval("P1D"));
     	 $sigComs = $repoCom->findNextComs($ayer);
-    	 foreach ($sigComs as $key => $com){
-    	    $sigComs[$key]['numInscritos'] = count($repoCom->findAtletasIns($com['sid']));
-    	 }
-       return $this->render('EasanlesAtletismoBundle:Default:adminIndex.html.twig', array('sigComs' => $sigComs));
+       return $this->render('EasanlesAtletismoBundle:Default:adminIndex.html.twig', array('sigComs' => $sigComs, 'hoy' => new \DateTime()));
     }
     
     public function loginAction(Request $request){

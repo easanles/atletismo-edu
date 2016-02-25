@@ -199,6 +199,66 @@ function updateUsuRow(id){
 	});
 }
 
+function toggleIndexBtn(item){
+	itemData = $(item).attr("id").split("-");
+	type = itemData[1];
+	id = itemData[2];
+	activate = -1;
+    if (($(item).hasClass("btn-default")) && (!$(item).hasClass("active"))){ //ON
+       $(item).addClass("active");
+       activate = 1;
+	} else if (!($(item).hasClass("btn-default")) && ($(item).hasClass("active"))) { //OFF
+	   $(item).removeClass("active");
+	   activate = 0;	
+	}
+    if (activate == -1) return;
+    if (type == "vis"){
+       $.getJSON("./competiciones/flags?com=" + id + "&t=vis&v=" + activate, function(data, status){
+          ok = false;
+          if (status == "success"){
+       	     if (data.success == true){
+       	     	if (activate == 1){
+       	    		$(item).html("<span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span> <strong>SI</strong>");
+       	   	        $(item).removeClass("btn-default");
+       	      		$(item).addClass("btn-info");
+       	      	} else {
+       	      		$(item).html("<span class=\"glyphicon glyphicon-eye-close\" aria-hidden=\"true\"></span> <strong>NO</strong>");
+       	      		$(item).removeClass("btn-info");
+       	      		$(item).addClass("btn-default");       	        		
+       	       	}
+       	      	ok = true;
+       	     }
+          }
+          if (!ok){
+             if (activate == 1) $(item).removeClass("active");
+             else $(item).addClass("active");    	   
+          }
+       });
+    } else if (type == "ins"){
+       $.getJSON("./competiciones/flags?com=" + id + "&t=ins&v=" + activate, function(data, status){
+    	  ok = false;
+          if (status == "success"){
+      	     if (data.success == true){
+            	if (activate == 1){
+            		$(item).html("<span class=\"glyphicon glyphicon-thumbs-up\" aria-hidden=\"true\"></span> <strong>Abie.</strong>");
+          	        $(item).removeClass("btn-default");
+            		$(item).addClass("btn-info");
+            	} else {
+            		$(item).html("<span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span> <strong>Cerr.</strong>");
+            		$(item).removeClass("btn-info");
+            		$(item).addClass("btn-default");       	        		
+            	}
+            	ok = true;
+      	     }
+          }
+          if (!ok){
+             if (activate == 1) $(item).removeClass("active");
+          	 else $(item).addClass("active");    	   
+          }
+       });
+    }
+}
+
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()

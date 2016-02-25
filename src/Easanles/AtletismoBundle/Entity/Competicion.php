@@ -309,6 +309,9 @@ class Competicion {
 		if (($this->esFeder == true) && ($this->esOficial == false)) {
 			$this->esOficial = true;
 		}
+		if ($this->esOficial == true){
+			$this->esInscrib = false;
+		}
 	}
    
 }

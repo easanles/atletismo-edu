@@ -38,24 +38,42 @@
          <th>Competición</th>
          <th class="hidden-xs">Sede</th>
          <th>Fecha</th>
-         <th class="hidden-xs">Núm. inscritos</div></th>
-         <th class="hidden-xs">Estado</th>
+         <th class="hidden-xs">Atletas inscritos</div></th>
          <th>Visible</th>
          <th><abbr title="Tipo / abrir inscripciones" class="visible-xs-block">Tipo/abrir</abbr><div class="hidden-xs">Tipo / Abrir insc.</div></th>
-         <th><abbr title="Registrar marcas" class="visible-xs-block">Reg. mar.</abbr><div class="hidden-xs">Registrar marcas</div></th>
          <th><abbr title="Control de asistencia" class="visible-xs-block">Asist.</abbr><div class="hidden-xs">Control asistencia</div></th>
+         <th><abbr title="Registrar marcas" class="visible-xs-block">Reg. mar.</abbr><div class="hidden-xs">Registrar marcas</div></th>
       </tr>
       {% for com in sigComs %}
-         <tr>
-            <td><img id="pic-img" width="20" src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" /> <span>{{ com.nombre }}</span></td>
+         {% if com.fecha is not null %}{% if com.fecha|date('Y-m-d') == hoy|date('Y-m-d')%}
+            {% set hoy = true %}
+         {% else %}
+            {% set hoy = false %}
+         {% endif %}{% endif %}
+         <tr{% if hoy %} class="bg-info"{% endif %}>
+            <td>
+            {% if com.cartel is not null %}
+               <img id="pic-img" width="20" src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" />
+            {% endif %}<span><a href="{{ path('ver_competicion', {'id': com.sid}) }}">{{ com.nombre }}</a></span></td>
             <td class="hidden-xs">{{ com.sede }}</td>
-            <td>{% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
-            <td class="hidden-xs">{{ com.numInscritos }}</td>
-            <td class="hidden-xs">Estado</td>
-            <td>Control</td>
-            <td>Control</td>
-            <td><a type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
-            <td><a type="button" disabled class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Control de asistencia" href="#"><span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span></a></td>
+            <td>{% if hoy%}<strong class="text-info">HOY</strong>{% elseif com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
+            <td class="hidden-xs{% if com.numatletas == 0 %} warning text-warning{% endif %}">{{ com.numatletas }} <a type="button" class="btn btn-sm btn-{% if com.numatletas == 0 %}warning{% else %}default{% endif %} pull-right"{% if com.numpruebas == 0 %} disabled{% endif %} data-toggle="tooltip" data-placement="top" title="Inscribir atletas" href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span></a></td>
+            <td>
+            {% if com.esVisible == 1 %}
+            <button id="btn-vis-{{ com.sid }}" type="button" class="btn btn-sm btn-block btn-info active" data-toggle="tooltip" data-placement="top" title="Visible" onClick="toggleIndexBtn(this)"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> <strong>SI</strong></button>
+            {% else %}
+            <button id="btn-vis-{{ com.sid }}" type="button" class="btn btn-sm btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Oculto" onClick="toggleIndexBtn(this)"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span> <strong>NO</strong></button>
+            {% endif %}
+            </td>
+            <td>{% if com.esFeder == 1 %}FEDERADA{% elseif com.esOficial == 1 %}OFICIAL{% else %}
+               {% if com.esInscrib == 1 %}
+               <button id="btn-ins-{{ com.sid }}" type="button" class="btn btn-sm btn-block btn-info active" data-toggle="tooltip" data-placement="top" title="Inscripciones abiertas" onClick="toggleIndexBtn(this)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> <strong>Abie.</strong></button>
+               {% else %}
+               <button id="btn-ins-{{ com.sid }}" type="button" class="btn btn-sm btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Inscripciones cerradas" onClick="toggleIndexBtn(this)"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <strong>Cerr.</strong></button>
+               {% endif %}
+            {% endif %}</td>
+            <td><a type="button" disabled class="btn btn-sm btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Control de asistencia" href="#"><span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span></a></td>
+            <td><a type="button" class="btn btn-sm btn-block {% if hoy %}btn-primary{% else %}btn-default{% endif %}" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
          </tr>
       {% endfor %}
    </tbody>
@@ -67,20 +85,20 @@
          <th>Competición</th>
          <th class="hidden-xs">Sede</th>
          <th>Fecha</th>
-         <th class="hidden-xs">Núm. atletas</div></th>
+         <th class="hidden-xs">Núm. atletas</th>
          <th><abbr title="Ver resultados" class="visible-xs-block">Res.</abbr><div class="hidden-xs">Ver resultados</div></th>
       </tr>
    </tbody>
    </table>
    
-   <div class="row">
+   {#<div class="row">
       <div class="col-xs-12 col-sm-8">
          <h2>Participaciones por confirmar</h2>
       </div>
       <div class="col-xs-12 col-sm-4">
          <h2>Avisos</h2>
       </div>
-   </div>  
+   </div>#}
    
 {% endblock %}
 

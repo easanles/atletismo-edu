@@ -25,6 +25,9 @@ ver_competicion:
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
    requirements:
       id: \d+
+flags_competicion:
+   path: /admin/competiciones/flags
+   defaults: {_controller: "EasanlesAtletismoBundle:Competicion:flagsCompeticion"}
     
 
 #======================PRUEBAS=======================

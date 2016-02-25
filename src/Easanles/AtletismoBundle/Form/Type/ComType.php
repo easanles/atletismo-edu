@@ -32,7 +32,9 @@ class ComType extends AbstractType{
     	    		'download_link' => false,
     	    ))
     	    ->add('esfeder', 'checkbox', array('label' => 'Competición federada','required' => false))
-    	    ->add('esoficial', 'checkbox', array('label' => 'Competición oficial del club','required' => false));
+    	    ->add('esoficial', 'checkbox', array('label' => 'Competición oficial del club','required' => false))
+    	    ->add('esvisible', 'checkbox', array('label' => 'Visible','required' => false))
+    	    ->add('esinscrib', 'checkbox', array('label' => 'Abrir inscripciones','required' => false));
     }
  
     public function getName() {

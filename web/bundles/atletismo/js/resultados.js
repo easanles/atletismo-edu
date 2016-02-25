@@ -30,7 +30,7 @@ function showComs(){
 
 function loadCartel(){
 	sidCom = $("#select-com").val();
-    $("#pic-link").attr("href", "");
+    $("#pic-link").attr("href", "#");
     $("#pic-img").attr("src", "");
     $("#pic-img").attr("alt", "...");
 	$.ajax({
