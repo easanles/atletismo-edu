@@ -199,7 +199,7 @@ function updateUsuRow(id){
 	});
 }
 
-function toggleIndexBtn(item){
+function toggleIndexBtn(item, label){
 	itemData = $(item).attr("id").split("-");
 	type = itemData[1];
 	id = itemData[2];
@@ -218,14 +218,25 @@ function toggleIndexBtn(item){
           if (status == "success"){
        	     if (data.success == true){
        	     	if (activate == 1){
-       	    		$(item).html("<span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span> <strong>SI</strong>");
+       	     		html = "<span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>SI</strong>";
+       	    		$(item).html(html);
+       	    		$(item).attr("title", "Visible");
+       	    		$(item).tooltip('fixTitle');
        	   	        $(item).removeClass("btn-default");
        	      		$(item).addClass("btn-info");
+       	      		console.log($(item).tooltip()[0].title);
        	      	} else {
-       	      		$(item).html("<span class=\"glyphicon glyphicon-eye-close\" aria-hidden=\"true\"></span> <strong>NO</strong>");
+       	     		html = "<span class=\"glyphicon glyphicon-eye-close\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>NO</strong>";
+       	      		$(item).html(html);
+       	    		$(item).attr("title", "Oculto");
+       	    		$(item).tooltip('fixTitle');
        	      		$(item).removeClass("btn-info");
-       	      		$(item).addClass("btn-default");       	        		
+       	      		$(item).addClass("btn-default");       	 
+       	      		console.log($(item).tooltip()[0].title);
        	       	}
+       	     	
        	      	ok = true;
        	     }
           }
@@ -240,11 +251,19 @@ function toggleIndexBtn(item){
           if (status == "success"){
       	     if (data.success == true){
             	if (activate == 1){
-            		$(item).html("<span class=\"glyphicon glyphicon-thumbs-up\" aria-hidden=\"true\"></span> <strong>Abie.</strong>");
+       	     		html = "<span class=\"glyphicon glyphicon-thumbs-up\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>Abie.</strong>";
+            		$(item).html(html);
+       	    		$(item).attr("title", "Inscripciones abiertas");
+       	    		$(item).tooltip('fixTitle');
           	        $(item).removeClass("btn-default");
             		$(item).addClass("btn-info");
             	} else {
-            		$(item).html("<span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span> <strong>Cerr.</strong>");
+       	     		html = "<span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>Cerr.</strong>";
+            		$(item).html(html);
+       	    		$(item).attr("title", "Inscripciones cerradas");
+       	    		$(item).tooltip('fixTitle');
             		$(item).removeClass("btn-info");
             		$(item).addClass("btn-default");       	        		
             	}

@@ -80,14 +80,20 @@ class CompeticionRepository extends EntityRepository {
       return ($comCheck != null);
 	}
 	
-	public function findNextComs($fecha){
-		$result = $this->getEntityManager()
-		->createQuery('SELECT com.sid, com.nombre, com.temp, com.fecha, com.sede, com.ubicacion, com.esFeder, com.esOficial, com.esVisible, com.esInscrib, com.cartel 
-				 FROM EasanlesAtletismoBundle:Competicion com
-				 WHERE com.fecha >= :fecha
-				 ORDER BY com.fecha ASC')
-		->setParameter('fecha', $fecha)
-		->getResult();
+	public function findComsBetween($fechaIni, $fechaFin){
+		$qb = $this->getEntityManager()->createQueryBuilder('com');
+		if ($fechaIni != null){
+			$qb = $qb->andWhere('com.fecha >= :fechaini')
+			->setParameter('fechaini', $fechaIni);
+		}
+		if ($fechaFin != null){
+		   $qb = $qb->andWhere('com.fecha <= :fechafin')
+		   ->setParameter('fechafin', $fechaFin);
+		}
+		$result = $qb->select('com.sid, com.nombre, com.temp, com.fecha, com.sede, com.ubicacion, com.web, com.desc, com.esFeder, com.esOficial, com.esVisible, com.esInscrib, com.cartel')
+		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->orderBy('com.fecha', 'ASC')
+		->getQuery()->getResult();
 		foreach ($result as $key => $com){
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
 			$result[$key]['numpruebas'] = $numPruebas;

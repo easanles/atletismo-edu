@@ -6,7 +6,7 @@ html{
 }
 
 body {
-	padding-top: 50px;
+	/*padding-top: 50px; Para navbar-fixed*/
 	margin-bottom: 50px;
 }
 
@@ -45,8 +45,8 @@ h1, h2{
    width: 100%;
 }
 
-.panel-body {
-   max-height: 16em;
+.subform .panel-body {
+   max-height: 17em;
    overflow-y: auto;
 }
 
