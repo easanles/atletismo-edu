@@ -20,10 +20,20 @@ class CompeticionRepository extends EntityRepository {
 		return $result;
 	}
 	
-	public function findTempComs($temp){
+	public function findTempComs($temp, $rol){
+		$qb = $this->getEntityManager()->createQueryBuilder('com');
+		if ($rol == "user"){
+			$qb->where('com.esVisible = 1');
+		}
+		return $qb->select('com.sid, com.temp, com.nombre, com.fecha')
+		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->andWhere('com.temp = :temp')
+		->orderBy('com.fecha', 'DESC')
+		->setParameter('temp', $temp)
+		->getQuery()->getResult();
+		
 		$result = $this->getEntityManager()
 		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha FROM EasanlesAtletismoBundle:Competicion com WHERE com.temp = :temp ORDER BY com.fecha DESC')
-		->setParameter('temp', $temp)
 		->getResult();
 		return $result;
 	}
@@ -40,10 +50,16 @@ class CompeticionRepository extends EntityRepository {
 		->getResult();
 	}
 	
-	public function findTemps(){
-		return $this->getEntityManager()
-		->createQuery('SELECT com.temp FROM EasanlesAtletismoBundle:Competicion com GROUP BY com.temp ORDER BY com.temp DESC')
-		->getResult();
+	public function findTemps($rol){
+		$qb = $this->getEntityManager()->createQueryBuilder('com');
+		if ($rol == "user"){
+			$qb->where('com.esVisible = 1');
+		}
+		return $qb->select('com.temp')
+		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->groupBy('com.temp')
+		->orderBy('com.temp', 'DESC')
+		->getQuery()->getResult();
 	}
 	
 	public function searchByParameters($temp, $string) {	

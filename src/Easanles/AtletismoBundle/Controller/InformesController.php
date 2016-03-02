@@ -19,11 +19,11 @@ class InformesController extends Controller {
 	public function pantallaResultadosAction(Request $request, $rol) {
 		$parametros = array();
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-		$listaTemps = $repoCom->findTemps();
+		$listaTemps = $repoCom->findTemps($rol);
 		$parametros['temps'] = $listaTemps;
 		$comsData = array();
 		foreach ($listaTemps as $temp){
-			$comsData[$temp['temp']] = array('temp' => $temp['temp'], 'coms' => $repoCom->findTempComs($temp['temp']));
+			$comsData[$temp['temp']] = array('temp' => $temp['temp'], 'coms' => $repoCom->findTempComs($temp['temp'], $rol));
 		}
 		$parametros['coms'] = $comsData;
 		$sidRon = $request->query->get('ron');
@@ -74,6 +74,13 @@ class InformesController extends Controller {
 	
 	public function obtenerPruebasAction(Request $request, $rol){
 		$sidCom = $request->query->get('com');
+		if ($rol == "user"){
+			$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+			$com = $repoCom->find($sidCom);
+			if (($com == null) || ($com->getEsVisible() == false)){
+				return new JsonResponse(['result' => null]);
+			}
+		}
 		$resultados = Helpers::obtenerPruebas($this->getDoctrine(), $sidCom);
 		return new JsonResponse([
 				'result' => $resultados,
@@ -84,7 +91,9 @@ class InformesController extends Controller {
 		$sidCom = $request->query->get('com');
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		$com = $repoCom->find($sidCom);
-		if ($com != null){
+		if (($com != null) && (
+				($rol == "admin") || (($rol == "user") && ($com->getEsVisible() == true))
+				)){
 			$helper = $this->container->get('vich_uploader.templating.helper.uploader_helper');
 			$cartel = $helper->asset($com, 'cartelFile');
 			$nombre = $com->getNombre();
@@ -100,6 +109,13 @@ class InformesController extends Controller {
 	
 	public function obtenerRondasAction(Request $request, $rol){
 		$sidPru = $request->query->get('pru');
+		if ($rol == "user"){
+			$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+			$pru = $repoPru->find($sidPru);
+			if (($pru == null) || ($pru->getSidCom()->getEsVisible() == false)){
+				return new JsonResponse(['result' => null]);
+			}
+		}
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$listaRon = $repoRon->findBy(array("sidPru" => $sidPru));
 		$result = array();
@@ -119,6 +135,8 @@ class InformesController extends Controller {
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$ron = $repoRon->find($sidRon);
 		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
+		if (($rol == "user") && ($ron->getSidPru()->getSidCom()->getEsVisible() == false))
+			   return new Response("Acceso denegado (competición oculta)");
 		$parametros = array("sidRon" => $sidRon);
 		$tprf = $ron->getSidPru()->getSidTprm()->getSidTprf();
 		$unidades = $tprf->getUnidades();
@@ -148,6 +166,8 @@ class InformesController extends Controller {
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$ron = $repoRon->find($sidRon);
 		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
+		if (($rol == "user") && ($ron->getSidPru()->getSidCom()->getEsVisible() == false))
+			   return new Response("Acceso denegado (competición oculta)");
 		$parametros = array("atl" => $atl, "ron" => $ron);
 		$parametros['unidades'] = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
@@ -173,8 +193,8 @@ class InformesController extends Controller {
 //######################### RECORDS DEL CLUB #########################
 //####################################################################	
 	
-	public function pantallaRecordsAction($sexo){
-		$parametros = array("sexo" => $sexo); 
+	public function pantallaRecordsAction($sexo, $rol){
+		$parametros = array("sexo" => $sexo, "rol" => $rol); 
 		
 		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$listaEntornos = $repoTprm->findAllEntornos();
@@ -185,7 +205,7 @@ class InformesController extends Controller {
 			$tabla = array();
 			$listaTprfs = $repoTprm->findUsedTprfsFor($entorno['entorno']);
 			foreach($listaTprfs as $tprf){
-				$query = $repoInt->findRecordFor($sexo, $entorno, $tprf);
+				$query = $repoInt->findRecordFor($sexo, $entorno, $tprf, $rol);
 				if ($query != null){
 					$datos = array("premios" => $query[0]['premios'],
 							"marca" => $query[0]['marca'],
@@ -215,17 +235,4 @@ class InformesController extends Controller {
 		return $this->render('EasanlesAtletismoBundle:Informes:pant_records.html.twig', $parametros);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

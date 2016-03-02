@@ -1,0 +1,76 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Mis competiciones{% endblock %}
+
+{% block navbar %}
+      <li class="active"><a href="#">Mis competiciones</a></li>
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+               <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% else %}
+               <li><a href="{{ path('users_pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('users_pantalla_records_fem') }}">Records femeninos</a></li>
+            {% endif %}
+         </ul>
+      </li>
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a class="inactive" href="#">Asistencia a eventos</a></li>
+            <li><a class="inactive" href="#">Pagos</a></li>
+         </ul>
+      </li>{% endif %}
+      {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+  {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+     <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  {% else %}
+     <li><a href="{{ path('homepage') }}">Portada</a></li>
+  {% endif %}
+  <li class="active">Mis competiciones</li>
+{% endblock %}
+
+{% block container %}
+
+   <h1 id="container_title" class="row page-header">Mis competiciones</h1>
+   <div id="controls" class="row">
+      <div class="col-xs-7 col-sm-6 col-md-5">
+         <select class="form-control" onChange="">
+            <option value="" {% if temp is not defined %}selected{% endif %}>Todas las temporadas</option>
+            {#
+            {% for row in temporadas %}
+            <option value="{{ row.temp }}" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}/{{ (row.temp + 1)|slice(2, 2)}}</option>
+            {% endfor %}
+            #}
+         </select>
+      </div>
+      <div class="pull-right">
+         <div class="btn-group" role="group" aria-label="Mostrar">
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Lista</button>
+            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Cuadrícula</button>
+         </div>
+      </div>
+   </div>
+   
+   </div>
+   <div id="coms-list" class="row">
+   </div>
+   <div id="coms-grid" class="row">
+   </div>
+
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+

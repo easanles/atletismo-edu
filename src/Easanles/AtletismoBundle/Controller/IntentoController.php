@@ -51,7 +51,7 @@ class IntentoController extends Controller {
 		}
 		$temp = Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y'));
 		$parametros["currentTemp"] = $temp;
-		$comDisponibles = $repoCom->findTempComs($temp);
+		$comDisponibles = $repoCom->findTempComs($temp, "admin");
 		$parametros["coms"] = $comDisponibles;
       return $this->render('EasanlesAtletismoBundle:Intento:pant_intento.html.twig', $parametros);
 	}

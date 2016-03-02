@@ -18,7 +18,7 @@ class CompeticionController extends Controller {
     	$temp = $request->query->get('temp');
     	$query = $request->query->get('q');
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	$temporadas = $repository->findTemps();
+    	$temporadas = $repository->findTemps("admin");
     	
     	if (($temp == null) && ($query == null)){
     		$competiciones = $repository->findAllOrdered();

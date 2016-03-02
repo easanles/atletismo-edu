@@ -106,7 +106,7 @@ class IntentoRepository extends EntityRepository {
 		
 	}
 	
-	public function findRecordFor($sexo, $entorno, $tprf){
+	public function findRecordFor($sexo, $entorno, $tprf, $rol){
 		switch($tprf['unidades']){
 			case "segundos": $orden = "ASC"; break;
 			case "metros": $orden = "DESC"; break;
@@ -114,8 +114,7 @@ class IntentoRepository extends EntityRepository {
 		   case "puntosasc": $orden = "ASC"; break;
 		   default: $orden = "ASC";
 		}
-		$query = $this->getEntityManager()
-		->createQuery('SELECT int.premios, int.marca, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.ubicacion
+		$sql = 'SELECT int.premios, int.marca, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.ubicacion
 				 FROM EasanlesAtletismoBundle:Intento int
 				 JOIN int.sidRon ron
 				 JOIN ron.sidPru pru
@@ -123,9 +122,12 @@ class IntentoRepository extends EntityRepository {
 				 JOIN pru.sidCom com
 				 JOIN pru.sidTprm tprm
 				 JOIN int.idAtl atl
-				 WHERE atl.sexo LIKE :sexo AND tprm.entorno LIKE :entorno AND int.validez = 1
-				    AND IDENTITY(tprm.sidTprf) LIKE :sidtprf
-				 ORDER BY int.marca '.$orden.', int.sid ASC')
+				 WHERE atl.sexo LIKE :sexo AND tprm.entorno LIKE :entorno AND int.validez = 1';
+		if ($rol == "user") $sql = $sql.' AND com.esVisible = 1';
+		$sql = $sql.' AND IDENTITY(tprm.sidTprf) LIKE :sidtprf
+				 ORDER BY int.marca '.$orden.', int.sid ASC';
+		$query = $this->getEntityManager()
+		->createQuery($sql)
 		->setParameter("sexo", $sexo)
 		->setParameter("entorno", $entorno)
 		->setParameter("sidtprf", $tprf['sid'])

@@ -4,12 +4,13 @@
 {% block title %}Portada Admin{% endblock %}
 
 {% block navbar %}
+      {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
       <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
       <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
       <li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
-            {% if app.user is not null and app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
             <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
             <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
          </ul>
@@ -128,20 +129,22 @@
          <th>Competición</th>
          <th class="hidden-xs">Sede</th>
          <th>Fecha</th>
-         <th>Núm. atletas</th>
-         <th class="hidden-xs">Tipo</th>
+         <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
+         <th>Tipo</th>
          <th><div class="visible-xs-block">Resultados</div><div class="hidden-xs">Ver resultados</div></th>
       </tr>
       {% for com in prevComs %}
-         <td>
+      <tr>
+        <td>
         {% if com.cartel is not null %}
            <img id="pic-img" height="30" src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" />
         {% endif %}<span><a href="{{ path('ver_competicion', {'id': com.sid}) }}">{{ com.nombre }}</a></span></td>
         <td class="hidden-xs">{{ com.sede }}</td>
         <td>{% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
         <td>{{ com.numatletas }} <a type="button" class="btn btn-sm btn-default pull-right"{% if com.numpruebas == 0 %} disabled{% endif %} data-toggle="tooltip" data-placement="top" title="Lista de atletas" href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span></a></td>
-        <td class="hidden-xs">{% if com.esFeder == 1 %}FEDERADA{% elseif com.esOficial == 1 %}OFICIAL{% else %}NO OFICIAL{% endif %}</td>
+        <td>{% if com.esFeder == 1 %}FEDERADA{% elseif com.esOficial == 1 %}OFICIAL{% else %}NO OFICIAL{% endif %}</td>
         <td><a type="button" class="btn btn-sm btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Resultados" href="{{ path('pantalla_resultados', {'com': com.sid}) }}"><span class="glyphicon glyphicon-list"></span>  Ver resultados</a></td>
+      </tr>
       {% endfor %}
    </tbody>
    </table>

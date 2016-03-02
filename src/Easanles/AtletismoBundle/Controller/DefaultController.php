@@ -7,11 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller{
-    public function indexAction($name){
+    public function indexAction(){
     	 if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
     		 return $this->redirect($this->generateUrl("homepage_admin"));
+    	 } else if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+    	 	 return $this->redirect($this->generateUrl("mis_competiciones"));
     	 }
-       return $this->render('EasanlesAtletismoBundle:Default:index.html.twig', array('name' => $name));
+       return $this->render('EasanlesAtletismoBundle:Default:index.html.twig');
     }
     
     public function adminIndexAction(){

@@ -11,13 +11,20 @@
 {% endblock %}
 
 {% block navbar %}
+      {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
       <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
       <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
       <li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
-            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
-            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% if app.user is not null and app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+               <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% else %}
+               <li><a href="{{ path('users_pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('users_pantalla_records_fem') }}">Records femeninos</a></li>
+            {% endif %}
          </ul>
       </li>
       <li class="dropdown">
