@@ -53,6 +53,14 @@ class Helpers {
 	}
 	
 	/**
+	 * Obtiene la temporada actual
+	 * @param $doctrine El servicio Doctrine
+	 */
+	public static function getCurrentTemp($doctrine){
+		return Helpers::getTempYear($doctrine, date('d'), date('m'), date('Y'));
+	}
+	
+	/**
 	 * Obtiene la edad con respecto a un dia concreto
 	 * @param \DateTime $fnac La fecha de nacimiento
 	 * @param \DateTime $fecha La fecha de referencia a comparar, null para edad actual a dia de hoy

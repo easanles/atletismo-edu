@@ -22,7 +22,7 @@ editar_competicion:
       id: \d+
 ver_competicion:
    path: /admin/competiciones/{id}
-   defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion", rol: "admin"}
    requirements:
       id: \d+
 flags_competicion:
@@ -285,7 +285,11 @@ configuracion_asseticdump:
 mis_competiciones:
    path: /mis-competiciones
    defaults: {_controller: "EasanlesAtletismoBundle:Miscom:portada"}
-
+users_ver_competicion:
+   path: /competiciones/{id}
+   defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion", rol: "user"}
+   requirements:
+      id: \d+
 
 
 #####################################################

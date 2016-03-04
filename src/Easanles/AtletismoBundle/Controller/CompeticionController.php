@@ -33,7 +33,7 @@ class CompeticionController extends Controller {
     
     public function crearCompeticionAction(Request $request) {
     	 $com = new Competicion();
-    	 $com->setTemp(Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y')));
+    	 $com->setTemp(Helpers::getCurrentTemp($this->getDoctrine()));
     	 
     	 $form = $this->createForm(new ComType(), $com);
     	 
@@ -122,19 +122,23 @@ class CompeticionController extends Controller {
        }
     }
     
-    public function verCompeticionAction($id){
+    public function verCompeticionAction($id, $rol){
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	 $com = $repository->find($id);
     	 $numAtletas = count($repository->findAtletasIns($id));
 
-       if ($com != null) {
-          return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
-    	          array('com' => $com, 'numatletas' => $numAtletas));
-    	 } else {
-    	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
-    	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
-    	 	return $response;
-    	 }
+       if ($com == null) {
+       	 $response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+       	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+       	 return $response;
+       }
+       if (($rol == "user") && ($com->getEsVisible() == false)){
+       	 $response = new Response('Permiso denegado (Competición oculta) <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+       	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('mis_competiciones'));
+       	 return $response;
+       }
+       return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
+    	       array('com' => $com, 'numatletas' => $numAtletas, 'rol' => $rol));
     }
     
     public function flagsCompeticionAction(Request $request){

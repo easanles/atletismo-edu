@@ -4,43 +4,55 @@
 {% block title %}{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}){% endblock %}
 
 {% block navbar %}
-      {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
-      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
-      <li class="active"><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      {% if app.user is not null and app.user.idAtl is not null %}<li class="active"><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
       <li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
-            {% if app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
-            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
-            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% if app.user is not null and app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+               <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% else %}
+               <li><a href="{{ path('users_pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('users_pantalla_records_fem') }}">Records femeninos</a></li>
+            {% endif %}
          </ul>
       </li>
-      <li class="dropdown">
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
             <li><a class="inactive" href="#">Asistencia a eventos</a></li>
             <li><a class="inactive" href="#">Pagos</a></li>
          </ul>
-      </li>
-      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+      </li>{% endif %}
+      {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
 {% endblock %}
 
 {% block breadcrumb %}
-  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
-  <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+  {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+     <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  {% else %}
+     <li><a href="{{ path('homepage') }}">Portada</a></li>
+  {% endif %}
+  {% if rol == "user" %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
   <li class="active">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</li>
 {% endblock %}
 
-   {% block modallabel %}Confirmar borrado{% endblock %}
-   {% block modalbody %}
-   <p>¿Confirmar borrado de la competición <strong id="data1">***</strong> de la temporada <strong id="data2">***</strong>?</p>
-   {% endblock %}
-   {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+   {% if rol == "admin" %}
+      {% block modallabel %}Confirmar borrado{% endblock %}
+      {% block modalbody %}
+      <p>¿Confirmar borrado de la competición <strong id="data1">***</strong> de la temporada <strong id="data2">***</strong>?</p>
+      {% endblock %}
+      {% block modalprimary %}<a id="confirmbutton" type="button" class="btn btn-danger" href=""><span class="glyphicon glyphicon-remove"></span> Borrar</a>{% endblock %}
+   {% endif %}
 
 {% block container %}
    <h1 id="container_title" class="page-header">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})
-      <span><a type="button" class="btn btn-lg btn-primary pull-right" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span> Registrar marcas</a></span>
+      {% if rol == "admin" %}<span><a type="button" class="btn btn-lg btn-primary pull-right" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard"></span> Registrar marcas</a></span>{% endif %}
    </h1>
     
    <div class="row">
@@ -68,12 +80,12 @@
          {% elseif com.esoficial is same as(true) %}
          <p class="text-center text-info bg-info"><strong>COMPETICIÓN OFICIAL DEL CLUB</strong></p>
          {% endif %}
-         <p><a type="button" class="btn btn-lg btn-default center-block" href="{{ path('pantalla_resultados', {'com': com.sid}) }}"><span class="glyphicon glyphicon-list"></span> Resultados</a></p>
+         <p><a type="button" class="btn btn-lg btn-default center-block" href="{% if rol == "admin" %}{{ path('pantalla_resultados', {'com': com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {'com': com.sid}) }}{% endif %}"><span class="glyphicon glyphicon-list"></span> Resultados</a></p>
          <a type="button" class="btn btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
-         <a type="button" class="btn btn-default" href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
-         <a type="button" class="btn btn-{% if com.pruebas.toArray()|length == 0 %}warning{% else %}default{% endif %}" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span> Lista de pruebas <span class="badge">{{ com.pruebas.toArray()|length }}</span></a>
-         <a type="button" class="btn btn-{% if numatletas == 0 %}warning{% else %}default{% endif %}"{% if com.pruebas.toArray()|length == 0 %} disabled{% endif %} href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span> Atletas inscritos <span class="badge">{{ numatletas }}</span></a>
-         <button type="button" class="btn btn-danger pull-right" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
+         {% if rol == "admin" %}<a type="button" class="btn btn-default" href="{{ path('editar_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>{% endif %}
+         {% if rol == "admin" %}<a type="button" class="btn btn-{% if com.pruebas.toArray()|length == 0 %}warning{% else %}default{% endif %}" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span> Lista de pruebas <span class="badge">{{ com.pruebas.toArray()|length }}</span></a>{% endif %}
+         {% if rol == "admin" %}<a type="button" class="btn btn-{% if numatletas == 0 %}warning{% else %}default{% endif %}"{% if com.pruebas.toArray()|length == 0 %} disabled{% endif %} href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span> Atletas inscritos <span class="badge">{{ numatletas }}</span></a>{% endif %}
+         {% if rol == "admin" %}<button type="button" class="btn btn-danger pull-right" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><span class="glyphicon glyphicon-remove"></span> Borrar</button>{% endif %}
       </div>
       <div class="col-xs-12 col-sm-4 col-sm-pull-8">
          {% if com.cartel is not null %}

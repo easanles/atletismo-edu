@@ -8,6 +8,9 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Composer\Autoload\ClassLoader;
 
 class CompeticionRepository extends EntityRepository {
+	/**
+	 * Listado de competiciones
+	 */
 	public function findAllOrdered()	{
 		$result = $this->getEntityManager()
 		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.sede, com.esVisible FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
@@ -19,25 +22,31 @@ class CompeticionRepository extends EntityRepository {
 		}
 		return $result;
 	}
-	
+
+	/**
+	 * Competiciones de una temporada
+	 */
 	public function findTempComs($temp, $rol){
 		$qb = $this->getEntityManager()->createQueryBuilder('com');
 		if ($rol == "user"){
 			$qb->where('com.esVisible = 1');
 		}
-		return $qb->select('com.sid, com.temp, com.nombre, com.fecha')
+		$result = $qb->select('com.sid, com.nombre, com.temp, com.sede, com.fecha, com.desc, com.web, com.cartel, com.esFeder, com.esOficial, com.esInscrib')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
 		->andWhere('com.temp = :temp')
 		->orderBy('com.fecha', 'DESC')
 		->setParameter('temp', $temp)
 		->getQuery()->getResult();
-		
-		$result = $this->getEntityManager()
-		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha FROM EasanlesAtletismoBundle:Competicion com WHERE com.temp = :temp ORDER BY com.fecha DESC')
-		->getResult();
+		foreach ($result as $key => $com){
+			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
+			$result[$key]['numpruebas'] = $numPruebas;
+		}
 		return $result;
 	}
 	
+	/**
+	 * Lista de atletas inscritos
+	 */
 	public function findAtletasIns($sidCom){
 		return $this->getEntityManager()
 		->createQuery('SELECT IDENTITY (ins.idAtl)
@@ -50,6 +59,9 @@ class CompeticionRepository extends EntityRepository {
 		->getResult();
 	}
 	
+	/**
+	 * Lista de temporadas
+	 */
 	public function findTemps($rol){
 		$qb = $this->getEntityManager()->createQueryBuilder('com');
 		if ($rol == "user"){
@@ -62,6 +74,9 @@ class CompeticionRepository extends EntityRepository {
 		->getQuery()->getResult();
 	}
 	
+	/**
+	 * Busqueda por parametros
+	 */
 	public function searchByParameters($temp, $string) {	
 		$qb = $this->getEntityManager()->createQueryBuilder('com');
 		if (($string != null) || ($string != "")){
@@ -86,6 +101,9 @@ class CompeticionRepository extends EntityRepository {
 		return $result;
 	}
 	
+	/**
+    * Comprobar la existencia de una competicion
+	 */
 	public function checkData($nombre, $temp){
 		$comCheck = $this->getEntityManager()
 		->createQuery(
@@ -96,6 +114,9 @@ class CompeticionRepository extends EntityRepository {
       return ($comCheck != null);
 	}
 	
+	/**
+	 * Competiciones entre dos fechas
+	 */
 	public function findComsBetween($fechaIni, $fechaFin){
 		$qb = $this->getEntityManager()->createQueryBuilder('com');
 		if ($fechaIni != null){
@@ -117,4 +138,45 @@ class CompeticionRepository extends EntityRepository {
 		}
 		return $result;
 	}
+	
+	/**
+	 * Competiciones en las que se ha inscrito un atleta en una temporada
+	 */
+	public function findAtlComs($idAtl, $temp){
+		$query = $this->getEntityManager()
+		->createQuery(
+			'SELECT com.sid
+		    FROM EasanlesAtletismoBundle:Inscripcion ins
+          JOIN ins.idAtl atl
+			 JOIN ins.sidPru pru
+			 JOIN pru.sidCom com
+			 WHERE atl.id = :idatl AND com.esVisible = 1 AND com.temp = :temp
+			 GROUP BY com.sid
+			 ORDER BY com.fecha DESC')
+	   ->setParameter('temp', $temp)
+		->setParameter('idatl', $idAtl)
+		->getResult();
+		$result = array();
+		foreach ($query as $row){
+			$result[] = $row['sid'];
+		}
+		return $result;
+	}
+	
+	/**
+	 * Proximas competiciones disponibles para inscribirse
+	 */
+	/*public function findAvaliableComs($temp){
+		return $this->getEntityManager()
+		->createQuery(
+			 'SELECT com.sid, com.nombre, com.temp, com.sede, com.fecha, com.desc, com.web, com.cartel, com.esFeder, com.esOficial, com.esInscrib
+		    FROM EasanlesAtletismoBundle:Competicion com
+		    WHERE com.esVisible = 1 AND com.temp = :temp AND (com.fecha IS NULL OR com.fecha >= :ayer) AND com.esOficial = 0
+			 ORDER BY com.fecha DESC')
+	   ->setParameter('ayer', (new \DateTime())->sub(new \DateInterval("P1D")))
+		->setParameter('temp', $temp)
+		->getResult();
+	}*/
+	
+	
 }

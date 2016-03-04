@@ -42,12 +42,11 @@
 {% endblock %}
 
 {% block container %}
-
    <h1 id="container_title" class="row page-header">Mis competiciones</h1>
-   <div id="controls" class="row">
+   <div id="container_header" class="row">
       <div class="col-xs-7 col-sm-6 col-md-5">
          <select class="form-control" onChange="">
-            <option value="" {% if temp is not defined %}selected{% endif %}>Todas las temporadas</option>
+            <option value="">Temporada 2015/16</option>
             {#
             {% for row in temporadas %}
             <option value="{{ row.temp }}" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}/{{ (row.temp + 1)|slice(2, 2)}}</option>
@@ -57,14 +56,65 @@
       </div>
       <div class="pull-right">
          <div class="btn-group" role="group" aria-label="Mostrar">
-            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Lista</button>
             <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Cuadrícula</button>
+            <button type="button" class="btn btn-info active"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Lista</button>
          </div>
       </div>
    </div>
-   
-   </div>
    <div id="coms-list" class="row">
+      {% for com in coms %}
+         <div class="row">
+            <div class="col-xs-3 col-sm-2 col-lg-offset-1">
+               {% if com.cartel is not null %}
+               <a href="{{ path('users_ver_competicion', {'id': com.sid})}}"><img src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/></a>
+               {% else %}
+                  {% image '@EasanlesAtletismoBundle/Resources/assets/img/sincartel.jpg' %}
+                  <a href="{{ path('users_ver_competicion', {'id': com.sid})}}"><img src="{{ asset_url }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/></a>
+                  {% endimage %}
+               {% endif %}
+            </div>
+            <div class="col-xs-6 col-sm-7 col-md-7 col-lg-5">
+               <h3 class="hidden-xs">{{ com.nombre }}</h3>
+               <h4 class="visible-xs">{{ com.nombre }}</h4>
+               <p>{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} - {{ com.sede }}</p>
+               {% if com.web is not null %}<p><a href="{{ com.web }}">{{ com.web }}</a></p>{% endif %}
+               <p class="visible-md visible-lg">
+                  {{ com.desc|nl2br }}
+               </p>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+               {% if com.esFeder is same as(true) %}
+                  <p class="hidden-xs text-center text-info bg-info"><strong>COMPETICIÓN FEDERADA</strong></p>
+               {% elseif com.esOficial is same as(true) %}
+                  <p class="hidden-xs text-center text-info bg-info"><strong>COMPETICIÓN OFICIAL DEL CLUB</strong></p>
+               {% else %}
+                  <p class="hidden-xs text-center"><strong>COMPETICIÓN NO OFICIAL</strong></p>
+               {% endif %}
+               {% if com.fecha <= hoy %}
+                  <p class="text-center">Finalizada</p>
+                  <a type="button" class="btn btn-default btn-block" href="#">Ver resultados</a>
+               {% elseif com.inscrito == true %}
+                  <p class="text-center text-success">Inscrito</p>
+                  {% if com.esOficial == false %}
+                     {% if com.numpruebas == 1 %}
+                     <a type="button" class="btn btn-default btn-block" href="#">Desinscribirse</a>
+                     {% else %}
+                     <a type="button" class="btn btn-default btn-block" href="#">Modificar inscripción</a>
+                     {% endif %}
+                  {% else %}
+                     <a type="button" class="btn btn-default btn-block" href="#">Ver inscripción</a>
+                  {% endif %}
+               {% elseif com.esOficial == true %}
+                  <p class="text-center text-info">Solicite inscripción al coordinador del club</p>
+               {% elseif com.esInscrib %}
+                  <p class="text-center text-success">Inscripciones abiertas</p>
+                  <a type="button" class="btn btn-primary btn-block" href="#">Inscribirse</a>
+               {% else %}
+                  <p class="text-center text-muted">Inscripciones cerradas</p>
+               {% endif %}
+            </div>
+         </div>
+      {% endfor %}
    </div>
    <div id="coms-grid" class="row">
    </div>
