@@ -8,16 +8,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 
 class MiscomController extends Controller{
-    public function portadaAction(){
+    public function portadaAction(Request $request){
     	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 $temp = $request->query->get('temp');    	 
+    	 $temp = (int)$temp;    	 
+    	 if (($temp == null) || ($temp == "") || (!is_int($temp))){
+    	    $temp = Helpers::getCurrentTemp($this->getDoctrine());
+    	 }    	 
     	 $user = $this->getUser();
     	 if (($user == null) || ($user->getIdAtl()->getId() == null)){
     	 	$response = new Response('El usuario no tiene un atleta asociado');
     	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
     	 	return $response;
     	 }
-    	 $tempComs = $repoCom->findTempComs(2015, "user");
-    	 $listaComInscritos = $repoCom->findAtlComs($user->getIdAtl()->getId(), 2015);
+    	 $temps = $repoCom->findTemps("user");
+    	 
+    	 $tempComs = $repoCom->findTempComs($temp, "user");
+    	 $listaComInscritos = $repoCom->findAtlComs($user->getIdAtl()->getId(), $temp);
     	 $listaComs = array();
     	 $hoy = new \DateTime();
     	 foreach ($tempComs as $com){
@@ -30,7 +37,7 @@ class MiscomController extends Controller{
     	    	$listaComs[] = $com;
     	    }
     	 }
-    	 $parametros = array("coms" => $listaComs, "hoy" => $hoy);
+    	 $parametros = array("temp" => $temp, "temporadas" => $temps, "coms" => $listaComs, "hoy" => $hoy);
     	
        return $this->render('EasanlesAtletismoBundle:Miscom:portada_miscom.html.twig', $parametros);
     }
