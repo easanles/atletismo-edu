@@ -41,6 +41,10 @@
   <li class="active">Mis competiciones</li>
 {% endblock %}
 
+   {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
+
 {% block container %}
    <h1 id="container_title" class="row page-header">Mis competiciones</h1>
    <div id="container_header" class="row">
@@ -70,25 +74,29 @@
                <h5 class="grid-comname">{{ com.nombre }}</h5>
             {% endif %}
             {% if com.fecha <= hoy %}
-               <a type="button" class="btn btn-lg btn-default btn-block grid-btn" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
+               <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
             {% elseif com.inscrito == true %}
                {% if com.esOficial == false %}
                   {% if com.esInscrib == false %}
                      <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Inscrito</button>
                   {% else %}
                      {% if com.numpruebas == 1 %}
-                        <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#">Desinscribirse</a>
-                     {% else %}
+                        <a type="button" class="btn btn-lg btn-danger btn-block grid-btn" href="#">Desinscribirse</a>
+                     {% elseif com.numpruebas > 1 %}
                         <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
                      {% endif %}
                   {% endif %}
                {% else %}
-                  <a type="button" class="btn btn-lg primary btn-block grid-btn" href="#"><span class="visible-xs">Ver ins.</span><span class="hidden-xs">Ver inscripción</span></a>
+                  <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#"><span class="visible-xs">Ver ins.</span><span class="hidden-xs">Ver inscripción</span></a>
                {% endif %}
             {% elseif com.esOficial == true %}
                <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Competición oficial</button>
-            {% elseif com.esInscrib == true %}
-               <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#">Inscribirse</a>
+            {% elseif com.esInscrib == true and com.numpruebas >= 1  %}
+               {% if com.numpruebas == 1 %}
+                  <button type="button" class="btn btn-lg btn-primary btn-block grid-btn" onClick="showModal('inscrib', '{{ com.nombre }}', '{{ com.sid }}')">Inscribirse</button>
+               {% else %}
+                  <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#">Inscribirse</a>
+               {% endif %}
             {% else %}
                <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></button>
             {% endif %}
@@ -134,9 +142,9 @@
                         <p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>
                      {% else %}
                         {% if com.numpruebas == 1 %}
-                           <a type="button" class="btn btn-default btn-block" href="#">Desinscribirse</a>
-                        {% else %}
-                           <a type="button" class="btn btn-default btn-block" href="#"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
+                           <a type="button" class="btn btn-danger btn-block" href="#">Desinscribirse</a>
+                        {% elseif com.numpruebas > 1%}
+                           <a type="button" class="btn btn-primary btn-block" href="#"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
                         {% endif %}
                      {% endif %}
                   {% else %}
@@ -144,9 +152,13 @@
                   {% endif %}
                {% elseif com.esOficial == true %}
                   <p class="text-center text-info">Solicite inscripción al coordinador del club</p>
-               {% elseif com.esInscrib == true %}
+               {% elseif com.esInscrib == true and com.numpruebas >= 1 %}
                   <p class="text-center text-success">Inscripciones abiertas</p>
-                  <a type="button" class="btn btn-primary btn-block" href="#">Inscribirse</a>
+                  {% if com.numpruebas == 1 %}
+                     <button type="button" class="btn btn-primary btn-block" onClick="showModal('inscrib', '{{ com.nombre }}', '{{ com.sid }}')">Inscribirse</button>
+                  {% else %}
+                     <a type="button" class="btn btn-primary btn-block" href="#">Inscribirse</a>
+                  {% endif %}
                {% else %}
                   <p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>
                {% endif %}

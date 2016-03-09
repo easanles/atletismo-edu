@@ -32,7 +32,37 @@ function toggleView(view){
 	   } break;
 	   default: break;
 	}
-	
+}
+
+function showModal(type, data1, data2){
+	var modal = $('#modalDialog');
+	switch(type){
+	   case ("inscrib"): {
+    	   $('#dialog-label').html("Inscripción");
+    	   $("#dialog-body").html("¿Quieres inscribirte en <strong>" + data1 + "</strong>?");
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-primary\" onClick=\"submitDialogAction('./mis-competiciones/inscribirprueba?com=" + data2 + "')\"><span class=\"glyphicon glyphicon-ok\"></span> Inscribirse</button>");           
+	   } break;
+	   default: break;
+	}
+	modal.modal();
+}
+
+function submitDialogAction(url){
+	alerthtml_pre = "<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-remove\"></span> <span>";
+	alerthtml_pos = "</span></div>";
+	$.ajax({
+	   type        : "GET",
+	   url         : url,
+	   success     : function(data) {
+          if (data.success == false){
+		     $('#dialog-body').html(alerthtml_pre + data.message + alerthtml_pos);
+		     $("#dialog-btn button").attr("disabled", true);
+	      } else if (data.success == true){
+			 $("#modal-dismiss").click();
+			 location.reload();
+	      }
+	   }
+	});
 }
 
 $(document).ready(function(){

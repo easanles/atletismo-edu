@@ -119,7 +119,11 @@
                 {{ form_row(form.esvisible) }}
              </div>
              <div class="form_row col-xs-6">
+                {% if mode == "edit" and form.vars.value.esoficial == true %}
+                {{ form_row(form.esinscrib, { 'attr':{'disabled':'disabled'} }) }}
+                {% else %}
                 {{ form_row(form.esinscrib) }}
+                {% endif %}
              </div>
           </div>
           <div class="row">

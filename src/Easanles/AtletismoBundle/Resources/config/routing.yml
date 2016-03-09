@@ -290,6 +290,9 @@ users_ver_competicion:
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion", rol: "user"}
    requirements:
       id: \d+
+users_inscripcion_prueba_unica:
+   path: /mis-competiciones/inscribirprueba
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:inscribirsePruebaUnica"}
 
 
 #####################################################

@@ -179,7 +179,7 @@ class InscripcionController extends Controller {
     	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 foreach($listaPru as $pruArr){
     	 	 $pruObj = $repoPru->find($pruArr['sid']);
-    	 	 if (($pruObj->getSidTprm()->getSexo() != 2) //La prueba es para un solo sexo
+    	 	 if (($pruObj->getSidTprm()->getSexo() != 2) 
     	 	 		&& ($pruObj->getSidTprm()->getSexo() != $atl->getSexo())) continue; //Mismo sexo (masculino, femenino)
     	 	 $checkIns = $repoIns->findOneBy(array("idAtl" => $idAtl, "sidPru" => $pruArr['sid']));
     	 	 if ($checkIns != null) continue; // Atleta ya inscrito a esta prueba
@@ -276,7 +276,7 @@ class InscripcionController extends Controller {
     	 		 $ins->setIdAtl($elem['atl'])
     	 		 ->setSidPru($elem['pru'])
     	 		 ->setCoste($elem['coste'])
-    	 		 ->setOrigen("admin") //TODO: nombre de usuario
+    	 		 ->setOrigen($this->getUser()->getNombre())
     	 		 ->setFecha(new \DateTime())
     	 		 ->setEstado("Pendiente")
     	 		 ->setCodGrupo($codGrupo);
