@@ -96,4 +96,10 @@ vich_uploader:
             inject_on_load:     true
             delete_on_update:   true
             delete_on_remove:   true
+
+#Liip Url Autoconverter
+liip_url_auto_converter:
+    linkclass:
+    target: _blank
+    debugmode: false
             

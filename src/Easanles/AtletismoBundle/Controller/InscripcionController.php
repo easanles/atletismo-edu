@@ -278,8 +278,10 @@ class InscripcionController extends Controller {
     	 		 ->setCoste($elem['coste'])
     	 		 ->setOrigen($this->getUser()->getNombre())
     	 		 ->setFecha(new \DateTime())
-    	 		 ->setEstado("Pendiente")
     	 		 ->setCodGrupo($codGrupo);
+    	 		 if ($elem['coste'] == 0){
+    	 		 	$ins->setEstado("Pagado");
+    	 		 } else $ins->setEstado("Pendiente");
     	 		 $em->persist($ins);
     	 	 }
     	 	 $em->flush();

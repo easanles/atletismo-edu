@@ -42,6 +42,11 @@ function showModal(type, data1, data2){
     	   $("#dialog-body").html("¿Quieres inscribirte en <strong>" + data1 + "</strong>?");
 		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-primary\" onClick=\"submitDialogAction('./mis-competiciones/inscribirprueba?com=" + data2 + "')\"><span class=\"glyphicon glyphicon-ok\"></span> Inscribirse</button>");           
 	   } break;
+	   case ("desinscrib"): {
+    	   $('#dialog-label').html("Eliminar inscripción");
+    	   $("#dialog-body").html("¿Quieres desinscribirte de <strong>" + data1 + "</strong>?");
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./mis-competiciones/desinscribirprueba?com=" + data2 + "')\"><span class=\"glyphicon glyphicon-remove\"></span> Desinscribirse</button>");           
+	   } break;
 	   default: break;
 	}
 	modal.modal();

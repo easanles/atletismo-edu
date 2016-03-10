@@ -28,14 +28,16 @@ class MiscomController extends Controller{
     	 $tempComs = $repoCom->findTempComs($temp, "user");
     	 $listaComInscritos = $repoCom->findAtlComs($user->getIdAtl()->getId(), $temp);
     	 $listaComs = array();
-    	 $hoy = (new \DateTime())->sub(new \DateInterval("P1D"));
+    	 $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
+    	 $hoy = new \DateTime();
     	 foreach ($tempComs as $com){
+    	 	 $com['eshoy'] = (($com['fecha'] > $ayer) && ($com['fecha'] < $hoy));
     	    if (in_array($com['sid'], $listaComInscritos)){
     	    	$com['inscrito'] = true;
     	    } else {
     	    	$com['inscrito'] = false;
     	    }
-    	    if (($com['fecha'] >= $hoy) || ($com['inscrito'] == true)) {
+    	    if (($com['fecha'] >= $ayer) || ($com['inscrito'] == true)) {
     	    	if ($com['numpruebas'] == 1){
     	    		$comObj = $repoCom->find($com['sid']);
     	    		$pru = $comObj->getPruebas()->first();
@@ -47,12 +49,12 @@ class MiscomController extends Controller{
     	    	$listaComs[] = $com;
     	    }
     	 }
-    	 $parametros = array("temp" => $temp, "temporadas" => $temps, "coms" => $listaComs, "hoy" => $hoy);
+    	 $parametros = array("temp" => $temp, "temporadas" => $temps, "coms" => $listaComs, "ayer" => $ayer, "hoy" => $hoy);
     	
        return $this->render('EasanlesAtletismoBundle:Miscom:portada_miscom.html.twig', $parametros);
     }
     
-   public function inscribirsePruebaUnicaAction(Request $request){
+   private function operacionesPruebaUnica(Request $request, $comando){
    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$sidCom = $request->query->get('com');
    	$com = $repoCom->find($sidCom);
@@ -95,32 +97,57 @@ class MiscomController extends Controller{
    		]);
    	}
    	$pru = $com->getPruebas()->first();
-   	$repoIns = $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
-   	$checkIns = $repoIns->findOneBy(array("idAtl" => $atl->getId(), "sidPru" => $pru->getSid()));
-   	if ($checkIns != null){
+   	if ($pru == null){
    		return new JsonResponse([
    				'success' => false,
-   				'message' => "Ya estabas inscrito a esta competición"
+   				'message' => "Esta competición no tiene ninguna prueba"
    		]);
    	}
-   	if (($pru->getSidTprm()->getSexo() != 2)
-   			&& ($pru->getSidTprm()->getSexo() != $atl->getSexo())){
-   		return new JsonResponse([
-   				'success' => false,
-   				'message' => "Esta competición solo tiene una prueba de modalidad ".($pru->getSidTprm()->getSexo() == 1? "femenina" : "masculina")
-   		]);
+   	$repoIns = $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$ins = $repoIns->findOneBy(array("idAtl" => $atl->getId(), "sidPru" => $pru->getSid()));
+   	switch ($comando){
+   		case ("inscrib"): {
+   			if ($ins != null){
+   				return new JsonResponse([
+   						'success' => false,
+   						'message' => "Ya estabas inscrito a esta competición"
+   				]);
+   			}
+   			if (($pru->getSidTprm()->getSexo() != 2)
+   					&& ($pru->getSidTprm()->getSexo() != $atl->getSexo())){
+   				return new JsonResponse([
+   						'success' => false,
+   						'message' => "Esta competición solo tiene una prueba de modalidad ".($pru->getSidTprm()->getSexo() == 1? "femenina" : "masculina")
+   				]);
+   			}
+   		} break;
+   		case ("desinscrib"): {
+   			if ($ins == null){
+   				return new JsonResponse([
+   						'success' => false,
+   						'message' => "No estabas inscrito a esta competición"
+   				]);
+   			}
+   		} break;
    	}
    	try {
-         $ins = new Inscripcion();
-   		$ins->setIdAtl($atl)
-   		->setSidPru($pru)
-   		->setCoste(0)
-   		->setOrigen($this->getUser()->getNombre())
-   		->setFecha(new \DateTime())
-   		->setEstado("Pagado")
-   		->setCodGrupo(null);
    		$em = $this->getDoctrine()->getManager();
-   		$em->persist($ins);
+   		switch ($comando){
+   			case ("inscrib"): {
+   				$ins = new Inscripcion();
+   				$ins->setIdAtl($atl)
+   				->setSidPru($pru)
+   				->setCoste(0)
+   				->setOrigen($this->getUser()->getNombre())
+   				->setFecha(new \DateTime())
+   				->setEstado("Pagado")
+   				->setCodGrupo(null);
+   				$em->persist($ins);
+   			} break;
+   			case ("desinscrib"): {
+   				$em->remove($ins);
+   			} break;
+   		}
    		$em->flush();
    		return new JsonResponse([
    				'success' => true,
@@ -133,6 +160,39 @@ class MiscomController extends Controller{
    				'message' => $exception
    		]);
    	}
+   }
+    
+   public function inscribirsePruebaUnicaAction(Request $request){
+   	return $this->operacionesPruebaUnica($request, "inscrib");
+   }
+   
+   public function desinscribirsePruebaUnicaAction(Request $request){
+   	return $this->operacionesPruebaUnica($request, "desinscrib");
+   }
+   
+   public function inscripcionAction($sidCom){
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$com = $repoCom->find($sidCom);   	
+   	if ($com == null) {
+   		$response = new Response('No existe esa competición <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		return $response;
+   	}
+   	$atl = $this->getUser()->getIdAtl();
+   	if ($atl == null){
+   		$response = new Response('No tienes un atleta asociado a tu cuenta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		return $response;
+   	}
+   	if ($com->getEsVisible() == false){
+   		$response = new Response('Esta competición está oculta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		return $response;
+   	}  	
+   	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
+   	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
+   	$parametros = array("com" => $com, "atl" => $atl, "par" => $par);
+   	return $this->render('EasanlesAtletismoBundle:Miscom:inscripcion_miscom.html.twig', $parametros);
    }
     
 }

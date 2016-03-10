@@ -21,7 +21,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/var-dumper": "~2.6",
         "symfony/intl": "~2.6",
-        "vich/uploader-bundle": "0.14.*"
+        "vich/uploader-bundle": "0.14.*",
+        "liip/url-auto-converter-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

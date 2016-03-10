@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
+        		new Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
             new Easanles\AtletismoBundle\EasanlesAtletismoBundle(),
         );
 

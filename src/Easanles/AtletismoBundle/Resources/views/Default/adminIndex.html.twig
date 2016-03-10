@@ -66,7 +66,7 @@
                         <tbody>
                            <tr><th>Sede</th><td>{{ com.sede }}</td></tr>
                            {% if com.web is not null %}{% if com.web != "" %}<tr><th>Web</th><td><a href="{{ com.web }}">{{ com.web }}</a></td></tr>{% endif %}{% endif %}
-                           <tr><td colspan="2"><strong>Descripción:</strong> {{ com.desc|nl2br }}</th></tr>
+                           <tr><td colspan="2"><strong>Descripción:</strong> {{ com.desc|nl2br|converturls }}</th></tr>
                            <tr><td colspan="2"><a type="button" class="btn btn-sm btn-default" href="{{ path('ver_competicion', {'id': com.sid}) }}"><span class="glyphicon glyphicon-info-sign" aria-label="Más información"></span> Más información</a></td></tr>
                         </tbody>
                      </table>

@@ -73,21 +73,25 @@
                {% endimage %}
                <h5 class="grid-comname">{{ com.nombre }}</h5>
             {% endif %}
-            {% if com.fecha <= hoy %}
+            {% if com.fecha <= ayer %}
                <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
             {% elseif com.inscrito == true %}
                {% if com.esOficial == false %}
-                  {% if com.esInscrib == false %}
-                     <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Inscrito</button>
+                  {% if com.eshoy %}
+                     <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#">Registrar marca</a>
                   {% else %}
-                     {% if com.numpruebas == 1 %}
-                        <a type="button" class="btn btn-lg btn-danger btn-block grid-btn" href="#">Desinscribirse</a>
-                     {% elseif com.numpruebas > 1 %}
-                        <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
+                     {% if com.esInscrib == false %}
+                        <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Inscrito</button>
+                     {% else %}
+                        {% if com.numpruebas == 1 %}
+                           <button type="button" class="btn btn-lg btn-danger btn-block grid-btn" onClick="showModal('desinscrib', '{{ com.nombre }}', '{{ com.sid }}')">Desinscribirse</button>
+                        {% elseif com.numpruebas > 1 %}
+                           <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
+                        {% endif %}
                      {% endif %}
                   {% endif %}
                {% else %}
-                  <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#"><span class="visible-xs">Ver ins.</span><span class="hidden-xs">Ver inscripción</span></a>
+                  <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Ver inscrib.</span><span class="hidden-xs">Ver inscripción</span></a>
                {% endif %}
             {% elseif com.esOficial == true %}
                <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Competición oficial</button>
@@ -95,7 +99,7 @@
                {% if com.numpruebas == 1 %}
                   <button type="button" class="btn btn-lg btn-primary btn-block grid-btn" onClick="showModal('inscrib', '{{ com.nombre }}', '{{ com.sid }}')">Inscribirse</button>
                {% else %}
-                  <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#">Inscribirse</a>
+                  <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}">Inscribirse</a>
                {% endif %}
             {% else %}
                <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></button>
@@ -105,7 +109,7 @@
    </div>
    <div id="coms-list" class="row" style="display: none">
       {% for com in coms %}
-         <div class="row">
+         <div class="row list-row{% if com.eshoy %}-hoy{% endif %}">
             <div class="col-xs-3 col-sm-2 col-lg-offset-1">
                {% if com.cartel is not null %}
                <a href="{{ path('users_ver_competicion', {'id': com.sid})}}"><img src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/></a>
@@ -118,10 +122,10 @@
             <div class="col-xs-6 col-sm-7 col-md-7 col-lg-5">
                <h3 class="hidden-xs">{{ com.nombre }}</h3>
                <h4 class="visible-xs">{{ com.nombre }}</h4>
-               <p>{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %}{% if com.sede is not null %}{% if com.sede != "" %} - {{ com.sede }}{% endif %}{% endif %}</p>
+               <p>{% if com.fecha is null %}<em>Sin fecha</em>{% elseif com.eshoy %}<strong>HOY</strong>{% else %}{{ com.fecha|date('d/m/Y') }}{% endif %}{% if com.sede is not null %}{% if com.sede != "" %} - {{ com.sede }}{% endif %}{% endif %}</p>
                {% if com.web is not null %}<p><a href="{{ com.web }}">{{ com.web }}</a></p>{% endif %}
                <p class="visible-md visible-lg">
-                  {{ com.desc|nl2br }}
+                  {{ com.desc|nl2br|converturls }}
                </p>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -132,7 +136,7 @@
                {% else %}
                   <p class="hidden-xs text-center"><strong>COMPETICIÓN NO OFICIAL</strong></p>
                {% endif %}
-               {% if com.fecha <= hoy %}
+               {% if com.fecha <= ayer %}
                   <p class="text-center">Finalizada</p>
                   <a type="button" class="btn btn-default btn-block" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
                {% elseif com.inscrito == true %}
@@ -142,13 +146,16 @@
                         <p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>
                      {% else %}
                         {% if com.numpruebas == 1 %}
-                           <a type="button" class="btn btn-danger btn-block" href="#">Desinscribirse</a>
+                           <button type="button" class="btn btn-danger btn-block" onClick="showModal('desinscrib', '{{ com.nombre }}', '{{ com.sid }}')"><span class="visible-xs">Desinscrib.</span><span class="hidden-xs">Desinscribirse</span></button>
                         {% elseif com.numpruebas > 1%}
-                           <a type="button" class="btn btn-primary btn-block" href="#"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
+                           <a type="button" class="btn btn-primary btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
                         {% endif %}
                      {% endif %}
+                     {% if com.eshoy %}
+                        <a type="button" class="btn btn-lg btn-primary btn-block" href="#"><span class="visible-xs visible-sm">Marca</span><span class="hidden-xs hidden-sm">Registrar marca</span></a>
+                     {% endif %}
                   {% else %}
-                     <a type="button" class="btn btn-default btn-block" href="#"><span class="visible-xs">Ver ins.</span><span class="hidden-xs">Ver inscripción</span></a>
+                     <a type="button" class="btn btn-default btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Ver inscrib.</span><span class="hidden-xs">Ver inscripción</span></a>
                   {% endif %}
                {% elseif com.esOficial == true %}
                   <p class="text-center text-info">Solicite inscripción al coordinador del club</p>
@@ -157,7 +164,7 @@
                   {% if com.numpruebas == 1 %}
                      <button type="button" class="btn btn-primary btn-block" onClick="showModal('inscrib', '{{ com.nombre }}', '{{ com.sid }}')">Inscribirse</button>
                   {% else %}
-                     <a type="button" class="btn btn-primary btn-block" href="#">Inscribirse</a>
+                     <a type="button" class="btn btn-primary btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}">Inscribirse</a>
                   {% endif %}
                {% else %}
                   <p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>

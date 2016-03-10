@@ -55,7 +55,7 @@
                <tr><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
                <tr><td><strong>Email de contacto:</strong></td><td colspan="2"><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td><td><strong>Usuario:</strong></td><td colspan="2">{% if atl.nombreUsu == null %}<em class="text-muted">Ninguno</em>{% else %}{{ atl.nombreUsu.nombre }}{% if atl.nombreUsu.rol == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}{% endif %}</td></tr>
                <tr><td colspan="6"><strong>Notas:</strong></td></tr>
-               <tr><td colspan="6">{{ atl.notas|nl2br }}</td></tr>
+               <tr><td colspan="6">{{ atl.notas|nl2br|converturls }}</td></tr>
             </tbody>
          </table>
          <table class="table table-responsive visible-xs">
@@ -73,7 +73,7 @@
                <tr><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
                <tr><td><strong>Email:</strong></td><td><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td><td><strong>Usuario:</strong></td><td>{% if atl.nombreUsu == null %}<em class="text-muted">Ninguno</em>{% else %}{{ atl.nombreUsu.nombre }}{% if atl.nombreUsu.rol == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}{% endif %}</td></tr>
                <tr><td colspan="4"><strong>Notas:</strong></td></tr>
-               <tr><td colspan="4">{{ atl.notas|nl2br }}</td></tr>
+               <tr><td colspan="4">{{ atl.notas|nl2br|converturls }}</td></tr>
             </tbody>
          </table>
          <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>

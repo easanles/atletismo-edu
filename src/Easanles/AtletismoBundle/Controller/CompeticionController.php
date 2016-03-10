@@ -128,12 +128,17 @@ class CompeticionController extends Controller {
     	 $numAtletas = count($repository->findAtletasIns($id));
 
        if ($com == null) {
-       	 $response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
-       	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+       	 if ($rol == "user"){
+       	 	$response = new Response('No existe esa competición <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+       	 	$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+       	 } else {
+       	 	$response = new Response('No existe la competicion con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+       	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+       	 }
        	 return $response;
        }
        if (($rol == "user") && ($com->getEsVisible() == false)){
-       	 $response = new Response('Permiso denegado (Competición oculta) <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+       	 $response = new Response('Esta competición está oculta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
        	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('mis_competiciones'));
        	 return $response;
        }

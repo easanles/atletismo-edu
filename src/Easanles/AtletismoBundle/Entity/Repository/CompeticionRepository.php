@@ -29,12 +29,11 @@ class CompeticionRepository extends EntityRepository {
 	public function findTempComs($temp, $rol){
 		$qb = $this->getEntityManager()->createQueryBuilder('com');
 		if ($rol == "user"){
-			$qb->where('com.esVisible = 1');
-		}
+			$qb->where('com.esVisible = 1')->orderBy('com.fecha', 'ASC');
+		} else $qb->orderBy('com.fecha', 'DESC');
 		$result = $qb->select('com.sid, com.nombre, com.temp, com.sede, com.fecha, com.desc, com.web, com.cartel, com.esFeder, com.esOficial, com.esInscrib')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
 		->andWhere('com.temp = :temp')
-		->orderBy('com.fecha', 'DESC')
 		->setParameter('temp', $temp)
 		->getQuery()->getResult();
 		foreach ($result as $key => $com){

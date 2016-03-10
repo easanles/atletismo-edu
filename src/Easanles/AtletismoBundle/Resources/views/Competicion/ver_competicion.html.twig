@@ -4,9 +4,9 @@
 {% block title %}{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}){% endblock %}
 
 {% block navbar %}
-      {% if app.user is not null and app.user.idAtl is not null %}<li class="active"><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      {% if app.user is not null and app.user.idAtl is not null %}<li{% if rol == "user" %} class="active"{% endif %}><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
-      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li{% if rol == "admin" %} class="active"{% endif %}><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
       <li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
@@ -38,7 +38,9 @@
   {% else %}
      <li><a href="{{ path('homepage') }}">Portada</a></li>
   {% endif %}
-  {% if rol == "user" %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+  {% if rol == "user" %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>
+  {% else %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+  {% endif %}
   <li class="active">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</li>
 {% endblock %}
 
@@ -62,7 +64,7 @@
                <tr><td><strong>Tipo:</strong></td><td>AIRE LIBRE</td></tr>
                <tr><td><strong>Ubicacion:</strong></td><td>{{ com.ubicacion }}</td></tr>
                <tr><td colspan="2"><strong>Descripción:</strong></td></tr>
-               <tr><td colspan="2"><p>{{ com.desc|nl2br }}</p></td></tr>
+               <tr><td colspan="2"><p>{{ com.desc|nl2br|converturls }}</p></td></tr>
                <tr><td><strong>Fecha de comienzo:</strong></td><td>{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %}</td></tr>
                <tr><td><strong>Página web:</strong></td><td><strong>Correo electrónico de contacto:</strong></td></tr>
                <tr><td><a href="{{ com.web }}">{{ com.web }}</a></td><td><a href="mailto:{{ com.email }}">{{ com.email }}</a></td></tr>

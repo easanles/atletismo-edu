@@ -293,7 +293,14 @@ users_ver_competicion:
 users_inscripcion_prueba_unica:
    path: /mis-competiciones/inscribirprueba
    defaults: {_controller: "EasanlesAtletismoBundle:Miscom:inscribirsePruebaUnica"}
-
+users_eliminar_inscripcion_prueba_unica:
+   path: /mis-competiciones/desinscribirprueba
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:desinscribirsePruebaUnica"}
+users_inscripcion:
+   path: /mis-competiciones/inscripcion/{sidCom}
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:inscripcion"}
+   requirements:
+      id: \d+
 
 #####################################################
 ################### TODOS & OTROS ###################

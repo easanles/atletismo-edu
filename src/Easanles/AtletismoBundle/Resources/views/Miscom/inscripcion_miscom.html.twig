@@ -1,0 +1,95 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Inscripción en {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}){% endblock %}
+
+{% block navbar %}
+      {% if app.user is not null and app.user.idAtl is not null %}<li class="active"><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user is not null and app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+               <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% else %}
+               <li><a href="{{ path('users_pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('users_pantalla_records_fem') }}">Records femeninos</a></li>
+            {% endif %}
+         </ul>
+      </li>
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a class="inactive" href="#">Asistencia a eventos</a></li>
+            <li><a class="inactive" href="#">Pagos</a></li>
+         </ul>
+      </li>{% endif %}
+      {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+  {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+     <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  {% else %}
+     <li><a href="{{ path('homepage') }}">Portada</a></li>
+  {% endif %}
+  <li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>
+  <li><a href="{{ path('users_ver_competicion', {'id': com.sid}) }}">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</a></li>
+  <li class="active">Inscripción</li>
+{% endblock %}
+
+   {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="page-header">Inscripción <small>{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</small></h1>
+   
+   <div class="row">
+      <div class="hidden-xs col-sm-4">
+         {% if com.cartel is not null %}
+         <img src="{{ vich_uploader_asset(com, 'cartelFile') }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/>
+         {% else %}
+            {% image '@EasanlesAtletismoBundle/Resources/assets/img/sincartel.jpg' %}
+            <img src="{{ asset_url }}" alt="{{ com.nombre }}" class="img-responsive thumbnail"/>
+            {% endimage %}
+         {% endif %}
+      </div>
+      <div class="col-xs-12 col-sm-8">
+         {% if com.esOficial %}
+            <h4>Categoría CATEGORIA
+         {% else %}
+            <h4>Pruebas disponibles para la categoría CATEGORIA
+         {% endif %}
+         {% if par|first %}<span class="pull-right"><strong>Tu dorsal: {{ par|first.dorsal }}</strong></span>{% endif %}
+         </h4>
+            
+         <table class="table table-hover table-bordered table-striped table-responsive">
+            <tbody>
+               <tr>
+                  {% if com.esOficial %}
+                     <th>Prueba</th><th>Precio</th><th>Estado</th>
+                  {% else %}
+                     <th>Prueba</th><th>Selección</th>
+                  {% endif %}
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   
+   
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/user.js') }}"></script>
+
+{% endblock %}
+
+
+
