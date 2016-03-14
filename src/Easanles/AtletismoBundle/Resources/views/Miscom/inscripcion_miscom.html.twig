@@ -62,9 +62,9 @@
       </div>
       <div class="col-xs-12 col-sm-8">
          {% if com.esOficial %}
-            <h4>Categoría CATEGORIA
+            <h4>Categoría {{ cat.nombre }}
          {% else %}
-            <h4>Pruebas disponibles para la categoría CATEGORIA
+            <h4>Pruebas disponibles para la categoría {{ cat.nombre }}
          {% endif %}
          {% if par|first %}<span class="pull-right"><strong>Tu dorsal: {{ par|first.dorsal }}</strong></span>{% endif %}
          </h4>
@@ -75,9 +75,27 @@
                   {% if com.esOficial %}
                      <th>Prueba</th><th>Precio</th><th>Estado</th>
                   {% else %}
-                     <th>Prueba</th><th>Selección</th>
+                     <th>Prueba</th><th>Inscrito</th>
                   {% endif %}
                </tr>
+               {% for pru in prus %}
+               <tr{% if pru.inscrito == false %} class="text-muted"{% endif %}>
+                  {% if pru.sexo == 0 %}
+                     {% set tpr = pru.nombre ~ '. Masculino, ' ~ pru.entorno %}
+                  {% elseif pru.sexo == 1 %}
+                     {% set tpr = pru.nombre ~ '. Femenino, ' ~ pru.entorno %}
+                  {% elseif pru.sexo == 2 %}
+                     {% set tpr = pru.nombre ~ '. ' ~ pru.entorno %}
+                  {% endif %}
+                  <td>{{ tpr }}</td>
+                  {% if com.esOficial %}
+                     <td>{% if pru.coste is not null %}{{ pru.coste|number_format(2, ',', '.') }}€{% endif %}</td>
+                     <td>{{ pru.estado }}</td>
+                  {% else %}
+                     <td><button>control</button></td>
+                  {% endif %}
+               </tr>
+               {% endfor %}
             </tbody>
          </table>
       </div>

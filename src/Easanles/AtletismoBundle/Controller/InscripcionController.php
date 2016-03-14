@@ -26,9 +26,6 @@ class InscripcionController extends Controller {
     	  $parametros = array('com' => $com);
     	  $atletaIds = $repoCom->findAtletasIns($sidCom);
     	  $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-    	  $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-    	  $vigentes = $repoCat->findAllCurrent();
-    	  $fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
     	  $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	  $repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
     	  $repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
@@ -39,7 +36,7 @@ class InscripcionController extends Controller {
     	     $atlData['lfga'] = $atl->getLfga();
     	     $atlData['apellidos'] = $atl->getApellidos();
     	     $atlData['nombre'] = $atl->getNombre();
-    	     $atlData['categoria'] = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac())['nombre'];
+    	     $atlData['categoria'] = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl)['nombre'];
     	     $pruebasIns = $repoIns->findForAtl($sidCom, $idAtl);
     	     foreach($pruebasIns as $key => $ins){
     	        $pruebasIns[$key]['numRegistros'] = $repoInt->countEntriesFor($idAtl, $ins['sidPru']);
@@ -169,10 +166,7 @@ class InscripcionController extends Controller {
     	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('inscribir_atletas', $sidCom));
     	 	return $response;
     	 }
-    	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-    	 $vigentes = $repoCat->findAllCurrent();
-    	 $fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
-       $cat = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
+       $cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
     	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']); // Misma categoria
     	 $listaPruObj = array();

@@ -104,10 +104,10 @@ class Helpers {
 	
 	/**
 	 * Dado un array de categorias obtener a cual pertenece un atleta
-	 * @param $categorias La lista de categorias vigentes ordenado de menor a mayor edad maxima terminando en la categoria sin edad maxima si la hubiese
+	 * @param array $categorias La lista de categorias vigentes ordenado de menor a mayor edad maxima terminando en la categoria sin edad maxima si la hubiese
 	 * @param \DateTime $fechaRefCat La fecha de referencia para comparar fecha de nacimiento
 	 * @param \DateTime $fnac La fecha de nacimiento del atleta
-	 * @return Categoria La categoria a la que pertenece el atleta
+	 * @return array La categoria a la que pertenece el atleta
 	 */
 	public static function getCategoria($categorias, $fechaRefCat, $fnac){
 		foreach($categorias as $cat){
@@ -117,6 +117,19 @@ class Helpers {
 			   }
 		   } else return $cat;
 		}
+	}
+	
+	/**
+	 * Obtiene la categoría actual del atleta mirando los datos de la BD
+	 * @param $doctrine El servicio Doctrine
+	 * @param Atleta $atl El atleta a comprobar
+	 * @return array La categoria del atleta
+	 */
+	public static function getAtlCurrentCat($doctrine, $atl){
+		$repoCat = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
+		$vigentes = $repoCat->findAllCurrent();
+		$fechaRefCat = Helpers::getFechaRefCat($doctrine);
+		return Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
 	}
 	
 	/**
@@ -153,7 +166,6 @@ class Helpers {
 			return $fecha->sub(new \DateInterval("P".($edadMax+1)."Y"));
 		}
 	}
-	
 
 	/**
 	 * Ajusta los valores iniciales de la base de datos

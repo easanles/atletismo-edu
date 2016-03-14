@@ -48,7 +48,7 @@ class CategoriaRepository extends EntityRepository {
 		else return $query[0];
 	}
 	
-	//NOTA: Para evitar multiples consultas a la BD usar la funcion Helpers::getCategoria($categorias, $edad)
+	//NOTA: Para evitar multiples consultas a la BD usar la funcion Helpers::getCategoria o Helpers::getAtlCurrentCat
 	public function findForEdad($edad) {
 		$current = $this->findAllCurrent();
 		foreach($current as $cat){

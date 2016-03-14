@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Entity\Inscripcion;
+use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 
 class MiscomController extends Controller{
     public function portadaAction(Request $request){
@@ -30,6 +31,7 @@ class MiscomController extends Controller{
     	 $listaComs = array();
     	 $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
     	 $hoy = new \DateTime();
+    	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 foreach ($tempComs as $com){
     	 	 $com['eshoy'] = (($com['fecha'] > $ayer) && ($com['fecha'] < $hoy));
     	    if (in_array($com['sid'], $listaComInscritos)){
@@ -37,12 +39,24 @@ class MiscomController extends Controller{
     	    } else {
     	    	$com['inscrito'] = false;
     	    }
+    	    $com['pagoPendiente'] = false;
+    	    if (($com['inscrito'] == true) && ($com['esOficial'] == true)){
+    	       $inss = $repoIns->findForAtl($com['sid'], $user->getIdAtl()->getId());
+    	       foreach ($inss as $ins){
+    	          if ($ins['estado'] != "Pagado"){
+    	          	 $com['pagoPendiente'] = true;
+    	          	 break;
+    	          }
+    	       }
+    	    }
     	    if (($com['fecha'] >= $ayer) || ($com['inscrito'] == true)) {
     	    	if ($com['numpruebas'] == 1){
     	    		$comObj = $repoCom->find($com['sid']);
     	    		$pru = $comObj->getPruebas()->first();
     	    		if (($pru->getSidTprm()->getSexo() != 2)
     	    				&& ($pru->getSidTprm()->getSexo() != $user->getIdAtl()->getSexo())) continue;
+    	    		$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $user->getIdAtl());
+    	    		if ($pru->getIdCat()->getId() != $cat['id']) continue;
     	    	}
     	    	if (($com['esFeder'] == true)
     	    		   && (($user->getIdAtl()->getLfga() == null) || ($user->getIdAtl()->getLfga() == ""))) continue;
@@ -96,6 +110,13 @@ class MiscomController extends Controller{
    				'message' => "Se han cerrado las inscripciones para esta competición"
    		]);
    	}
+   	$numpruebas = count($com->getPruebas());
+   	if ($numpruebas > 1){
+   	   return new JsonResponse([
+   				'success' => false,
+   				'message' => "Esta competición tiene más de una prueba. Recarga la página"
+   		]);
+   	}
    	$pru = $com->getPruebas()->first();
    	if ($pru == null){
    		return new JsonResponse([
@@ -113,6 +134,14 @@ class MiscomController extends Controller{
    						'message' => "Ya estabas inscrito a esta competición"
    				]);
    			}
+   			$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
+   			if ($pru->getIdCat()->getId() != $cat['id']){
+   				return new JsonResponse([
+   						'success' => false,
+   						'message' => "Esta competición solo tiene una prueba para atletas de categoría ".$cat['nombre']
+   				]);
+   			}
+
    			if (($pru->getSidTprm()->getSexo() != 2)
    					&& ($pru->getSidTprm()->getSexo() != $atl->getSexo())){
    				return new JsonResponse([
@@ -188,10 +217,29 @@ class MiscomController extends Controller{
    		$response = new Response('Esta competición está oculta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
    		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
    		return $response;
-   	}  	
+   	}
+   	$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
    	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
    	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
-   	$parametros = array("com" => $com, "atl" => $atl, "par" => $par);
+      $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+      $prus = $repoPru->searchByParameters($sidCom, $cat['id']);
+      $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+      $inss = $repoIns->findForAtl($sidCom, $atl->getId());
+      foreach($prus as &$pru){
+      	$pru['inscrito'] = false;
+      	$pru['coste'] = null;
+      	$pru['estado'] = "No inscrito";
+      	foreach($inss as $ins){
+      		if ($ins['sidPru'] == $pru['sid']){
+      			$pru['inscrito'] = true;
+      			$pru['coste'] = $ins['coste'];
+      			$pru['estado'] = $ins['estado'];
+      			break;
+      		}
+      	}
+      }
+      $parametros = array("com" => $com, "atl" => $atl, "par" => $par, "cat" => $cat, "prus" => $prus);
+      
    	return $this->render('EasanlesAtletismoBundle:Miscom:inscripcion_miscom.html.twig', $parametros);
    }
     

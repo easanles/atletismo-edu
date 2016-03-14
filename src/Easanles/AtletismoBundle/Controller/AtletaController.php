@@ -155,10 +155,7 @@ class AtletaController extends Controller {
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$atl = $repository->find($id);
 		if ($atl != null) {
-		   $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-		   $vigentes = $repository->findAllCurrent();
-		   $fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
-		   $categoria = Helpers::getCategoria($vigentes, $fechaRefCat, $atl->getFnac());
+		   $categoria = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
 			return $this->render('EasanlesAtletismoBundle:Atleta:ver_atleta.html.twig',
 					array('atl' => $atl, 'categoria' => $categoria, 'edad' => Helpers::getEdad($atl->getFnac(), null)));
 		} else {
