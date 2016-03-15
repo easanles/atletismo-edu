@@ -290,17 +290,18 @@ users_ver_competicion:
    defaults: {_controller: "EasanlesAtletismoBundle:Competicion:verCompeticion", rol: "user"}
    requirements:
       id: \d+
-users_inscripcion_prueba_unica:
+users_crear_inscripcion:
    path: /mis-competiciones/inscribirprueba
-   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:inscribirsePruebaUnica"}
-users_eliminar_inscripcion_prueba_unica:
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:operacionesInscripcion", comando: "inscrib"}
+users_eliminar_inscripcion:
    path: /mis-competiciones/desinscribirprueba
-   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:desinscribirsePruebaUnica"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:operacionesInscripcion", comando: "desinscrib"}
 users_inscripcion:
    path: /mis-competiciones/inscripcion/{sidCom}
-   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:inscripcion"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:pantallaPruebas"}
    requirements:
       id: \d+
+      
 
 #####################################################
 ################### TODOS & OTROS ###################

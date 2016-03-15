@@ -68,15 +68,40 @@ class MiscomController extends Controller{
        return $this->render('EasanlesAtletismoBundle:Miscom:portada_miscom.html.twig', $parametros);
     }
     
-   private function operacionesPruebaUnica(Request $request, $comando){
-   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   public function operacionesInscripcionAction(Request $request, $comando){
    	$sidCom = $request->query->get('com');
-   	$com = $repoCom->find($sidCom);
-   	if ($com == null){
-   		return new JsonResponse([
-   				'success' => false,
-   				'message' => "No existe esa competición"
-   		]);
+   	if (($sidCom != null) && ($sidCom != "")){
+   		$pruebaUnica = true;
+   	} else {
+   		$sidPru = $request->query->get('pru');
+   		if (($sidPru != null) && ($sidPru != "")){
+   			$pruebaUnica = false;
+   		} else {
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => "No se han recibido parámetros"
+   			]);
+   		}
+   	}
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+   	if ($pruebaUnica){
+   		$com = $repoCom->find($sidCom);
+   		if ($com == null){
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => "No existe esa competición"
+   			]);
+   		}
+   	} else {
+   		$pru = $repoPru->find($sidPru);
+   		if ($pru == null){
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => "No existe esa prueba"
+   			]);
+   		}
+   		$com = $pru->getSidCom();
    	}
    	$atl = $this->getUser()->getIdAtl();
    	if ($atl == null){
@@ -110,51 +135,61 @@ class MiscomController extends Controller{
    				'message' => "Se han cerrado las inscripciones para esta competición"
    		]);
    	}
-   	$numpruebas = count($com->getPruebas());
-   	if ($numpruebas > 1){
-   	   return new JsonResponse([
-   				'success' => false,
-   				'message' => "Esta competición tiene más de una prueba. Recarga la página"
-   		]);
-   	}
-   	$pru = $com->getPruebas()->first();
-   	if ($pru == null){
-   		return new JsonResponse([
-   				'success' => false,
-   				'message' => "Esta competición no tiene ninguna prueba"
-   		]);
+   	if ($pruebaUnica){
+   		$numpruebas = count($com->getPruebas());
+   		if ($numpruebas > 1){
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => "Esta competición tiene más de una prueba. Recarga la página"
+   			]);
+   		}
+   		$pru = $com->getPruebas()->first();
+   		if ($pru == null){
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => "Esta competición no tiene ninguna prueba"
+   			]);
+   		}
    	}
    	$repoIns = $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$ins = $repoIns->findOneBy(array("idAtl" => $atl->getId(), "sidPru" => $pru->getSid()));
    	switch ($comando){
    		case ("inscrib"): {
    			if ($ins != null){
+   				if ($pruebaUnica) $message = "Ya estabas inscrito a esta competición";
+   				else $message = "Ya estabas inscrito a esta prueba";
    				return new JsonResponse([
    						'success' => false,
-   						'message' => "Ya estabas inscrito a esta competición"
+   						'message' => $message
    				]);
    			}
    			$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
    			if ($pru->getIdCat()->getId() != $cat['id']){
+   				if ($pruebaUnica) $message = "Esta competición solo tiene una prueba para atletas de categoría ".$cat['nombre'];
+   				else $message = "Esta prueba es para atletas de categoría ".$cat['nombre'];
    				return new JsonResponse([
    						'success' => false,
-   						'message' => "Esta competición solo tiene una prueba para atletas de categoría ".$cat['nombre']
+   						'message' => $message
    				]);
    			}
 
    			if (($pru->getSidTprm()->getSexo() != 2)
    					&& ($pru->getSidTprm()->getSexo() != $atl->getSexo())){
+   				if ($pruebaUnica) $message = "Esta competición solo tiene una prueba de modalidad ".($pru->getSidTprm()->getSexo() == 1? "femenina" : "masculina");
+   				else $message = "Esta prueba es de modalidad ".($pru->getSidTprm()->getSexo() == 1? "femenina" : "masculina");
    				return new JsonResponse([
    						'success' => false,
-   						'message' => "Esta competición solo tiene una prueba de modalidad ".($pru->getSidTprm()->getSexo() == 1? "femenina" : "masculina")
+   						'message' => $message
    				]);
    			}
    		} break;
    		case ("desinscrib"): {
    			if ($ins == null){
+   				if ($pruebaUnica) $message = "No estabas inscrito a esta competición";
+   				else $message = "No estabas inscrito a esta prueba";
    				return new JsonResponse([
    						'success' => false,
-   						'message' => "No estabas inscrito a esta competición"
+   						'message' => $message
    				]);
    			}
    		} break;
@@ -190,16 +225,8 @@ class MiscomController extends Controller{
    		]);
    	}
    }
-    
-   public function inscribirsePruebaUnicaAction(Request $request){
-   	return $this->operacionesPruebaUnica($request, "inscrib");
-   }
    
-   public function desinscribirsePruebaUnicaAction(Request $request){
-   	return $this->operacionesPruebaUnica($request, "desinscrib");
-   }
-   
-   public function inscripcionAction($sidCom){
+   public function pantallaPruebasAction($sidCom){
    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repoCom->find($sidCom);   	
    	if ($com == null) {
@@ -222,13 +249,18 @@ class MiscomController extends Controller{
    	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
    	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
       $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-      $prus = $repoPru->searchByParameters($sidCom, $cat['id']);
+      $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']);
       $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
       $inss = $repoIns->findForAtl($sidCom, $atl->getId());
-      foreach($prus as &$pru){
+      $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
+      $hoy = new \DateTime();
+      $prus = array();
+      foreach($listaPru as $pru){
       	$pru['inscrito'] = false;
       	$pru['coste'] = null;
       	$pru['estado'] = "No inscrito";
+      	$pru['activarMarcas'] = ($com->getFecha() < $hoy);
+      	$pru['activarInscripciones'] = (($com->getEsInscrib() == true) && ($com->getFecha() > $ayer));
       	foreach($inss as $ins){
       		if ($ins['sidPru'] == $pru['sid']){
       			$pru['inscrito'] = true;
@@ -237,10 +269,14 @@ class MiscomController extends Controller{
       			break;
       		}
       	}
+      	if (($pru['inscrito'] == false) && ($pru['sexo'] != 2)
+      			&& ($pru['sexo'] != $atl->getSexo())) continue;
+      	//Otras restricciones
+      	$prus[] = $pru;
       }
       $parametros = array("com" => $com, "atl" => $atl, "par" => $par, "cat" => $cat, "prus" => $prus);
       
-   	return $this->render('EasanlesAtletismoBundle:Miscom:inscripcion_miscom.html.twig', $parametros);
+   	return $this->render('EasanlesAtletismoBundle:Miscom:pruebas_miscom.html.twig', $parametros);
    }
     
 }

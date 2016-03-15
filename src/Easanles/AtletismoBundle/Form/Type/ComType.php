@@ -14,7 +14,7 @@ class ComType extends AbstractType{
     	    ->add('ubicacion', 'text', array('label' => 'Ubicación','required' => false))
     	    ->add('sede', 'text', array('label' => 'Sede','required' => false))
     	    ->add('fecha', 'date', array(
-    	    		'label' => 'Fecha de comienzo',
+    	    		'label' => 'Fecha',
     	    		'widget' => 'single_text',
     	    		'format' => 'dd/MM/yyyy',
     	    		'placeholder' => 'dd/mm/aaaa',

@@ -225,7 +225,6 @@ function toggleIndexBtn(item, label){
        	    		$(item).tooltip('fixTitle');
        	   	        $(item).removeClass("btn-default");
        	      		$(item).addClass("btn-info");
-       	      		console.log($(item).tooltip()[0].title);
        	      	} else {
        	     		html = "<span class=\"glyphicon glyphicon-eye-close\" aria-hidden=\"true\"></span>";
        	     		if (label) html = html + " <strong>NO</strong>";
@@ -234,7 +233,6 @@ function toggleIndexBtn(item, label){
        	    		$(item).tooltip('fixTitle');
        	      		$(item).removeClass("btn-info");
        	      		$(item).addClass("btn-default");       	 
-       	      		console.log($(item).tooltip()[0].title);
        	       	}
        	     	
        	      	ok = true;

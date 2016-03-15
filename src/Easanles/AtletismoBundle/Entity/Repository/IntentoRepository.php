@@ -122,7 +122,7 @@ class IntentoRepository extends EntityRepository {
 				 JOIN pru.sidCom com
 				 JOIN pru.sidTprm tprm
 				 JOIN int.idAtl atl
-				 WHERE atl.sexo LIKE :sexo AND tprm.entorno LIKE :entorno AND int.validez = 1';
+				 WHERE atl.sexo LIKE :sexo AND tprm.entorno LIKE :entorno AND int.validez = 1 AND com.esOficial = 1';
 		if ($rol == "user") $sql = $sql.' AND com.esVisible = 1';
 		$sql = $sql.' AND IDENTITY(tprm.sidTprf) LIKE :sidtprf
 				 ORDER BY int.marca '.$orden.', int.sid ASC';

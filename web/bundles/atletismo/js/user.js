@@ -1,4 +1,6 @@
 
+alerthtml_pre = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> <span>";
+alerthtml_pos = "</span></div>";
 
 function changeTemp(temp){
 	window.location.href = "./mis-competiciones?temp=" + temp;
@@ -52,9 +54,54 @@ function showModal(type, data1, data2){
 	modal.modal();
 }
 
+function toggleIns(item){
+	itemData = $(item).attr("id").split("-");
+	id = itemData[2];
+	activate = -1;
+    if (($(item).hasClass("btn-default")) && (!$(item).hasClass("active"))){ //ON
+       $(item).addClass("active");
+       url = "../inscribirprueba?pru="+id
+       $(item).html("<span class=\"glyphicon glyphicon-refresh spinning\" aria-hidden=\"true\"></span>");
+       activate = 1;
+ 	} else if (!($(item).hasClass("btn-default")) && ($(item).hasClass("active"))) { //OFF
+ 	   $(item).removeClass("active");
+       url = "../desinscribirprueba?pru="+id
+       $(item).html("<span class=\"glyphicon glyphicon-refresh spinning\" aria-hidden=\"true\"></span>");
+ 	   activate = 0;
+ 	}
+    if (activate == -1) return;
+    $.getJSON(url, function(data, status){
+        ok = false;
+        if (status == "success"){
+     	    if (data.success == true){
+     	     	if (activate == 1){
+     	    		$(item).html("Inscrito");
+     	   	        $(item).removeClass("btn-default");
+     	      		$(item).addClass("btn-info");
+     	      		$("#btn-int-"+id).attr("disabled", false);
+     	      	} else {
+     	      		$(item).html("Inscribirse");
+     	      		$(item).removeClass("btn-info");
+     	      		$(item).addClass("btn-default");       	 
+     	      		$("#btn-int-"+id).attr("disabled", true);
+     	       	}
+     	    } else {
+     	       $(item).removeClass("btn-default btn-info");
+	      	   $(item).addClass("btn-danger");
+	      	   $(item).attr("disabled", true);
+     	       $(item).html("<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>");
+	           $("#alert-div").append(alerthtml_pre + data.message + alerthtml_pos);
+     	    }
+     	    ok = true;
+        }
+        if (!ok){
+            if (activate == 1) $(item).removeClass("active");
+            else $(item).addClass("active");    	   
+        }
+    });
+}
+
 function submitDialogAction(url){
-	alerthtml_pre = "<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-remove\"></span> <span>";
-	alerthtml_pos = "</span></div>";
 	$.ajax({
 	   type        : "GET",
 	   url         : url,
