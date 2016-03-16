@@ -62,7 +62,7 @@
          {% endif %}
       </div>
       <div class="col-xs-12 col-sm-8">
-         {% if com.esOficial %}
+         {% if com.esOficial or com.fecha < ayer %}
             <h4>Categoría {{ cat.nombre }}
          {% else %}
             <h4>Pruebas disponibles para la categoría {{ cat.nombre }}
@@ -97,7 +97,11 @@
                      {% endif %}
                   {% endif %}
                   {% if pru.activarMarcas %}
-                     {% if com.esOficial == false %}<td><a id="btn-int-{{ pru.sid }}" type="button" class="btn btn-sm btn-primary btn-block" href="#"{% if pru.inscrito == false %}disabled{% endif %}>Marca</a></td>{% endif %}
+                     {% if com.esOficial == false %}<td>
+                        {% if pru.activarInscripciones == true or pru.inscrito == true %}
+                        <a id="btn-int-{{ pru.sid }}" type="button" class="btn btn-sm btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid, "pru": pru.sid}) }}"{% if pru.inscrito == false %}disabled{% endif %}>Marca</a>
+                        {% endif %}
+                     </td>{% endif %}
                      <td><a id="btn-int-{{ pru.sid }}" type="button" class="btn btn-sm btn-default btn-block" href="{{ path("users_pantalla_resultados", {"pru": pru.sid}) }}">Resultados</a></td>
                   {% endif %}
                </tr>

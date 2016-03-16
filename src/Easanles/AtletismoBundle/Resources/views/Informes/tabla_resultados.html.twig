@@ -18,7 +18,7 @@
          {% set currentMarca = marca.marca %}
      {% endif %}
    {% endif %}
-   <tr>
+   <tr{% if destacarAtl is defined %}{% if destacarAtl.id == marca.idAtl|number_format %} class="text-success"{% endif %}{% endif %}>
       <td{% if pos == 1 %} style="font-weight: bold; font-size:large; color: #fc0"{% elseif pos == 2 %} style="font-weight: bold; font-size:large; color: #aaa"{% elseif pos == 3 %} style="font-weight: bold; font-size:large; color: #c63"{% endif %}>{{ pos }}</td>
       <td>
       {% if unidades == "segundos" %}
@@ -29,9 +29,9 @@
       {% endif %}
       </td>
       <td>{{ marca.premios }}</td>
-      <td>{{ marca.apellidos }}, {{ marca.nombre }}</td>
+      <td>{% if destacarAtl is defined %}{% if destacarAtl.id == marca.idAtl|number_format %}<strong>{{ marca.apellidos }}, {{ marca.nombre }}</strong>{% else %}{{ marca.apellidos }}, {{ marca.nombre }}{% endif %}{% endif %}</td>
       {% if numIntentos > 1 %}
-         <td><button type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Ver historial de intentos" onClick="showModal('showINT', {{ marca.idAtl }}, {{ sidRon }}, null)"><span class="glyphicon glyphicon-book"></span></button>
+         <td><button type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Ver historial de intentos" onClick="{% if rol == "admin" %}showModal('showINT', {{ marca.idAtl }}, {{ sidRon }}, null){% else %}showModal('intentos', {{ marca.idAtl }}, {{ sidRon }}){% endif %}"><span class="glyphicon glyphicon-book"></span></button>
          </td>
       {% endif %}
    </tr>

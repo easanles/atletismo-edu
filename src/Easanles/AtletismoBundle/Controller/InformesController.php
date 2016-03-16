@@ -17,7 +17,7 @@ class InformesController extends Controller {
 //##########################################################################
 	
 	public function pantallaResultadosAction(Request $request, $rol) {
-		$parametros = array();
+		$parametros = array("rol" => $rol);
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		$listaTemps = $repoCom->findTemps($rol);
 		$parametros['temps'] = $listaTemps;
@@ -137,7 +137,7 @@ class InformesController extends Controller {
 		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
 		if (($rol == "user") && ($ron->getSidPru()->getSidCom()->getEsVisible() == false))
 			   return new Response("Acceso denegado (competición oculta)");
-		$parametros = array("sidRon" => $sidRon);
+		$parametros = array("sidRon" => $sidRon, "rol" => $rol);
 		$tprf = $ron->getSidPru()->getSidTprm()->getSidTprf();
 		$unidades = $tprf->getUnidades();
 		$parametros['unidades'] = $unidades;
@@ -153,6 +153,10 @@ class InformesController extends Controller {
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		$entradas = $repoInt->findBestMarcas($sidRon, $orden);
 		$parametros["tablaPrincipal"] = $entradas;
+		$atl = $this->getUser()->getIdAtl();
+		if ($atl != null){
+			$parametros['destacarAtl'] = $atl;
+		}
 		
 		return $this->render('EasanlesAtletismoBundle:Informes:tabla_resultados.html.twig', $parametros);
 	}
@@ -168,7 +172,7 @@ class InformesController extends Controller {
 		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
 		if (($rol == "user") && ($ron->getSidPru()->getSidCom()->getEsVisible() == false))
 			   return new Response("Acceso denegado (competición oculta)");
-		$parametros = array("atl" => $atl, "ron" => $ron);
+		$parametros = array("atl" => $atl, "ron" => $ron, "rol" => $rol);
 		$parametros['unidades'] = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		$listaIntentos = $repoInt->findMarcaIntentos($idAtl, $sidRon);

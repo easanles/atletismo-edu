@@ -19,8 +19,8 @@ class MiscomController extends Controller{
     	    $temp = Helpers::getCurrentTemp($this->getDoctrine());
     	 }    	 
     	 $user = $this->getUser();
-    	 if (($user == null) || ($user->getIdAtl()->getId() == null)){
-    	 	$response = new Response('El usuario no tiene un atleta asociado');
+    	 if (($user == null) || ($user->getIdAtl() == null)){
+    	 	$response = new Response('El usuario no tiene un atleta asociado <a href="'.$this->generateUrl('homepage').'">Volver</a>');
     	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
     	 	return $response;
     	 }
@@ -64,7 +64,7 @@ class MiscomController extends Controller{
     	    }
     	 }
     	 $parametros = array("temp" => $temp, "temporadas" => $temps, "coms" => $listaComs, "ayer" => $ayer, "hoy" => $hoy);
-    	
+
        return $this->render('EasanlesAtletismoBundle:Miscom:portada_miscom.html.twig', $parametros);
     }
     
@@ -119,7 +119,7 @@ class MiscomController extends Controller{
    	if ($com->getEsOficial() == true){
    		return new JsonResponse([
    				'success' => false,
-   				'message' => "Esta es una competicion oficial del club. Consulta al coordinador del club"
+   				'message' => "Esta es una competición oficial del club. Consulta al coordinador del club"
    		]);
    	}
    	$hoy = (new \DateTime())->sub(new \DateInterval("P1D"));
@@ -226,7 +226,7 @@ class MiscomController extends Controller{
    	}
    }
    
-   public function pantallaPruebasAction($sidCom){
+   public function pantallaInscripcionAction($sidCom){
    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repoCom->find($sidCom);   	
    	if ($com == null) {
@@ -274,9 +274,43 @@ class MiscomController extends Controller{
       	//Otras restricciones
       	$prus[] = $pru;
       }
-      $parametros = array("com" => $com, "atl" => $atl, "par" => $par, "cat" => $cat, "prus" => $prus);
+      $parametros = array("com" => $com, "atl" => $atl, "par" => $par, "cat" => $cat, "prus" => $prus, "ayer" => $ayer);
       
-   	return $this->render('EasanlesAtletismoBundle:Miscom:pruebas_miscom.html.twig', $parametros);
+   	return $this->render('EasanlesAtletismoBundle:Miscom:inscripcion_miscom.html.twig', $parametros);
+   }
+   
+   public function pantallaMarcasAction(Request $request, $sidCom){
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$com = $repoCom->find($sidCom);
+   	if ($com == null) {
+   		$response = new Response('No existe esa competición <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		return $response;
+   	}
+   	$atl = $this->getUser()->getIdAtl();
+   	if ($atl == null){
+   		$response = new Response('No tienes un atleta asociado a tu cuenta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		return $response;
+   	}
+   	if ($com->getEsVisible() == false){
+   		$response = new Response('Esta competición está oculta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		return $response;
+   	}
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$inss = $repoIns->findForAtl($sidCom, $atl->getId());
+   	$prus = array();
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+   	foreach ($inss as $ins){
+   		$prus[] = $repoIns->find($ins['sidPru']);
+   	}
+   	$parametros = array("com" => $com, 'prus' => $prus);
+   	$selectedPru = $request->query->get('pru');
+   	if (($selectedPru != null) && ($selectedPru != "")){
+   		$parametros['selectedPru'] = $selectedPru;
+   	}
+   	return $this->render('EasanlesAtletismoBundle:Miscom:marcas_miscom.html.twig', $parametros);
    }
     
 }

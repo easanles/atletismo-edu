@@ -197,10 +197,10 @@ intentos_atletas:
    defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerAtletasInscritos"}
 intentos_rondas:
    path: /admin/marcas/getron
-   defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerRondas"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerRondas", rol: "admin"}
 crear_intento:
    path: /admin/marcas/nuevo
-   defaults: {_controller: "EasanlesAtletismoBundle:Intento:crearIntento"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:crearIntento", rol: "admin"}
         
         
 #======================INFORMES======================
@@ -298,9 +298,21 @@ users_eliminar_inscripcion:
    defaults: {_controller: "EasanlesAtletismoBundle:Miscom:operacionesInscripcion", comando: "desinscrib"}
 users_inscripcion:
    path: /mis-competiciones/inscripcion/{sidCom}
-   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:pantallaPruebas"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:pantallaInscripcion"}
    requirements:
-      id: \d+
+      sidCom: \d+
+users_marcas:
+   path: /mis-competiciones/marcas/{sidCom}
+   defaults: {_controller: "EasanlesAtletismoBundle:Miscom:pantallaMarcas"}
+   requirements:
+      sidCom: \d+
+users_lista_rondas:
+   path: /mis-competiciones/rondas
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:obtenerRondas", rol: "user"}
+users_crear_intento:
+   path: /mis-competiciones/marcas/nuevo
+   defaults: {_controller: "EasanlesAtletismoBundle:Intento:crearIntento", rol: "user"}
+   
       
 
 #####################################################

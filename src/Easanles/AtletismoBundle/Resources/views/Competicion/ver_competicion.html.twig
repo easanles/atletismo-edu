@@ -88,6 +88,8 @@
          {% if rol == "admin" %}<a type="button" class="btn btn-{% if com.pruebas.toArray()|length == 0 %}warning{% else %}default{% endif %}" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span> Lista de pruebas <span class="badge">{{ com.pruebas.toArray()|length }}</span></a>{% endif %}
          {% if rol == "admin" %}<a type="button" class="btn btn-{% if numatletas == 0 %}warning{% else %}default{% endif %}"{% if com.pruebas.toArray()|length == 0 %} disabled{% endif %} href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span> Atletas inscritos <span class="badge">{{ numatletas }}</span></a>{% endif %}
          {% if rol == "admin" %}<button type="button" class="btn btn-danger pull-right" onClick="showModal('delCOM', '{{ com.nombre }}', '{{ com.temp }}', '{{ path('borrar_competicion', {'i': com.sid}) }}')"><span class="glyphicon glyphicon-remove"></span> Borrar</button>{% endif %}
+         {% if rol == "user" %}<a type="button" class="btn btn-default" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}">Inscripción</a>{% endif %}
+         {% if rol == "user" and com.esOficial == false %}<a type="button" class="btn btn-default" href="{{ path('users_marcas', {'sidCom': com.sid}) }}">Marcas</a>{% endif %}
       </div>
       <div class="col-xs-12 col-sm-4 col-sm-pull-8">
          {% if com.cartel is not null %}
@@ -103,7 +105,7 @@
 {% endblock %}
 
 {% block js %}
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   {% if rol == "admin" %}<script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>{% endif %}
 
 {% endblock %}
 

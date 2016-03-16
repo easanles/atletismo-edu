@@ -78,7 +78,7 @@
             {% elseif com.inscrito == true %}
                {% if com.esOficial == false %}
                   {% if com.eshoy %}
-                     <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="#">Registrar marca</a>
+                     <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path("users_marcas", {"sidCom": com.sid}) }}">Registrar marca</a>
                   {% else %}
                      {% if com.esInscrib == false %}
                         <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Inscrito</button>
@@ -156,7 +156,7 @@
                         {% endif %}
                      {% endif %}
                      {% if com.eshoy %}
-                        <a type="button" class="btn btn-lg btn-primary btn-block" href="#"><span class="visible-xs visible-sm">Marca</span><span class="hidden-xs hidden-sm">Registrar marca</span></a>
+                        <a type="button" class="btn btn-lg btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marca</span><span class="hidden-xs hidden-sm">Registrar marca</span></a>
                      {% endif %}
                   {% else %}
                      <a type="button" class="btn btn-default btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Ver inscrib.</span><span class="hidden-xs">Ver inscripción</span></a>

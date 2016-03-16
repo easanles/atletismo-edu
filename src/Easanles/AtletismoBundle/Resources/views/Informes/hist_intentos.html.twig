@@ -23,7 +23,7 @@
            </td>
            <td>
            {% for intento in marca.intentos %}
-                 <span style="cursor: default;" data-toggle="popover" data-placement="top" onmouseover="$(this).popover('show')" onmouseout="$(this).popover('hide')" data-html="true" data-content="<strong>Número intento:</strong> {{ intento.num }}<br>{% if intento.premios != "" %}<strong>Premios:</strong> {{ intento.premios }}<br>{% endif %}<strong>Registrado por:</strong> {{ intento.origen }}" class="glyphicon {% if intento.validez == 0 %}glyphicon-remove text-danger{% elseif intento.validez == 1 %}glyphicon-ok text-success{% endif %}"></span>
+                 <span style="cursor: default;" data-toggle="popover" data-placement="top" onmouseover="$(this).popover('show')" onmouseout="$(this).popover('hide')" data-html="true" data-content="<strong>Número intento:</strong> {{ intento.num }}<br>{% if intento.premios != "" %}<strong>Premios:</strong> {{ intento.premios }}<br>{% endif %}{% if rol == "admin" %}<strong>Registrado por:</strong> {{ intento.origen }}{% endif %}" class="glyphicon {% if intento.validez == 0 %}glyphicon-remove text-danger{% elseif intento.validez == 1 %}glyphicon-ok text-success{% endif %}"></span>
            {% endfor %}
            </td>
         </tr>

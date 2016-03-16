@@ -10,7 +10,11 @@
 
    <div id="data_form" class="row">
 
+   {% if rol == "admin" %}
 {{ form_start(form, {'action': path('crear_intento', {'ron': sidRon, 'atl': idAtl})}) }}
+   {% else %}
+{{ form_start(form, {'action': path('users_crear_intento', {'ron': sidRon})}) }}
+   {% endif %}
 
     {{ form_errors(form) }}
     <div class="subform panel panel-default">

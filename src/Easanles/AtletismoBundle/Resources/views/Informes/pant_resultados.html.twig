@@ -10,6 +10,8 @@
    <style> .vich-image img {max-width: 200px} </style>
 {% endblock %}
 
+{% block onload %}{% if rol == "user" %}showComs(){% endif %}{% endblock %}
+
 {% block navbar %}
       {% if app.user is not null and app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
@@ -105,11 +107,9 @@
             {% endif %}
             </div>
             <div id="no-pic-div"{% if selCom is defined %}{% if selCom.cartel is not null %} style="display:none"{% endif %}{% endif %}>
-               {% if selCom is defined %}
-                  {% image '@EasanlesAtletismoBundle/Resources/assets/img/sincartel.jpg' %}
-                  <img src="{{ asset_url }}" alt="{{ selCom.nombre }}" class="img-responsive thumbnail"/>
-                  {% endimage %}
-               {% endif %}
+               {% image '@EasanlesAtletismoBundle/Resources/assets/img/sincartel.jpg' %}
+               <img src="{{ asset_url }}" alt="Sin cartel" class="img-responsive thumbnail"/>
+               {% endimage %}
             </div>
          </div>
       </div>
@@ -145,8 +145,12 @@
          var autoSelectRon = {{ selRon.sid }};
       {% endif %}
       </script>
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/resultados.js') }}"></script>
+   {% if rol == "admin" %}
+      <script src="{{ asset('bundles/atletismo/js/resultados.js') }}"></script>
+      <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   {% else %}
+      <script src="{{ asset('bundles/atletismo/js/user.js') }}"></script>
+   {% endif %}
 {% endblock %}
 
 

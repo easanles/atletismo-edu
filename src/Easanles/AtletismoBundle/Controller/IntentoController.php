@@ -73,12 +73,19 @@ class IntentoController extends Controller {
       ));
 	}
 	
-	public function obtenerRondasAction(Request $request){
+	public function obtenerRondasAction(Request $request, $rol){
 		$sidPru = $request->query->get('pru');
-		$idAtl = $request->query->get('atl');
 		$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
 		$pru = $repoPru->find($sidPru);
 		if ($pru == null) return new Response("No existe la prueba con identificador ".$sidPru);
+		if ($rol == "user"){
+			$atl = $this->getUser()->getIdAtl();
+			if ($atl == null) return new Response("No tienes un atleta asociado a tu cuenta");
+			if ($pru->getSidCom()->getEsVisible() == false) return new Response("La competición de esta prueba está ahora oculta");
+			$idAtl = $atl->getId();
+		} else {
+			$idAtl = $request->query->get('atl');
+		}
 		$unidades = $pru->getSidTprm()->getSidTprf()->getUnidades();
 		$numIntentos = $pru->getSidTprm()->getSidTprf()->getNumint();
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
@@ -90,35 +97,53 @@ class IntentoController extends Controller {
 			$rondas[$key]['numIntentos'] = $numIntentos;
 		}
 		
-      return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array("rondas" => $rondas, "selAtl" => $idAtl));
+      return $this->render('EasanlesAtletismoBundle:Intento:sel_ronda.html.twig', array(
+      		"rondas" => $rondas, "selAtl" => $idAtl, "rol" => $rol));
 	}
 	
-	public function crearIntentoAction(Request $request){
+	public function crearIntentoAction(Request $request, $rol){
 		$sidRon = $request->query->get('ron');
-		$idAtl = $request->query->get('atl');
 		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
 		$ron = $repoRon->find($sidRon);
 		if ($ron == null){
 			return new JsonResponse([
 					'success' => false,
-					'message' => "No existe la prueba con identificador ".$sidRon
+					'message' => "No existe la ronda con identificador ".$sidRon
 			]);
 		}
-		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-		$atl = $repoRon->find($idAtl);
-		if ($atl == null){
-			return new JsonResponse([
-					'success' => false,
-					'message' => "No existe el atleta con identificador ".$idAtl
-			]);
+		if ($rol == "user"){
+			$atl = $this->getUser()->getIdAtl();
+			if ($atl == null){
+				return new JsonResponse([
+						'success' => false,
+						'message' => "No tienes un atleta asociado a tu cuenta"
+				]);
+			}
+			if ($ron->getSidPru()->getSidCom()->getEsVisible() == false){
+				return new JsonResponse([
+						'success' => false,
+						'message' => "La competición de esta prueba está ahora oculta"
+				]);
+			}
+			$idAtl = $atl->getId();
+		} else {
+			$idAtl = $request->query->get('atl');
+			$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+			$atl = $repoAtl->find($idAtl);
+			if ($atl == null){
+				return new JsonResponse([
+						'success' => false,
+						'message' => "No existe el atleta con identificador ".$idAtl
+				]);
+			}	
 		}
-		$parametros = array('sidRon' => $sidRon, 'idAtl' => $idAtl, 'atleta' => $atl->getApellidos().", ".$atl->getNombre());
+		$parametros = array('rol' => $rol, 'sidRon' => $sidRon, 'idAtl' => $idAtl, 'atleta' => $atl->getApellidos().", ".$atl->getNombre());
 		$sexo = "";
-		if ($ron->getSidPru()->getSidTprm()->getSexo() == 0) $sexo = "masculino";
-	   else if ($ron->getSidPru()->getSidTprm()->getSexo() == 1) $sexo = "femenino";
+		if ($ron->getSidPru()->getSidTprm()->getSexo() == 0) $sexo = ", masculino";
+	   else if ($ron->getSidPru()->getSidTprm()->getSexo() == 1) $sexo = ", femenino";
 		$parametros['ronda'] =
 	         $ron->getSidPru()->getSidTprm()->getSidTprf()->getNombre()
-	         .", ".$sexo.". "
+	         .$sexo.". "
 	         .$ron->getSidPru()->getIdCat()->getNombre().". "
 		      .((($ron->getNombre() == null) || ($ron->getNombre() == "")) ? "Ronda ".$ron->getNum() : $ron->getNombre());
 		$unidades = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
@@ -136,7 +161,7 @@ class IntentoController extends Controller {
 			$int = new Intento();
 			$int->setSidRon($ron);
 			$int->setIdAtl($atl);
-			$int->setOrigen("admin"); //TODO: nombre de usuario
+			$int->setOrigen($this->getUser()->getNombre());
 			$int->setNum(1);
 			if ($numIntentos == 1) $int->setValidez(true);
 			$arrayInts[] = $int;
@@ -173,7 +198,7 @@ class IntentoController extends Controller {
 				}
 				if ($numIntentos == 1){
 					if (count($data) > 0){
-						$data[0]->setOrigen("admin"); //TODO: nombre de usuario
+						$data[0]->setOrigen($this->getUser()->getNombre());
 						$data[0]->setNum(1);
 						$em->persist($data[0]);
 					}
@@ -182,7 +207,7 @@ class IntentoController extends Controller {
 				   foreach($data as $int){
    					$int->setSidRon($ron);
 	   				$int->setIdAtl($atl);
-		   			$int->setOrigen("admin"); //TODO: nombre de usuario
+		   			$int->setOrigen($this->getUser()->getNombre());
 			   		$int->setNum($count);
 			   		$count++;
 				   	$em->persist($int);
