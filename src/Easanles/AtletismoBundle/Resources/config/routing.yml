@@ -231,6 +231,12 @@ pantalla_records_masc:
 pantalla_records_fem:
    path: /admin/records/femeninos
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 1, rol: "admin"}
+
+#---------------------Asistencia---------------------
+pantalla_asistencia:
+   path: /admin/informes/asistencia
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaAsistencia"}
+
    
    
 #======================USUARIOS======================

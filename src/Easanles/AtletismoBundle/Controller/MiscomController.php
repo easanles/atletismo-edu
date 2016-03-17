@@ -298,6 +298,7 @@ class MiscomController extends Controller{
    		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
    		return $response;
    	}
+   	$hoy = new \DateTime();
    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$inss = $repoIns->findForAtl($sidCom, $atl->getId());
    	$prus = array();
@@ -305,7 +306,7 @@ class MiscomController extends Controller{
    	foreach ($inss as $ins){
    		$prus[] = $repoIns->find($ins['sidPru']);
    	}
-   	$parametros = array("com" => $com, 'prus' => $prus);
+   	$parametros = array('com' => $com, 'prus' => $prus, 'hoy' => $hoy);
    	$selectedPru = $request->query->get('pru');
    	if (($selectedPru != null) && ($selectedPru != "")){
    		$parametros['selectedPru'] = $selectedPru;

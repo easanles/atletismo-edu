@@ -24,7 +24,9 @@ function showComs(){
 		$('#select-com').val(autoSelectCom);
 		autoSelectCom = null;
 	}
-    loadComData();
+    if ($("#select-pru").length){
+    	loadComData();
+    }
     loadCartel();
 }
 

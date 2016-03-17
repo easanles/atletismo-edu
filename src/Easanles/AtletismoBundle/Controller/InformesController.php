@@ -238,5 +238,23 @@ class InformesController extends Controller {
 		
 		return $this->render('EasanlesAtletismoBundle:Informes:pant_records.html.twig', $parametros);
 	}
+
+//##########################################################################
+//######################### INFORMES DE ASISTENCIA #########################
+//##########################################################################
+
+   public function pantallaAsistenciaAction(Request $request){
+   	$parametros = array();
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$listaTemps = $repoCom->findTemps("admin");
+   	$parametros['temps'] = $listaTemps;
+   	$comsData = array();
+   	foreach ($listaTemps as $temp){
+   		$comsData[$temp['temp']] = array('temp' => $temp['temp'], 'coms' => $repoCom->findTempComs($temp['temp'], "admin"));
+   	}
+   	$parametros['coms'] = $comsData;
+   	
+   	return $this->render('EasanlesAtletismoBundle:Informes:pant_asistencia.html.twig', $parametros);
+   }
 }
 

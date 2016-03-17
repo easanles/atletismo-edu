@@ -24,8 +24,8 @@
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
-            <li><a class="inactive" href="#">Asistencia a eventos</a></li>
-            <li><a class="inactive" href="#">Pagos</a></li>
+            <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a class="inactive" href="#">Pagos pendientes</a></li>
          </ul>
       </li>{% endif %}
       {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
@@ -84,7 +84,7 @@
                         <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Inscrito</button>
                      {% else %}
                         {% if com.numpruebas == 1 %}
-                           <button type="button" class="btn btn-lg btn-danger btn-block grid-btn" onClick="showModal('desinscrib', '{{ com.nombre }}', '{{ com.sid }}')">Desinscribirse</button>
+                           <button type="button" class="btn btn-lg btn-primary btn-block grid-btn" onClick="showModal('desinscrib', '{{ com.nombre }}', '{{ com.sid }}')">Desinscribirse</button>
                         {% elseif com.numpruebas > 1 %}
                            <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Modificar ins.</span><span class="hidden-xs">Modificar inscripción</span></a>
                         {% endif %}
@@ -130,15 +130,16 @@
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                {% if com.esFeder is same as(true) %}
-                  <p class="hidden-xs text-center text-info bg-info"><strong>COMPETICIÓN FEDERADA</strong></p>
+                  <p class="text-center text-info bg-info"><strong class="visible-xs">FEDERADA</strong><strong class="hidden-xs">COMPETICIÓN FEDERADA</strong></p>
                {% elseif com.esOficial is same as(true) %}
-                  <p class="hidden-xs text-center text-info bg-info"><strong>COMPETICIÓN OFICIAL DEL CLUB</strong></p>
+                  <p class="text-center text-info bg-info"><strong class="visible-xs">OFICIAL</strong><strong class="hidden-xs">COMPETICIÓN OFICIAL DEL CLUB</strong></p>
                {% else %}
-                  <p class="hidden-xs text-center"><strong>COMPETICIÓN NO OFICIAL</strong></p>
+                  <p class="text-center"><strong class="visible-xs">NO OFICIAL</strong><strong class="hidden-xs">COMPETICIÓN NO OFICIAL</strong></p>
                {% endif %}
                {% if com.fecha <= ayer %}
                   <p class="text-center">Finalizada</p>
                   <a type="button" class="btn btn-default btn-block" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
+                  {% if com.esOficial == false %}<a type="button" class="btn btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marcas</span><span class="hidden-xs hidden-sm">Registrar marca</span></a>{% endif %}
                {% elseif com.inscrito == true %}
                   {% if com.pagoPendiente == true %}
                      <p class="text-center text-warning"> <strong>Hay pagos pendientes</strong></p>

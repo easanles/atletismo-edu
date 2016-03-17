@@ -31,15 +31,15 @@
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
-            <li><a class="inactive" href="#">Asistencia a eventos</a></li>
-            <li><a class="inactive" href="#">Pagos</a></li>
+            <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a class="inactive" href="#">Pagos pendientes</a></li>
          </ul>
       </li>
       <li><a href="{{ path('configuracion') }}">Configuración</a></li>
 {% endblock %}
 
 {% block breadcrumb %}
-  <li><a href="{{ path('homepage') }}">Portada Admin</a></li>
+  <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
   <li class="active">Registrar marcas</li>
 {% endblock %}
 

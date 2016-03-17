@@ -143,7 +143,7 @@ class CompeticionController extends Controller {
        	 return $response;
        }
        return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
-    	       array('com' => $com, 'numatletas' => $numAtletas, 'rol' => $rol));
+    	       array('com' => $com, 'numatletas' => $numAtletas, 'rol' => $rol, 'hoy' => new \DateTime()));
     }
     
     public function flagsCompeticionAction(Request $request){
