@@ -47,7 +47,7 @@
    <h1 id="container_title" class="row page-header">Informes de asistencia</h1>
    
    <div class="row">
-      <div class="hidden-xs col-sm-4">
+      <div class="col-sm-4">
          <div class="form-group">
             <select id="select-temp" class="form-control" onChange="showComs()">
                {% for row in temps %}
@@ -57,7 +57,7 @@
          </div>
          <div class="form-group">
             <label for="select-com">Competición</label>
-            <select id="select-com" class="form-control" onChange="loadCartel()">
+            <select id="select-com" class="form-control" onChange="loadCartel(); getAsistTable(this.value)">
             </select>
          </div>
          <div class="hidden-xs">
@@ -76,7 +76,11 @@
          </div>
       </div>
       <div class="col-xs-12 col-sm-8">
-         <h4>Atletas confirmados</h4>
+         <h4>Atletas confirmados<span class="pull-right"><span id="atl-asist"></span> /<span id="atl-total"></span></span></h4>
+         <table class="table table-hover table-bordered table-striped table-responsive">
+            <tbody id="data-table">
+            </tbody>
+         </table>
          <h4>Atletas inscritos sin confirmar</h4>
       </div>
    </div>

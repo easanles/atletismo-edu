@@ -126,6 +126,10 @@ class Helpers {
 	 * @return array La categoria del atleta
 	 */
 	public static function getAtlCurrentCat($doctrine, $atl){
+		if (!\is_object($atl)){
+			$repoAtl = $doctrine->getRepository('EasanlesAtletismoBundle:Atleta');
+			$atl = $repoAtl->find($atl);
+		}
 		$repoCat = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
 		$vigentes = $repoCat->findAllCurrent();
 		$fechaRefCat = Helpers::getFechaRefCat($doctrine);

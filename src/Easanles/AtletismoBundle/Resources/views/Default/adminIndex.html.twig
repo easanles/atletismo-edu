@@ -74,7 +74,7 @@
                   <div class="col-xs-12 col-sm-6 col-md-4">
                      <a type="button" class="btn btn-block btn-{% if com.numpruebas == 0 %}warning{% else %}default{% endif %}" href="{{ path('listado_pruebas', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-list-alt"></span> Lista de pruebas <span class="badge">{{ com.numpruebas }}</span></a>
                      <a type="button" class="btn btn-block btn-{% if com.numatletas == 0 %}warning{% else %}default{% endif %}"{% if com.numpruebas == 0 %} disabled{% endif %} href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span> Atletas inscritos <span class="badge">{{ com.numatletas }}</span></a>
-                     <a type="button" disabled class="btn btn-block btn-default" href="#"><span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span> Control de asistencia</a>
+                     <a type="button" class="btn btn-block btn-default" href="{{ path('pantalla_asistencia', {'com': com.sid}) }}"><span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span> Control de asistencia</a>
                      <a type="button" class="btn btn-lg btn-block btn-primary" href="{{ path('registrar_intentos', {'com': com.sid}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span> Registrar marcas</a>
                   </div>
                </div>
@@ -148,15 +148,6 @@
       {% endfor %}
    </tbody>
    </table>
-   
-   {#<div class="row">
-      <div class="col-xs-12 col-sm-8">
-         <h2>Participaciones por confirmar</h2>
-      </div>
-      <div class="col-xs-12 col-sm-4">
-         <h2>Avisos</h2>
-      </div>
-   </div>#}
    
 {% endblock %}
 

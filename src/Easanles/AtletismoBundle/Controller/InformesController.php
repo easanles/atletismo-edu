@@ -246,6 +246,18 @@ class InformesController extends Controller {
    public function pantallaAsistenciaAction(Request $request){
    	$parametros = array();
    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$sidCom = $request->query->get('com');
+		if (($sidCom != null) && ($sidCom != "")){
+		   $com = $repoCom->find($sidCom);
+			if ($com == null) {
+				$response = new Response('No existe la competicion con identificador "'.$sidCom.'" <a href="'.$this->generateUrl('homepage').'">Volver</a>');
+				$response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
+				return $response;
+			} else {
+				$parametros['selCom'] = $com;
+				$parametros['selTemp'] = $com->getTemp();
+			}
+		}
    	$listaTemps = $repoCom->findTemps("admin");
    	$parametros['temps'] = $listaTemps;
    	$comsData = array();
@@ -253,8 +265,20 @@ class InformesController extends Controller {
    		$comsData[$temp['temp']] = array('temp' => $temp['temp'], 'coms' => $repoCom->findTempComs($temp['temp'], "admin"));
    	}
    	$parametros['coms'] = $comsData;
-   	
    	return $this->render('EasanlesAtletismoBundle:Informes:pant_asistencia.html.twig', $parametros);
+   }
+   
+   public function obtenerParticipacionesAction(Request $request){
+   	$sidCom = $request->query->get('com');
+   	if (($sidCom == null) || ($sidCom == "")){
+   		return new Response("No se ha recibido el parámetro necesario");
+   	}
+   	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
+   	$listaPar = $repoPar->findOrderedBy($sidCom);
+   	foreach ($listaPar as &$par){
+   		$par['categoria'] = Helpers::getAtlCurrentCat($this->getDoctrine(), $par['idAtl']);
+   	}
+   	return new Response($this->render('EasanlesAtletismoBundle:Informes:tabla_asistencia.html.twig', array("pars" => $listaPar)));
    }
 }
 

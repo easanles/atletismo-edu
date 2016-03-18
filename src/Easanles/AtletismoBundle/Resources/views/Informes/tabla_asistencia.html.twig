@@ -1,0 +1,19 @@
+   <tr>
+      <th>Atleta</th>
+      <th>Categoría</th>
+      <th>Asistencia</th>
+   </tr>
+   {% for par in pars %}
+      {{ dump(par) }}
+      <tr class="row-par">
+         <td>{{ par.apellidos }}, {{ par.nombre }}</td>
+         <td>{{ par.categoria.nombre }}</td>
+         <td>
+            {% if par.asisten %}
+               <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-info btn-block active" onClick="togglePar(this)"><span class="glyphicon glyphicon-check"></span> <strong>SI</strong></button>
+            {% else %}
+               <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-default btn-block" onClick="togglePar(this)"><span class="glyphicon glyphicon-unchecked"></span> <strong>NO</strong></button>
+            {% endif %}
+         </td>
+      </tr>
+   {% endfor %}

@@ -77,7 +77,7 @@
             </tbody>
          </table>
          <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
-         <a type="button" class="btn btn-m btn-default" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-edit"></span> Editar</a>
+         <a type="button" class="btn btn-m btn-default" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
          <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu.nombre }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
       </div>
       <div class="col-xs-12 col-sm-3 col-sm-pull-9">

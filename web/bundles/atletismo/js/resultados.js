@@ -26,6 +26,8 @@ function showComs(){
 	}
     if ($("#select-pru").length){
     	loadComData();
+    } else {
+    	getAsistTable($("#select-com").val());
     }
     loadCartel();
 }
@@ -171,4 +173,64 @@ function getTable(ron){
 		    }
 		});			
 	}
+}
+
+//Exclusivo de informes de asistencia
+
+function getAsistTable(com){
+    $("#data-table").html(loadingIcon);
+	if ((com == null) || (com === "")){
+        $("#data-table").html("");
+	} else {
+		$.ajax({
+		    type: "get",
+			url: "./asistencia/participaciones?com="+com,
+			success: function(data, status) {
+		        if (status == "success"){
+		            $("#data-table").html(data);
+		            $("#atl-total").html($(".row-par").length);
+		            $("#atl-asist").html($(".row-par .btn-info").length);		            
+		        }
+		    }
+		});			
+	}
+}
+
+function togglePar(item){
+	itemData = $(item).attr("id").split("-");
+	id = itemData[2];
+	activate = -1;
+    if (($(item).hasClass("btn-default")) && (!$(item).hasClass("active"))){ //ON
+       $(item).addClass("active");
+       val = true;
+       $(item).html(loadingIcon);
+       activate = 1;
+ 	} else if (!($(item).hasClass("btn-default")) && ($(item).hasClass("active"))) { //OFF
+ 	   $(item).removeClass("active");
+       val = false;
+       $(item).html(loadingIcon);
+ 	   activate = 0;
+ 	}
+    if (activate == -1) return;
+	$.ajax({
+	      type: "post",
+		  url: "../competiciones/0/asistencia",
+		  data: {par: id, val: val},
+		  success: function() {
+    	     if (activate == 1){
+     	        $(item).html("<span class=\"glyphicon glyphicon-check\"></span> <strong>SI</strong>");
+     	   	    $(item).removeClass("btn-default");
+     	        $(item).addClass("btn-info");
+     	     } else {
+     	        $(item).html("<span class=\"glyphicon glyphicon-unchecked\"></span> <strong>NO</strong>");
+     	      	$(item).removeClass("btn-info");
+     	      	$(item).addClass("btn-default");       	 
+     	     }
+	         $("#atl-asist").html($(".row-par .btn-info").length);
+		  },
+		  error: function(data){
+	         if (activate == 1) $(item).removeClass("active");
+	         else $(item).addClass("active");    	   
+		  }
+	});
 }

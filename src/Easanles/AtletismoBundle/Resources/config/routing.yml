@@ -236,6 +236,9 @@ pantalla_records_fem:
 pantalla_asistencia:
    path: /admin/informes/asistencia
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaAsistencia"}
+asistencia_atletas:
+   path: /admin/informes/asistencia/participaciones
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerParticipaciones"}
 
    
    
