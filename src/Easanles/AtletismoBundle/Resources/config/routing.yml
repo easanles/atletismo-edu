@@ -179,7 +179,7 @@ confirmar_participacion:
    requirements:
       sidCom: \d+
 marcar_asistencia:
-   path: /admin/competiciones/{sidCom}/asistencia
+   path: /admin/competiciones/asistencia
    defaults: {_controller: "EasanlesAtletismoBundle:Participacion:marcarAsistencia"}
    requirements:
       sidCom: \d+
@@ -240,6 +240,10 @@ asistencia_atletas:
    path: /admin/informes/asistencia/participaciones
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerParticipaciones"}
 
+#------------------Pagos pendientes------------------
+pagos_pendientes:
+   path: /admin/informes/pagos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pagosPendientes"}
    
    
 #======================USUARIOS======================

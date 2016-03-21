@@ -1,19 +1,46 @@
-   <tr>
-      <th>Atleta</th>
-      <th>Categoría</th>
-      <th>Asistencia</th>
-   </tr>
-   {% for par in pars %}
-      {{ dump(par) }}
-      <tr class="row-par">
-         <td>{{ par.apellidos }}, {{ par.nombre }}</td>
-         <td>{{ par.categoria.nombre }}</td>
-         <td>
-            {% if par.asisten %}
-               <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-info btn-block active" onClick="togglePar(this)"><span class="glyphicon glyphicon-check"></span> <strong>SI</strong></button>
-            {% else %}
-               <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-default btn-block" onClick="togglePar(this)"><span class="glyphicon glyphicon-unchecked"></span> <strong>NO</strong></button>
-            {% endif %}
-         </td>
-      </tr>
-   {% endfor %}
+   <h4>Atletas confirmados<span class="pull-right"><span id="atl-asist"></span> /<span>{{ pars|length }}</span></span></h4>
+      <table class="table table-hover table-bordered table-striped table-responsive">
+         <tbody>
+            <tr>
+               <th>Atleta</th>
+               <th>Dorsal</th>
+               <th>Categoría</th>
+               <th>Asistencia</th>
+            </tr>
+            {% for par in pars %}
+               <tr class="row-par">
+                  <td>{{ par.apellidos }}, {{ par.nombre }}</td>
+                  <td>{{ par.dorsal }}</td>
+                  <td>{{ par.categoria.nombre }}</td>
+                  <td>
+                     {% if par.asisten %}
+                        <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-info btn-block active" onClick="togglePar(this)"><span class="glyphicon glyphicon-check"></span> <strong>SI</strong></button>
+                     {% else %}
+                        <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-default btn-block" onClick="togglePar(this)"><span class="glyphicon glyphicon-unchecked"></span> <strong>NO</strong></button>
+                     {% endif %}
+                  </td>
+               </tr>
+            {% endfor %}         
+         </tbody>
+      </table>
+   {% if inss|length > 0 %}
+      <h4>Atletas inscritos sin confirmar</h4>
+      <table class="table table-hover table-bordered table-striped table-responsive">
+         <tbody>
+            <tr>
+               <th>Atleta</th>
+               <th>Categoría</th>
+               <th>Confirmar</th>
+            </tr>
+            {% for ins in inss %}
+               <tr class="row-par">
+                  <td>{{ ins.apellidos }}, {{ ins.nombre }}</td>
+                  <td>{{ ins.categoria.nombre }}</td>
+                  <td>
+                     <button type="button" class="btn btn-sm btn-default btn-block" onClick="showModal('newPAR', {{ ins.idAtl }}, 'Confirmar participación', {{ sidCom }})"><span class="glyphicon glyphicon-bullhorn"></span> Confirmar</button>
+                  </td>
+               </tr>
+            {% endfor %}         
+         </tbody>
+      </table>
+   {% endif %}

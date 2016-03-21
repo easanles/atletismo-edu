@@ -1,0 +1,70 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}
+   Pagos pendientes
+{% endblock %}
+
+{% block navbar %}
+      {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+         </ul>
+      </li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
+         </ul>
+      </li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  <li>Informes</li>
+  <li class="active">Pagos pendientes</li>
+{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="row page-header">Pagos pendientes</h1>
+   
+   <div class="row">
+      <div class="col-xs-12">
+         <h4>Pagos pendientes: 32 - Total: 0,00€
+         <button type="button" class="btn btn-primary btn-lg hidden-xs pull-right" disabled> Marcar como pagado</button></h4>
+         <button type="button" class="btn btn-primary btn-lg visible-xs col-xs-8 col-xs-offset-2" disabled> Marcar como pagado</button>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-xs-12">
+         <table class="table table-hover table-bordered table-striped table-responsive">
+            <tbody>
+               <tr>
+                  <th>Atleta</th>
+                  <th>Competición</th>
+                  <th>Prueba</th>
+                  <th>Precio</th>
+                  <th><abbr title="Selección" class="visible-xs">Sel.</abbr><div class="hidden-xs">Selección</div></th>
+               </tr>     
+            </tbody>
+         </table>
+      </div>
+   </div>
+
+{% endblock %}
+
+{% block js %}
+   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+{% endblock %}
+
+
+

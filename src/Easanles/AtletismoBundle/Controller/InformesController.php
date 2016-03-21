@@ -275,10 +275,34 @@ class InformesController extends Controller {
    	}
    	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
    	$listaPar = $repoPar->findOrderedBy($sidCom);
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$listaAtlIns = $repoCom->findAtletasIns($sidCom);
    	foreach ($listaPar as &$par){
    		$par['categoria'] = Helpers::getAtlCurrentCat($this->getDoctrine(), $par['idAtl']);
+   		foreach($listaAtlIns as $key => $atl){
+   			if ($atl['idAtl'] == $par['idAtl']){
+   				unset($listaAtlIns[$key]);
+   				break;
+   			}
+   		}
    	}
-   	return new Response($this->render('EasanlesAtletismoBundle:Informes:tabla_asistencia.html.twig', array("pars" => $listaPar)));
+   	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+   	$listaIns = array();
+   	foreach ($listaAtlIns as $atl){
+   		$atlObj = $repoAtl->find($atl['idAtl']);
+   		$listaIns[] = array(
+   				"idAtl" => $atl['idAtl'],
+   				"nombre" => $atlObj->getNombre(),
+   				"apellidos" => $atlObj->getApellidos(),
+   				"categoria" => Helpers::getAtlCurrentCat($this->getDoctrine(), $atl['idAtl'])
+   		);
+   	}
+   	return $this->render('EasanlesAtletismoBundle:Informes:tabla_asistencia.html.twig',
+   			 array("pars" => $listaPar, "inss" => $listaIns, "sidCom" => $sidCom));
+   }
+   
+   public function pagosPendientesAction(){
+   	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig');
    }
 }
 

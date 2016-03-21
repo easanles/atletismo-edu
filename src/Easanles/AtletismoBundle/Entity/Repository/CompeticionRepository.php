@@ -48,7 +48,7 @@ class CompeticionRepository extends EntityRepository {
 	 */
 	public function findAtletasIns($sidCom){
 		return $this->getEntityManager()
-		->createQuery('SELECT IDENTITY (ins.idAtl)
+		->createQuery('SELECT IDENTITY (ins.idAtl) AS idAtl
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				JOIN ins.sidPru pru
 				JOIN pru.sidCom com

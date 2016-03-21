@@ -116,7 +116,7 @@ function toggleAsist(item, idPar){
     }
 	$.ajax({
        type: "post",
-	   url: "./asistencia",
+	   url: "../asistencia",
 	   data: {par: idPar, val: cb.prop("checked")},
 	   success: function(data) {
           console.log(data);

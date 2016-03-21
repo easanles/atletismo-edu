@@ -139,8 +139,11 @@ function showModal(type, data1, data2, data3){
 	   case ("newPAR"): { //Confirmar participacion
     	   $('#dialog-label').html(data2);
     	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-bullhorn\"></span> Confirmar</button>");
-    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
-    	   $.getJSON("./participar?atl=" + data1, function(data, status){
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   if (data3 == null)
+    	         url = "./participar?atl=";
+    	   else url = "../competiciones/"+ data3 + "/participar?atl="
+    	   $.getJSON(url + data1, function(data, status){
    		      if (status == "success"){
    			     $("#dialog-body").html(data.message);
    	          } else {

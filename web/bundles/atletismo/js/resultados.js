@@ -176,19 +176,17 @@ function getTable(ron){
 }
 
 //Exclusivo de informes de asistencia
-
 function getAsistTable(com){
-    $("#data-table").html(loadingIcon);
+    $("#data-tables").html(loadingIcon);
 	if ((com == null) || (com === "")){
-        $("#data-table").html("");
+        $("#data-tables").html("");
 	} else {
 		$.ajax({
 		    type: "get",
 			url: "./asistencia/participaciones?com="+com,
 			success: function(data, status) {
 		        if (status == "success"){
-		            $("#data-table").html(data);
-		            $("#atl-total").html($(".row-par").length);
+		            $("#data-tables").html(data);
 		            $("#atl-asist").html($(".row-par .btn-info").length);		            
 		        }
 		    }
@@ -214,7 +212,7 @@ function togglePar(item){
     if (activate == -1) return;
 	$.ajax({
 	      type: "post",
-		  url: "../competiciones/0/asistencia",
+		  url: "../competiciones/asistencia",
 		  data: {par: id, val: val},
 		  success: function() {
     	     if (activate == 1){

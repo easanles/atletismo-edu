@@ -31,7 +31,7 @@ class InscripcionController extends Controller {
     	  $repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
     	  $atletas = array();
     	  foreach ($atletaIds as $idAtl){
-    	  	  $atlData = array('id' => $idAtl[1]);
+    	  	  $atlData = array('id' => $idAtl['idAtl']);
     	     $atl = $repoAtl->findOneBy(array('id' => $idAtl));
     	     $atlData['lfga'] = $atl->getLfga();
     	     $atlData['apellidos'] = $atl->getApellidos();
@@ -39,7 +39,7 @@ class InscripcionController extends Controller {
     	     $atlData['categoria'] = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl)['nombre'];
     	     $pruebasIns = $repoIns->findForAtl($sidCom, $idAtl);
     	     foreach($pruebasIns as $key => $ins){
-    	        $pruebasIns[$key]['numRegistros'] = $repoInt->countEntriesFor($idAtl, $ins['sidPru']);
+    	        $pruebasIns[$key]['numRegistros'] = $repoInt->countEntriesFor($idAtl['idAtl'], $ins['sidPru']);
     	     }
     	     $atlData['pruebas'] = $pruebasIns;
     	     $costeTotal = 0.00;
