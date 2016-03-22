@@ -302,7 +302,84 @@ class InformesController extends Controller {
    }
    
    public function pagosPendientesAction(){
-   	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig');
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$listaIns = $repoIns->findInsPendientes();
+   	$comsArray = array();
+   	$currentSidCom = null;
+   	$atlsArray = array();
+   	$currentIdAtl = null;
+   	$inssArray = array();
+   	$costeTotal = 0;
+   	$costeAtl = 0;
+   	foreach ($listaIns as $key => $ins){
+   		if (($currentSidCom == null) || ($ins['sidCom'] != $currentSidCom)){
+   			$currentSidCom = $ins['sidCom'];
+   			if (count($inssArray) > 0){
+   				$atlsArray[] = array(
+   						"id" => $listaIns[$key-1]['idAtl'],
+   						"apellidos" => $listaIns[$key-1]['apellidos'],
+   						"nombre" => $listaIns[$key-1]['nombreatl'],
+   						"costeAtl" => $costeAtl,
+   						"inss" => $inssArray
+   				);
+   				$inssArray = array();
+   				$costeAtl = 0;
+   			}
+   			if (count($atlsArray) > 0){
+   				$comsArray[] = array(
+   						"sid" => $listaIns[$key-1]['sidCom'],
+   						"nombre" => $listaIns[$key-1]['nombrecom'],
+   						"temp" => $listaIns[$key-1]['temp'],
+   						"atls" => $atlsArray
+   				);
+   				$atlsArray = array();
+   			}
+   		}
+   		if (($currentIdAtl == null) || ($ins['idAtl'] != $currentIdAtl)){
+   		   $currentIdAtl = $ins['idAtl'];
+   		   if (count($inssArray) > 0){
+   		   	$atlsArray[] = array(
+   		   			"id" => $listaIns[$key-1]['idAtl'],
+   		   			"apellidos" => $listaIns[$key-1]['apellidos'],
+   		   			"nombre" => $listaIns[$key-1]['nombreatl'],
+   		   			"costeAtl" => $costeAtl, 
+   		   			"inss" => $inssArray
+   		   	);
+   		   	$inssArray = array();
+   		   	$costeAtl = 0;
+   		   }
+   		}
+   		$nombrePrueba = $ins['nombretprf'];
+   		if ($ins['sexo'] == 0) $nombrePrueba = $nombrePrueba.", masculino";
+   	   else if ($ins['sexo'] == 1) $nombrePrueba = $nombrePrueba.", femenino";
+   	   $nombrePrueba = $nombrePrueba.". ".$ins['entorno'];
+   		$inssArray[] = array(
+   				"sid" => $ins['sid'],
+   				"coste" => $ins['coste'],
+   				"fecha" => $ins['fecha'],
+   				"prueba" => $nombrePrueba
+   		);
+   		$costeTotal = $costeTotal + $ins['coste'];
+   		$costeAtl = $costeAtl + $ins['coste'];
+   	}
+   	if (count($inssArray) > 0){
+   		$atlsArray[] = array(
+   				"id" => $listaIns[count($listaIns)-1]['idAtl'],
+   				"apellidos" => $listaIns[count($listaIns)-1]['apellidos'],
+   				"nombre" => $listaIns[count($listaIns)-1]['nombreatl'],
+   				"costeAtl" => $costeAtl,
+   				"inss" => $inssArray
+   		);
+   	}
+   	if (count($atlsArray) > 0){
+   		$comsArray[] = array(
+   				"sid" => $listaIns[count($listaIns)-1]['sidCom'],
+   				"nombre" => $listaIns[count($listaIns)-1]['nombrecom'],
+   				"temp" => $listaIns[count($listaIns)-1]['temp'],
+   				"atls" => $atlsArray
+   		);
+   	}
+   	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig', array('coms' => $comsArray, 'count' => count($listaIns), 'costeTotal' => $costeTotal));
    }
 }
 

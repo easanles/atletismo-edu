@@ -37,26 +37,43 @@
 {% block container %}
    <h1 id="container_title" class="row page-header">Pagos pendientes</h1>
    
-   <div class="row">
+   <div id="container_header" class="row">
       <div class="col-xs-12">
-         <h4>Pagos pendientes: 32 - Total: 0,00€
+         <h4>Pagos pendientes: {{ count }} - Total: {{ costeTotal|number_format(2, ',', '.') }}€
          <button type="button" class="btn btn-primary btn-lg hidden-xs pull-right" disabled> Marcar como pagado</button></h4>
          <button type="button" class="btn btn-primary btn-lg visible-xs col-xs-8 col-xs-offset-2" disabled> Marcar como pagado</button>
       </div>
    </div>
    <div class="row">
       <div class="col-xs-12">
-         <table class="table table-hover table-bordered table-striped table-responsive">
-            <tbody>
-               <tr>
-                  <th>Atleta</th>
-                  <th>Competición</th>
-                  <th>Prueba</th>
-                  <th>Precio</th>
-                  <th><abbr title="Selección" class="visible-xs">Sel.</abbr><div class="hidden-xs">Selección</div></th>
-               </tr>     
-            </tbody>
-         </table>
+         {% for com in coms %}
+            <h4>{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</h4>
+            <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+               <tbody>
+                  <tr>
+                     <th>Atleta</th>
+                     <th>Pruebas</th>
+                     <th>Precio</th>
+                     <th><abbr title="Selección" class="visible-xs">Sel.</abbr><div class="hidden-xs">Selección</div></th>
+                  </tr>
+                  {% for atl in com.atls %}
+                     <tr>
+                        <td>{{ atl.apellidos }}, {{ atl.nombre }}</td>
+                        <td>{{ atl.inss|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleDropListTable()"><span class="glyphicon glyphicon-collapse-down"></span></button></td>
+                        <td>{{ atl.costeAtl|number_format(2, ',', '.') }}€</td>
+                        <td><input id="cball-{{ atl.id }}" type="checkbox" class="sel-cball"></td>
+                     </tr>
+                     {% for ins in atl.inss %}
+                        <tr>
+                           <td colspan="2">{{ ins.prueba }}</td>
+                           <td>{{ ins.coste|number_format(2, ',', '.') }}€</td>
+                           <td><input id="cb-{{ ins.sid }}" type="checkbox" class="sel-cb"></td>
+                        </tr>
+                     {% endfor %}
+                  {% endfor %}
+               </tbody>
+            </table>
+         {% endfor %}
       </div>
    </div>
 

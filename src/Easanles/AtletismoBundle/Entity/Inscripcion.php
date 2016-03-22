@@ -3,6 +3,7 @@
 namespace Easanles\AtletismoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Inscripcion
@@ -128,5 +129,14 @@ class Inscripcion {
 	public function setCodGrupo($codGrupo) {
 		$this->codGrupo = $codGrupo;
 		return $this;
+	}
+	
+	/**
+	 * @Assert\Callback
+	 */
+	public function validate(ExecutionContextInterface $context) {
+      if ($this->coste == 0){
+      	$this->estado = "Pagado";
+      }
 	}
 }

@@ -61,4 +61,19 @@ class InscripcionRepository extends EntityRepository {
 		if (count($query) == 0) return 0;
 		else return max($query)['codGrupo'];
 	}
+	
+	public function findInsPendientes(){
+		return $this->getEntityManager()
+		->createQuery("SELECT ins.sid, ins.fecha, ins.coste, IDENTITY(ins.idAtl) AS idAtl, atl.apellidos, atl.nombre AS nombreatl, IDENTITY(ins.sidPru) AS sidPru, IDENTITY(pru.sidCom) AS sidCom, com.nombre AS nombrecom, com.temp, tprm.sexo, tprm.entorno, tprf.nombre AS nombretprf, cat.nombre AS nombrecat
+				 FROM EasanlesAtletismoBundle:Inscripcion ins
+				 JOIN ins.idAtl atl
+				 JOIN ins.sidPru pru
+				 JOIN pru.sidCom com
+				 JOIN pru.sidTprm tprm
+				 JOIN tprm.sidTprf tprf
+				 JOIN pru.idCat cat
+				 WHERE ins.estado LIKE 'Pendiente'
+				 ORDER BY com.sid, atl.id ")
+		->getResult();
+	}
 }
