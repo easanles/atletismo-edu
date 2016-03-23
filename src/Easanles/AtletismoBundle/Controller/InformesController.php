@@ -381,5 +381,20 @@ class InformesController extends Controller {
    	}
    	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig', array('coms' => $comsArray, 'count' => count($listaIns), 'costeTotal' => $costeTotal));
    }
+   
+   public function marcarPagadoAction(Request $request){
+   	$selIns = $request->request->get('selIns');
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$em = $this->getDoctrine()->getManager();
+   	foreach($selIns as $sidIns){
+   		$ins = $repoIns->find($sidIns);
+   		if ($ins != null){
+   			$ins->setEstado("Pagado");
+   		   $em->persist($ins);
+   		}
+   	}
+   	$em->flush();
+   	return $this->redirect($this->generateUrl("pagos_pendientes"));
+   }
 }
 

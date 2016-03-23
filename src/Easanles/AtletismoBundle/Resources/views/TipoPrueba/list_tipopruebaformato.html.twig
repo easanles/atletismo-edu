@@ -35,7 +35,7 @@
                   </tr>
                   <tr><td colspan="5" style="padding: 0px">
                       <div id="droplist-{{ row.sid }}" class="droplist">
-                      <table class="table">
+                      <table class="table table-condensed">
                         <tbody>
                            {% for mod in row.modalidades.toArray() %}
                            <tr><td class="td-padding"><span class="glyphicon glyphicon-chevron-right"></span> {% if mod.sexo == 0 %}Masculino, {% elseif mod.sexo == 1 %}Femenino, {% endif%}{{ mod.entorno }}</td></tr>

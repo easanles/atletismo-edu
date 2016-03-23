@@ -276,6 +276,50 @@ function toggleIndexBtn(item, label){
     }
 }
 
+function checkboxGroup(item){
+	itemData = $(item).attr("id").split("-");
+	type = itemData[0];
+	id = itemData[1];
+	if (type == "cball"){
+		$(".group-"+id).prop('checked', $(item).is(":checked"));
+	} else {
+		groupData = $(item).attr("class").split("-");
+        group = groupData[1];
+		$("#cball-"+group).prop('checked', true);
+		$(".group-"+group).each(function (){
+			if ($(this).is(":checked") == false){
+				$("#cball-"+group).prop('checked', false);
+				return;
+			}
+		});
+	}
+}
+
+var selIns = [];
+function selectIns(){
+	selIns = [];
+	$(".droplist :checkbox").each(function(){
+		itemData = $(this).attr("id").split("-");
+		id = itemData[1];
+		if ($(this).is(":checked")){
+			selIns.push(id);			
+		}
+	});
+	$(".paybtn").prop("disabled", (selIns.length == 0));
+}
+
+function sendPaidIns(){
+	$.ajax({
+	   type: "post",
+	   url: "./pagos/marcar",
+	   data: {selIns: selIns},
+	   success: function() {
+	      console.log("OK");
+	      location.reload();
+	   }
+	});
+}
+
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()

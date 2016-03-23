@@ -244,6 +244,9 @@ asistencia_atletas:
 pagos_pendientes:
    path: /admin/informes/pagos
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:pagosPendientes"}
+marcar_pagado:
+   path: /admin/informes/pagos/marcar
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:marcarPagado"}
    
    
 #======================USUARIOS======================
