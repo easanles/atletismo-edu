@@ -313,8 +313,8 @@ function sendPaidIns(){
 	   type: "post",
 	   url: "./pagos/marcar",
 	   data: {selIns: selIns},
-	   success: function() {
-	      console.log("OK");
+	   success: function(data) {
+	      console.log(data);
 	      location.reload();
 	   }
 	});

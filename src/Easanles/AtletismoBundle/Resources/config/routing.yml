@@ -373,6 +373,9 @@ homepage: #portada anonimos + users
 homepage_admin: #portada admins
     path: /admin/
     defaults: {_controller: "EasanlesAtletismoBundle:Default:adminIndex"}
+cuenta:
+    path: /cuenta
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:pantallaCuenta"}
 login:
     path: /login
     defaults: {_controller: "EasanlesAtletismoBundle:Default:login"}

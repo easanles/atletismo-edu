@@ -19,7 +19,10 @@ class MiscomController extends Controller{
     	    $temp = Helpers::getCurrentTemp($this->getDoctrine());
     	 }    	 
     	 $user = $this->getUser();
-    	 if (($user == null) || ($user->getIdAtl() == null)){
+    	 if ($user == null){
+    	    return $this->redirect($this->generateUrl("login"));
+    	 }
+    	 if ($user->getIdAtl() == null){
     	 	$response = new Response('El usuario no tiene un atleta asociado <a href="'.$this->generateUrl('homepage').'">Volver</a>');
     	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
     	 	return $response;

@@ -4,7 +4,7 @@
 {% block title %}Mis competiciones{% endblock %}
 
 {% block navbar %}
-      <li class="active"><a href="#">Mis competiciones</a></li>
+      <li class="active"><a href="{{ path("mis_competiciones") }}">Mis competiciones</a></li>
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
       <li class="dropdown">

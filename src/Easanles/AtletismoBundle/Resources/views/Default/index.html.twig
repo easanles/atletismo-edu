@@ -76,10 +76,10 @@
             {% block userAuth %}
             <ul class="nav navbar-nav navbar-right">
                {% if app.user is not null and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-               <li class="dropdown">
+               <li class="dropdown {% block activUserAuth %}{% endblock %}">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.username }} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                     <li><a class="inactive" href="#">Cuenta</a></li>
+                     <li><a href="{{ path('cuenta') }}">Cuenta</a></li>
                      <li><a href="{{ path('logout') }}">Cerrar sesión</a></li>
                   </ul>
                </li>

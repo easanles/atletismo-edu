@@ -1,0 +1,110 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Cuenta{% endblock %}
+
+{% block onload %}$('abbr').tooltip(){% endblock %}
+
+{% block navbar %}
+      {% if app.user is not null and app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+               <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            {% else %}
+               <li><a href="{{ path('users_pantalla_records_masc') }}">Records masculinos</a></li>
+               <li><a href="{{ path('users_pantalla_records_fem') }}">Records femeninos</a></li>
+            {% endif %}
+         </ul>
+      </li>
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
+         </ul>
+      </li>{% endif %}
+      {% if (app.user is null) or (app.user is not null and not is_granted('ROLE_ADMIN')) %}<li><a href="{{ path('users_pantalla_resultados') }}">Resultados</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('configuracion') }}">Configuración</a></li>{% endif %}
+{% endblock %}
+{% block activUserAuth %}active{% endblock %}
+
+{% block breadcrumb %}
+  {% if app.user is not null and is_granted('ROLE_ADMIN') %}
+     <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  {% else %}
+     <li><a href="{{ path('homepage') }}">Portada</a></li>
+  {% endif %}
+  <li class="active">Cuenta</li>
+{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="row page-header">Cuenta</h1>
+   <div class="row">
+      <div class="col-xs-12 col-sm-5 col-md-4">
+         <div class="panel panel-default">
+            <div class="panel-body">
+               {% if exception is defined %}
+                  <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="glyphicon glyphicon-remove" aria-hidden="true"> </span><span>{{ exception }}</span></div>
+               {% endif %}
+               <div id="data_form">
+                  {{ form_start(form, {'action': path('cuenta')}) }}
+                     {{ form_errors(form) }}
+                     <div class="form_row">
+                        <label>Nombre de usuario: </label><input class="form-control" type="text" value="{{ app.user.nombre }}" readonly style="cursor: default;" />
+                     </div>
+                     <div class="form_row">
+                        {{ form_row(form.contra) }}
+                     </div>
+                     {{ form_rest(form) }}
+                  {{ form_end(form) }}
+               </div>
+               {% if ok is defined %}
+                  <div class="alert alert-success alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span>Contraseña cambiada</span></div>
+               {% endif %}
+            </div>
+         </div>
+      </div>
+      <div class="col-xs-12 col-sm-7 col-md-8">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               <h3 class="panel-title">Datos del atleta{% if app.user.rol == "coordinador" %}<span class="pull-right"><strong class="text-info">Coordinador</strong></span>{% endif %}</h3>
+            </div>
+            <div class="panel-body">
+               {% if app.user.idAtl is null %}
+                  <h4>Sin atleta asociado</h4>
+               {% else %}
+                  <table class="table table-responsive">
+                     <tbody>
+                        {% if app.user.idAtl.lfga is not null and app.user.idAtl.lfga != "" %}<tr><td><strong>Licencia FGA:</strong></td><td colspan="3">{{ app.user.idAtl.lfga }}</td></tr>{% endif %}
+                        {% if app.user.idAtl.lxogade is not null and app.user.idAtl.lxogade != "" %}<tr><td><strong>Licencia XOGADE:</strong></td><td colspan="3">{{ app.user.idAtl.lxogade }}</td></tr>{% endif %}
+                        <tr><td><strong>Apellidos:</strong></td><td colspan="3">{{ app.user.idAtl.apellidos }}</td></tr>
+                        <tr><td><strong>Nombre:</strong></td><td colspan="3">{{ app.user.idAtl.nombre }}</td></tr>
+                        <tr><td><strong>DNI:</strong></td><td>{{ app.user.idAtl.dni }}</td><td><strong>Nick:</strong></td><td>{{ app.user.idAtl.nick }}</td></tr>
+                        <tr><td><strong>Fecha de nacimiento:</strong></td><td>{{ app.user.idAtl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td><td><strong>Categoría:</strong></td><td>{{ categoria }}</td></tr>
+                        <tr><td><strong>Nacionalidad:</strong></td><td>{{ app.user.idAtl.nacion }}</td><td><strong>Sexo:</strong></td><td>{% if app.user.idAtl.sexo == false %}Hombre{% elseif app.user.idAtl.sexo == true %}Mujer{% endif %}</td></tr>
+                        <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ app.user.idAtl.direccion }}</td></tr>
+                        <tr><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ app.user.idAtl.cp }}</td><td><strong>Localidad:</strong></td><td>{{ app.user.idAtl.localidad }}</td></tr>
+                        <tr><td><strong>Provincia:</strong></td><td>{{ app.user.idAtl.provincia }}</td><td><strong>País:</strong></td><td>{{ app.user.idAtl.pais }}</td></tr>
+                        <tr><td><strong>Email de contacto:</strong></td><td colspan="3">{{ app.user.idAtl.email }}</td></tr>
+                     </tbody>
+                  </table>
+                  {% if app.user.rol != "coordinador" %}
+                  <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Si alguno de estos datos no es correcto, consulte al coordinador del club</p>
+                  {% endif %}
+               {% endif %}
+            </div>
+         </div>
+      </div>
+   </div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+

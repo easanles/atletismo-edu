@@ -384,6 +384,7 @@ class InformesController extends Controller {
    
    public function marcarPagadoAction(Request $request){
    	$selIns = $request->request->get('selIns');
+   	if ($selIns == null) return new Response("No se ha recibido el parámetro necesario");
    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$em = $this->getDoctrine()->getManager();
    	foreach($selIns as $sidIns){
@@ -394,7 +395,7 @@ class InformesController extends Controller {
    		}
    	}
    	$em->flush();
-   	return $this->redirect($this->generateUrl("pagos_pendientes"));
+   	return new Response("OK");
    }
 }
 
