@@ -2,7 +2,10 @@
 {% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
 
 {% block title %}
-   Records {% if sexo == 0 %}masculinos{% elseif sexo == 1 %}femeninos{% endif %}
+   {% if tipo == 0 %}Records masculinos
+   {% elseif tipo == 1 %}Records femeninos
+   {% elseif tipo == 2 %}Mis records
+   {% endif %}
 {% endblock %}
 
 {% block onload %}selectEntorno($('#sel-entorno').val()){% endblock %}
@@ -14,7 +17,7 @@
       <li class="dropdown active">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
-            {% if app.user is not null and app.user.idAtl is not null %}<li><a class="inactive" href="#">Mis records</a></li>{% endif %}
+            {% if app.user is not null and app.user.idAtl is not null %}<li><a href="{{ path('users_pantalla_records_propios') }}">Mis records</a></li>{% endif %}
             {% if app.user is not null and is_granted('ROLE_ADMIN') %}
                <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
                <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
@@ -43,7 +46,12 @@
      <li><a href="{{ path('homepage') }}">Portada</a></li>
   {% endif %}
   {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li>Records</li>{% endif %}
-  <li class="active">Records {% if sexo == 0 %}masculinos{% elseif sexo == 1 %}femeninos{% endif %}</li>
+  <li class="active">
+     {% if tipo == 0 %}Records masculinos
+     {% elseif tipo == 1 %}Records femeninos
+     {% elseif tipo == 2 %}Mis records
+     {% endif %}
+  </li>
 {% endblock %}
 
    {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
@@ -51,14 +59,19 @@
    {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
 
 {% block container %}
-   <h1 id="container_title" class="row page-header">Records {% if sexo == 0 %}masculinos{% elseif sexo == 1 %}femeninos{% endif %}</h1>
+   <h1 id="container_title" class="row page-header">
+      {% if tipo == 0 %}Records masculinos
+      {% elseif tipo == 1 %}Records femeninos
+      {% elseif tipo == 2 %}Mis records
+      {% endif %}
+   </h1>
 
    {% if exception is defined %}
    <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
    {% endif %}
    
    {% if rol == "admin" %}
-      <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Incluyendo records de competiciones ocultas <a href="{% if sexo == 0 %}{{ path('users_pantalla_records_masc') }}{% elseif sexo == 1 %}{{ path('users_pantalla_records_fem') }}{% endif %}">[Ir a vista de usuarios]</a></p>
+      <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Incluyendo records de competiciones ocultas <a href="{% if tipo == 0 %}{{ path('users_pantalla_records_masc') }}{% elseif tipo == 1 %}{{ path('users_pantalla_records_fem') }}{% endif %}">[Ir a vista de usuarios]</a></p>
    {% endif %}
    <div class="form-horizontal">
       <div class="form-group">

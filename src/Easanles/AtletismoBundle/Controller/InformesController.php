@@ -197,9 +197,19 @@ class InformesController extends Controller {
 //######################### RECORDS DEL CLUB #########################
 //####################################################################	
 	
-	public function pantallaRecordsAction($sexo, $rol){
-		$parametros = array("sexo" => $sexo, "rol" => $rol); 
-		
+	public function pantallaRecordsAction($tipo, $rol){
+		$parametros = array("tipo" => $tipo, "rol" => $rol); 
+		if ($tipo == 2){
+		   $user = $this->getUser();
+    	   if ($user == null){
+    	     return $this->redirect($this->generateUrl("login"));
+    	   }
+    	   if ($user->getIdAtl() == null){
+    	 	   $response = new Response('El usuario no tiene un atleta asociado <a href="'.$this->generateUrl('homepage').'">Volver</a>');
+    	 	   $response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
+    	 	   return $response;
+    	   }
+		}
 		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$listaEntornos = $repoTprm->findAllEntornos();
 		$parametros["entornos"] = $listaEntornos;
@@ -209,7 +219,8 @@ class InformesController extends Controller {
 			$tabla = array();
 			$listaTprfs = $repoTprm->findUsedTprfsFor($entorno['entorno']);
 			foreach($listaTprfs as $tprf){
-				$query = $repoInt->findRecordFor($sexo, $entorno, $tprf, $rol);
+				if ($tipo == 2) $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, $user->getIdAtl()->getId());
+				else $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, null);
 				if ($query != null){
 					$datos = array("premios" => $query[0]['premios'],
 							"marca" => $query[0]['marca'],

@@ -106,7 +106,7 @@ class IntentoRepository extends EntityRepository {
 		
 	}
 	
-	public function findRecordFor($sexo, $entorno, $tprf, $rol){
+	public function findRecordFor($tipo, $entorno, $tprf, $rol, $idAtl){
 		switch($tprf['unidades']){
 			case "segundos": $orden = "ASC"; break;
 			case "metros": $orden = "DESC"; break;
@@ -122,18 +122,21 @@ class IntentoRepository extends EntityRepository {
 				 JOIN pru.sidCom com
 				 JOIN pru.sidTprm tprm
 				 JOIN int.idAtl atl
-				 WHERE atl.sexo LIKE :sexo AND tprm.entorno LIKE :entorno AND int.validez = 1 AND com.esOficial = 1';
+				 WHERE tprm.entorno LIKE :entorno AND int.validez = 1 AND com.esOficial = 1';
 		if ($rol == "user") $sql = $sql.' AND com.esVisible = 1';
+		if ($tipo == 2) $sql = $sql.' AND IDENTITY(int.idAtl) LIKE :idatl';
+		else $sql = $sql.' AND atl.sexo LIKE :sexo';
 		$sql = $sql.' AND IDENTITY(tprm.sidTprf) LIKE :sidtprf
 				 ORDER BY int.marca '.$orden.', int.sid ASC';
 		$query = $this->getEntityManager()
 		->createQuery($sql)
-		->setParameter("sexo", $sexo)
 		->setParameter("entorno", $entorno)
 		->setParameter("sidtprf", $tprf['sid'])
-		->setMaxResults(1)
-		->getResult();
-		if (count($query > 0)) return array_values($query);
+		->setMaxResults(1);
+		if ($tipo == 2) $query = $query->setParameter("idatl", $idAtl);
+		else $query = $query->setParameter("sexo", $tipo);
+		$query = $query->getResult();
+		if (count($query) > 0) return array_values($query);
 		else return null;
 	}
 

@@ -227,10 +227,10 @@ resultados_intentos:
 #----------------------Records-----------------------
 pantalla_records_masc:
    path: /admin/records/masculinos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 0, rol: "admin"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", tipo: 0, rol: "admin"}
 pantalla_records_fem:
    path: /admin/records/femeninos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 1, rol: "admin"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", tipo: 1, rol: "admin"}
 
 #---------------------Asistencia---------------------
 pantalla_asistencia:
@@ -339,10 +339,13 @@ users_crear_intento:
 #======================RECORDS=======================
 users_pantalla_records_masc:
    path: /records/masculinos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 0, rol: "user"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", tipo: 0, rol: "user"}
 users_pantalla_records_fem:
    path: /records/femeninos
-   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", sexo: 1, rol: "user"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", tipo: 1, rol: "user"}
+users_pantalla_records_propios:
+   path: /records/misrecords
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaRecords", tipo: 2, rol: "user"}
 
 
 #=======RESULTADOS CON COMPETICIONES OCULTAS=========
