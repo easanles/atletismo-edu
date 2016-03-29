@@ -200,6 +200,8 @@ class Helpers {
 		$repoPru = $doctrine->getRepository('EasanlesAtletismoBundle:Prueba');
 		$repoTprm = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$repoCat = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
+		$repoCom = $doctrine->getRepository('EasanlesAtletismoBundle:Competicion');
+		$entornos = $repoCom->getComEntornos($sidCom);
 		$prus = $repoPru->findAllOrderedFor($sidCom);
 		$result = array();
 		$cats = array();
@@ -212,7 +214,8 @@ class Helpers {
 				if ($tprm->getSexo() == 0) $sexo = ", masculino";
 				else if ($tprm->getSexo() == 1) $sexo = ", femenino";
 				else $sexo = "";
-				$nombre = $tprm->getSidTprf()->getNombre().$sexo.". ".$tprm->getEntorno();
+				$nombre = $tprm->getSidTprf()->getNombre().$sexo;
+				if (count($entornos) > 1) $nombre = $nombre.". ".$tprm->getEntorno();
 				$result[] = array("tprm" => $nombre, "cats" => $cats);
 				$currentTprm = $pru['tprm'];
 				$cats = array();
@@ -224,7 +227,8 @@ class Helpers {
 				if ($tprm->getSexo() == 0) $sexo = ", masculino";
 				else if ($tprm->getSexo() == 1) $sexo = ", femenino";
 				else $sexo = "";
-				$nombre = $tprm->getSidTprf()->getNombre().$sexo.". ".$tprm->getEntorno();
+				$nombre = $tprm->getSidTprf()->getNombre().$sexo;
+				if (count($entornos) > 1) $nombre = $nombre.". ".$tprm->getEntorno();
 			$result[] = array("tprm" => $nombre, "cats" => $cats);
 		}
 		return $result;

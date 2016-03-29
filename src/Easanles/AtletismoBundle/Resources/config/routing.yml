@@ -170,7 +170,11 @@ borrar_inscripcion:
    defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:borrarInscripcion"}
    requirements:
       sidCom: \d+
-
+ver_inscripcion_grupal:
+   path: /admin/competiciones/{sidCom}/inscripciones/grupo
+   defaults: {_controller: "EasanlesAtletismoBundle:Inscripcion:verInscripcionGrupal"}
+   requirements:
+      sidCom: \d+
 
 #===================PARTICIPACIONES==================
 confirmar_participacion:

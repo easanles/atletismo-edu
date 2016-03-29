@@ -123,9 +123,9 @@ class CompeticionController extends Controller {
     }
     
     public function verCompeticionAction($id, $rol){
-    	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	 $com = $repository->find($id);
-    	 $numAtletas = count($repository->findAtletasIns($id));
+    	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	 $com = $repoCom->find($id);
+    	 $numAtletas = count($repoCom->findAtletasIns($id));
 
        if ($com == null) {
        	 if ($rol == "user"){
@@ -142,8 +142,13 @@ class CompeticionController extends Controller {
        	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('mis_competiciones'));
        	 return $response;
        }
+       $entornos = $repoCom->getComEntornos($id);
+       $entorno = "";
+       if (count($entornos) > 1) $entorno = "Varios";
+       else if (count($entornos) == 1)	$entorno = $entornos[0]['entorno'];
+       else $entorno == "";
        return $this->render('EasanlesAtletismoBundle:Competicion:ver_competicion.html.twig',
-    	       array('com' => $com, 'numatletas' => $numAtletas, 'rol' => $rol, 'hoy' => new \DateTime()));
+    	       array('com' => $com, 'numatletas' => $numAtletas, 'rol' => $rol, 'entorno' => $entorno, 'hoy' => new \DateTime()));
     }
     
     public function flagsCompeticionAction(Request $request){

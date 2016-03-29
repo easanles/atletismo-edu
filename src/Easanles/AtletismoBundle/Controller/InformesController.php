@@ -172,7 +172,9 @@ class InformesController extends Controller {
 		if ($ron == null) return new Response("No existe la ronda con identificador ".$sidRon);
 		if (($rol == "user") && ($ron->getSidPru()->getSidCom()->getEsVisible() == false))
 			   return new Response("Acceso denegado (competición oculta)");
-		$parametros = array("atl" => $atl, "ron" => $ron, "rol" => $rol);
+		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+		$entornos = $repoCom->getComEntornos($ron->getSidPru()->getSidCom()->getSid());
+		$parametros = array("atl" => $atl, "ron" => $ron, "rol" => $rol, "entornos" => $entornos);
 		$parametros['unidades'] = $ron->getSidPru()->getSidTprm()->getSidTprf()->getUnidades();
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		$listaIntentos = $repoInt->findMarcaIntentos($idAtl, $sidRon);
@@ -198,17 +200,24 @@ class InformesController extends Controller {
 //####################################################################	
 	
 	public function pantallaRecordsAction($tipo, $rol){
-		$parametros = array("tipo" => $tipo, "rol" => $rol); 
+		$parametros = array("tipo" => $tipo, "rol" => $rol);
+		$user = $this->getUser();
+		$atl = $user->getIdAtl();
 		if ($tipo == 2){
-		   $user = $this->getUser();
     	   if ($user == null){
     	     return $this->redirect($this->generateUrl("login"));
     	   }
-    	   if ($user->getIdAtl() == null){
+    	   if ($atl == null){
     	 	   $response = new Response('El usuario no tiene un atleta asociado <a href="'.$this->generateUrl('homepage').'">Volver</a>');
     	 	   $response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
     	 	   return $response;
+    	   } else {
+    	   	$parametros['atl'] = $user->getIdAtl();
     	   }
+		} else {
+			if ($atl != null){
+				$parametros['destacarAtl'] = $atl;
+			}
 		}
 		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$listaEntornos = $repoTprm->findAllEntornos();
@@ -224,6 +233,7 @@ class InformesController extends Controller {
 				if ($query != null){
 					$datos = array("premios" => $query[0]['premios'],
 							"marca" => $query[0]['marca'],
+							"idAtl" => $query[0]['idAtl'],
 							"atleta" => $query[0]['apellidos'].", ".$query[0]['nombre'],
 							"categoria" => $query[0]['categoria'],
 							"fecha" => $query[0]['fecha'],
@@ -233,6 +243,7 @@ class InformesController extends Controller {
 				} else {
 					$datos = array("premios" => "",
 							"marca" => "",
+							"idAtl" => null,
 							"atleta" => "",
 							"categoria" => "",
 							"fecha" => "",

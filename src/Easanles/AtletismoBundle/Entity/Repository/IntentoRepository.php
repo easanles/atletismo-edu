@@ -114,7 +114,7 @@ class IntentoRepository extends EntityRepository {
 		   case "puntosasc": $orden = "ASC"; break;
 		   default: $orden = "ASC";
 		}
-		$sql = 'SELECT int.premios, int.marca, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.ubicacion
+		$sql = 'SELECT int.premios, int.marca, IDENTITY(int.idAtl) AS idAtl, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.ubicacion
 				 FROM EasanlesAtletismoBundle:Intento int
 				 JOIN int.sidRon ron
 				 JOIN ron.sidPru pru

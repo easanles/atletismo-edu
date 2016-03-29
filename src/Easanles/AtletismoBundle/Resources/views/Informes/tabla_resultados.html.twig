@@ -2,7 +2,7 @@
       <th><abbr title="Posición">Pos.</abbr></th>
       <th>Marca</th>
       <th>Premios</th>
-      <th>Nombre</th>
+      <th>Atleta</th>
       {% if numIntentos > 1 %}
          <th><abbr title="Historial de intentos">Hist.</abbr></th>
       {% endif %}
@@ -29,7 +29,7 @@
       {% endif %}
       </td>
       <td>{{ marca.premios }}</td>
-      <td>{% if destacarAtl is defined %}{% if destacarAtl.id == marca.idAtl|number_format %}<strong>{{ marca.apellidos }}, {{ marca.nombre }}</strong>{% else %}{{ marca.apellidos }}, {{ marca.nombre }}{% endif %}{% endif %}</td>
+      <td>{% if destacarAtl is defined and destacarAtl.id == marca.idAtl|number_format %}<strong>{{ marca.apellidos }}, {{ marca.nombre }}</strong>{% else %}{{ marca.apellidos }}, {{ marca.nombre }}{% endif %}</td>
       {% if numIntentos > 1 %}
          <td><button type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Ver historial de intentos" onClick="{% if rol == "admin" %}showModal('showINT', {{ marca.idAtl }}, {{ sidRon }}, null){% else %}showModal('intentos', {{ marca.idAtl }}, {{ sidRon }}){% endif %}"><span class="glyphicon glyphicon-book"></span></button>
          </td>

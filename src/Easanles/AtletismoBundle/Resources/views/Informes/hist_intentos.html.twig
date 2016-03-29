@@ -1,6 +1,6 @@
   <dl class="dl-horizontal">
      <dt class="hidden-xs">Atleta</dt><dd>{{ atl.apellidos }}, {{ atl.nombre }}</dd>
-     <dt class="hidden-xs">Prueba</dt><dd>{{ ron.sidPru.sidTprm.sidTprf.nombre }}{% if ron.sidPru.sidTprm.sexo == 0 %}, masculino{% elseif ron.sidPru.sidTprm.sexo == 1 %}, femenino{% endif %}. {{ ron.sidPru.sidTprm.entorno }}</dd>
+     <dt class="hidden-xs">Prueba</dt><dd>{{ ron.sidPru.sidTprm.sidTprf.nombre }}{% if ron.sidPru.sidTprm.sexo == 0 %}, masculino{% elseif ron.sidPru.sidTprm.sexo == 1 %}, femenino{% endif %}{% if entornos|length > 1 %}. {{ ron.sidPru.sidTprm.entorno }}{% endif %}</dd>
      <dt class="hidden-xs">Categoría</dt><dd>{{ ron.sidPru.idCat.nombre }}</dd>
      <dt class="hidden-xs">Ronda</dt><dd>{{ ron.num }}{% if ron.nombre != "" %} - {{ ron.nombre }}{% else %} (Id: {{ ron.id }}){% endif %}</dd>
   </dl>

@@ -39,8 +39,8 @@ class InscripcionRepository extends EntityRepository {
 		->createQuery('SELECT ins.sid AS sid
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				WHERE IDENTITY(ins.sidPru) LIKE :sidpru')
-					->setParameter("sidpru", $sidPru)
-					->getResult();
+		->setParameter("sidpru", $sidPru)
+		->getResult();
 		return count($query);
 	}
 	
@@ -50,8 +50,8 @@ class InscripcionRepository extends EntityRepository {
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				JOIN ins.idAtl atl
 				WHERE IDENTITY(ins.sidPru) LIKE :sidpru')
-					->setParameter("sidpru", $sidPru)
-					->getResult();
+		->setParameter("sidpru", $sidPru)
+		->getResult();
 	}
 	
 	public function maxCodGrupo(){
@@ -74,6 +74,16 @@ class InscripcionRepository extends EntityRepository {
 				 JOIN pru.idCat cat
 				 WHERE ins.estado LIKE 'Pendiente'
 				 ORDER BY com.sid, atl.id ")
+		->getResult();
+	}
+	
+	public function findInsGrupal($codigo){
+		return $this->getEntityManager()
+		->createQuery('SELECT atl.id, atl.apellidos, atl.nombre, atl.nick
+				FROM EasanlesAtletismoBundle:Inscripcion ins
+				JOIN ins.idAtl atl
+				WHERE ins.codGrupo LIKE :codgrupo')
+		->setParameter("codgrupo", $codigo)
 		->getResult();
 	}
 }

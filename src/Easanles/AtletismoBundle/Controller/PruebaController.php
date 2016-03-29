@@ -34,8 +34,8 @@ class PruebaController extends Controller {
   	   	$cat = $repoCat->find($c['idCat']);
   	   	$listaCats[$key]['nombre'] = $cat->getNombre();
   	   }
-     	 
-  		$parametros = array('com' => $com, 'categorias' => $listaCats);
+  	   $entornos = $repoCom->getComEntornos($sidCom);
+  		$parametros = array('com' => $com, 'categorias' => $listaCats, 'entornos' => $entornos);
   		if ($selcat != null){
   	   	$parametros['selcat'] = $selcat;
   			$pruebas = $repoPru->searchByParameters($sidCom, $selcat);

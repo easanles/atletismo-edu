@@ -19,7 +19,7 @@
                 <tr><th>Prueba</th><th>Precio</th><th>Estado</th></tr>
                 {% for ins in form.inscripciones %}
                 <tr class="subform-row">
-                   <td>{{ ins.vars.value.sidPru.sidTprm.sidTprf.nombre }}. {% if ins.vars.value.sidPru.sidTprm.sexo == 0 %}Masculino, {% elseif ins.vars.value.sidPru.sidTprm.sexo == 1 %}Femenino, {% endif%}{{ ins.vars.value.sidPru.sidTprm.entorno }}</td>
+                   <td>{{ ins.vars.value.sidPru.sidTprm.sidTprf.nombre }}{% if ins.vars.value.sidPru.sidTprm.sexo == 0 %}, masculino{% elseif ins.vars.value.sidPru.sidTprm.sexo == 1 %}, femenino{% endif %}{% if entornos|length > 1 %}. {{ ins.vars.value.sidPru.sidTprm.entorno }}{% endif %}</td>
                    <td>{{ form_widget(ins.coste) }}{{ form_errors(ins.coste) }}</td>
                    <td>{{ form_widget(ins.estado) }}{{ form_errors(ins.estado) }}</td>
                 </tr>

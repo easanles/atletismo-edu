@@ -6,13 +6,15 @@
                </tr>
                {% for pru in listaPru %}
                   {% if pru.sidTprm.sexo == 0 %}
-                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. Masculino, ' ~ pru.sidTprm.entorno %}
+                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ ', masculino' %}
                   {% elseif pru.sidTprm.sexo == 1 %}
-                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. Femenino, ' ~ pru.sidTprm.entorno %}
+                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ ', femenino' %}
                   {% elseif pru.sidTprm.sexo == 2 %}
-                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ '. ' ~ pru.sidTprm.entorno %}
+                     {% set tpr = pru.sidTprm.sidTprf.nombre %}
                   {% endif %}
-               
+                  {% if entornos|length > 1 %}
+                     {% set tpr = tpr ~ '. ' ~ pru.sidTprm.entorno %}
+                  {% endif %}
                   <tr>
                      <td>{{ tpr }}</td>
                      <td class="hidden-xs">{{ pru.coste|number_format(2, ',', '.') }}€</td>

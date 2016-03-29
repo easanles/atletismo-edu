@@ -248,6 +248,7 @@ class MiscomController extends Controller{
    		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
    		return $response;
    	}
+   	$entornos = $repoCom->getComEntornos($sidCom);
    	$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
    	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
    	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
@@ -277,7 +278,7 @@ class MiscomController extends Controller{
       	//Otras restricciones
       	$prus[] = $pru;
       }
-      $parametros = array("com" => $com, "atl" => $atl, "par" => $par, "cat" => $cat, "prus" => $prus, "ayer" => $ayer);
+      $parametros = array("com" => $com, "atl" => $atl, "par" => $par, "cat" => $cat, "prus" => $prus, "ayer" => $ayer, "entornos" => $entornos);
       
    	return $this->render('EasanlesAtletismoBundle:Miscom:inscripcion_miscom.html.twig', $parametros);
    }
@@ -301,6 +302,7 @@ class MiscomController extends Controller{
    		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
    		return $response;
    	}
+   	$entornos = $repoCom->getComEntornos($sidCom);
    	$hoy = new \DateTime();
    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$inss = $repoIns->findForAtl($sidCom, $atl->getId());
@@ -309,7 +311,7 @@ class MiscomController extends Controller{
    	foreach ($inss as $ins){
    		$prus[] = $repoIns->find($ins['sidPru']);
    	}
-   	$parametros = array('com' => $com, 'prus' => $prus, 'hoy' => $hoy);
+   	$parametros = array('com' => $com, 'prus' => $prus, 'hoy' => $hoy, 'entornos' => $entornos);
    	$selectedPru = $request->query->get('pru');
    	if (($selectedPru != null) && ($selectedPru != "")){
    		$parametros['selectedPru'] = $selectedPru;

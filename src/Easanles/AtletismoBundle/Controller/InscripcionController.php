@@ -23,7 +23,8 @@ class InscripcionController extends Controller {
     	  		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
     	  		return $response;
     	  }
-    	  $parametros = array('com' => $com);
+    	  $entornos = $repoCom->getComEntornos($sidCom);
+    	  $parametros = array('com' => $com, 'entornos' => $entornos);
     	  $atletaIds = $repoCom->findAtletasIns($sidCom);
     	  $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
     	  $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
@@ -166,6 +167,7 @@ class InscripcionController extends Controller {
     	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('inscribir_atletas', $sidCom));
     	 	return $response;
     	 }
+    	 $entornos = $repoCom->getComEntornos($sidCom);
        $cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
     	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']); // Misma categoria
@@ -186,7 +188,7 @@ class InscripcionController extends Controller {
     	 	 }
     	  }
     	 
-    	 $parametros = array("listaPru" => $listaPruObj);
+    	 $parametros = array("listaPru" => $listaPruObj, "entornos" => $entornos);
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_pruebas_data.html.twig', $parametros);
     }
     
@@ -198,8 +200,8 @@ class InscripcionController extends Controller {
     		 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
     		 return $response;
     	 }
+    	 $entornos = $repoCom->getComEntornos($sidCom);
     	 $data = $request->request->get("data");
-    	 
     	 $inscripcionGrupal = false;
     	 $temp = null;
     	 $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
@@ -216,7 +218,7 @@ class InscripcionController extends Controller {
     	    	 }
     	    }
     	 }
-    	 $parametros = array("entradas" => $entradas);
+    	 $parametros = array("entradas" => $entradas, "entornos" => $entornos);
     	 if ($inscripcionGrupal == true){
     	 	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 	 $codGrupo = $repoIns->maxCodGrupo() + 1;
@@ -302,6 +304,7 @@ class InscripcionController extends Controller {
     		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)));
     		return $response;
     	}
+    	$entornos = $repoCom->getComEntornos($sidCom);
     	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	$listaIns = $repoIns->findForAtl($sidCom, $idAtl);
     	$inscripciones = array();
@@ -322,7 +325,11 @@ class InscripcionController extends Controller {
     			return new JsonResponse([
     					'success' => false,
     					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:edit_inscripcion.html.twig',
-    							array('form' => $form->createView(), 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'exception' => $exception))->getContent()
+    							array('form' => $form->createView(),
+    									'sidCom' => $sidCom,
+    									'idAtl' => $idAtl,
+    									'entornos' => $entornos,
+    									'exception' => $exception))->getContent()
     			]);
     		}
     		return new JsonResponse([
@@ -334,7 +341,7 @@ class InscripcionController extends Controller {
     	return new JsonResponse([
     			'success' => false,
     			'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:edit_inscripcion.html.twig',
-    					array('form' => $form->createView(), 'sidCom' => $sidCom, 'idAtl' => $idAtl))->getContent()
+    					array('form' => $form->createView(), 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'entornos' => $entornos))->getContent()
     	]);
     }
     
@@ -354,6 +361,7 @@ class InscripcionController extends Controller {
     		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)));
     		return $response;
     	}
+    	$entornos = $repoCom->getComEntornos($sidCom);
     	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	$listaIns = $repoIns->findForAtl($sidCom, $idAtl);
     	$inscripciones = array();
@@ -383,7 +391,11 @@ class InscripcionController extends Controller {
       		return new JsonResponse([
       				'success' => false,
       				'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:borr_inscripcion.html.twig',
-      						array('inscripciones' => $inscripciones, 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'exception' => $exception))->getContent()
+      						array('inscripciones' => $inscripciones,
+      								'sidCom' => $sidCom,
+      								'idAtl' => $idAtl,
+      								'entornos' => $entornos,
+      								'exception' => $exception))->getContent()
       		]);
       	}
       	return new JsonResponse([
@@ -395,8 +407,38 @@ class InscripcionController extends Controller {
       	return new JsonResponse([
       			'success' => false,
       			'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:borr_inscripcion.html.twig',
-      					array('inscripciones' => $inscripciones, 'sidCom' => $sidCom, 'idAtl' => $idAtl))->getContent()
+      					array('inscripciones' => $inscripciones, 'sidCom' => $sidCom, 'idAtl' => $idAtl, 'entornos' => $entornos))->getContent()
       	]);
       }
+    }
+    
+    public function verInscripcionGrupalAction(Request $request, $sidCom){
+    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$com = $repository->find($sidCom);
+    	if ($com == null){
+    		$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+    		return $response;
+    	}
+    	$codigo = $request->query->get('cod');
+    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	$listaIns = $repoIns->findInsGrupal($codigo);
+    	if (sizeof($listaIns) == 0){
+    		$responseText = "No hay atletas inscritos con ese código de grupo";
+    	} else {
+    		$responseText = "<ul>";
+    		foreach($listaIns as $ins){
+    			$responseText .= "<li>".$ins['apellidos'].", ".$ins['nombre'];
+    			if (($ins['nick'] != null) && ($ins['nick'] != "")){
+    				$responseText .= " (".$ins['nick'].")";
+    			}
+    			$responseText .= "</li>";
+    		}
+    		$responseText .= "</ul>";
+    	}
+    	return new JsonResponse([
+    			'success' => true,
+    			'message' => $responseText
+    	]);
     }
 }

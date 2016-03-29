@@ -207,6 +207,19 @@ function showModal(type, data1, data2, data3){
    	       });
        } break;
        
+	   case ("grupINS"): { //Mostrar inscripcion grupal
+    	   $('#dialog-label').html("Inscripción grupal " + data1);
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-ok\"></span> OK</button>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
+    	   $.getJSON("./inscripciones/grupo?cod=" + data1, function(data, status){
+   		      if (status == "success"){
+   			     $("#dialog-body").html(data.message);
+   	          } else {
+   			     $("#dialog-body").html("Error al cargar datos");
+   			  }	
+   	       });
+       } break;
+       
 	   case ("newINT"): { //Registrar nueva marca (intento)
     	   $('#dialog-label').html("Registrar marcas");
     	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");

@@ -13,11 +13,14 @@
          </tr>
          {% for ent in entradas %}
             {% if ent.pru.sidTprm.sexo == 0 %}
-               {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ '. Masculino, ' ~ ent.pru.sidTprm.entorno %}
+               {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ ', masculino' %}
             {% elseif ent.pru.sidTprm.sexo == 1 %}
-               {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ '. Femenino, ' ~ ent.pru.sidTprm.entorno %}
+               {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ ', femenino' %}
             {% elseif ent.pru.sidTprm.sexo == 2 %}
-               {% set tpr = ent.pru.sidTprm.sidTprf.nombre ~ '. ' ~ ent.pru.sidTprm.entorno %}
+               {% set tpr = ent.pru.sidTprm.sidTprf.nombre %}
+            {% endif %}
+            {% if entornos|length > 1 %}
+               {% set tpr = tpr ~ '. ' ~ ent.pru.sidTprm.entorno %}
             {% endif %}
             {% set precioTotal = precioTotal + ent.pru.coste %}
             <tr id="tr-{{ ent.atl.id }}-{{ ent.pru.sid }}">

@@ -162,20 +162,16 @@ class CompeticionRepository extends EntityRepository {
 		return $result;
 	}
 	
-	/**
-	 * Proximas competiciones disponibles para inscribirse
-	 */
-	/*public function findAvaliableComs($temp){
+	public function getComEntornos($sidCom){
 		return $this->getEntityManager()
-		->createQuery(
-			 'SELECT com.sid, com.nombre, com.temp, com.sede, com.fecha, com.desc, com.web, com.cartel, com.esFeder, com.esOficial, com.esInscrib
-		    FROM EasanlesAtletismoBundle:Competicion com
-		    WHERE com.esVisible = 1 AND com.temp = :temp AND (com.fecha IS NULL OR com.fecha >= :ayer) AND com.esOficial = 0
-			 ORDER BY com.fecha DESC')
-	   ->setParameter('ayer', (new \DateTime())->sub(new \DateInterval("P1D")))
-		->setParameter('temp', $temp)
+		->createQuery('
+				SELECT tprm.entorno
+				FROM EasanlesAtletismoBundle:Prueba pru
+				JOIN pru.sidTprm tprm
+				WHERE pru.sidCom = :sidcom
+				GROUP BY tprm.entorno ')
+		->setParameter('sidcom', $sidCom)
 		->getResult();
-	}*/
-	
+	}
 	
 }

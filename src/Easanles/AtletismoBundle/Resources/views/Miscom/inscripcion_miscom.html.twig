@@ -78,11 +78,14 @@
                {% for pru in prus %}
                <tr{% if pru.activarInscripciones == false and pru.inscrito == false %} class="text-muted"{% endif %}>
                   {% if pru.sexo == 0 %}
-                     {% set tpr = pru.nombre ~ '. Masculino, ' ~ pru.entorno %}
+                     {% set tpr = pru.nombre ~ ', masculino' %}
                   {% elseif pru.sexo == 1 %}
-                     {% set tpr = pru.nombre ~ '. Femenino, ' ~ pru.entorno %}
+                     {% set tpr = pru.nombre ~ ', femenino' %}
                   {% elseif pru.sexo == 2 %}
-                     {% set tpr = pru.nombre ~ '. ' ~ pru.entorno %}
+                     {% set tpr = pru.nombre %}
+                  {% endif %}
+                  {% if entornos|length > 1 %}
+                     {% set tpr = tpr ~ '. ' ~ pru.entorno %}
                   {% endif %}
                   <td>{{ tpr }}</td>
                   {% if com.esOficial %}

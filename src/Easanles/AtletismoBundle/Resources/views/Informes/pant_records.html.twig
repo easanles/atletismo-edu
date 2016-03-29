@@ -62,7 +62,7 @@
    <h1 id="container_title" class="row page-header">
       {% if tipo == 0 %}Records masculinos
       {% elseif tipo == 1 %}Records femeninos
-      {% elseif tipo == 2 %}Mis records
+      {% elseif tipo == 2 %}Mis records <small> - {{ atl.apellidos }}, {{ atl.nombre }}</small>
       {% endif %}
    </h1>
 
@@ -96,13 +96,13 @@
            <th>Prueba</th>
            <th><abbr class="visible-xs" title="Premios">P.</abbr><div class="hidden-xs">Premios</div></th>
            <th>Marca</th>
-           <th>Atleta</th>
+           {% if tipo != 2 %}<th>Atleta</th>{% endif %}
            <th><abbr class="visible-xs" title="Categoría">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
            <th>Fecha</th>
            <th class="hidden-xs">Localidad</th>
         </tr>
         {% for row in entorno.tabla %}
-        <tr>
+        <tr{% if destacarAtl is defined %}{% if destacarAtl.id == row.idAtl %} class="text-success"{% endif %}{% endif %}>
            <td>{{ row.prueba }}</td>
            <td>{{ row.premios }}</td>
            <td><strong>
@@ -113,7 +113,7 @@
            {% elseif row.unidades == "puntosasc" %}{{ row.marca|number_format(0, ',', '.') }} ptos.
            {% endif %}
            </strong></td>
-           <td>{{ row.atleta }}</td>
+           {% if tipo != 2 %}<td>{% if destacarAtl is defined and destacarAtl.id == row.idAtl %}<strong>{{ row.atleta }}</strong>{% else %}{{ row.atleta }}{% endif %}</td>{% endif %}
            <td>{{ row.categoria }}</td>
            <td>{% if row.fecha is null %} <em class="text-muted">Sin fecha</em> {% elseif row.fecha != "" %} {{ row.fecha|date('d/m/Y') }} {% endif %}</td>
            <td class="hidden-xs">{{ row.ubicacion }}</td>
