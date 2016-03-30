@@ -106,7 +106,7 @@ class IntentoRepository extends EntityRepository {
 		
 	}
 	
-	public function findRecordFor($tipo, $entorno, $tprf, $rol, $idAtl){
+	public function findRecordFor($tipo, $entorno, $tprf, $rol, $idAtl, $temp){
 		switch($tprf['unidades']){
 			case "segundos": $orden = "ASC"; break;
 			case "metros": $orden = "DESC"; break;
@@ -126,6 +126,9 @@ class IntentoRepository extends EntityRepository {
 		if ($rol == "user") $sql = $sql.' AND com.esVisible = 1';
 		if ($tipo == 2) $sql = $sql.' AND IDENTITY(int.idAtl) LIKE :idatl';
 		else $sql = $sql.' AND atl.sexo LIKE :sexo';
+	   if (($temp != null) && ($temp != "")){
+			$sql = $sql.' AND com.temp LIKE :temp';
+		}
 		$sql = $sql.' AND IDENTITY(tprm.sidTprf) LIKE :sidtprf
 				 ORDER BY int.marca '.$orden.', int.sid ASC';
 		$query = $this->getEntityManager()
@@ -135,6 +138,9 @@ class IntentoRepository extends EntityRepository {
 		->setMaxResults(1);
 		if ($tipo == 2) $query = $query->setParameter("idatl", $idAtl);
 		else $query = $query->setParameter("sexo", $tipo);
+		if (($temp != null) && ($temp != "")){
+			$query = $query->setParameter("temp", $temp);
+		}
 		$query = $query->getResult();
 		if (count($query) > 0) return array_values($query);
 		else return null;

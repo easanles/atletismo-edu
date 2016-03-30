@@ -73,10 +73,21 @@
    {% if rol == "admin" %}
       <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Incluyendo records de competiciones ocultas <a href="{% if tipo == 0 %}{{ path('users_pantalla_records_masc') }}{% elseif tipo == 1 %}{{ path('users_pantalla_records_fem') }}{% endif %}">[Ir a vista de usuarios]</a></p>
    {% endif %}
-   <div class="form-horizontal">
-      <div class="form-group">
-         <label for="sel-entorno" class="col-sm-2 col-sm-offset-2 control-label">Entorno</label>
-         <div class="col-sm-6">
+   <div class="row">
+      <div class="form-group col-sm-5 col-sm-offset-1">
+         <label for="sel-temp" class="control-label">Temporada</label>
+         <div>
+            <select class="form-control" id="sel-temp" onChange="goToUrl('?t='+this.value)">
+            <option value="" {% if selTemp is not defined %}selected{% endif %}>Todas las temporadas</option>
+            {% for temp in temps %}
+               <option value="{{ temp.temp }}"{% if selTemp is defined and selTemp == temp.temp %} selected{% endif %}>Temporada {{ temp.temp }}/{{ (temp.temp + 1)|slice(2, 2)}}</option>
+            {% endfor %}
+            </select>
+         </div>
+      </div>
+      <div class="form-group col-sm-5">
+         <label for="sel-entorno" class="control-label">Entorno</label>
+         <div>
             <select class="form-control" id="sel-entorno" onChange="selectEntorno(this.value)">
             {% set count = 0 %}
             {% for entorno in entornos %}
@@ -127,8 +138,11 @@
 {% endblock %}
 
 {% block js %}
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   {% javascripts
+      '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' 
+      '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' filter='?uglifyjs2' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
 {% endblock %}
 
 

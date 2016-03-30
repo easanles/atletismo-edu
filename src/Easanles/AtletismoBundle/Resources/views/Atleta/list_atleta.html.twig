@@ -77,8 +77,8 @@
          <tr{% if atl.nombreUsu is not null %}{% if atl.rol == "coordinador" %} class="text-info" style="font-weight: bold;"{% endif %}{% endif %}>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.id }}</td>
          <td class="visible-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">
-            <small>{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
-            <small>{% if atl.lxogade is null or atl.lxogade == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lxogade }}{% endif %}</small>
+            <small class="licencia">{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
+            <small class="licencia">{% if atl.lxogade is null or atl.lxogade == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lxogade }}{% endif %}</small>
          </td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.lfga is null or atl.lfga == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.lxogade is null or atl.lxogade == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
@@ -110,8 +110,11 @@
 {% endblock %}
 
 {% block js %}
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   {% javascripts
+      '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' 
+      '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' filter='?uglifyjs2' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
 {% endblock %}
 
 

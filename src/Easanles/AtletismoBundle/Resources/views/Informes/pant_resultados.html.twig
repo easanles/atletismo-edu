@@ -18,8 +18,8 @@
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
             {% if app.user is not null and app.user.idAtl is not null %}<li><a href="{{ path('users_pantalla_records_propios') }}">Mis records</a></li>{% endif %}
-            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
-            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+            <li><a href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_records_masc') }}{% else %}{{ path('users_pantalla_records_masc') }}{% endif %}">Records masculinos</a></li>
+            <li><a href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_records_fem') }}{% else %}{{ path('users_pantalla_records_fem') }}{% endif %}">Records femeninos</a></li>
          </ul>
       </li>
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li class="dropdown active">
@@ -143,11 +143,11 @@
          var autoSelectRon = {{ selRon.sid }};
       {% endif %}
    </script>
-   <script src="{{ asset('bundles/atletismo/js/resultados.js') }}"></script>
+   {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/resultados.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
    {% if rol == "admin" %}
-      <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+      {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
    {% else %}
-      <script src="{{ asset('bundles/atletismo/js/user.js') }}"></script>
+      {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/user.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
    {% endif %}
 {% endblock %}
 

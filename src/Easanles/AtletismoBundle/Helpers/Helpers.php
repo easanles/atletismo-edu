@@ -182,6 +182,9 @@ class Helpers {
 		$catAsig = new Config();
 		$catAsig->setClave("catAsig")->setValor("year"); //Asignacion al inicio del año
 		$em->persist($catAsig);
+		$leyenda = new Config();
+		$leyenda->setClave("leyenda")->setValor("");
+		$em->persist($leyenda);
 		$defaultUsu = new Usuario();
 		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.
 		   ->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')

@@ -15,7 +15,14 @@ class DefaultController extends Controller{
     	 } else if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
     	 	 return $this->redirect($this->generateUrl("mis_competiciones"));
     	 }
-       return $this->render('EasanlesAtletismoBundle:Default:index.html.twig');
+    	 $authenticationUtils = $this->get('security.authentication_utils');
+    	 $error = $authenticationUtils->getLastAuthenticationError();
+    	 $lastUsername = $authenticationUtils->getLastUsername();
+    	 
+       return $this->render('EasanlesAtletismoBundle:Default:index.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error)
+       );
     }
     
     public function adminIndexAction(){

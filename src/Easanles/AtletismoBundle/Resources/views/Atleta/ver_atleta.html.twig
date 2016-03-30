@@ -94,8 +94,11 @@
 {% endblock %}
 
 {% block js %}
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
+   {% javascripts
+      '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' 
+      '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' filter='?uglifyjs2' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
 
 {% endblock %}
 

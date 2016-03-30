@@ -96,7 +96,7 @@
          });
       )}
    </script>
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
+   {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
 {% endblock %}
 
 

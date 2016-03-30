@@ -22,9 +22,11 @@ class ConfiguracionController extends Controller {
     	if ($fIniTempObj == null) $fIniTempVal = "";
       else $fIniTempVal = $fIniTempObj->getValor();
       $catAsig = $repository->findOneBy(array("clave" => "catAsig"));
+      $leyenda = $repository->findOneBy(array("clave" => "leyenda"));
     	$ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
     			"fIniTemp" => $fIniTempVal,
-    			"catAsig" => $catAsig->getValor()
+    			"catAsig" => $catAsig->getValor(),
+    			"leyenda" => $leyenda->getValor()
     	))->getContent();
     	
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig', array(
@@ -70,10 +72,21 @@ class ConfiguracionController extends Controller {
     	 	 }
     	 	 $parametros["catAsig"] = $catAsigString;
     	 } else {
-    	 	$parametros["errCatAsig"] = "ERROR";
-    	 	$parametros["catAsig"] = $catAsigObj->getValor();
+    	    $parametros["errCatAsig"] = "ERROR";
+    	 	 $parametros["catAsig"] = $catAsigObj->getValor();
     	 }
-
+    	 
+    	 //LEYENDA DE NOTAS EN RESULTADOS
+    	 $leyendaObj = $repository->findOneBy(array("clave" => "leyenda"));
+    	 $leyendaString = $request->request->get('leyenda');
+    	 if (!(strcmp($leyendaString, $leyendaObj->getValor()) == 0)){
+    	 	 $parametros["okLeyenda"] = true;
+    	 	 $leyendaObj->setValor($leyendaString);
+    	 	 $parametros["leyenda"] = $leyendaString;
+    	 } else {
+    	    $parametros["leyenda"] = $leyendaObj->getValor();
+    	 }
+    	 
     	 $em->flush();
     	 return new JsonResponse([
        	'success' => true,

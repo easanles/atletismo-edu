@@ -153,11 +153,15 @@ class InformesController extends Controller {
 		$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
 		$entradas = $repoInt->findBestMarcas($sidRon, $orden);
 		$parametros["tablaPrincipal"] = $entradas;
-		$atl = $this->getUser()->getIdAtl();
+		$user = $this->getUser();
+		if ($user != null){
+			$atl = $user->getIdAtl();
+		} else $atl = null;
 		if ($atl != null){
 			$parametros['destacarAtl'] = $atl;
 		}
-		
+		$repoCon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+		$parametros['leyenda'] = $repoCon->findOneBy(array("clave" => "leyenda"))->getValor();
 		return $this->render('EasanlesAtletismoBundle:Informes:tabla_resultados.html.twig', $parametros);
 	}
 	
@@ -199,10 +203,12 @@ class InformesController extends Controller {
 //######################### RECORDS DEL CLUB #########################
 //####################################################################	
 	
-	public function pantallaRecordsAction($tipo, $rol){
+	public function pantallaRecordsAction(Request $request, $tipo, $rol){
 		$parametros = array("tipo" => $tipo, "rol" => $rol);
 		$user = $this->getUser();
-		$atl = $user->getIdAtl();
+		if ($user != null){
+		   $atl = $user->getIdAtl();
+		} else $atl = null;
 		if ($tipo == 2){
     	   if ($user == null){
     	     return $this->redirect($this->generateUrl("login"));
@@ -219,6 +225,11 @@ class InformesController extends Controller {
 				$parametros['destacarAtl'] = $atl;
 			}
 		}
+		$selTemp = $request->query->get("t");
+		$parametros['selTemp'] = $selTemp;		
+		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+		$listaTemps = $repoCom->findTemps($rol);
+		$parametros['temps'] = $listaTemps;
 		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
 		$listaEntornos = $repoTprm->findAllEntornos();
 		$parametros["entornos"] = $listaEntornos;
@@ -228,8 +239,8 @@ class InformesController extends Controller {
 			$tabla = array();
 			$listaTprfs = $repoTprm->findUsedTprfsFor($entorno['entorno']);
 			foreach($listaTprfs as $tprf){
-				if ($tipo == 2) $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, $user->getIdAtl()->getId());
-				else $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, null);
+				if ($tipo == 2) $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, $user->getIdAtl()->getId(), $selTemp);
+				else $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, null, $selTemp);
 				if ($query != null){
 					$datos = array("premios" => $query[0]['premios'],
 							"marca" => $query[0]['marca'],

@@ -4,7 +4,7 @@
 {% block title %}Atletismo{% endblock %}
 
 {% block css %}
-   {% stylesheets '@EasanlesAtletismoBundle/Resources/assets/css/index.css' %}
+   {% stylesheets '@EasanlesAtletismoBundle/Resources/assets/css/index.css' filter='?uglifycss' output='css/index.min.css' %}
    <link rel="stylesheet" href="{{ asset_url }}" />
    {% endstylesheets %}
    
@@ -92,10 +92,6 @@
                         <input class="form-control" type="password" id="password" name="_password" placeholder="Contraseña">
                         <div class="checkbox"><label><input type="checkbox" id="remember_me" name="_remember_me" checked><small>Recordarme</small></label></div>
                         <button class="btn btn-primary btn-block" type="submit">Entrar</button>
-                        <p><small class="muted-text">
-                           user: "userpass"<br>
-                           admin: "adminpass"
-                        </small></p>
                      </form>
                   </div>
                </li>
@@ -115,20 +111,48 @@
        {% block dumpv %}{% if dumpv is defined %}{{ dump(dumpv) }}{% endif %}{% endblock %}
        {% block container %}
        <div class="container-fluid">
-          <div class="jumbotron">
-             <h1>Atletismo</h1>
-             <p class="lead">Sistema de gestión de un club de atletismo</p>
+          <div class="row">
+             <div class="col-xs-12 col-sm-8 col-md-9">
+                <div class="jumbotron">
+                   <h1>Atletismo</h1>
+                   <p class="lead">Sistema de gestión de un club de atletismo</p>
+                </div>
+                <p>O obxectivo principal do proxecto é dispor dunha alternativa baseada en Software Libre para a xestión das labores administrativas dun club de atletismo.</p>
+                <p>Os obxectivos a acadar co proxecto son os seguintes:</p>
+                <ul>
+                   <li>Xestionar os asociados: altas, mantemento e baixas dos membros do club.</li>
+                   <li>Controlar as cotas dos socios do club.</li>
+                   <li>Controlar as inscricións dos atletas nas probas recomendadas polo club.</li>
+                   <li>Rexistrar as marcas dos atletas para cada unha das probas nas que participe</li>
+                   <li>Xestión de contabilidade das cotas dos asociados simplificada (ingresos/gastos).</li>
+                   <li>A aplicación debe ser completamente xestionable a través dunha interface web.</li>
+                </ul>
+             </div>
+             <div class="well hidden-xs col-sm-4 col-md-3">
+                <form action="{{ path('login_check') }}" method="post" class="">
+                   <div class="form-group">
+                      <label for="username">Usuario:</label>
+                      <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" />
+                   </div>
+            
+                   <div class="form-group">
+                      <label for="password">Contraseña:</label>
+                      <input class="form-control" type="password" id="password" name="_password" />
+                   </div>
+                   <div class="checkbox">
+                      <label>
+                         <input type="checkbox" id="remember_me" name="_remember_me" checked> Recordarme
+                      </label>
+                   </div>
+            
+                   <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+                   <p><small class="muted-text">
+                      user: "userpass"<br>
+                      admin: "adminpass"
+                   </small></p>
+               </form>
+             </div>
           </div>
-          <p>O obxectivo principal do proxecto é dispor dunha alternativa baseada en Software Libre para a xestión das labores administrativas dun club de atletismo.</p>
-          <p>Os obxectivos a acadar co proxecto son os seguintes:</p>
-          <ul>
-             <li>Xestionar os asociados: altas, mantemento e baixas dos membros do club.</li>
-             <li>Controlar as cotas dos socios do club.</li>
-             <li>Controlar as inscricións dos atletas nas probas recomendadas polo club.</li>
-             <li>Rexistrar as marcas dos atletas para cada unha das probas nas que participe</li>
-             <li>Xestión de contabilidade das cotas dos asociados simplificada (ingresos/gastos).</li>
-             <li>A aplicación debe ser completamente xestionable a través dunha interface web.</li>
-          </ul>
        </div>
        {% endblock %}
     </div>

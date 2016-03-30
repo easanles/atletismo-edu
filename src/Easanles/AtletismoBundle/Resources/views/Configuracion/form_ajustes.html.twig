@@ -25,6 +25,16 @@
                      </select>
                   </div>
                </div>
+               <div class="form-group{% if okLeyenda is defined %} has-success has-feedback{% endif %}">
+                  <label for="cfg_leyenda" class="col-xs-12 col-sm-4 control-label">Leyenda en resultados</label>
+                  <div class="col-xs-12 col-sm-6">
+                     <textarea type="text" rows="4" class="form-control" id="cfg_leyenda" name="leyenda">{{ leyenda }}</textarea>
+                     <span id="helpBlock" class="help-block">Bloque de texto que aparecerá bajo cada tabla de resultados</span>
+                     {% if okLeyenda is defined %}
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                     {% endif %}
+                  </div>
+               </div>
                <div class="form-group">
                   <div class="col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-6">
                      <button id="ajSendBtn" type="button" class="btn btn-primary btn-block" onClick="changeSettings()"><span class="glyphicon glyphicon-save"></span> Guardar</button>

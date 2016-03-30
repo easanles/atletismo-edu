@@ -99,15 +99,14 @@
          </div>
       </div>
    </div>
-
-   
 {% endblock %}
 
 {% block js %}
-   <script src="{{ asset('bundles/atletismo/js/modals.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/scripts.js') }}"></script>
-   <script src="{{ asset('bundles/atletismo/js/config.js') }}"></script>
+   {% javascripts
+      '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' 
+      '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js'
+      '@EasanlesAtletismoBundle/Resources/assets/js/config.js' filter='?uglifyjs2' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
 {% endblock %}
-
-
 
