@@ -23,6 +23,7 @@
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
             <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
             <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
+            <li><a href="{{ path('ingresos') }}">Ingresos</a></li>
          </ul>
       </li>
       <li class="active"><a href="{{ path('configuracion') }}">Configuración</a></li>
@@ -93,7 +94,7 @@
             <button id="btn_borrarbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="DELETE FROM ..."><span class="glyphicon glyphicon-remove-circle"></span> Borrar datos BD</button>
             <button id="btn_rehacerbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append&#10;INSERT (valores por defecto)"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</button>
             <button id="btn_limpiarcache" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</button>
-            <button id="btn_asseticdump" type="button" class="btn btn-default inactive" data-toggle="tooltip" data-placement="bottom" title="assetic:dump"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</button>
+            <button id="btn_asseticdump" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="assetic:dump"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</button>
          
             <div id="alert-div-comm"> </div>
          </div>

@@ -126,7 +126,7 @@ class ConfiguracionController extends Controller {
     	   		DELETE FROM `par`;
     	   		DELETE FROM `ins`;
     	   		DELETE FROM `int_`;
-    	   		DELETE FROM `usu` WHERE usu.nombreusu NOT LIKE "admin";
+    	   		DELETE FROM `usu`;
     	   		DELETE FROM `atl`;
     	   		DELETE FROM `ron`;
     	   		DELETE FROM `pru`;
@@ -134,11 +134,13 @@ class ConfiguracionController extends Controller {
     	   		DELETE FROM `tprm`;
     	   		DELETE FROM `tprf`;
     	   		DELETE FROM `com`;
+    	   		DELETE FROM `cfg`;
     	   ';
     	   $connection = $em->getConnection();
     	   $stmt = $connection->prepare($sql);
     	   $stmt->execute();
     	   $stmt->closeCursor();
+    	   Helpers::defaultBDValues($em);
        	$response = new JsonResponse([
        			'success' => true,
        			'message' => 'Datos borrados de la base de datos',

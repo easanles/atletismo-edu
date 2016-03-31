@@ -131,32 +131,44 @@ function sendAction(path, icon){
 
 $(document).ready(function(){   
    $("#btn_poblarbd").click(function(){
-      icon = $(this).find("span");
-      icon.addClass("spinning");
-      sendAction("./configuracion/poblarbd", icon);
+	  if (confirm("¿Rellenar la base de datos con datos de prueba?")){
+	      icon = $(this).find("span");
+	      icon.addClass("spinning");
+	      sendAction("./configuracion/poblarbd", icon);		  
+	  }
    });
 
    $("#btn_borrarbd").click(function(){
-      icon = $(this).find("span");
-      icon.addClass("spinning");
-      sendAction("./configuracion/borrarbd", icon);
+	  if (confirm("¿Borrar todos los datos de la base de datos?\n" +
+	  		"¡ATENCIÓN!: Esta operación no se puede deshacer")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/borrarbd", icon);
+	  }
    });
    
    $("#btn_rehacerbd").click(function(){
-      icon = $(this).find("span");
-      icon.addClass("spinning");
-      sendAction("./configuracion/rehacerbd", icon);
+      if (confirm("¿Destruir y rehacer la base de datos?\n" +
+      		"¡ATENCIÓN!: Esta operación borrará todos los datos almacenados actualmente y no se puede deshacer")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/rehacerbd", icon);
+      }
    });
     
    $("#btn_limpiarcache").click(function(){
-      icon = $(this).find("span");
-      icon.addClass("spinning");
-      sendAction("./configuracion/limpiarcache", icon);
+      if (confirm("¿Confirmar la operación de borrado de la cache? (cache:clear)")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/limpiarcache", icon);
+      }
    });
     
-    $("#btn_asseticdump").click(function(){
-       //icon = $(this).find("span");
-      //icon.addClass("spinning");
-      //sendAction("./configuracion/asseticdump", icon);
-    });
+   $("#btn_asseticdump").click(function(){
+      if (confirm("¿Confirmar la operación assetic:dump?")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/asseticdump", icon);
+      }
+   });
 });

@@ -252,6 +252,10 @@ marcar_pagado:
    path: /admin/informes/pagos/marcar
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:marcarPagado"}
    
+#----------------------Ingresos----------------------
+ingresos:
+   path: /admin/informes/ingresos
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaIngresos"}
    
 #======================USUARIOS======================
 listado_usuarios:

@@ -2,7 +2,7 @@
 {% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
 
 {% block title %}
-   Pagos pendientes
+   Ingresos
 {% endblock %}
 
 {% block navbar %}
@@ -32,17 +32,22 @@
 {% block breadcrumb %}
   <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
   <li>Informes</li>
-  <li class="active">Pagos pendientes</li>
+  <li class="active">Ingresos</li>
 {% endblock %}
 
 {% block container %}
-   <h1 id="container_title" class="row page-header">Pagos pendientes</h1>
+   <h1 id="container_title" class="row page-header">Ingresos</h1>
    
    <div id="container_header" class="row">
-      <div class="col-xs-12">
-         <h4>{% if count == 1 %}1 pago pendiente{% else %}{{ count }} pagos pendientes{% endif %} - Total: {{ costeTotal|number_format(2, ',', '.') }}€
-         <button type="button" class="paybtn btn btn-primary btn-lg hidden-xs pull-right" onClick="sendPaidIns()" disabled> Marcar como pagado</button></h4>
-         <button type="button" class="paybtn btn btn-primary btn-lg visible-xs col-xs-8 col-xs-offset-2" onClick="sendPaidIns()" disabled> Marcar como pagado</button>
+      <div class="col-xs-8 col-sm-6 col-md-5 col-lg-4">
+         <select class="form-control" id="sel-temp" onChange="goToUrl('?t='+this.value)">
+            {% for temp in temps %}
+               <option value="{{ temp.temp }}"{% if selTemp is defined and selTemp == temp.temp %} selected{% endif %}>Temporada {{ temp.temp }}/{{ (temp.temp + 1)|slice(2, 2)}}</option>
+            {% endfor %}
+         </select>
+      </div>
+      <div class="col-xs-4 col-sm-6 col-md-7 col-lg-8">
+         <h4><span class="hidden-xs">Total temporada: </span> {{ costeTotal|number_format(2, ',', '.') }}€</h4>
       </div>
    </div>
    <div class="row">
@@ -60,14 +65,12 @@
                      <th>Atleta</th>
                      <th>Pruebas</th>
                      <th>Precio</th>
-                     <th><abbr title="Selección" class="visible-xs">Sel.</abbr><div class="hidden-xs">Selección</div></th>
                   </tr>
                   {% for atl in com.atls %}
                      <tr>
                         <td>{{ atl.apellidos }}, {{ atl.nombre }}</td>
                         <td>{{ atl.inss|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar" onClick="toggleDropListTable('{{ com.sid }}_{{ atl.id }}', $(this))"><span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span></button></td>
                         <td>{{ atl.costeAtl|number_format(2, ',', '.') }}€</td>
-                        <td><input id="cball-{{ com.sid }}_{{ atl.id }}" type="checkbox" onClick="checkboxGroup(this); selectIns()"></td>
                      </tr>
                      <tr><td colspan="4" style="padding: 0px">
                         <div id="droplist-{{ com.sid }}_{{ atl.id }}" class="droplist">
@@ -77,7 +80,6 @@
                                     <tr>
                                        <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ ins.prueba }}</td>
                                        <td>{{ ins.coste|number_format(2, ',', '.') }}€</td>
-                                       <td><input id="cb-{{ ins.sid }}" type="checkbox" class="group-{{ com.sid }}_{{ atl.id }}" onClick="checkboxGroup(this); selectIns()"></td>
                                     </tr>
                                  {% endfor %}
                               </tbody>
@@ -90,18 +92,10 @@
          {% endfor %}
       </div>
    </div>
-
+   
 {% endblock %}
 
 {% block js %}
-   <script type="javascript">
-      $(document).ready(function(){
-         $('.droplist').each(function (){
-            $(this).data("height", $(this).height());
-        	   $(this).css("height", "0px");
-         });
-      )}
-   </script>
    {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
 {% endblock %}
 

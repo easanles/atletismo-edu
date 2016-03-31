@@ -334,15 +334,18 @@ class InformesController extends Controller {
    			 array("pars" => $listaPar, "inss" => $listaIns, "sidCom" => $sidCom));
    }
    
-   public function pagosPendientesAction(){
-   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
-   	$listaIns = $repoIns->findInsPendientes();
+//##########################################################################
+//############################ PAGOS PENDIENTES ############################
+//##########################################################################
+   
+   private function hacerComsArray($listaIns){
    	$comsArray = array();
    	$currentSidCom = null;
    	$atlsArray = array();
    	$currentIdAtl = null;
    	$inssArray = array();
    	$costeTotal = 0;
+   	$costeCom = 0;
    	$costeAtl = 0;
    	foreach ($listaIns as $key => $ins){
    		if (($currentSidCom == null) || ($ins['sidCom'] != $currentSidCom)){
@@ -363,29 +366,32 @@ class InformesController extends Controller {
    						"sid" => $listaIns[$key-1]['sidCom'],
    						"nombre" => $listaIns[$key-1]['nombrecom'],
    						"temp" => $listaIns[$key-1]['temp'],
+   						"cartel" => $listaIns[$key-1]['cartel'],
+   						"costeCom" => $costeCom,
    						"atls" => $atlsArray
    				);
+   				$costeCom = 0;
    				$atlsArray = array();
    			}
    		}
    		if (($currentIdAtl == null) || ($ins['idAtl'] != $currentIdAtl)){
-   		   $currentIdAtl = $ins['idAtl'];
-   		   if (count($inssArray) > 0){
-   		   	$atlsArray[] = array(
-   		   			"id" => $listaIns[$key-1]['idAtl'],
-   		   			"apellidos" => $listaIns[$key-1]['apellidos'],
-   		   			"nombre" => $listaIns[$key-1]['nombreatl'],
-   		   			"costeAtl" => $costeAtl, 
-   		   			"inss" => $inssArray
-   		   	);
-   		   	$inssArray = array();
-   		   	$costeAtl = 0;
-   		   }
+   			$currentIdAtl = $ins['idAtl'];
+   			if (count($inssArray) > 0){
+   				$atlsArray[] = array(
+   						"id" => $listaIns[$key-1]['idAtl'],
+   						"apellidos" => $listaIns[$key-1]['apellidos'],
+   						"nombre" => $listaIns[$key-1]['nombreatl'],
+   						"costeAtl" => $costeAtl,
+   						"inss" => $inssArray
+   				);
+   				$inssArray = array();
+   				$costeAtl = 0;
+   			}
    		}
    		$nombrePrueba = $ins['nombretprf'];
    		if ($ins['sexo'] == 0) $nombrePrueba = $nombrePrueba.", masculino";
-   	   else if ($ins['sexo'] == 1) $nombrePrueba = $nombrePrueba.", femenino";
-   	   $nombrePrueba = $nombrePrueba.". ".$ins['entorno'];
+   		else if ($ins['sexo'] == 1) $nombrePrueba = $nombrePrueba.", femenino";
+   		$nombrePrueba = $nombrePrueba.". ".$ins['entorno'];
    		$inssArray[] = array(
    				"sid" => $ins['sid'],
    				"coste" => $ins['coste'],
@@ -393,6 +399,7 @@ class InformesController extends Controller {
    				"prueba" => $nombrePrueba
    		);
    		$costeTotal = $costeTotal + $ins['coste'];
+   		$costeCom = $costeCom + $ins['coste'];
    		$costeAtl = $costeAtl + $ins['coste'];
    	}
    	if (count($inssArray) > 0){
@@ -409,10 +416,21 @@ class InformesController extends Controller {
    				"sid" => $listaIns[count($listaIns)-1]['sidCom'],
    				"nombre" => $listaIns[count($listaIns)-1]['nombrecom'],
    				"temp" => $listaIns[count($listaIns)-1]['temp'],
+   				"cartel" => $listaIns[$key-1]['cartel'],
+   				"costeCom" => $costeCom,
    				"atls" => $atlsArray
    		);
    	}
-   	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig', array('coms' => $comsArray, 'count' => count($listaIns), 'costeTotal' => $costeTotal));
+   	return array($comsArray, $costeTotal);
+   }
+   
+   
+   public function pagosPendientesAction(){
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$listaIns = $repoIns->findInsPendientes();
+      $comsArray = $this->hacerComsArray($listaIns);
+   	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig', array(
+   			'coms' => $comsArray[0], 'count' => count($listaIns), 'costeTotal' => $comsArray[1]));
    }
    
    public function marcarPagadoAction(Request $request){
@@ -430,5 +448,26 @@ class InformesController extends Controller {
    	$em->flush();
    	return new Response("OK");
    }
-}
+   
+//##########################################################################
+//################################ INGRESOS ################################
+//##########################################################################
 
+   public function pantallaIngresosAction(Request $request){
+   	$temp = $request->query->get('t');
+   	if (($temp == null) || ($temp == "")){
+   		$temp = Helpers::getCurrentTemp($this->getDoctrine());
+   	}
+   	$parametros = array("selTemp" => $temp);
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$listaTemps = $repoCom->findTemps("admin");
+   	$parametros['temps'] = $listaTemps;
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$listaIns = $repoIns->findInsPagados($temp);
+   	$comsArray = $this->hacerComsArray($listaIns);
+   	$parametros['coms'] = $comsArray[0];
+   	$parametros['costeTotal'] = $comsArray[1];
+   	return $this->render('EasanlesAtletismoBundle:Informes:pant_ingresos.html.twig', $parametros);
+   }
+
+}
