@@ -39,7 +39,7 @@
    {% if leyenda is not null and leyenda != "" %}<tr>
       <td {% if numIntentos > 1 %}colspan="5"{% else %}colspan="4"{% endif %}>
          <div style="padding: 0.2em 2em">
-            <small>{{ leyenda|nl2br }}</small>
+            <small>{{ leyenda|raw }}</small>
          </div>
       </td>
    </tr>{% endif %}

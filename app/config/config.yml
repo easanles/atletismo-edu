@@ -30,6 +30,10 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
        kernelRootDir: "%kernel.root_dir%"
+       gl_appname: "Atletismo"
+       gl_appdesc: "Sistema de gestión de un club de atletismo"
+       gl_author: "Eduardo Alonso Sanlés"
+       gl_year: "2016"
     form:
        resources: ['bootstrap_3_layout.html.twig']
        #resources: ['bootstrap_3_horizontal_layout.html.twig']

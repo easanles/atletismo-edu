@@ -185,6 +185,34 @@ class Helpers {
 		$leyenda = new Config();
 		$leyenda->setClave("leyenda")->setValor("");
 		$em->persist($leyenda);
+		$jumbotron = new Config();
+		$jumbotron->setClave("jumbotron")->setValor("1");
+		$em->persist($jumbotron);
+	   $jumboLinea1 = new Config();
+		$jumboLinea1->setClave("jumbolin1")->setValor("Atletismo");
+		$em->persist($jumboLinea1);
+		$jumboLinea2 = new Config();
+		$jumboLinea2->setClave("jumbolin2")->setValor("Sistema de gestión de un club de atletismo");
+		$em->persist($jumboLinea2);
+		$bienvenida = new Config();
+		$bienvenida->setClave("bienvenida")->setValor("
+<p>O obxectivo principal do proxecto é dispor dunha alternativa baseada en Software Libre para a xestión das labores administrativas dun club de atletismo.</p>
+<p>Os obxectivos a acadar co proxecto son os seguintes:</p>
+<ul>
+<li>Xestionar os asociados: altas, mantemento e baixas dos membros do club.</li>
+<li>Controlar as cotas dos socios do club.</li>
+<li>Controlar as inscricións dos atletas nas probas recomendadas polo club.</li>
+<li>Rexistrar as marcas dos atletas para cada unha das probas nas que participe</li>
+<li>Xestión de contabilidade das cotas dos asociados simplificada (ingresos/gastos).</li>
+<li>A aplicación debe ser completamente xestionable a través dunha interface web.</li>
+</ul>");
+		$em->persist($bienvenida);
+		$nombreApp = new Config();
+		$nombreApp->setClave("nombreapp")->setValor("Atletismo");
+		$em->persist($nombreApp);
+		$verMeses = new Config();
+		$nombreApp->setClave("vermeses")->setValor("2");
+		$em->persist($verMeses);
 		$defaultUsu = new Usuario();
 		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.
 		   ->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')

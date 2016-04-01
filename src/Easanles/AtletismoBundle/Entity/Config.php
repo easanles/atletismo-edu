@@ -22,7 +22,7 @@ class Config {
     
     /**
      * @var string
-     * @ORM\Column(name="valorcfg", type="string", length=255, nullable=true)
+     * @ORM\Column(name="valorcfg", type="string", length=8191, nullable=true)
      */
     private $valor;
     

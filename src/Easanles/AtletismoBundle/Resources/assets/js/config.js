@@ -102,6 +102,10 @@ function changeSettings(){
 	    data        : values,
 	    success     : function(data) {
 	  	    $('#tabcontent-aj').html(data.message);
+	  	    $("#cfg_jumbotron").click(function(){
+	  		   $("#cfg_jumbolin1").prop("disabled", !$(this).is(":checked"));
+	  		   $("#cfg_jumbolin2").prop("disabled", !$(this).is(":checked"));
+	  	    });	
 	        icon.removeClass("glyphicon-refresh spinning");
 	        icon.addClass("glyphicon-save");
 	    }
@@ -109,7 +113,6 @@ function changeSettings(){
 }
 
 //COMANDOS
-
 function sendAction(path, icon){
 	   alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
 	   alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
@@ -129,7 +132,12 @@ function sendAction(path, icon){
 	}
 
 
-$(document).ready(function(){   
+$(document).ready(function(){
+   $("#cfg_jumbotron").click(function(){
+	   $("#cfg_jumbolin1").prop("disabled", !$(this).is(":checked"));
+	   $("#cfg_jumbolin2").prop("disabled", !$(this).is(":checked"));
+   });	
+
    $("#btn_poblarbd").click(function(){
 	  if (confirm("¿Rellenar la base de datos con datos de prueba?")){
 	      icon = $(this).find("span");

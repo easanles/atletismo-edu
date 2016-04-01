@@ -1,4 +1,5 @@
 services:
+
 #  em_com_service:
 #    class: Easanles\AtletismoBundle\Entity\Competicion
 #    arguments: ["@doctrine.orm.default_entity_manager"]

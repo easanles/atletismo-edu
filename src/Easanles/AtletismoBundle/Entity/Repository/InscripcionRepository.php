@@ -97,7 +97,7 @@ class InscripcionRepository extends EntityRepository {
 				 JOIN pru.sidTprm tprm
 				 JOIN tprm.sidTprf tprf
 				 JOIN pru.idCat cat
-				 WHERE ins.estado LIKE 'Pagado' AND com.temp = :temp
+				 WHERE ins.estado LIKE 'Pagado' AND com.temp = :temp AND ins.coste > 0
 				 ORDER BY com.sid, atl.id ")
 	   ->setParameter("temp", $temp)
 		->getResult();

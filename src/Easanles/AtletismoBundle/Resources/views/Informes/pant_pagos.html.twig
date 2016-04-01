@@ -76,6 +76,7 @@
                                  {% for ins in atl.inss %}
                                     <tr>
                                        <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ ins.prueba }}</td>
+                                       <td><span class="hidden-xs">Fecha inscripción: </span>{{ ins.fecha|date('d/m/Y') }}</td>
                                        <td>{{ ins.coste|number_format(2, ',', '.') }}€</td>
                                        <td><input id="cb-{{ ins.sid }}" type="checkbox" class="group-{{ com.sid }}_{{ atl.id }}" onClick="checkboxGroup(this); selectIns()"></td>
                                     </tr>

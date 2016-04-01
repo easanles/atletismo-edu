@@ -338,7 +338,7 @@ class InformesController extends Controller {
 //############################ PAGOS PENDIENTES ############################
 //##########################################################################
    
-   private function hacerComsArray($listaIns){
+   private function makeComsArray($listaIns){
    	$comsArray = array();
    	$currentSidCom = null;
    	$atlsArray = array();
@@ -416,7 +416,7 @@ class InformesController extends Controller {
    				"sid" => $listaIns[count($listaIns)-1]['sidCom'],
    				"nombre" => $listaIns[count($listaIns)-1]['nombrecom'],
    				"temp" => $listaIns[count($listaIns)-1]['temp'],
-   				"cartel" => $listaIns[$key-1]['cartel'],
+   				"cartel" => $listaIns[count($listaIns)-1]['cartel'],
    				"costeCom" => $costeCom,
    				"atls" => $atlsArray
    		);
@@ -424,11 +424,10 @@ class InformesController extends Controller {
    	return array($comsArray, $costeTotal);
    }
    
-   
    public function pagosPendientesAction(){
    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$listaIns = $repoIns->findInsPendientes();
-      $comsArray = $this->hacerComsArray($listaIns);
+      $comsArray = $this->makeComsArray($listaIns);
    	return $this->render('EasanlesAtletismoBundle:Informes:pant_pagos.html.twig', array(
    			'coms' => $comsArray[0], 'count' => count($listaIns), 'costeTotal' => $comsArray[1]));
    }
@@ -464,7 +463,7 @@ class InformesController extends Controller {
    	$parametros['temps'] = $listaTemps;
    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$listaIns = $repoIns->findInsPagados($temp);
-   	$comsArray = $this->hacerComsArray($listaIns);
+   	$comsArray = $this->makeComsArray($listaIns);
    	$parametros['coms'] = $comsArray[0];
    	$parametros['costeTotal'] = $comsArray[1];
    	return $this->render('EasanlesAtletismoBundle:Informes:pant_ingresos.html.twig', $parametros);

@@ -21,12 +21,24 @@ class ConfiguracionController extends Controller {
     	$fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
     	if ($fIniTempObj == null) $fIniTempVal = "";
       else $fIniTempVal = $fIniTempObj->getValor();
+      $nombreApp = $repository->findOneBy(array("clave" => "nombreapp"));
       $catAsig = $repository->findOneBy(array("clave" => "catAsig"));
       $leyenda = $repository->findOneBy(array("clave" => "leyenda"));
-    	$ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
+      $jumbotron = $repository->findOneBy(array("clave" => "jumbotron"));
+      $jumboLinea1 = $repository->findOneBy(array("clave" => "jumbolin1"));
+      $jumboLinea2 = $repository->findOneBy(array("clave" => "jumbolin2"));
+      $bienvenida = $repository->findOneBy(array("clave" => "bienvenida"));
+      $verMeses = $repository->findOneBy(array("clave" => "vermeses"));
+      $ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
+      		"nombreApp" => $nombreApp->getValor(),
     			"fIniTemp" => $fIniTempVal,
     			"catAsig" => $catAsig->getValor(),
-    			"leyenda" => $leyenda->getValor()
+    			"leyenda" => $leyenda->getValor(),
+      		"jumbotron" => intval($jumbotron->getValor()),
+      		"jumboLinea1" => $jumboLinea1->getValor(),
+      		"jumboLinea2" => $jumboLinea2->getValor(),
+      		"bienvenida" => $bienvenida->getValor(),
+      		"verMeses" => $verMeses->getValor()
     	))->getContent();
     	
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig', array(
@@ -38,6 +50,17 @@ class ConfiguracionController extends Controller {
     	 $parametros = array();
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
     	 $em = $this->getDoctrine()->getManager();
+    	 
+    	 //NOMBRE DE LA APLICACION
+    	 $nombreAppObj = $repository->findOneBy(array("clave" => "nombreapp"));
+    	 $nombreAppString = $request->request->get('nombreapp');
+    	 if (!(strcmp($nombreAppString, $nombreAppObj->getValor()) == 0)){
+    	 	$parametros["okNombreApp"] = true;
+    	 	$nombreAppObj->setValor($nombreAppString);
+    	 	$parametros["nombreApp"] = $nombreAppString;
+    	 } else {
+    	 	$parametros["nombreApp"] = $nombreAppObj->getValor();
+    	 }
     	 
     	 //DIA Y MES DE INICIO DE LAS TEMPORADAS
     	 $fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
@@ -86,6 +109,66 @@ class ConfiguracionController extends Controller {
     	 } else {
     	    $parametros["leyenda"] = $leyendaObj->getValor();
     	 }
+    	 
+    	 //ACTIVAR JUMBOTRON
+    	 $jumbotronObj = $repository->findOneBy(array("clave" => "jumbotron"));
+    	 $jumbotronString = $request->request->get('jumbotron');
+    	 if (($jumbotronString == "on"))
+    	 	    $jumbotronVal = 1;
+    	 else $jumbotronVal = 0;
+    	 if ($jumbotronVal != $jumbotronObj->getValor()){
+    	 	$parametros["okJumbotron"] = true;
+    	 	$jumbotronObj->setValor($jumbotronVal);
+    	 	$parametros["jumbotron"] = $jumbotronVal;
+    	 } else {
+    	 	$parametros["jumbotron"] = $jumbotronObj->getValor();
+    	 }
+    	 
+    	 //JUMBOTRON LINEA 1
+    	 $jumboLinea1Obj = $repository->findOneBy(array("clave" => "jumbolin1"));
+    	 $jumboLinea1String = $request->request->get('jumbolin1');
+    	 if (!(strcmp($jumboLinea1String, $jumboLinea1Obj->getValor()) == 0)){
+    	 	$parametros["okJumboLinea1"] = true;
+    	 	$jumboLinea1Obj->setValor($jumboLinea1String);
+    	 	$parametros["jumboLinea1"] = $jumboLinea1String;
+    	 } else {
+    	 	$parametros["jumboLinea1"] = $jumboLinea1Obj->getValor();
+    	 }
+    	 
+       //JUMBOTRON LINEA 2
+    	 $jumboLinea2Obj = $repository->findOneBy(array("clave" => "jumbolin2"));
+    	 $jumboLinea2String = $request->request->get('jumbolin2');
+    	 if (!(strcmp($jumboLinea2String, $jumboLinea2Obj->getValor()) == 0)){
+    	 	$parametros["okJumboLinea2"] = true;
+    	 	$jumboLinea2Obj->setValor($jumboLinea2String);
+    	 	$parametros["jumboLinea2"] = $jumboLinea2String;
+    	 } else {
+    	 	$parametros["jumboLinea2"] = $jumboLinea2Obj->getValor();
+    	 }
+    	     	 
+    	 //TEXTO DE BIENVENIDA
+    	 $bienvenidaObj = $repository->findOneBy(array("clave" => "bienvenida"));
+    	 $bienvenidaString = $request->request->get('bienvenida');
+    	 if (!(strcmp($bienvenidaString, $bienvenidaObj->getValor()) == 0)){
+    	 	$parametros["okBienvenida"] = true;
+    	 	$bienvenidaObj->setValor($bienvenidaString);
+    	 	$parametros["bienvenida"] = $bienvenidaString;
+    	 } else {
+    	 	$parametros["bienvenida"] = $bienvenidaObj->getValor();
+    	 }
+    	 
+    	 //VER MESES PREVIOS EN RESULTADOS RECIENTES
+    	 $verMesesObj = $repository->findOneBy(array("clave" => "vermeses"));
+    	 $verMesesString = $request->request->get('vermeses');
+    	 if ((is_numeric($verMesesString)) && (intval($verMesesString) >= 1)){
+    	 	if (intval($verMesesString) != $verMesesObj->getValor()){
+    	 		$parametros["okVerMeses"] = true;
+    	 		$verMesesObj->setValor($verMesesString);
+    	 	}
+    	 } else {
+    	 	$parametros["errVerMeses"] = "Introduzca un valor entero mayor o igual que 1";
+    	 }
+    	 $parametros["verMeses"] = $verMesesString;
     	 
     	 $em->flush();
     	 return new JsonResponse([

@@ -39,15 +39,15 @@
    <h1 id="container_title" class="row page-header">Ingresos</h1>
    
    <div id="container_header" class="row">
-      <div class="col-xs-8 col-sm-6 col-md-5 col-lg-4">
+      <div class="col-xs-9 col-sm-6 col-md-5 col-lg-4">
          <select class="form-control" id="sel-temp" onChange="goToUrl('?t='+this.value)">
             {% for temp in temps %}
                <option value="{{ temp.temp }}"{% if selTemp is defined and selTemp == temp.temp %} selected{% endif %}>Temporada {{ temp.temp }}/{{ (temp.temp + 1)|slice(2, 2)}}</option>
             {% endfor %}
          </select>
       </div>
-      <div class="col-xs-4 col-sm-6 col-md-7 col-lg-8">
-         <h4><span class="hidden-xs">Total temporada: </span> {{ costeTotal|number_format(2, ',', '.') }}€</h4>
+      <div class="col-xs-3 col-sm-6 col-md-7 col-lg-8">
+         <h4 class="pull-right"><span class="hidden-xs">Total temporada: </span>{{ costeTotal|number_format(2, ',', '.') }}€</h4>
       </div>
    </div>
    <div class="row">
@@ -57,7 +57,7 @@
                {% if com.cartel is not null %}
                   <span><img id="pic-img" height="30" src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" /></span>
                {% endif %}
-               {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}) - Total: {{ com.costeCom|number_format(2, ',', '.') }}€
+               {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}) <span class="pull-right"><span class="hidden-xs">Total: </span>{{ com.costeCom|number_format(2, ',', '.') }}€</span>
             </h4>
             <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
                <tbody>
@@ -79,6 +79,7 @@
                                  {% for ins in atl.inss %}
                                     <tr>
                                        <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ ins.prueba }}</td>
+                                       <td><span class="hidden-xs">Fecha inscripción: </span>{{ ins.fecha|date('d/m/Y') }}</td>
                                        <td>{{ ins.coste|number_format(2, ',', '.') }}€</td>
                                     </tr>
                                  {% endfor %}

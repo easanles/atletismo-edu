@@ -1,5 +1,15 @@
          <div class="row">
             <form id="cfg-form" class="form-horizontal" action="{{ path("configuracion_cambiar_ajustes") }}" method="post">
+               <div class="form-group{% if okNombreApp is defined %} has-success has-feedback{% endif %}">
+                  <label for="cfg_nombreapp" class="col-xs-12 col-sm-4 control-label">Nombre de la aplicación</label>
+                  <div class="col-xs-12 col-sm-6">
+                     <input type="text" class="form-control" id="cfg_nombreapp" name="nombreapp" value="{{ nombreApp }}"></input>
+                     <span class="help-block">Aparece en la barra de navegación</span>
+                     {% if okNombreApp is defined %}
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                     {% endif %}
+                  </div>
+               </div>
                <div class="form-group{% if errFIniTemp is defined %} has-error has-feedback{% endif %}{% if okFIniTemp is defined %} has-success has-feedback{% endif %}">
                   <label for="cfg_fIniTemp" class="col-xs-12 col-sm-4 control-label">Día y mes de inicio de las temporadas</label>
                   <div class="col-xs-12 col-sm-6">
@@ -29,10 +39,67 @@
                   <label for="cfg_leyenda" class="col-xs-12 col-sm-4 control-label">Leyenda en resultados</label>
                   <div class="col-xs-12 col-sm-6">
                      <textarea type="text" rows="4" class="form-control" id="cfg_leyenda" name="leyenda">{{ leyenda }}</textarea>
-                     <span id="helpBlock" class="help-block">Bloque de texto que aparecerá bajo cada tabla de resultados</span>
+                     <span class="help-block">Bloque de texto que aparecerá bajo cada tabla de resultados (Admite HTML)</span>
                      {% if okLeyenda is defined %}
                         <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
                      {% endif %}
+                  </div>
+               </div>
+               <div class="form-group{% if errVerMeses is defined %} has-error has-feedback{% endif %}{% if okVerMeses is defined %} has-success has-feedback{% endif %}">
+                  <label for="cfg_vermeses" class="col-xs-12 col-sm-4 control-label">Ver meses previos</label>
+                  <div class="col-xs-12 col-sm-6">
+                     <input type="number" min="1" step="1" class="form-control" id="cfg_vermeses" name="vermeses" value="{{ verMeses }}">
+                     {% if errVerMeses is not defined %}<span class="help-block">Número de meses a mostrar en "Resultados recientes"</span>{% endif %}
+                     {% if okVerMeses is defined %}
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                     {% endif %}
+                     {% if errVerMeses is defined %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block">
+                           <span class="glyphicon glyphicon-exclamation-sign"></span> {{ errVerMeses }}
+                        </span>
+                     {% endif %}
+                  </div>
+               </div>
+               <div class="panel panel-default">
+                  <div class="panel-heading">
+                     <h3 class="panel-title">Pantalla de bienvenida</h3>
+                  </div>
+                  <div class="panel-body">
+                     <div class="form-group{% if okJumbotron is defined %} has-success{% endif %}">
+                        <label for="cfg_jumbotron" class="col-xs-12 col-sm-4 control-label">Activar Jumbotron</label>
+                        <div class="col-xs-12 col-sm-6">
+                           <input type="checkbox" id="cfg_jumbotron" name="jumbotron" {% if jumbotron == 1 %}checked{% endif %}></input>
+                        </div>
+                     </div>
+                     <div class="form-group{% if okJumboLinea1 is defined %} has-success has-feedback{% endif %}">
+                        <label for="cfg_jumbolin1" class="col-xs-12 col-sm-4 control-label">Jumbotron línea 1</label>
+                        <div class="col-xs-12 col-sm-6">
+                           <input type="text" class="form-control" id="cfg_jumbolin1" name="jumbolin1" value="{{ jumboLinea1 }}"{% if jumbotron != 1 %} disabled{% endif %}></input>
+                           {% if okJumboLinea1 is defined %}
+                              <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                           {% endif %}
+                        </div>
+                     </div>
+                     <div class="form-group{% if okJumboLinea2 is defined %} has-success has-feedback{% endif %}">
+                        <label for="cfg_jumbolin2" class="col-xs-12 col-sm-4 control-label">Jumbotron línea 2</label>
+                        <div class="col-xs-12 col-sm-6">
+                           <input type="text" class="form-control" id="cfg_jumbolin2" name="jumbolin2" value="{{ jumboLinea2 }}"{% if jumbotron != 1 %} disabled{% endif %}></input>
+                           {% if okJumboLinea2 is defined %}
+                              <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                           {% endif %}
+                        </div>
+                     </div>
+                     <div class="form-group{% if okBienvenida is defined %} has-success has-feedback{% endif %}">
+                        <label for="cfg_bienvenida" class="col-xs-12 col-sm-4 control-label">Texto de bienvenida</label>
+                        <div class="col-xs-12 col-sm-6">
+                           <textarea type="text" rows="8" class="form-control" id="cfg_bienvenida" name="bienvenida">{{ bienvenida }}</textarea>
+                           <span class="help-block">Admite HTML</span>
+                           {% if okBienvenida is defined %}
+                              <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                           {% endif %}
+                        </div>
+                     </div>
                   </div>
                </div>
                <div class="form-group">
@@ -42,7 +109,3 @@
                </div>
             </form>
          </div>
-
-
-
-
