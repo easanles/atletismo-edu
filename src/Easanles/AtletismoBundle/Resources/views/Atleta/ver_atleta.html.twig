@@ -30,7 +30,7 @@
 {% block breadcrumb %}
   <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
   <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
-  <li class="active">Atleta: {% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</li>
+  <li class="active">{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</li>
 {% endblock %}
 
    {% block modallabel %}Confirmar borrado{% endblock %}
@@ -78,6 +78,7 @@
             </tbody>
          </table>
          <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
+         <a type="button" class="btn btn-m btn-default" href="{{ path('historial_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-time"></span> Historial</a>
          <a type="button" class="btn btn-m btn-default" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
          <button type="button" class="btn btn-m btn-danger pull-right" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu.nombre }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-remove"></span> Borrar</button>
       </div>

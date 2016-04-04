@@ -1,0 +1,98 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Historial: {% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}{% endblock %}
+
+{% block navbar %}
+      {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      <li class="active"><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user.idAtl is not null %}<li><a href="{{ path('users_pantalla_records_propios') }}">Mis records</a></li>{% endif %}
+            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+         </ul>
+      </li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
+            <li><a href="{{ path('ingresos') }}">Ingresos</a></li>
+         </ul>
+      </li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+  <li><a href="{{ path('ver_atleta', {'id': atl.id}) }}">{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</a></li>
+  <li class="active">Historial</li>
+{% endblock %}
+
+{% block container %}
+   <h1 id="container_title" class="row page-header">Historial: <small>{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</small></h1>
+    
+   <div class="row">
+      <div id="container_header" class="row">
+         <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+            <select class="form-control" id="sel-temp" onChange="goToUrl('?t='+this.value)">
+               <option value=""{% if selTemp is not defined %} selected{% endif %}>Todas las temporadas</option>
+               {#% for temp in temps %}
+                  <option value="{{ temp.temp }}"{% if selTemp is defined and selTemp == temp.temp %} selected{% endif %}>Temporada {{ temp.temp }}/{{ (temp.temp + 1)|slice(2, 2)}}</option>
+               {% endfor %#}
+            </select>
+         </div>
+         <div class="hidden-xs col-sm-6 col-md-7 col-lg-8">
+            <div class="row">
+               <div class="col-sm-9 col-md-10">
+                  <dl class="dl-horizontal">
+                     <dt>DNI</dt><dd>{{ atl.dni }}</dd>
+                     {% if atl.lfga is not null and atl.lfga != "" %}
+                        <dt>Licencia FGA</dt><dd>{{ atl.lfga }}</dd>
+                     {% endif %}
+                     {% if atl.lxogade is not null and atl.lxogade != "" %}
+                        <dt>Licencia XOGADE</dt><dd>{{ atl.lxogade }}</dd>
+                     {% endif %}
+                     <dt>Categoría</dt><dd>{{ cat.nombre }}</dd>
+                  </dl>
+               </div>
+               <div class="col-sm-3 col-md-2">
+                  {% if atl.foto is not null %}
+                     <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/></a>
+                  {% else %}
+                     {% image '@EasanlesAtletismoBundle/Resources/assets/img/sinfoto.jpg' %}
+                        <img src="{{ asset_url }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/>
+                     {% endimage %}
+                  {% endif %}
+               </div>
+            </div>
+         </div>
+      </div>
+      <div>
+         <h4>Entorno</h4>
+         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+            <thead>
+               <tr>
+                  <th>Competición</th>
+                  <th>Fecha</th>
+                  <th>Pruebas</th>
+               </tr>
+            </thead>
+            <tbody>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   
+{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+
+

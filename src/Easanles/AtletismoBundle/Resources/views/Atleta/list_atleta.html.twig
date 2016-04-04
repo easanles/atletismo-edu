@@ -93,11 +93,13 @@
             <div class="btn-group visible-xs-block">
                <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>
                <ul class="dropdown-menu pull-right">
+                  <li><a href="{{ path('historial_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-time"></span> Historial</a></li>
                   <li><a href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a></li>
                   <li><a class="bg-danger" href="#" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu }}'{% else %}null{% endif %})"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
                </ul>
             </div>
             <div class="hidden-xs">
+               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Historial" href="{{ path('historial_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-time"></span></a>
                <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('borrar_atleta', {'i': atl.id}) }}', {% if atl.nombreUsu is not null %}'{{ atl.nombreUsu }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-remove"></span></button>
             </div>

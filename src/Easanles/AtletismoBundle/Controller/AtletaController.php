@@ -379,4 +379,17 @@ class AtletaController extends Controller {
    	   	'success' => false
       ]);
    }
+   
+   public function historialAtletaAction(Request $request, $id){
+   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+   	$atl = $repository->find($id);
+   	if ($atl == null) {
+   		$response = new Response('No existe el atleta con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_atletas').'">Volver</a>');
+   		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_atletas'));
+   		return $response;
+   	}
+   	$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
+   	$parametros = array("atl" => $atl, "cat" => $cat);
+   	return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta.html.twig', $parametros);
+   }
 }

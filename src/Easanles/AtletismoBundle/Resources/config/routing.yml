@@ -121,6 +121,11 @@ comprobar_usuario:
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:comprobarUsuario"}
    requirements:
       id: \d+
+historial_atleta:
+   path: /admin/atletas/{id}/historial
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:historialAtleta"}
+   requirements:
+      id: \d+
    
     
 #====================INSCRIPCIONES===================
