@@ -102,4 +102,37 @@ class InscripcionRepository extends EntityRepository {
 	   ->setParameter("temp", $temp)
 		->getResult();
 	}
+	
+	public function findAtlHistoric($idAtl, $temp){
+		$sql = "SELECT tprm.entorno, IDENTITY(pru.sidCom) AS sidCom, com.nombre AS nombreCom, com.temp, com.fecha, com.sede, IDENTITY(ins.sidPru) AS sidPru, tprf.nombre AS nombreTprf, tprf.unidades, cat.nombre AS nombreCat
+				FROM EasanlesAtletismoBundle:Inscripcion ins
+				JOIN ins.sidPru pru
+				JOIN pru.sidCom com
+				JOIN pru.sidTprm tprm
+				JOIN tprm.sidTprf tprf
+				JOIN pru.idCat cat
+				WHERE ins.idAtl = :idatl";
+	   if (($temp != null) && ($temp != "")){
+			$sql = $sql." AND com.temp = :temp";
+		}
+	   $sql = $sql." ORDER BY tprm.entorno, com.sid, pru.sid";
+	   $query = $this->getEntityManager()->createQuery($sql);
+	   if (($temp != null) && ($temp != "")){
+	   	$query = $query->setParameter("temp", $temp);
+	   }
+		return $query->setParameter("idatl", $idAtl)->getResult();
+	}
+	
+	public function findAtlTemps($idAtl){
+		return $this->getEntityManager()
+		->createQuery("SELECT com.temp
+				 FROM EasanlesAtletismoBundle:Inscripcion ins
+				 JOIN ins.sidPru pru
+				 JOIN pru.sidCom com
+				 WHERE ins.idAtl = :idatl
+				 GROUP BY com.temp
+				 ORDER BY com.temp DESC")
+		->setParameter("idatl", $idAtl)
+		->getResult();
+	}
 }

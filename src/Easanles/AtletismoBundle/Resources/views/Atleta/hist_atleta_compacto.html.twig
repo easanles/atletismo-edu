@@ -1,0 +1,39 @@
+
+{% extends 'EasanlesAtletismoBundle:Atleta:hist_atleta.html.twig' %}
+
+{% block tabla %}
+      <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+         <thead>
+            <tr>
+               <th>Competición</th>
+               <th>Fecha</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for entorno in entornos %}
+               <tr><td class="bg-primary">{{ entorno.entorno }}</td></tr>
+               {% for com in entorno.coms %}
+                  <tr>
+                     <td class="bg-info">{{ com.nombre }}{% if com.sede != "" %} - {{ com.sede }}{% endif %}
+                     <td class="bg-info">{{ com.fecha|date('d/m/Y') }}</td>
+                     {% for pru in com.prus %}
+                        <td> {{ pru.nombre }}</td>
+                        <td>
+                           {% if pru.marca is not null and pru.marca != "" %}<strong>
+                              {% if pru.unidades == "segundos" %}{{ (pru.marca / 3600)|round(0, "floor") }}{% set resto = pru.marca - ((pru.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+                              {% elseif pru.unidades == "metros" %}{{ pru.marca|number_format(3, ',', '.') }} m.
+                              {% elseif pru.unidades == "puntosdesc" %}{{ pru.marca|number_format(0, ',', '.') }} ptos.
+                              {% elseif pru.unidades == "puntosasc" %}{{ pru.marca|number_format(0, ',', '.') }} ptos.
+                              {% endif %}</strong>
+                           {% endif %}
+                        </td>
+                     {% endfor %}
+                  </tr>
+               {% endfor %}
+            {% endfor %}
+         </tbody>
+      </table>
+{% endblock %}
+
+
+

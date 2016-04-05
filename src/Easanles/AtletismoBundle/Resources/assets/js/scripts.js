@@ -140,7 +140,7 @@ function addAutoComplete(selector, data){
 	        var choices = autoCompleteData;
 	        var matches = [];
 	        for (i=0; i<choices.length; i++)
-	              if (~choices[i].toLowerCase().indexOf(term))
+	              if (choices[i].toLowerCase().indexOf(term))
 	                    matches.push(choices[i]);
 	        suggest(matches);
 	    }

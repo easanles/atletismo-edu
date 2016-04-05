@@ -211,7 +211,7 @@ class Helpers {
 		$nombreApp->setClave("nombreapp")->setValor("Atletismo");
 		$em->persist($nombreApp);
 		$verMeses = new Config();
-		$nombreApp->setClave("vermeses")->setValor("2");
+		$verMeses->setClave("vermeses")->setValor("2");
 		$em->persist($verMeses);
 		$defaultUsu = new Usuario();
 		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.

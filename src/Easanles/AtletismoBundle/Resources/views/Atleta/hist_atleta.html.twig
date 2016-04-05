@@ -37,21 +37,28 @@
 {% block container %}
    <h1 id="container_title" class="row page-header">Historial: <small>{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</small></h1>
     
-   <div class="row">
+   <div>
       <div id="container_header" class="row">
          <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
             <select class="form-control" id="sel-temp" onChange="goToUrl('?t='+this.value)">
                <option value=""{% if selTemp is not defined %} selected{% endif %}>Todas las temporadas</option>
-               {#% for temp in temps %}
+               {% for temp in temps %}
                   <option value="{{ temp.temp }}"{% if selTemp is defined and selTemp == temp.temp %} selected{% endif %}>Temporada {{ temp.temp }}/{{ (temp.temp + 1)|slice(2, 2)}}</option>
-               {% endfor %#}
+               {% endfor %}
             </select>
+            {% if vista == "extendido" %}
+               <p style="margin-top:1em"><a class="btn-link" href="{{ path('historial_atleta_compacto', {'id': atl.id}) }}">Ir a vista compacta</a></p>
+            {% else %}
+               <p style="margin-top:1em"><a class="btn-link" href="{{ path('historial_atleta', {'id': atl.id}) }}">Ir a vista extendida</a></p>
+            {% endif %}
          </div>
          <div class="hidden-xs col-sm-6 col-md-7 col-lg-8">
             <div class="row">
                <div class="col-sm-9 col-md-10">
                   <dl class="dl-horizontal">
-                     <dt>DNI</dt><dd>{{ atl.dni }}</dd>
+                     {% if atl.dni is not null and atl.dni != "" %}
+                        <dt>DNI</dt><dd>{{ atl.dni }}</dd>
+                     {% endif %}
                      {% if atl.lfga is not null and atl.lfga != "" %}
                         <dt>Licencia FGA</dt><dd>{{ atl.lfga }}</dd>
                      {% endif %}
@@ -73,25 +80,14 @@
             </div>
          </div>
       </div>
-      <div>
-         <h4>Entorno</h4>
-         <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
-            <thead>
-               <tr>
-                  <th>Competición</th>
-                  <th>Fecha</th>
-                  <th>Pruebas</th>
-               </tr>
-            </thead>
-            <tbody>
-            </tbody>
-         </table>
-      </div>
+      {% block tabla %}{% endblock %}
    </div>
-   
 {% endblock %}
 
 {% block js %}
+   {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' filter='?uglifyjs2' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
 {% endblock %}
 
 

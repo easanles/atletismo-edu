@@ -111,7 +111,7 @@
            {% if tipo != 2 %}<th>Atleta</th>{% endif %}
            <th><abbr class="visible-xs" title="Categoría">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
            <th>Fecha</th>
-           <th class="hidden-xs">Localidad</th>
+           <th class="hidden-xs">Sede</th>
         </tr>
         {% for row in entorno.tabla %}
         <tr{% if destacarAtl is defined %}{% if destacarAtl.id == row.idAtl %} class="text-success"{% endif %}{% endif %}>
@@ -128,7 +128,7 @@
            {% if tipo != 2 %}<td>{% if destacarAtl is defined and destacarAtl.id == row.idAtl %}<strong>{{ row.atleta }}</strong>{% else %}{{ row.atleta }}{% endif %}</td>{% endif %}
            <td>{{ row.categoria }}</td>
            <td>{% if row.fecha is null %} <em class="text-muted">Sin fecha</em> {% elseif row.fecha != "" %} {{ row.fecha|date('d/m/Y') }} {% endif %}</td>
-           <td class="hidden-xs">{{ row.ubicacion }}</td>
+           <td class="hidden-xs">{{ row.sede }}</td>
         </tr>
         {% endfor %}
         </tbody>

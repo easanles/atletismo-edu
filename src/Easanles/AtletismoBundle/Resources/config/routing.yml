@@ -123,7 +123,12 @@ comprobar_usuario:
       id: \d+
 historial_atleta:
    path: /admin/atletas/{id}/historial
-   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:historialAtleta"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:historialAtleta", vista: "extendido"}
+   requirements:
+      id: \d+
+historial_atleta_compacto:
+   path: /admin/atletas/{id}/historial/compacto
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:historialAtleta", vista: "compacto"}
    requirements:
       id: \d+
    

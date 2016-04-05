@@ -248,7 +248,7 @@ class InformesController extends Controller {
 							"atleta" => $query[0]['apellidos'].", ".$query[0]['nombre'],
 							"categoria" => $query[0]['categoria'],
 							"fecha" => $query[0]['fecha'],
-							"ubicacion" => $query[0]['ubicacion'],
+							"sede" => $query[0]['sede'],
 							"unidades" => $tprf['unidades']
 					);
 				} else {
@@ -258,7 +258,7 @@ class InformesController extends Controller {
 							"atleta" => "",
 							"categoria" => "",
 							"fecha" => "",
-							"ubicacion" => "",
+							"sede" => "",
 							"unidades" => null
 					);
 				}

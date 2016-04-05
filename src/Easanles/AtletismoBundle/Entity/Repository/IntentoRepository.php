@@ -103,7 +103,6 @@ class IntentoRepository extends EntityRepository {
 		->setParameter("idatl", $idAtl)
 		->setParameter("sidron", $sidRon)
 		->getResult();
-		
 	}
 	
 	public function findRecordFor($tipo, $entorno, $tprf, $rol, $idAtl, $temp){
@@ -114,7 +113,7 @@ class IntentoRepository extends EntityRepository {
 		   case "puntosasc": $orden = "ASC"; break;
 		   default: $orden = "ASC";
 		}
-		$sql = 'SELECT int.premios, int.marca, IDENTITY(int.idAtl) AS idAtl, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.ubicacion
+		$sql = 'SELECT int.premios, int.marca, IDENTITY(int.idAtl) AS idAtl, atl.apellidos, atl.nombre, cat.nombre AS categoria, com.fecha, com.sede
 				 FROM EasanlesAtletismoBundle:Intento int
 				 JOIN int.sidRon ron
 				 JOIN ron.sidPru pru
@@ -146,4 +145,16 @@ class IntentoRepository extends EntityRepository {
 		else return null;
 	}
 
+	public function findLastMarcaFor($idAtl, $sidPru) {
+		return $this->getEntityManager()
+		->createQuery('SELECT int.sid, IDENTITY(int.sidRon) AS sidRon, int.marca, int.premios 
+				 FROM EasanlesAtletismoBundle:Intento int
+				 JOIN int.sidRon ron
+				 WHERE ron.sidPru = :sidpru AND int.idAtl = :idatl AND int.validez = 1
+				 ORDER BY ron.num DESC, int.num DESC')
+		->setParameter("idatl", $idAtl)
+		->setParameter("sidpru", $sidPru)
+		->setMaxResults(1)
+		->getResult();
+	}
 }

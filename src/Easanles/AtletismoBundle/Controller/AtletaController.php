@@ -380,16 +380,107 @@ class AtletaController extends Controller {
       ]);
    }
    
-   public function historialAtletaAction(Request $request, $id){
-   	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-   	$atl = $repository->find($id);
+   private function makeHistoricArray($listaIns, $idAtl){
+   	$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+   	$arrayEntornos = array();
+   	$orden = 0;
+   	$currentEntorno = null;
+   	$arrayComs = array();
+   	$currentSidCom = null;
+   	$arrayPrus = array();
+   	foreach($listaIns as  $key => $ins){
+   		if (($currentEntorno == null) || ($ins['entorno'] != $currentEntorno)){
+   			$currentEntorno = $ins['entorno'];
+   			if (count($arrayPrus) > 0){
+   				$arrayComs[] = array(
+   						"sid" => $listaIns[$key-1]['sidCom'],
+   						"nombre" => $listaIns[$key-1]['nombreCom'],
+   						"temp" => $listaIns[$key-1]['temp'],
+   						"fecha" => $listaIns[$key-1]['fecha'],
+   						"sede" => $listaIns[$key-1]['sede'],
+   						"prus" => $arrayPrus
+   				);
+   				$arrayPrus = array();
+   			}
+   			if (count($arrayComs) > 0){
+   				$orden = $orden + 1;
+   				$arrayEntornos[] = array(
+   						"orden" => $orden,
+   						"entorno" => $listaIns[$key-1]['entorno'],
+   						"coms" => $arrayComs
+   				);
+   				$arrayComs = array();
+   			}
+   		}
+   		if (($currentSidCom == null) || ($ins['sidCom'] != $currentSidCom)){
+   			$currentSidCom = $ins['sidCom'];
+   			if (count($arrayPrus) > 0){
+   				$arrayComs[] = array(
+   						"sid" => $listaIns[$key-1]['sidCom'],
+   						"nombre" => $listaIns[$key-1]['nombreCom'],
+   						"temp" => $listaIns[$key-1]['temp'],
+   						"fecha" => $listaIns[$key-1]['fecha'],
+   						"sede" => $listaIns[$key-1]['sede'],
+   						"prus" => $arrayPrus
+   				);
+   				$arrayPrus = array();
+   			}
+   		}
+   		$lastMarca = $repoInt->findLastMarcaFor($idAtl, $ins['sidPru']);
+   		if (count($lastMarca) > 0){
+   			$marca = $lastMarca[0]['marca'];
+   			$premios = $lastMarca[0]['premios'];
+   		} else {
+   			$marca = "";
+   			$premios = "";
+   		}
+   		$arrayPrus[] = array(
+   				"sid" => $ins['sidPru'],
+   				"nombre" => $ins['nombreTprf'],
+   				"categoria" => $ins['nombreCat'],
+   				"marca" => $marca,
+   				"premios" => $premios,
+   				"unidades" => $ins['unidades']
+   		);
+   	}
+   	if (count($arrayPrus) > 0){
+   		$arrayComs[] = array(
+   				"sid" => $listaIns[count($listaIns)-1]['sidCom'],
+   		   	"nombre" => $listaIns[count($listaIns)-1]['nombreCom'],
+   				"temp" => $listaIns[count($listaIns)-1]['temp'],
+   				"fecha" => $listaIns[count($listaIns)-1]['fecha'],
+   				"sede" => $listaIns[count($listaIns)-1]['sede'],
+					"prus" => $arrayPrus
+   		);
+   	}
+   	if (count($arrayComs) > 0){
+   		$orden = $orden + 1;
+   	   $arrayEntornos[] = array(
+   	   	"orden" => $orden,
+   			"entorno" => $listaIns[count($listaIns)-1]['entorno'],
+   			"coms" => $arrayComs
+   		);
+   	}
+   	return $arrayEntornos;
+   }
+   
+   public function historialAtletaAction(Request $request, $id, $vista){
+   	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+   	$atl = $repoAtl->find($id);
    	if ($atl == null) {
    		$response = new Response('No existe el atleta con identificador "'.$id.'" <a href="'.$this->generateUrl('listado_atletas').'">Volver</a>');
    		$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_atletas'));
    		return $response;
    	}
+   	$selTemp = $request->query->get('t');
    	$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
-   	$parametros = array("atl" => $atl, "cat" => $cat);
-   	return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta.html.twig', $parametros);
+   	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+   	$listaTemps = $repoIns->findAtlTemps($id);
+   	$parametros = array("atl" => $atl, "cat" => $cat, "selTemp" => $selTemp, "temps" => $listaTemps, "vista" => $vista);
+   	$listaIns = $repoIns->findAtlHistoric($id, $selTemp);
+      $parametros['entornos'] = $this->makeHistoricArray($listaIns, $id);
+      if ($vista == "extendido"){
+   	   return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta_extendido.html.twig', $parametros);
+      } else return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta_compacto.html.twig', $parametros); 
    }
 }
