@@ -115,7 +115,7 @@ class InscripcionRepository extends EntityRepository {
 	   if (($temp != null) && ($temp != "")){
 			$sql = $sql." AND com.temp = :temp";
 		}
-	   $sql = $sql." ORDER BY tprm.entorno, com.sid, pru.sid";
+	   $sql = $sql." ORDER BY tprm.entorno ASC, com.fecha ASC, com.sid ASC, pru.sid ASC";
 	   $query = $this->getEntityManager()->createQuery($sql);
 	   if (($temp != null) && ($temp != "")){
 	   	$query = $query->setParameter("temp", $temp);

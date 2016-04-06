@@ -13,19 +13,20 @@ class AtletaRepository extends EntityRepository {
 		->createQuery('SELECT atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade, usu.nombre AS nombreUsu, usu.rol
 				 FROM EasanlesAtletismoBundle:Atleta atl
 				 LEFT JOIN atl.nombreUsu usu
+				 WHERE atl.esAlta = 1
 				 ORDER BY atl.fnac DESC, atl.id ASC')
 		->getResult();
 	}
 	
 	public function searchByParameters($fnacIni, $fnacFin, $string) {	
-		$qb = $this->getEntityManager()->createQueryBuilder('atl');
+		$qb = $this->getEntityManager()->createQueryBuilder('atl')->where('atl.esalta = 1');
 		if (($string != null) || ($string != "")){
 			$qb = $qb->andWhere('atl.id = :exstring
 					 OR atl.nombre LIKE :string
 					 OR atl.apellidos LIKE :string
 					 OR atl.nick LIKE :string
 					 OR atl.dni LIKE :exstring
-					 OR atl.bloque LIKE :exstring
+					 OR atl.tipo LIKE :exstring
 					 OR atl.cp LIKE :exstring
 					 OR atl.localidad LIKE :string
 					 OR atl.provincia LIKE :string
@@ -53,9 +54,9 @@ class AtletaRepository extends EntityRepository {
 		return $result;
 	}
 	
-	public function findBloques(){
+	public function findTipos(){
 		return $this->getEntityManager()
-		->createQuery('SELECT atl.bloque FROM EasanlesAtletismoBundle:Atleta atl WHERE atl.bloque IS NOT NULL GROUP BY atl.bloque')
+		->createQuery('SELECT atl.tipo FROM EasanlesAtletismoBundle:Atleta atl WHERE atl.tipo IS NOT NULL GROUP BY atl.tipo')
 		->getResult();
 	}
 	

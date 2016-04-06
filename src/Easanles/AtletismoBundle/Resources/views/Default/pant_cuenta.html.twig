@@ -90,6 +90,7 @@
                         <tr><td><strong>DNI:</strong></td><td>{{ app.user.idAtl.dni }}</td><td><strong>Nick:</strong></td><td>{{ app.user.idAtl.nick }}</td></tr>
                         <tr><td><strong>Fecha de nacimiento:</strong></td><td>{{ app.user.idAtl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td><td><strong>Categoría:</strong></td><td>{{ categoria }}</td></tr>
                         <tr><td><strong>Nacionalidad:</strong></td><td>{{ app.user.idAtl.nacion }}</td><td><strong>Sexo:</strong></td><td>{% if app.user.idAtl.sexo == false %}Hombre{% elseif app.user.idAtl.sexo == true %}Mujer{% endif %}</td></tr>
+                        <tr><td><strong>Tipo:</strong></td><td>{{ app.user.idAtl.tipo }}</td><td><strong>Estado:</strong></td><td>{% if app.user.idAtl.esalta == false %}BAJA{% elseif app.user.idAtl.esalta == true %}ALTA{% endif %}</td></tr>
                         <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ app.user.idAtl.direccion }}</td></tr>
                         <tr><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ app.user.idAtl.cp }}</td><td><strong>Localidad:</strong></td><td>{{ app.user.idAtl.localidad }}</td></tr>
                         <tr><td><strong>Provincia:</strong></td><td>{{ app.user.idAtl.provincia }}</td><td><strong>País:</strong></td><td>{{ app.user.idAtl.pais }}</td></tr>

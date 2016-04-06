@@ -320,6 +320,36 @@ function sendPaidIns(){
 	});
 }
 
+function toggleHistView(view){
+	btnExten = $('#btn-exten');
+	btnCompa = $('#btn-compa');
+	divExten = $('#exten-view');
+	divCompa = $('#compa-view');
+	switch(view){
+	   case 'exten': {
+		   $(btnExten).removeClass('btn-default');
+		   $(btnExten).addClass('btn-info');
+		   $(btnCompa).removeClass('btn-info');
+		   $(btnCompa).addClass('btn-default');
+		   $(btnExten).addClass("active");
+		   $(btnCompa).removeClass("active");
+		   $(divCompa).css("display", "none");
+		   $(divExten).css("display", "");
+	   } break;
+	   case 'compa': {
+		   $(btnCompa).removeClass('btn-default');
+		   $(btnCompa).addClass('btn-info');
+		   $(btnExten).removeClass('btn-info');
+		   $(btnExten).addClass('btn-default');
+		   $(btnCompa).addClass("active");
+		   $(btnExten).removeClass("active");
+		   $(divExten).css("display", "none");
+		   $(divCompa).css("display", "");		   
+	   } break;
+	   default: break;
+	}
+}
+
 $(document).ready(function(){
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()

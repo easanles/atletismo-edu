@@ -53,10 +53,10 @@ class AtletaController extends Controller {
 	
 	public function crearAtletaAction(Request $request) {
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-		$listaBloques = $repository->findBloques();
-		$bloques = array();
-		foreach($listaBloques as $bloque){
-			$bloques[] = $bloque['bloque'];
+		$listaTipos = $repository->findTipos();
+		$tipos = array();
+		foreach($listaTipos as $tipo){
+			$tipos[] = $tipo['tipo'];
 		}
 		$atl = new Atleta();
 		$form = $this->createForm(new AtlType(), $atl);
@@ -85,7 +85,7 @@ class AtletaController extends Controller {
 					}
 				}
 				$mensaje = "";
-				$parametros = array('mode' => "new", "bloques" => $bloques);
+				$parametros = array('mode' => "new", "tipos" => $tipos);
 				$doWarn = false;
 				$dni = $atl->getDni();
 				if ($dni != null){
@@ -142,13 +142,13 @@ class AtletaController extends Controller {
 			} catch (\Exception $e) {
 				$exception = $e->getMessage();
 				return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-						array('form' => $form->createView(), 'mode' => "new", 'bloques' => $bloques, 'exception' => $exception));
+						array('form' => $form->createView(), 'mode' => "new", 'tipos' => $tipos, 'exception' => $exception));
 			}
 			return $this->redirect($this->generateUrl('listado_atletas'));
 		}
 	
 		return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-				array('form' => $form->createView(), 'mode' => "new", 'bloques' => $bloques));
+				array('form' => $form->createView(), 'mode' => "new", 'tipos' => $tipos));
 	}
 	
 	public function verAtletaAction($id){
@@ -198,10 +198,10 @@ class AtletaController extends Controller {
 	
 	public function editarAtletaAction(Request $request, $id){
 		$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-	   $listaBloques = $repository->findBloques();
-		$bloques = array();
-		foreach($listaBloques as $bloque){
-			$bloques[] = $bloque['bloque'];
+	   $listaTipos = $repository->findTipos();
+		$tipos = array();
+		foreach($listaTipos as $tipos){
+			$tipos[] = $tipos['tipo'];
 		}
 		$atl = $repository->find($id);
 	
@@ -254,7 +254,7 @@ class AtletaController extends Controller {
 		         }
 		         
 				$mensaje = "";
-				$parametros = array('mode' => "edit", "editando" => $editando, "bloques" => $bloques);
+				$parametros = array('mode' => "edit", "editando" => $editando, "tipos" => $tipos);
 				$doWarn = false;
 				$dni = $atl->getDni();
 				if (($dni != null) && !($prevDni == $dni)){
@@ -302,7 +302,7 @@ class AtletaController extends Controller {
 		   }
 		}
 		return $this->render('EasanlesAtletismoBundle:Atleta:form_atleta.html.twig',
-				array('form' => $form->createView(), 'mode' => "edit", "editando" => $editando, "bloques" => $bloques));
+				array('form' => $form->createView(), 'mode' => "edit", "editando" => $editando, "tipos" => $tipos));
 	}
 	
 	public function buscarIdAction(Request $request){
@@ -464,7 +464,7 @@ class AtletaController extends Controller {
    	return $arrayEntornos;
    }
    
-   public function historialAtletaAction(Request $request, $id, $vista){
+   public function historialAtletaAction(Request $request, $id){
    	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
    	$atl = $repoAtl->find($id);
    	if ($atl == null) {
@@ -476,11 +476,9 @@ class AtletaController extends Controller {
    	$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
    	$listaTemps = $repoIns->findAtlTemps($id);
-   	$parametros = array("atl" => $atl, "cat" => $cat, "selTemp" => $selTemp, "temps" => $listaTemps, "vista" => $vista);
+   	$parametros = array("atl" => $atl, "cat" => $cat, "selTemp" => $selTemp, "temps" => $listaTemps);
    	$listaIns = $repoIns->findAtlHistoric($id, $selTemp);
       $parametros['entornos'] = $this->makeHistoricArray($listaIns, $id);
-      if ($vista == "extendido"){
-   	   return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta_extendido.html.twig', $parametros);
-      } else return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta_compacto.html.twig', $parametros); 
+   	return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta.html.twig', $parametros);
    }
 }

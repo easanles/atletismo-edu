@@ -5,11 +5,6 @@ html{
    min-height: 100%;
 }
 
-body {
-	/*padding-top: 50px; Para navbar-fixed*/
-	margin-bottom: 50px;
-}
-
 h1, h2{
 	color: #337ab7;
 }
@@ -113,10 +108,16 @@ h1, h2{
 }
 
 /*http://getbootstrap.com/examples/sticky-footer-navbar/*/
+
+body {
+   /*padding-top: 50px; Para navbar-fixed*/
+   margin-bottom: 78px;
+}
+
 .footer {
     background-color: #f5f5f5;
     bottom: 0;
-    height: 50px;
+    height: 78px;
     position: absolute;
     width: 100%;
 }

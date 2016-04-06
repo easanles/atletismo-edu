@@ -213,6 +213,9 @@ class Helpers {
 		$verMeses = new Config();
 		$verMeses->setClave("vermeses")->setValor("2");
 		$em->persist($verMeses);
+		$todosCat = new Categoria();
+		$todosCat->setNombre("TODOS")->setTIniVal(0)->setEsTodos(true);
+		$em->persist($todosCat);
 		$defaultUsu = new Usuario();
 		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.
 		   ->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')

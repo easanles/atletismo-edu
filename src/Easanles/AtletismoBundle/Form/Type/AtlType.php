@@ -27,7 +27,8 @@ class AtlType extends AbstractType{
              ),
         		'expanded' => true
         ))
-        ->add('bloque', 'text', array('label' => 'Bloque','required' => false))
+        ->add('tipo', 'text', array('label' => 'Tipo','required' => false))
+        ->add('esalta', 'checkbox', array('label' => 'Dado de alta'))
         ->add('direccion', 'text', array('label' => 'Dirección','required' => false))
         ->add('cp', 'text', array('label' => 'Código Postal','required' => false))
         ->add('localidad', 'text', array('label' => 'Localidad','required' => false))
@@ -44,6 +45,8 @@ class AtlType extends AbstractType{
         ))
         ->add('notas', 'textarea', array('label' => 'Notas','required' => false))
         ->add('email', 'email', array('label' => 'Email de contacto','required' => false))
+        ->add('url1', 'url', array('label' => 'Dirección url 1','required' => false))
+        ->add('url2', 'url', array('label' => 'Dirección url 2','required' => false))
         ->add('usu_nombre', 'hidden', array(
         		'mapped' => false,
         		'required' => false

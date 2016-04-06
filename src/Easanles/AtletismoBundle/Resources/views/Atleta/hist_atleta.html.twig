@@ -46,11 +46,10 @@
                   <option value="{{ temp.temp }}"{% if selTemp is defined and selTemp == temp.temp %} selected{% endif %}>Temporada {{ temp.temp }}/{{ (temp.temp + 1)|slice(2, 2)}}</option>
                {% endfor %}
             </select>
-            {% if vista == "extendido" %}
-               <p style="margin-top:1em"><a class="btn-link" href="{{ path('historial_atleta_compacto', {'id': atl.id}) }}">Ir a vista compacta</a></p>
-            {% else %}
-               <p style="margin-top:1em"><a class="btn-link" href="{{ path('historial_atleta', {'id': atl.id}) }}">Ir a vista extendida</a></p>
-            {% endif %}
+            <div class="btn-group" role="group" aria-label="Mostrar" style="margin-top:0.5em">
+               <button id="btn-exten" type="button" class="btn btn-info active" onClick="toggleHistView('exten')">Vista extendida</button>
+               <button id="btn-compa" type="button" class="btn btn-default" onClick="toggleHistView('compa')">Vista compacta</button>
+            </div>
          </div>
          <div class="hidden-xs col-sm-6 col-md-7 col-lg-8">
             <div class="row">
@@ -70,17 +69,104 @@
                </div>
                <div class="col-sm-3 col-md-2">
                   {% if atl.foto is not null %}
-                     <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/></a>
+                     <a href="{{ vich_uploader_asset(atl, 'fotoFile') }}"><img src="{{ vich_uploader_asset(atl, 'fotoFile') }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive"/></a>
                   {% else %}
                      {% image '@EasanlesAtletismoBundle/Resources/assets/img/sinfoto.jpg' %}
-                        <img src="{{ asset_url }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive thumbnail"/>
+                        <img src="{{ asset_url }}" alt="{{ atl.nombre }} {{ atl.apellidos }}" class="img-responsive"/>
                      {% endimage %}
                   {% endif %}
                </div>
             </div>
          </div>
       </div>
-      {% block tabla %}{% endblock %}
+      <div id="exten-view">
+         {% for entorno in entornos %}
+            <h4>{{ entorno.entorno }}</h4>
+            <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
+               <thead>
+                  <tr>
+                     <th>Competición</th>
+                     {% if selTemp is not defined or selTemp == "" %}<th>Temporada</th>{% endif %}
+                     <th>Fecha</th>
+                     <th>Pruebas</th>
+                  </tr>
+               </thead>
+               <tbody>
+               {% for com in entorno.coms %}
+                  <tr>
+                     <td>{{ com.nombre }}{% if com.sede != "" %} - {{ com.sede }}{% endif %}
+                     {% if selTemp is not defined or selTemp == "" %}<td>{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>{% endif %}
+                     <td>{{ com.fecha|date('d/m/Y') }}</td>
+                     <td>{{ com.prus|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas y marcas" onClick="toggleDropListTable('{{ entorno.orden }}_{{ com.sid }}', $(this))"><span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span></button></td>
+                  </tr>
+                  <tr><td {% if selTemp is not defined or selTemp == "" %}colspan="4"{% else %}colspan="3"{% endif %} style="padding: 0px">
+                     <div id="droplist-{{ entorno.orden }}_{{ com.sid }}" class="droplist">
+                        <table class="table table-condensed">
+                           <tbody>
+                              <tr>
+                                 <th>Prueba</th>
+                                 <th class="hidden-xs">Categoría</th>
+                                 <th>Última marca válida</th>
+                                 <th>Premios</th>
+                              </tr>
+                              {% for pru in com.prus %}
+                                 <tr>
+                                    <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ pru.nombre }}</td>
+                                    <td class="hidden-xs">{{ pru.categoria }}</td>
+                                    <td>
+                                       {% if pru.marca is not null and pru.marca != "" %}
+                                          {% if pru.unidades == "segundos" %}{{ (pru.marca / 3600)|round(0, "floor") }}{% set resto = pru.marca - ((pru.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+                                          {% elseif pru.unidades == "metros" %}{{ pru.marca|number_format(3, ',', '.') }} m.
+                                          {% elseif pru.unidades == "puntosdesc" %}{{ pru.marca|number_format(0, ',', '.') }} ptos.
+                                          {% elseif pru.unidades == "puntosasc" %}{{ pru.marca|number_format(0, ',', '.') }} ptos.
+                                          {% endif %}
+                                       {% endif %}
+                                    </td>
+                                    <td>{{ pru.premios }}</td>
+                                 </tr>
+                              {% endfor %}
+                           </tbody>
+                        </table>
+                     </div>
+                  </td></tr>
+               {% endfor %}
+               </tbody>
+            </table>
+         {% endfor %}
+      </div>
+      <div id="compa-view" style="display:none">
+         <table class="table table-bordered table-condensed table-striped">
+            <thead>
+               <tr>
+                  <th>Competición</th>
+                  <th>Fecha</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for entorno in entornos %}
+                  <tr><td class="bg-primary" colspan="2">{{ entorno.entorno }}</td></tr>
+                  {% for com in entorno.coms %}
+                     <tr>
+                        <td class="bg-info">{{ com.nombre }}{% if com.sede != "" %} - {{ com.sede }}{% endif %}
+                        <td class="bg-info">{{ com.fecha|date('d/m/Y') }}</td>
+                        {% for pru in com.prus %}
+                           <td> {{ pru.nombre }}</td>
+                           <td>
+                              {% if pru.marca is not null and pru.marca != "" %}<strong>
+                                 {% if pru.unidades == "segundos" %}{{ (pru.marca / 3600)|round(0, "floor") }}{% set resto = pru.marca - ((pru.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+                                 {% elseif pru.unidades == "metros" %}{{ pru.marca|number_format(3, ',', '.') }} m.
+                                 {% elseif pru.unidades == "puntosdesc" %}{{ pru.marca|number_format(0, ',', '.') }} ptos.
+                                 {% elseif pru.unidades == "puntosasc" %}{{ pru.marca|number_format(0, ',', '.') }} ptos.
+                                 {% endif %}</strong>
+                              {% endif %}
+                           </td>
+                        {% endfor %}
+                     </tr>
+                  {% endfor %}
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
    </div>
 {% endblock %}
 

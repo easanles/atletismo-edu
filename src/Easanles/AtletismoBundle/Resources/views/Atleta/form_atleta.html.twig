@@ -110,7 +110,7 @@
           {{ form_row(form.sexo) }}
        </div>
         <div class="form_row col-xs-6 col-sm-3">
-          {{ form_row(form.bloque) }}
+          {{ form_row(form.tipo) }}
        </div>
     </div>
     <div class=row">
@@ -146,6 +146,14 @@
           {{ form_row(form.email) }}
        </div>
     </div>
+    <div class="row">
+       <div class="form_row col-xs-6">
+          {{ form_row(form.url1) }}
+       </div>
+       <div class="form_row col-xs-6">
+          {{ form_row(form.url2) }}
+       </div>
+    </div>
     <div class=row">
        <div class="form_row col-xs-12 col-sm-6">
           {{ form_errors(form.fotoFile) }}
@@ -169,6 +177,11 @@
                    <button id="del_usu" type="button" class="btn btn-danger pull-right{% if form.usu_nombre.vars.value == "" %} hidden{% endif %}" onClick="showModal('delUSU', '../../configuracion/usuario/borrar', $('#nombre_usu').html(), {{ form.vars.value.id }})">Borrar</button>   
                    <button id="edi_usu" type="button" class="btn btn-default pull-right{% if form.usu_nombre.vars.value == "" %} hidden{% endif %}" onClick="showModal('ediUSU', '../../configuracion/usuario/editar/', $('#nombre_usu').html(), {{ form.vars.value.id }})">Editar</button>   
                 {% endif %}
+             </div>
+          </div>
+          <div class="row">
+             <div class="form_row col-xs-12">
+                {{ form_row(form.esalta) }}
              </div>
           </div>
           <div class="row">
@@ -203,10 +216,10 @@
    {% endjavascripts %}
    <script type="text/javascript">
       var autoCompleteData = [];
-      {% for bloque in bloques %}
-         autoCompleteData.push('{{ bloque }}');
+      {% for tipo in tipos %}
+         autoCompleteData.push('{{ tipo }}');
       {% endfor %}
-      addAutoComplete('#atl_bloque', autoCompleteData);
+      addAutoComplete('#atl_tipo', autoCompleteData);
    </script>
 {% endblock %}
 

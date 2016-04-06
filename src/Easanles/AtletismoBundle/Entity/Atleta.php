@@ -65,9 +65,15 @@ class Atleta
     
     /**
      * @var string
-     * @ORM\Column(name="bloqueatl", type="string", length=255, nullable=true)
+     * @ORM\Column(name="tipoatl", type="string", length=255, nullable=true)
      */
-    private $bloque;
+    private $tipo;
+    
+    /**
+     * @var boolean
+     * @ORM\Column(name="esaltacom", type="boolean", options={"default":1})
+     */
+    private $esAlta;
     
     /**
      * @var string
@@ -145,7 +151,19 @@ class Atleta
      * @var string
      * @ORM\Column(name="emailatl", type="string", length=255, nullable=true)
      */
-    private $email;    
+    private $email;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="url1atl", type="string", length=255, nullable=true)
+     */
+    private $url1;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="url2atl", type="string", length=255, nullable=true)
+     */
+    private $url2;
 
     /********************* FOREIGN KEYS *****************************/
       
@@ -174,6 +192,7 @@ class Atleta
     private $nombreUsu;
      
     public function __construct() {
+    	$this->esAlta = true;
     	$this->participaciones = new ArrayCollection();
     	$this->inscripciones = new ArrayCollection();
     	$this->intentos = new ArrayCollection();
@@ -252,11 +271,18 @@ class Atleta
 		$this->sexo = $sexo;
 		return $this;
 	}
-	public function getBloque() {
-		return $this->bloque;
+	public function getTipo() {
+		return $this->tipo;
 	}
-	public function setBloque($bloque) {
-		$this->bloque = $bloque;
+	public function setTipo($tipo) {
+		$this->tipo = $tipo;
+		return $this;
+	}
+	public function getEsAlta() {
+		return $this->esAlta;
+	}
+	public function setEsAlta($esAlta) {
+		$this->esAlta = $esAlta;
 		return $this;
 	}
 	public function getDireccion() {
@@ -336,7 +362,21 @@ class Atleta
 		$this->email = $email;
 		return $this;
 	}
-	
+	public function getUrl1() {
+		return $this->url1;
+	}
+	public function setUrl1($url1) {
+		$this->url1 = $url1;
+		return $this;
+	}
+	public function getUrl2() {
+		return $this->url2;
+	}
+	public function setUrl2($url2) {
+		$this->url2 = $url2;
+		return $this;
+	}
+		
 	//************************ VICH **************************/
 	
 	public function getUpdatedAt() {

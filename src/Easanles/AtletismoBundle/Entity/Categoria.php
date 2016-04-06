@@ -48,6 +48,12 @@ class Categoria
      */
     private $tFinVal;
     
+    /**
+     * @var boolean
+     * @ORM\Column(name="estodoscat", type="boolean", options={"default":0})
+     */
+    private $esTodos;
+    
     /********************* FOREIGN KEYS *****************************/
       
     /**
@@ -57,11 +63,12 @@ class Categoria
     private $pruebas;
       
     public function __construct() {
-    $this->pruebas = new ArrayCollection();
+    	 $this->esTodos = false;
+       $this->pruebas = new ArrayCollection();
     }
      
     public function getPruebas() {
-    return $this->pruebas;
+       return $this->pruebas;
     }
     
     /******************* GETTERS & SETTERS **************************/
@@ -101,7 +108,14 @@ class Categoria
 		$this->tFinVal = $tFinVal;
 		return $this;
 	}
-	
+	public function getEsTodos() {
+		return $this->esTodos;
+	}
+	public function setEsTodos($esTodos) {
+		$this->esTodos = $esTodos;
+		return $this;
+	}
+		
 	/********************** VALIDACION ***********************/
 	
 	/**

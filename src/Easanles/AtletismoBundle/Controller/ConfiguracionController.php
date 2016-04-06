@@ -21,7 +21,7 @@ class ConfiguracionController extends Controller {
     	$fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
     	if ($fIniTempObj == null) $fIniTempVal = "";
       else $fIniTempVal = $fIniTempObj->getValor();
-      $nombreApp = $repository->findOneBy(array("clave" => "nombreapp"));
+      //$nombreApp = $repository->findOneBy(array("clave" => "nombreapp"));
       $catAsig = $repository->findOneBy(array("clave" => "catAsig"));
       $leyenda = $repository->findOneBy(array("clave" => "leyenda"));
       $jumbotron = $repository->findOneBy(array("clave" => "jumbotron"));
@@ -30,7 +30,7 @@ class ConfiguracionController extends Controller {
       $bienvenida = $repository->findOneBy(array("clave" => "bienvenida"));
       $verMeses = $repository->findOneBy(array("clave" => "vermeses"));
       $ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
-      		"nombreApp" => $nombreApp->getValor(),
+      		//"nombreApp" => $nombreApp->getValor(),
     			"fIniTemp" => $fIniTempVal,
     			"catAsig" => $catAsig->getValor(),
     			"leyenda" => $leyenda->getValor(),
@@ -52,7 +52,7 @@ class ConfiguracionController extends Controller {
     	 $em = $this->getDoctrine()->getManager();
     	 
     	 //NOMBRE DE LA APLICACION
-    	 $nombreAppObj = $repository->findOneBy(array("clave" => "nombreapp"));
+    	 /*$nombreAppObj = $repository->findOneBy(array("clave" => "nombreapp"));
     	 $nombreAppString = $request->request->get('nombreapp');
     	 if (!(strcmp($nombreAppString, $nombreAppObj->getValor()) == 0)){
     	 	$parametros["okNombreApp"] = true;
@@ -60,7 +60,7 @@ class ConfiguracionController extends Controller {
     	 	$parametros["nombreApp"] = $nombreAppString;
     	 } else {
     	 	$parametros["nombreApp"] = $nombreAppObj->getValor();
-    	 }
+    	 }*/
     	 
     	 //DIA Y MES DE INICIO DE LAS TEMPORADAS
     	 $fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));

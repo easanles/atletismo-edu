@@ -59,6 +59,12 @@ class Competicion {
    private $fecha;
    
    /**
+    * @var \DateTime
+    * @ORM\Column(name="fechafincom", type="date", nullable=true)
+    */
+   private $fechaFin;
+   
+   /**
    * @var string
    * @ORM\Column(name="desccom", type="text", nullable=true)
    */
@@ -204,6 +210,13 @@ class Competicion {
 		$this->fecha = $fecha;
 		return $this;
 	}
+	public function getFechaFin() {
+		return $this->fechaFin;
+	}
+	public function setFechaFin($fechaFin) {
+		$this->fechaFin = $fechaFin;
+		return $this;
+	}
 	public function getDesc() {
 		return $this->desc;
 	}
@@ -311,6 +324,13 @@ class Competicion {
 		}
 		if ($this->esOficial == true){
 			$this->esInscrib = false;
+		}
+		if (($this->getFecha() != null) && ($this->getFechaFin() != null)){
+			if ($this->getFechaFin() < $this->getFecha()) {
+				$context->buildViolation("La fecha de fin es anterior a la fecha de inicio")
+				->atPath('fechaFin')
+				->addViolation();
+			}
 		}
 	}
    
