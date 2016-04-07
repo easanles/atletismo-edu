@@ -119,6 +119,12 @@ class IntentoController extends Controller {
 						'message' => "No tienes un atleta asociado a tu cuenta"
 				]);
 			}
+			if ($atl->getEsAlta() == false){
+				return new JsonResponse([
+						'success' => false,
+						'message' => "No estás dado de alta en el club"
+				]);
+			}
 			if ($ron->getSidPru()->getSidCom()->getEsVisible() == false){
 				return new JsonResponse([
 						'success' => false,

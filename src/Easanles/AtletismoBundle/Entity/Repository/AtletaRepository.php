@@ -8,18 +8,21 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 
 class AtletaRepository extends EntityRepository {
-	public function findAllOrdered()	{
+	public function findAllOrdered($alta)	{
+		$altaVal = $alta == true ? 1 : 0;
 		return $this->getEntityManager()
 		->createQuery('SELECT atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade, usu.nombre AS nombreUsu, usu.rol
 				 FROM EasanlesAtletismoBundle:Atleta atl
 				 LEFT JOIN atl.nombreUsu usu
-				 WHERE atl.esAlta = 1
+				 WHERE atl.esAlta = :alta
 				 ORDER BY atl.fnac DESC, atl.id ASC')
+		->setParameter("alta", $altaVal)
 		->getResult();
 	}
 	
-	public function searchByParameters($fnacIni, $fnacFin, $string) {	
-		$qb = $this->getEntityManager()->createQueryBuilder('atl')->where('atl.esalta = 1');
+	public function searchByParameters($fnacIni, $fnacFin, $string, $alta) {
+		$altaVal = $alta == true ? 1 : 0;
+		$qb = $this->getEntityManager()->createQueryBuilder('atl')->where('atl.esAlta = :alta')->setParameter('alta', $altaVal);
 		if (($string != null) || ($string != "")){
 			$qb = $qb->andWhere('atl.id = :exstring
 					 OR atl.nombre LIKE :string

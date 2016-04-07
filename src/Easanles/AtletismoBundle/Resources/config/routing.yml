@@ -96,7 +96,10 @@ caducar_categoria:
 #=======================ATLETAS======================
 listado_atletas:
    path: /admin/atletas
-   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:listadoAtletas"}
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:listadoAtletas", alta: true}
+listado_atletas_bajas:
+   path: /admin/atletas/bajas
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:listadoAtletas", alta: false}
 crear_atleta:
    path: /admin/atletas/nuevo
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:crearAtleta"}
@@ -126,6 +129,9 @@ historial_atleta:
    defaults: {_controller: "EasanlesAtletismoBundle:Atleta:historialAtleta"}
    requirements:
       id: \d+
+estado_atleta:
+   path: /admin/atletas/estado
+   defaults: {_controller: "EasanlesAtletismoBundle:Atleta:cambiarEstadoAtleta"}
    
     
 #====================INSCRIPCIONES===================

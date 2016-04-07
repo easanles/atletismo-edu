@@ -79,9 +79,9 @@
             {% elseif com.inscrito == true %}
                {% if com.esOficial == false %}
                   {% if com.eshoy %}
-                     <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path("users_marcas", {"sidCom": com.sid}) }}">Registrar marca</a>
+                     <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path("users_marcas", {"sidCom": com.sid}) }}">{% if app.user.idAtl.esAlta %}Registrar marca{% else %}Ver marcas{% endif %}</a>
                   {% else %}
-                     {% if com.esInscrib == false %}
+                     {% if app.user.idAtl.esAlta == false or com.esInscrib == false %}
                         <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Ver inscrib.</span><span class="hidden-xs">Ver inscripción</span></a>
                      {% else %}
                         {% if com.numpruebas == 1 %}
@@ -96,7 +96,7 @@
                {% endif %}
             {% elseif com.esOficial == true %}
                <button type="button" class="btn btn-lg btn-default btn-block grid-btn" disabled>Competición oficial</button>
-            {% elseif com.esInscrib == true and com.numpruebas >= 1  %}
+            {% elseif app.user.idAtl.esAlta and com.esInscrib == true and com.numpruebas >= 1  %}
                {% if com.numpruebas == 1 %}
                   <button type="button" class="btn btn-lg btn-primary btn-block grid-btn" onClick="showModal('inscrib', '{{ com.nombre }}', '{{ com.sid }}')">Inscribirse</button>
                {% else %}
@@ -140,7 +140,7 @@
                {% if com.fecha <= ayer %}
                   <p class="text-center">Finalizada</p>
                   <a type="button" class="btn btn-default btn-block" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
-                  {% if com.esOficial == false %}<a type="button" class="btn btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marcas</span><span class="hidden-xs hidden-sm">Registrar marca</span></a>{% endif %}
+                  {% if com.esOficial == false %}<a type="button" class="btn btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marcas</span><span class="hidden-xs hidden-sm">{% if app.user.idAtl.esAlta %}Registrar marca{% else %}Ver marcas{% endif %}</span></a>{% endif %}
                {% elseif com.inscrito == true %}
                   {% if com.pagoPendiente == true %}
                      <p class="text-center text-warning"> <strong>Hay pagos pendientes</strong></p>
@@ -148,8 +148,8 @@
                      <p class="text-center text-success">Inscrito</p>
                   {% endif %}
                   {% if com.esOficial == false %}
-                     {% if com.esInscrib == false %}
-                        <p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>
+                     {% if app.user.idAtl.esAlta == false or com.esInscrib == false %}
+                        {% if app.user.idAtl.esAlta %}<p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>{% endif %}
                         <a type="button" class="btn btn-default btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Ver inscrib.</span><span class="hidden-xs">Ver inscripción</span></a>
                      {% else %}
                         {% if com.numpruebas == 1 %}
@@ -159,14 +159,14 @@
                         {% endif %}
                      {% endif %}
                      {% if com.eshoy %}
-                        <a type="button" class="btn btn-lg btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marca</span><span class="hidden-xs hidden-sm">Registrar marca</span></a>
+                        <a type="button" class="btn btn-lg btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marcas</span><span class="hidden-xs hidden-sm">{% if app.user.idAtl.esAlta %}Registrar marca{% else %}Ver marcas{% endif %}</span></a>
                      {% endif %}
                   {% else %}
                      <a type="button" class="btn btn-default btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}"><span class="visible-xs">Ver inscrib.</span><span class="hidden-xs">Ver inscripción</span></a>
                   {% endif %}
-               {% elseif com.esOficial == true %}
+               {% elseif app.user.idAtl.esAlta and com.esOficial == true %}
                   <p class="text-center text-info">Solicite inscripción al coordinador del club</p>
-               {% elseif com.esInscrib == true and com.numpruebas >= 1 %}
+               {% elseif app.user.idAtl.esAlta and com.esInscrib == true and com.numpruebas >= 1 %}
                   <p class="text-center">Inscripciones abiertas</p>
                   {% if com.numpruebas == 1 %}
                      <button type="button" class="btn btn-primary btn-block" onClick="showModal('inscrib', '{{ com.nombre }}', '{{ com.sid }}')">Inscribirse</button>
@@ -174,7 +174,7 @@
                      <a type="button" class="btn btn-primary btn-block" href="{{ path('users_inscripcion', {'sidCom': com.sid}) }}">Inscribirse</a>
                   {% endif %}
                {% else %}
-                  <p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>
+                  {% if app.user.idAtl.esAlta %}<p class="text-center text-muted"><span class="visible-xs">Cerrado</span><span class="hidden-xs">Inscripciones cerradas</span></p>{% endif %}
                {% endif %}
             </div>
          </div>

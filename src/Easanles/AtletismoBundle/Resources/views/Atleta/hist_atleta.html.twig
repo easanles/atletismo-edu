@@ -29,7 +29,12 @@
 
 {% block breadcrumb %}
   <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
-  <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+  {% if atl.esAlta == true %}
+     <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+  {% else %}
+     <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+     <li><a href="{{ path('listado_atletas_bajas') }}">Atletas de baja</a></li>
+  {% endif %}
   <li><a href="{{ path('ver_atleta', {'id': atl.id}) }}">{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</a></li>
   <li class="active">Historial</li>
 {% endblock %}

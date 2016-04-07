@@ -119,21 +119,39 @@ function showModal(type, data1, data2, data3){
 		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./configuracion/categoria/caducar?i=" + data2 + "')\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</button>");           
 	   } break;
 	   
+	   case ("estATL"): { //Cambiar estado de alta del atleta
+		   switch (data3){
+		      case "alta": {
+		    	  $('#dialog-label').html("Dar de alta");
+		    	  $("#dialog-body").html("¿Confirmar el alta del atleta <strong>" + data1 + "</strong>?");
+				  $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-primary\" onClick=\"submitDialogAction('" + data2 + "')\"><span class=\"glyphicon glyphicon-ok-sign\"></span> Alta</button>");           
+		      } break;
+		      case "baja": {
+		    	  $('#dialog-label').html("Dar de baja");
+		    	  $("#dialog-body").html("¿Confirmar la baja del atleta <strong>" + data1 + "</strong>?");
+				  $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('" + data2 + "')\"><span class=\"glyphicon glyphicon-remove-sign\"></span> Baja</button>");           		    	  
+		      } break;
+		      default: {
+		    	  $('#dialog-label').html("");
+		    	  $("#dialog-body").html("");
+				  $("#dialog-btn").html("");           
+		      }
+		   }
+	   } break;
+	   
 	   case ("delATL"): { //Borrar atleta
-		   $('#data1').html(data1);
+		   $('#dialog-label').html("Confirmar borrado");
+		   $bodyHTML = "<p>¿Confirmar borrado del atleta <strong>" + data1 + "</strong>?</p>";
 		   if (data3 != null){
-			   $('#data3').html(data3);
-			   $('#cascade-del-usu-prompt').css("display", "inline")
-			   $('#confirmbutton').click(function(){
+			   $bodyHTML = $bodyHTML + "<p><input id=\"cascade-del-usu\" type=\"checkbox\" checked><label for=\"cascade-del-usu\" style=\"font-weight: normal; margin-left: 0.5em\"> Borrar también el usuario asociado \"" + data3 + "\"</span></p>"
+			   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</button>");
+			   $('#dialog-btn').click(function(){
 				   window.location.href = data2 + "&cascade=" + $('#cascade-del-usu').is(":checked"); 
 			   });
 		   } else {
-			   $('#data3').html("");
-			   $('#cascade-del-usu-prompt').css("display", "none")
-			   $('#confirmbutton').click(function(){
-				   window.location.href = data2; 
-			   });
+			   $("#dialog-btn").html("<a type=\"button\" class=\"btn btn-danger\" href=\"" + data2 +"\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</a>"); 
 		   }
+		   $("#dialog-body").html($bodyHTML);
 	   } break;
 	   
 	   case ("newPAR"): { //Confirmar participacion

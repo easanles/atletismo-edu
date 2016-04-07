@@ -111,15 +111,15 @@ class InscripcionController extends Controller {
     	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	
     	if (($cat == null) && ($query == null)){
-    		$atletas = $repoAtl->findAllOrdered();
+    		$atletas = $repoAtl->findAllOrdered(true);
     	} else {
     		$catObj = $repoCat->findOneBy(array("id" => $cat));
     		if ($catObj == null) {
-    			$atletas = $repoAtl->searchByParameters(null, null, $query);
+    			$atletas = $repoAtl->searchByParameters(null, null, $query, true);
     		} else {
     			$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
     			$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
-    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query);
+    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, true);
     		}
     	}
     	$parametros['atletas'] = $atletas;    	
@@ -209,7 +209,7 @@ class InscripcionController extends Controller {
     	 $entradas = array();
     	 foreach($data as $entrada){
     	    $atl = $repoAtl->find($entrada[0]);
-    	    if ($atl != null){
+    	    if (($atl != null) && ($atl->getEsAlta() == true)){
     	    	 $pru = $repoPru->find($entrada[1]);
     	    	 if ($pru != null){
     	    	   if ($temp == null) $temp = $entrada[0];
@@ -249,7 +249,7 @@ class InscripcionController extends Controller {
     	 	 $sidPru = $elem[1];
     	 	 $coste = $elem[2];
     	 	 $atl = $repoAtl->find($idAtl);
-    	 	 if ($atl != null){
+    	 	 if (($atl != null) && ($atl->getEsAlta() == true)){
     	 	 	$pru = $repoPru->find($sidPru);
     	 	 	if ($pru != null){
     	 	 		if ($temp == null) $temp = $idAtl;

@@ -16,25 +16,25 @@ use Easanles\AtletismoBundle\Form\Type\UsuType;
 
 class AtletaController extends Controller {
 	
-	public function listadoAtletasAction(Request $request) {
+	public function listadoAtletasAction(Request $request, $alta) {
 		$cat = $request->query->get('cat');
 		$query = $request->query->get('q');
 		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
 		
 		if (($cat == null) && ($query == null)){
-			$atletas = $repoAtl->findAllOrdered();
+			$atletas = $repoAtl->findAllOrdered($alta);
 		} else {
 			$catObj = $repoCat->findOneBy(array("id" => $cat));
 			if ($catObj == null) {
-				$atletas = $repoAtl->searchByParameters(null, null, $query);
+				$atletas = $repoAtl->searchByParameters(null, null, $query, $alta);
 			} else {
 				$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
 				$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
-				$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query);
+				$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query, $alta);
 			}
 		}
-		$parametros = array('atletas' => $atletas);
+		$parametros = array('atletas' => $atletas, 'estadoAlta' => $alta);
 		
 		$vigentes = $repoCat->findAllCurrent();
 		$parametros['vigentes'] = $vigentes;
@@ -308,6 +308,12 @@ class AtletaController extends Controller {
 	public function buscarIdAction(Request $request){
 		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$idAtl = $request->query->get('id');
+		if (($idAtl == null) || ($idAtl == "")){
+			return new JsonResponse([
+					'success' => false,
+					'atl' => "No se ha recibido el parámetro necesario"
+			]);
+		}
 		$atl = $repoAtl->find($idAtl);
 		if ($atl != null){
 	      return new JsonResponse([
@@ -481,4 +487,33 @@ class AtletaController extends Controller {
       $parametros['entornos'] = $this->makeHistoricArray($listaIns, $id);
    	return $this->render('EasanlesAtletismoBundle:Atleta:hist_atleta.html.twig', $parametros);
    }
+   
+   public function cambiarEstadoAtletaAction(Request $request){
+   	$idAtl = $request->query->get('id');
+   	$operacion = $request->query->get('op');
+   	if (($idAtl == null) || ($idAtl == "") || ($operacion == null) || (($operacion != "alta") && ($operacion != "baja"))){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "No se ha recibido el parámetro necesario"
+   		]);
+   	}
+   	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+   	$atl = $repoAtl->find($idAtl);
+   	if ($atl == null){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "No hay ningún atleta con el identificador ".$idAtl
+   		]);
+   	}
+   	if ($operacion == "baja") $nuevoEstado = false;
+   	else if ($operacion == "alta") $nuevoEstado = true;
+   	$atl->setEsAlta($nuevoEstado);
+   	$em = $this->getDoctrine()->getManager();
+   	$em->flush();
+   	return new JsonResponse([
+   			'success' => true,
+   			'message' => "OK"
+   	]);
+   }
+   
 }

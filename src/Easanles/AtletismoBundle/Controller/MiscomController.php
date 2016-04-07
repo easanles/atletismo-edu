@@ -52,7 +52,7 @@ class MiscomController extends Controller{
     	          }
     	       }
     	    }
-    	    if (($com['fecha'] >= $ayer) || ($com['inscrito'] == true)) {
+    	    if ((($user->getIdAtl()->getEsAlta() == true) && ($com['fecha'] >= $ayer)) || ($com['inscrito'] == true)) {
     	    	if ($com['numpruebas'] == 1){
     	    		$comObj = $repoCom->find($com['sid']);
     	    		$pru = $comObj->getPruebas()->first();
@@ -111,6 +111,12 @@ class MiscomController extends Controller{
    		return new JsonResponse([
    				'success' => false,
    				'message' => "No tienes un atleta asociado a tu cuenta"
+   		]);
+   	}
+   	if ($atl->getEsAlta() == false){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "No estás dado de alta en el club"
    		]);
    	}
    	if ($com->getEsVisible() == false){
@@ -263,8 +269,13 @@ class MiscomController extends Controller{
       	$pru['inscrito'] = false;
       	$pru['coste'] = null;
       	$pru['estado'] = "No inscrito";
-      	$pru['activarMarcas'] = ($com->getFecha() < $hoy);
-      	$pru['activarInscripciones'] = (($com->getEsInscrib() == true) && ($com->getFecha() > $ayer));
+      	if ($atl->getEsAlta() == true){
+      	   $pru['activarMarcas'] = ($com->getFecha() < $hoy);
+      	   $pru['activarInscripciones'] = (($com->getEsInscrib() == true) && ($com->getFecha() > $ayer));
+      	} else {
+      		$pru['activarMarcas'] = false;
+      		$pru['activarInscripciones'] = false;
+      	}
       	foreach($inss as $ins){
       		if ($ins['sidPru'] == $pru['sid']){
       			$pru['inscrito'] = true;

@@ -1,5 +1,11 @@
                <tr>
-                  <th>Id</th><th><abbr title="Número de ronda">Nº</abbr></th><th>Nombre</th><th>Marca</th><th>Registrar</th>
+                  <th>Id</th>
+                  <th><abbr title="Número de ronda">Nº</abbr></th>
+                  <th>Nombre</th>
+                  <th>Marca</th>
+                  {% if rol != "user" or (app.user.idAtl is not null and app.user.idAtl.esAlta == true) %}
+                     <th>Registrar</th>
+                  {% endif %}
                </tr>
                {% for ron in rondas %}
                <tr>
@@ -14,6 +20,8 @@
                      {% elseif ron.unidades == "puntosasc" %}{{ ron.marca|number_format(0, ',', '.') }} ptos.
                      {% endif %}
                   {% endif %}
-                  <td><button class="btn btn-xs btn-block btn-default" onClick="{% if rol == "admin" %}showModal('newINT', {{ ron.sid }}, {{ selAtl }}, {% if ron.numIntentos == 1 %}false{% else %}true{% endif %}){% else %}showModal('marca', {{ ron.sid }}, {% if ron.numIntentos == 1 %}false{% else %}true{% endif %}){% endif %}"><span class="glyphicon glyphicon-dashboard"></span></button></td>
+                  {% if rol != "user" or (app.user.idAtl is not null and app.user.idAtl.esAlta == true) %}
+                     <td><button class="btn btn-xs btn-block btn-default" onClick="{% if rol == "admin" %}showModal('newINT', {{ ron.sid }}, {{ selAtl }}, {% if ron.numIntentos == 1 %}false{% else %}true{% endif %}){% else %}showModal('marca', {{ ron.sid }}, {% if ron.numIntentos == 1 %}false{% else %}true{% endif %}){% endif %}"><span class="glyphicon glyphicon-dashboard"></span></button></td>
+                  {% endif %}
                </tr>
                {% endfor %}

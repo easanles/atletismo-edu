@@ -224,21 +224,26 @@ function showModal(type, data1, data2){
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("../marcas/nuevo?ron=" + data1, function(data, status){
    		      if (status == "success"){
-   			     $("#dialog-body").html(data.message);
-   			     $('abbr').tooltip()
-    		     collectionHolder = $('#form-collection');
- 		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
- 		         if (data2 == true) checkIntentos();
- 		 	     if ($("#intGroup_intentos_0_marca").val() != ""){
- 		 	    	 aux = $("#intGroup_intentos_0_marca").val();
- 		 	    	 $("#marca-horas").val(Math.floor(aux / 3600));
- 		 	    	 aux = aux - (Math.floor(aux / 3600) * 3600);
- 		 	    	 $("#marca-minutos").val(Math.floor(aux / 60));
- 		 	    	 aux = aux - (Math.floor(aux / 60) * 60);
- 		 	    	 $("#marca-segundos").val(Math.floor(aux));
- 		 	    	 aux = aux - Math.floor(aux);
- 		 	    	 $("#marca-milesimas").val(Math.round(aux * 1000));
- 		 	     }
+   		    	 if (data.success == true){
+   	   			     $("#dialog-body").html(data.message);
+   	   			     $('abbr').tooltip()
+   	    		     collectionHolder = $('#form-collection');
+   	 		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
+   	 		         if (data2 == true) checkIntentos();
+   	 		 	     if ($("#intGroup_intentos_0_marca").val() != ""){
+   	 		 	    	 aux = $("#intGroup_intentos_0_marca").val();
+   	 		 	    	 $("#marca-horas").val(Math.floor(aux / 3600));
+   	 		 	    	 aux = aux - (Math.floor(aux / 3600) * 3600);
+   	 		 	    	 $("#marca-minutos").val(Math.floor(aux / 60));
+   	 		 	    	 aux = aux - (Math.floor(aux / 60) * 60);
+   	 		 	    	 $("#marca-segundos").val(Math.floor(aux));
+   	 		 	    	 aux = aux - Math.floor(aux);
+   	 		 	    	 $("#marca-milesimas").val(Math.round(aux * 1000));
+   	 		 	     }   		    		 
+   		    	 } else {
+   		    		$("#dialog-body").html("<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-alert\" aria-hidden=\"true\"></span> " + data.message + "</div>")
+   		    		$('#dialog-btn button').attr("disabled", true);
+   		    	 }
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	
