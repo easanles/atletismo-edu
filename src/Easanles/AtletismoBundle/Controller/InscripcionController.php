@@ -101,7 +101,9 @@ class InscripcionController extends Controller {
     }
     
     public function seleccionAtletasAction($sidCom, Request $request){
-    	$parametros = array('sidCom' => $sidCom);
+    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$com = $repoCom->find($sidCom);
+    	$parametros = array('com' => $com);
     	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     	//TODO: Codigo copiado de Atleta:listadoAtletas
     	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -171,6 +173,11 @@ class InscripcionController extends Controller {
        $cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
     	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']); // Misma categoria
+    	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	 $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId());
+    	 foreach($listaPruTodos as $pru){
+    	    $listaPru[] = $pru;
+    	 }
     	 $listaPruObj = array();
     	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 foreach($listaPru as $pruArr){

@@ -108,6 +108,7 @@ class IntentoController extends Controller {
 		if ($ron == null){
 			return new JsonResponse([
 					'success' => false,
+					'preErr' => true,
 					'message' => "No existe la ronda con identificador ".$sidRon
 			]);
 		}
@@ -116,18 +117,21 @@ class IntentoController extends Controller {
 			if ($atl == null){
 				return new JsonResponse([
 						'success' => false,
+						'preErr' => true,
 						'message' => "No tienes un atleta asociado a tu cuenta"
 				]);
 			}
 			if ($atl->getEsAlta() == false){
 				return new JsonResponse([
 						'success' => false,
+						'preErr' => true,
 						'message' => "No estás dado de alta en el club"
 				]);
 			}
 			if ($ron->getSidPru()->getSidCom()->getEsVisible() == false){
 				return new JsonResponse([
 						'success' => false,
+						'preErr' => true,
 						'message' => "La competición de esta prueba está ahora oculta"
 				]);
 			}
@@ -139,6 +143,7 @@ class IntentoController extends Controller {
 			if ($atl == null){
 				return new JsonResponse([
 						'success' => false,
+						'preErr' => true,
 						'message' => "No existe el atleta con identificador ".$idAtl
 				]);
 			}	
@@ -175,7 +180,7 @@ class IntentoController extends Controller {
 		
 		$form = $this->createForm(new IntTypeGroup($arrayInts, $unidades));
 		$form->handleRequest($request);
-		 
+		
 		if ($form->isValid()) {
 			try {
 				$em = $this->getDoctrine()->getManager();
@@ -225,17 +230,20 @@ class IntentoController extends Controller {
 				$parametros['form'] = $form->createView();
 				return new JsonResponse([
 						'success' => false,
+						'preErr' => false,
 						'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig', $parametros)->getContent()
 				]);
 			}
 			return new JsonResponse([
 					'success' => true,
+					'preErr' => false,
 					'message' => "OK"
 			]);
 		}
 		$parametros['form'] = $form->createView();
 		return new JsonResponse([
 				'success' => false,
+				'preErr' => false,
 				'message' => $this->render('EasanlesAtletismoBundle:Intento:form_intento.html.twig', $parametros)->getContent()
 		]);
 	}

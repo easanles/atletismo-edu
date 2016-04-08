@@ -57,7 +57,7 @@
                <tr><td><strong>DNI:</strong></td><td colspan="2">{{ atl.dni }}</td><td><strong>Nick:</strong></td><td colspan="2">{{ atl.nick }}</td></tr>
                <tr><td><strong>Fecha de nacimiento:</strong></td><td colspan="2">{{ atl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td><td><strong>Categoría:</strong></td><td colspan="2">{{ categoria.nombre }}</td></tr>
                <tr><td><strong>Nacionalidad:</strong></td><td colspan="2">{{ atl.nacion }}</td><td><strong>Sexo:</strong></td><td colspan="2">{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
-               <tr><td><strong>Tipo de atleta:</strong></td><td colspan="2">{{ atl.tipo }}</td><td><strong>Estado de alta:</strong></td><td colspan="2">{% if atl.esalta == false %}BAJA{% elseif atl.esalta == true %}ALTA{% endif %}</td></tr>
+               <tr><td><strong>Tipo de atleta:</strong></td><td colspan="2">{{ atl.tipo }}</td><td><strong>Estado de alta:</strong></td><td colspan="2">{% if atl.esalta == false %}<strong class="text-danger">BAJA</strong>{% elseif atl.esalta == true %}ALTA{% endif %}</td></tr>
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td></tr>
                <tr><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>
                <tr><td><strong>Email de contacto:</strong></td><td colspan="2"><a href="mailto:{{ atl.email }}">{{ atl.email }}</a></td><td><strong>Usuario:</strong></td><td colspan="2">{% if atl.nombreUsu == null %}<em class="text-muted">Ninguno</em>{% else %}{{ atl.nombreUsu.nombre }}{% if atl.nombreUsu.rol == "coordinador" %} <strong class="text-info">Coordinador</strong>{% endif %}{% endif %}</td></tr>
@@ -76,7 +76,7 @@
                <tr><td><abbr title="Fecha de nacimiento"><strong>F. nac.:</strong></abbr></td><td colspan="3">{{ atl.fnac|date('d/m/Y') }} <em>({{ edad }} años)</em></td></tr>
                <tr><td><strong>Categoría:</strong></td><td>{{ categoria.nombre }}</td><td><abbr title="Nacionalidad"><strong>Nacion.:</strong></abbr></td><td>{{ atl.nacion }}</td></tr>
                <tr><td><strong>Sexo:</strong></td><td colspan="3">{% if atl.sexo == false %}Hombre{% elseif atl.sexo == true %}Mujer{% endif %}</td></tr>
-               <tr><td><strong>Tipo:</strong></td><td>{{ atl.tipo }}</td><td><strong>Estado:</strong></td><td>{% if atl.esalta == false %}BAJA{% elseif atl.esalta == true %}ALTA{% endif %}</td></tr>
+               <tr><td><strong>Tipo:</strong></td><td>{{ atl.tipo }}</td><td><strong>Estado:</strong></td><td>{% if atl.esalta == false %}<strong class="text-danger">BAJA</strong>{% elseif atl.esalta == true %}ALTA{% endif %}</td></tr>
                <tr><td><strong>Dirección:</strong></td><td colspan="3">{{ atl.direccion }}</td></tr>
                <tr><td><abbr title="Código Postal"><strong>CP:</strong></abbr></td><td>{{ atl.cp }}</td><td><strong>Localidad:</strong></td><td>{{ atl.localidad }}</td></tr>
                <tr><td><strong>Provincia:</strong></td><td>{{ atl.provincia }}</td><td><strong>País:</strong></td><td>{{ atl.pais }}</td></tr>

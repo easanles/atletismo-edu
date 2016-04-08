@@ -121,14 +121,14 @@ Easanles\AtletismoBundle\Entity\Categoria:
            message: Este valor debe ser un número entero
         - GreaterThan:
            value: 0
-           message: Introduzca un valor mayor a 0 o deje en blanco
+           message: Introduzca un valor mayor que 0 o deje en blanco
      tIniVal:
         - Type: 
            type: Integer
            message: Este valor debe ser un número entero
         - GreaterThan:
            value: 0
-           message: Introduzca un valor mayor a 0
+           message: Introduzca un valor mayor que 0
         - NotBlank: 
            message: Este campo no debe estar en blanco
         
@@ -171,9 +171,6 @@ Easanles\AtletismoBundle\Entity\Inscripcion:
            message: No se puede asignar un precio negativo
         - NotBlank: 
            message: Introduzca el precio de la prueba
-
-Easanles\AtletismoBundle\Entity\Intento:
-  properties:
   
 Easanles\AtletismoBundle\Entity\Usuario:
   properties:

@@ -16,7 +16,10 @@ class IntType extends AbstractType{
         if ($this->unidades == "segundos"){
         	  $builder->add('marca', 'hidden', array('required' => false));
         } else {
-           $builder->add('marca', 'number', array('label' => 'Marca', 'required' => false));
+           $builder->add('marca', 'number', array(
+           		'invalid_message' => "Este valor debe ser un número entero o con decimales",
+           		'label' => 'Marca',
+           		'required' => false));
         }
     }
     
@@ -26,7 +29,7 @@ class IntType extends AbstractType{
     
  
     public function getName() {
-        return 'int';
+        return 'int_';
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

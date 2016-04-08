@@ -214,7 +214,7 @@ class Helpers {
 		$verMeses->setClave("vermeses")->setValor("2");
 		$em->persist($verMeses);
 		$todosCat = new Categoria();
-		$todosCat->setNombre("TODOS")->setTIniVal(0)->setEsTodos(true);
+		$todosCat->setNombre("TODOS")->setTIniVal(1)->setEsTodos(true);
 		$em->persist($todosCat);
 		$defaultUsu = new Usuario();
 		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.
@@ -277,21 +277,20 @@ class Helpers {
 		$com1->setNombre("Competición 1")
 		->setTemp(2014)
 		->setFecha(new \DateTime("2015/08/22"))
-		->setCartel("ejemplo.jpg");
+		->setEsVisible(true);
 		$em->persist($com1);
 		
 		$com2 = new Competicion();
 		$com2->setNombre("Competición 2")
 		->setTemp(2015)
-		->setFecha(new \DateTime("2015/11/07"))
-		->setCartel("ejemplo.jpg");
+		->setFecha(new \DateTime("2015/11/07"));
 		$em->persist($com2);
 		
 		$com3 = new Competicion();
 		$com3->setNombre("Competición 3")
 		->setTemp(2015)
 		->setFecha(new \DateTime("2015/12/12"))
-		->setCartel("ejemplo.jpg")
+		->setEsVisible(true)
 		->setEsFeder(true)
 		->setEsOficial(true);
 		$em->persist($com3);

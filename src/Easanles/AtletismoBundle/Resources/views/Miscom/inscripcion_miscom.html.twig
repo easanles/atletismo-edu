@@ -88,7 +88,11 @@
                   {% if entornos|length > 1 %}
                      {% set tpr = tpr ~ '. ' ~ pru.entorno %}
                   {% endif %}
-                  <td>{{ tpr }}</td>
+                  <td>{{ tpr }}
+                  {% if pru.cat != cat.id %}
+                     <span class="label label-default">TODOS</span>
+                  {% endif %}
+                  </td>
                   {% if com.esOficial %}
                      <td>{% if pru.coste is not null %}{{ pru.coste|number_format(2, ',', '.') }}€{% endif %}</td>
                      <td>{{ pru.estado }}</td>

@@ -224,7 +224,7 @@ function showModal(type, data1, data2){
     	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");   
     	   $.getJSON("../marcas/nuevo?ron=" + data1, function(data, status){
    		      if (status == "success"){
-   		    	 if (data.success == true){
+   		    	 if (data.preErr == false){
    	   			     $("#dialog-body").html(data.message);
    	   			     $('abbr').tooltip()
    	    		     collectionHolder = $('#form-collection');

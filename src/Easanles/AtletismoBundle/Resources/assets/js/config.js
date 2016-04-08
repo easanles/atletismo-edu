@@ -148,7 +148,7 @@ $(document).ready(function(){
 
    $("#btn_borrarbd").click(function(){
 	  if (confirm("¿Borrar todos los datos de la base de datos?\n" +
-	  		"¡ATENCIÓN!: Esta operación no se puede deshacer\n" +
+	  		"¡ATENCIÓN!: Esta operación no se puede deshacer.\n" +
 	  		"Se creará el usuario por defecto \"admin\" con la contraseña \"adminpass\"")){
          icon = $(this).find("span");
          icon.addClass("spinning");
@@ -159,7 +159,7 @@ $(document).ready(function(){
    
    $("#btn_rehacerbd").click(function(){
       if (confirm("¿Destruir y rehacer la base de datos?\n" +
-      		"¡ATENCIÓN!: Esta operación borrará todos los datos almacenados actualmente y no se puede deshacer\n" + 
+      		"¡ATENCIÓN!: Esta operación borrará todos los datos almacenados actualmente y no se puede deshacer.\n" + 
       		"Se creará el usuario por defecto \"admin\" con la contraseña \"adminpass\"")){
          icon = $(this).find("span");
          icon.addClass("spinning");

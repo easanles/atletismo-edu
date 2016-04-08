@@ -30,28 +30,30 @@
          </tr>
          {% set catIndex = 0 %}
          {% for atl in atletas %}
-         <tr>
-         <td class="hidden-xs">{{ atl.id }}</td>
-         <td class="visible-xs">
-            <small>{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
-            <small>{% if atl.lxogade is null or atl.lxogade == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lxogade }}{% endif %}</small>
-         </td>
-         <td class="hidden-xs">{% if atl.lfga is null or atl.lfga == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
-         <td class="hidden-xs">{% if atl.lxogade is null or atl.lxogade == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
-         <td{% if cat is defined %} class="hidden-xs"{% endif %}>{{ categorias[catIndex].nombre }}</td>
-         <td>{{ atl.apellidos }}</td>
-         <td>{{ atl.nombre }}</td>
-         <td class="hidden-xs">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
-         <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
-         <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
-         <td>
-            <button id="sel-atl-{{ atl.id }}" 
-               data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}"
-               data-catnombre="{{ categorias[catIndex].nombre }}"
-               data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO
-            </button>
-         </td>
-         </tr>
+            {% if com.esFeder == false or (com.esFeder == true and (atl.lfga is not null and atl.lfga != "")) %}
+            <tr>
+               <td class="hidden-xs">{{ atl.id }}</td>
+               <td class="visible-xs">
+                  <small>{% if atl.lfga is null or atl.lfga == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lfga }}{% endif %}</small><br>
+                  <small>{% if atl.lxogade is null or atl.lxogade == "" %}<em class="text-muted">---</em>{% else %}{{ atl.lxogade }}{% endif %}</small>
+               </td>
+               <td class="hidden-xs">{% if atl.lfga is null or atl.lfga == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lfga }} {% endif %} </td>
+               <td class="hidden-xs">{% if atl.lxogade is null or atl.lxogade == "" %} <em class="text-muted">--</em> {% else %} {{ atl.lxogade }} {% endif %} </td>
+               <td{% if cat is defined %} class="hidden-xs"{% endif %}>{{ categorias[catIndex].nombre }}</td>
+               <td>{{ atl.apellidos }}</td>
+               <td>{{ atl.nombre }}</td>
+               <td class="hidden-xs">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
+               <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
+               <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
+               <td>
+                  <button id="sel-atl-{{ atl.id }}" 
+                     data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}"
+                     data-catnombre="{{ categorias[catIndex].nombre }}"
+                     data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO
+                  </button>
+               </td>
+            </tr>
+         {% endif %}
          {% set catIndex = catIndex + 1 %}
          {% endfor %}
       </tbody>

@@ -35,6 +35,8 @@ class MiscomController extends Controller{
     	 $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
     	 $hoy = new \DateTime();
     	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	 $todosCat = $repoCat->findOneBy(array("esTodos" => true));
     	 foreach ($tempComs as $com){
     	 	 $com['eshoy'] = (($com['fecha'] > $ayer) && ($com['fecha'] < $hoy));
     	    if (in_array($com['sid'], $listaComInscritos)){
@@ -59,7 +61,7 @@ class MiscomController extends Controller{
     	    		if (($pru->getSidTprm()->getSexo() != 2)
     	    				&& ($pru->getSidTprm()->getSexo() != $user->getIdAtl()->getSexo())) continue;
     	    		$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $user->getIdAtl());
-    	    		if ($pru->getIdCat()->getId() != $cat['id']) continue;
+    	    		if (($pru->getIdCat()->getId() != $todosCat->getId()) && ($pru->getIdCat()->getId() != $cat['id'])) continue;
     	    	}
     	    	if (($com['esFeder'] == true)
     	    		   && (($user->getIdAtl()->getLfga() == null) || ($user->getIdAtl()->getLfga() == ""))) continue;
@@ -172,9 +174,11 @@ class MiscomController extends Controller{
    						'message' => $message
    				]);
    			}
+   			$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+   			$todosCat = $repoCat->findOneBy(array("esTodos" => true));
    			$cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
-   			if ($pru->getIdCat()->getId() != $cat['id']){
-   				if ($pruebaUnica) $message = "Esta competición solo tiene una prueba para atletas de categoría ".$cat['nombre'];
+   			if (($pru->getIdCat()->getId() != $todosCat->getId()) && ($pru->getIdCat()->getId() != $cat['id'])){
+   				if ($pruebaUnica) $message = "Esta competición solo tiene una prueba para atletas de categoría ".$pru->getIdCat()->getNombre();
    				else $message = "Esta prueba es para atletas de categoría ".$cat['nombre'];
    				return new JsonResponse([
    						'success' => false,
@@ -260,6 +264,11 @@ class MiscomController extends Controller{
    	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
       $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
       $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']);
+      $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+      $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId());
+      foreach ($listaPruTodos as $pru){
+      	$listaPru[] = $pru;
+      }
       $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
       $inss = $repoIns->findForAtl($sidCom, $atl->getId());
       $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));

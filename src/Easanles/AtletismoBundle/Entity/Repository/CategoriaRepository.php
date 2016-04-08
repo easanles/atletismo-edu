@@ -9,7 +9,13 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class CategoriaRepository extends EntityRepository {
    public function findAllCurrent() {
 		$result = $this->getEntityManager()
-		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.edadMax IS NOT NULL ORDER BY cat.edadMax ASC')
+		->createQuery('
+				SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
+				FROM EasanlesAtletismoBundle:Categoria cat
+				WHERE cat.tFinVal IS NULL
+				AND cat.edadMax IS NOT NULL
+				AND cat.esTodos = 0
+				ORDER BY cat.edadMax ASC')
 		->getResult();
 		$edadMaxNull = $this->findCurrentEdadMaxNull();
 		if (count($edadMaxNull) != 0){
@@ -20,27 +26,46 @@ class CategoriaRepository extends EntityRepository {
 	
 	public function findOneCurrent($nombre) {
 		return $this->getEntityManager()
-		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.nombre LIKE :nombre')
+		->createQuery('
+				SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
+				FROM EasanlesAtletismoBundle:Categoria cat
+				WHERE cat.tFinVal IS NULL
+				AND cat.esTodos = 0
+				AND cat.nombre LIKE :nombre')
 		->setParameter("nombre", $nombre)
 		->getResult();
 	}
 	
 	public function findCurrentEdadMaxNull() {
 		return $this->getEntityManager()
-		->createQuery('SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat WHERE cat.tFinVal IS NULL AND cat.edadMax IS NULL')
+		->createQuery('
+				SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
+				FROM EasanlesAtletismoBundle:Categoria cat
+				WHERE cat.tFinVal IS NULL
+				AND cat.edadMax IS NULL
+				AND cat.esTodos = 0')
 		->getResult();
 	}
 	
 	public function findPreviousCat($cat){
 		if ($cat->getEdadMax() == null){
 			$query = $this->getEntityManager()
-			->createQuery("SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat
-					 WHERE cat.tFinVal IS NULL AND cat.edadMax IS NOT NULL ORDER BY cat.edadMax DESC")
+			->createQuery("
+					SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
+					FROM EasanlesAtletismoBundle:Categoria cat
+					WHERE cat.tFinVal IS NULL
+					AND cat.edadMax IS NOT NULL
+					AND cat.esTodos = 0
+					ORDER BY cat.edadMax DESC")
 			->getResult();
 		} else {
 			$query = $this->getEntityManager()
-			->createQuery("SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal FROM EasanlesAtletismoBundle:Categoria cat
-					 WHERE cat.tFinVal IS NULL AND cat.edadMax < :edadMax ORDER BY cat.edadMax DESC")
+			->createQuery("
+					SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
+					FROM EasanlesAtletismoBundle:Categoria cat
+					WHERE cat.tFinVal IS NULL
+					AND cat.edadMax < :edadMax
+					ORDER BY cat.edadMax DESC")
 			->setParameter("edadMax", $cat->getEdadMax())
 			->getResult();
 		}

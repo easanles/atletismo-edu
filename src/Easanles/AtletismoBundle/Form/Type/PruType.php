@@ -67,7 +67,7 @@ class PruType extends AbstractType {
     	  				}
     	  				$options = array(
     	  						'choices' => $choices,
-    	  						'empty_value' => '...',
+    	  						'empty_value' => '',
     	  						'expanded' => false,
     	  						'mapped' => false,
     	  						'label' => 'Seleccione tipo de prueba',
@@ -78,8 +78,9 @@ class PruType extends AbstractType {
     	  				}
     	  				$form->add('tprf', 'choice', $options);
     	  				
-    	  				$listaCategorias = $this->repoCat->findAllCurrent();
     	  				$choices = array();
+    	  				$choices[] = $this->repoCat->findOneBy(array("esTodos" => true));
+    	  				$listaCategorias = $this->repoCat->findAllCurrent();
     	  				foreach($listaCategorias as $cat){
     	  					$choices[] = $this->repoCat->find($cat['id']);
     	  				}
@@ -87,9 +88,12 @@ class PruType extends AbstractType {
     	  				   'class' => 'Easanles\AtletismoBundle\Entity\Categoria',
     	  			      'choices' => $choices,
     	  				   'choice_label' => function ($allChoices, $currentChoiceKey) {
-    	  					   return $allChoices->getNombre()." (".$allChoices->getEdadMax().")";
+    	  				   	$choice_label = $allChoices->getNombre();
+    	  				   	if ($allChoices->getEsTodos() == false)
+    	  				   		   $choice_label = $choice_label." (".$allChoices->getEdadMax().")";
+    	  					   return $choice_label;
                       },
-    	  				   'empty_value' => '...',
+    	  				   'empty_value' => '',
     	  				   'expanded' => false,
     	  				   'label' => 'Categoría',
     	  				   'required' => true));

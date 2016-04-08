@@ -16,9 +16,9 @@ class CategoriaController extends Controller{
     public function listadoCategoriasAction(Request $request) {
     	$outdated = $request->query->get('outd');
     	
-    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-    	if ($outdated == "false") $categorias = $repository->findAllCurrent();
-    	else if ($outdated == "true")$categorias = $repository->findAll();
+    	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	if ($outdated == "false") $categorias = $repoCat->findAllCurrent();
+    	else if ($outdated == "true")$categorias = $repoCat->findAll();
     	
     	return $this->render('EasanlesAtletismoBundle:Categoria:list_categoria.html.twig',
     			array("categorias" => $categorias, "outdated" => $outdated));
