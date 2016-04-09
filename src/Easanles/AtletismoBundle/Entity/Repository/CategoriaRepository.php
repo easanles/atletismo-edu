@@ -12,7 +12,7 @@ class CategoriaRepository extends EntityRepository {
 		->createQuery('
 				SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
 				FROM EasanlesAtletismoBundle:Categoria cat
-				WHERE cat.tFinVal IS NULL
+				WHERE (cat.tFinVal IS NULL	OR cat.tFinVal >= 2015)
 				AND cat.edadMax IS NOT NULL
 				AND cat.esTodos = 0
 				ORDER BY cat.edadMax ASC')
@@ -29,7 +29,7 @@ class CategoriaRepository extends EntityRepository {
 		->createQuery('
 				SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
 				FROM EasanlesAtletismoBundle:Categoria cat
-				WHERE cat.tFinVal IS NULL
+				WHERE (cat.tFinVal IS NULL	OR cat.tFinVal >= 2015)
 				AND cat.esTodos = 0
 				AND cat.nombre LIKE :nombre')
 		->setParameter("nombre", $nombre)
@@ -41,7 +41,7 @@ class CategoriaRepository extends EntityRepository {
 		->createQuery('
 				SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
 				FROM EasanlesAtletismoBundle:Categoria cat
-				WHERE cat.tFinVal IS NULL
+				WHERE (cat.tFinVal IS NULL	OR cat.tFinVal >= 2015)
 				AND cat.edadMax IS NULL
 				AND cat.esTodos = 0')
 		->getResult();
@@ -53,7 +53,7 @@ class CategoriaRepository extends EntityRepository {
 			->createQuery("
 					SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
 					FROM EasanlesAtletismoBundle:Categoria cat
-					WHERE cat.tFinVal IS NULL
+					WHERE (cat.tFinVal IS NULL	OR cat.tFinVal >= 2015)
 					AND cat.edadMax IS NOT NULL
 					AND cat.esTodos = 0
 					ORDER BY cat.edadMax DESC")
@@ -63,7 +63,7 @@ class CategoriaRepository extends EntityRepository {
 			->createQuery("
 					SELECT cat.id, cat.nombre, cat.edadMax, cat.tIniVal, cat.tFinVal
 					FROM EasanlesAtletismoBundle:Categoria cat
-					WHERE cat.tFinVal IS NULL
+					WHERE (cat.tFinVal IS NULL	OR cat.tFinVal >= 2015)
 					AND cat.edadMax < :edadMax
 					ORDER BY cat.edadMax DESC")
 			->setParameter("edadMax", $cat->getEdadMax())

@@ -170,7 +170,8 @@ class MiscomController extends Controller{
    				if ($pruebaUnica) $message = "Ya estabas inscrito a esta competición";
    				else $message = "Ya estabas inscrito a esta prueba";
    				return new JsonResponse([
-   						'success' => false,
+   						'success' => true,
+   						'noCritic' => true,
    						'message' => $message
    				]);
    			}
@@ -201,7 +202,8 @@ class MiscomController extends Controller{
    				if ($pruebaUnica) $message = "No estabas inscrito a esta competición";
    				else $message = "No estabas inscrito a esta prueba";
    				return new JsonResponse([
-   						'success' => false,
+   						'success' => true,
+   						'noCritic' => true,
    						'message' => $message
    				]);
    			}

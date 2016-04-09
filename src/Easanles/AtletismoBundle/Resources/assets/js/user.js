@@ -1,5 +1,6 @@
 
-alerthtml_pre = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> <span>";
+alerthtml_preDanger = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> <span>";
+alerthtml_preInfo = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <span class=\"glyphicon glyphicon-info-sign\" aria-hidden=\"true\"></span> <span>";
 alerthtml_pos = "</span></div>";
 loadingIcon = "<span class=\"glyphicon glyphicon-refresh spinning\" aria-hidden=\"true\"></span>"
 
@@ -62,6 +63,9 @@ function toggleIns(item){
         ok = false;
         if (status == "success"){
      	    if (data.success == true){
+      	        if (data.noCritic){
+    	           $("#alert-div").append(alerthtml_preInfo + data.message + alerthtml_pos);
+     	        }
      	     	if (activate == 1){
      	    		$(item).html("Inscrito");
      	   	        $(item).removeClass("btn-default");
@@ -74,11 +78,11 @@ function toggleIns(item){
      	      		$("#btn-int-"+id).attr("disabled", true);
      	       	}
      	    } else {
-     	       $(item).removeClass("btn-default btn-info");
-	      	   $(item).addClass("btn-danger");
-	      	   $(item).attr("disabled", true);
-     	       $(item).html("<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>");
-	           $("#alert-div").append(alerthtml_pre + data.message + alerthtml_pos);
+      	       $(item).removeClass("btn-default btn-info");
+  	      	   $(item).addClass("btn-danger");
+   	      	   $(item).attr("disabled", true);
+       	       $(item).html("<span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>");
+   	           $("#alert-div").append(alerthtml_preDanger + data.message + alerthtml_pos);
      	    }
      	    ok = true;
         }
@@ -147,9 +151,9 @@ function validateFields(){
 	if (checkIndivField("#marca-segundos")) error = true;
 	if (checkIndivField("#marca-milesimas")) error = true;
 	if (error) {
-	   $("#dialog-btn a").attr("disabled", true);
+	   $("#dialog-btn button").attr("disabled", true);
 	} else {
-	   $("#dialog-btn a").attr("disabled", false);
+	   $("#dialog-btn button").attr("disabled", false);
 	   valor = 0;
 	   aux = parseInt($("#marca-horas").val());
 	   if (!isNaN(aux)) valor += aux * 3600;

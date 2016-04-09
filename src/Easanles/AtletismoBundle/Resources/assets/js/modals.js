@@ -115,8 +115,15 @@ function showModal(type, data1, data2, data3){
        
 	   case ("cadCAT"): { //Caducar categoria
     	   $('#dialog-label').html("Caducar categoría");
-    	   $("#dialog-body").html("¿Está seguro de marcar como caducada la categoría <strong>" + data1 + "</strong>?");
-		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./configuracion/categoria/caducar?i=" + data2 + "')\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</button>");           
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-remove-circle\"></span> Caducar</button>");
+    	   $.getJSON("./configuracion/categoria/caducar?i=" + data2, function(data, status){
+    		      if (status == "success"){
+    			     $("#dialog-body").html(data.message);
+    	          } else {
+    			     $("#dialog-body").html("Error al cargar datos");
+    			  }	
+    	       });
 	   } break;
 	   
 	   case ("estATL"): { //Cambiar estado de alta del atleta

@@ -110,7 +110,7 @@
                   {% if pru.activarMarcas %}
                      {% if com.esOficial == false %}<td>
                         {% if pru.activarInscripciones == true or pru.inscrito == true %}
-                        <a id="btn-int-{{ pru.sid }}" type="button" class="btn btn-sm btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid, "pru": pru.sid}) }}"{% if pru.inscrito == false %}disabled{% endif %}>Marca</a>
+                        <a id="btn-int-{{ pru.sid }}" type="button" class="btn btn-sm btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid, "pru": pru.sid}) }}"{% if pru.inscrito == false %}disabled{% endif %}>Marcas</a>
                         {% endif %}
                      </td>{% endif %}
                      <td><a id="btn-int-{{ pru.sid }}" type="button" class="btn btn-sm btn-default btn-block" href="{{ path("users_pantalla_resultados", {"pru": pru.sid}) }}">Resultados</a></td>

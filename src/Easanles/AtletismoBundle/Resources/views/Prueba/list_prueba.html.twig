@@ -80,7 +80,7 @@
          <tr>
             <td>{{ pru.id }}</td>
             <td>{{ tpr }}</td>
-            <td{% if selcat is defined %} class="hidden-xs"{% endif %}>{{ pru.cat.nombre }}</td>
+            <td{% if selcat is defined %} class="hidden-xs"{% endif %}>{% if pru.cat.esTodos %}<strong class="text-primary">{{ pru.cat.nombre }}</strong>{% else %}{{ pru.cat.nombre }}{% endif %}</td>
             <td>{{ pru.rondas|length }}
                <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar rondas" onClick="toggleDropListTable({{ pru.sid }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button>
             </td>

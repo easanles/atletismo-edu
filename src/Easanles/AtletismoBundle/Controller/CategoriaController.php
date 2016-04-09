@@ -10,18 +10,19 @@ use Easanles\AtletismoBundle\Form\Type\CatType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Helpers\Helpers;
+use Easanles\AtletismoBundle\Form\Type\CatCadType;
 
 class CategoriaController extends Controller{
 	
     public function listadoCategoriasAction(Request $request) {
     	$outdated = $request->query->get('outd');
-    	
+    	$currentTemp = Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y'));
     	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	if ($outdated == "false") $categorias = $repoCat->findAllCurrent();
-    	else if ($outdated == "true")$categorias = $repoCat->findAll();
+    	else if ($outdated == "true") $categorias = $repoCat->findBy(array("esTodos" => false));
     	
     	return $this->render('EasanlesAtletismoBundle:Categoria:list_categoria.html.twig',
-    			array("categorias" => $categorias, "outdated" => $outdated));
+    			array("categorias" => $categorias, "outdated" => $outdated, "currentTemp" => $currentTemp));
     }
     
     public function crearCategoriaAction(Request $request) {
@@ -141,30 +142,43 @@ class CategoriaController extends Controller{
     	 			'message' => "No se ha recibido el parámetro necesario."
     	 	]);
     	 }
-    	 
-    	 $em = $this->getDoctrine()->getManager();
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	 $cat = $repository->find($idCat);
-    	 
     	 if ($cat == null){
     	 	 return new JsonResponse([
     	 			'success' => false,
     	 			'message' => "No existe la categoría con el identificador \"".$idCat."\"."
     	 	 ]);
     	 } else {
-    	 	 $cat->setTFinVal(Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y')));
-    	 	 try {
-    	 	 	$em->flush();
-    	 	 } catch (\Exception $e) {
-    	 	 	 return new JsonResponse([
-   					'success' => false,
-   					'message' => $e->getMessage()
-   			 ]);
+    	 	 $currentTemp = Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y'));
+    	 	 if (($cat->getTFinVal() == null) || ($cat->getTFinVal() == "")){
+    	 	    $cat->setTFinVal($currentTemp);    	 	     	 	 	
+    	 	 }
+    	 	 $form = $this->createForm(new CatCadType(), $cat);
+    	 	 $form->handleRequest($request);
+    	 	 if ($form->isValid()) {
+    	 	 	try {
+    	         $em = $this->getDoctrine()->getManager();
+    	         $em->persist($cat);
+    	 	 		$em->flush();
+    	 	 	} catch (\Exception $e) {
+    	 	 		$exception = $e->getMessage();
+    	 	 		return new JsonResponse([
+    	 	 				'success' => false,
+    	 	 				'message' => $this->render('EasanlesAtletismoBundle:Categoria:form_cad_categoria.html.twig',
+    							array('form' => $form->createView(), 'idCat' => $idCat, 'exception' => $exception))->getContent()
+    	 	 		]);
+    	 	 	}
+    	 	 	return new JsonResponse([
+    	 	 			'success' => true,
+    	 	 			'message' => "OK"
+    	 	 	]);	
     	 	 }
     	 	 return new JsonResponse([
-   		   'success' => true,
-   		   'message' => "OK"
-   	    ]);
+    	 	 		'success' => false,
+    	 	 		'message' => $this->render('EasanlesAtletismoBundle:Categoria:form_cad_categoria.html.twig',
+    							array('form' => $form->createView(), 'idCat' => $idCat))->getContent()
+    	 	 ]);
     	 }
     } 
 

@@ -131,6 +131,13 @@ Easanles\AtletismoBundle\Entity\Categoria:
            message: Introduzca un valor mayor que 0
         - NotBlank: 
            message: Este campo no debe estar en blanco
+     tFinVal:
+        - Type: 
+           type: Integer
+           message: Este valor debe ser un número entero
+        - GreaterThan:
+           value: 0
+           message: Introduzca un valor mayor que 0
         
 Easanles\AtletismoBundle\Entity\Atleta:
   properties:
