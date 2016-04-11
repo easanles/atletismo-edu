@@ -1,5 +1,5 @@
    {% if exception is defined %}
-   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span>{{ exception }}</span></div>
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="glyphicon glyphicon-exclamation-sign"></span> {{ exception }}</div>
    {% endif %}
 
    <div id="data_form" class="row">
@@ -10,7 +10,28 @@
 {{ form_start(form, {'action': path('editar_prueba', {'sidCom': sidCom, 'sidPru': sidPru})}) }}
 {% endif %}
 
-     <div>
+{{ form_errors(form) }}
+    
+{% if mode == "new" %}
+   <div class="col-xs-6">
+      <div class="form_row">
+         {{ form_row(form.tprf) }}
+      </div>
+      <div class="form_row">
+         {{ form_row(form.sidtprm) }}
+      </div>
+      <div class="form_row">
+         {{ form_row(form.coste) }}
+      </div>
+   </div>
+   <div class="col-xs-6">
+      {{ form_label(form.listaCat) }}
+      <div style="height: 13em; overflow-y: auto;">
+         {{ form_widget(form.listaCat) }}
+      </div>
+   </div>
+{% elseif mode == "edit" %}
+    <div>
        <div class="form_row col-xs-6">
           {{ form_row(form.tprf) }}
        </div>
@@ -26,6 +47,7 @@
           {{ form_row(form.coste) }}
        </div>
     </div>
+{% endif %}
     
     <div class="subform panel panel-default">
        <div class="panel-heading">RONDAS<button type="button" class="btn btn-default btn-sm pull-right" onClick="addFormRow()"><span class="glyphicon glyphicon-plus" aria-label="Añadir"></span> Añadir</button><div class="clearfix"></div></div>

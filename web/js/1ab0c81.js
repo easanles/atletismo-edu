@@ -411,15 +411,8 @@ function addListeners(name){
 function submitDialogForm(){
 	  var values = {};
 	  form = $('.modal-dialog form');
-	  count = 0;
 	  $.each( form.serializeArray(), function(i, field) {
-		 if (field.name.substr(field.name.length - 2) == "[]"){
-			 values[field.name.substring(0, field.name.length - 2) + "[" + count + "]"] = field.value;
-			 count++;
-		 }
-		 else {
-			 values[field.name] = field.value;
-		 }
+	    values[field.name] = field.value;
 	  });
 	 
 	  $.ajax({
@@ -502,3 +495,577 @@ function updateForm(formName){
 }
 
 
+
+
+var autoCompleteData;
+
+function goToUrl(path){
+	window.location.href = path;
+}
+
+function comSearch(temp, query){
+	path = "./competiciones";
+	if ((temp != null) && (temp != "")){
+		if ((query != null) && (query != "")){
+			path = path + "?temp=" + temp + "&q=" + query;
+		} else {
+			path = path + "?temp=" + temp;
+		}
+	} else {
+		if ((query != null) && (query != "")) {
+			path = path + "?q=" + query;
+		}
+	}
+	goToUrl(path);
+}
+
+function atlSearchParam(cat, query){
+	result = '';
+	if ((cat != null) && (cat != "")){
+		if ((query != null) && (query != "")){
+			result = result + "?cat=" + cat + "&q=" + query;
+		} else {
+			result = result + "?cat=" + cat;
+		}
+	} else {
+		if ((query != null) && (query != "")) {
+			result = result + "?q=" + query;
+		}
+	}
+	return result;
+}
+
+function atlSearch(url, cat, query){
+	path = url;
+	path = path + atlSearchParam(cat, query);
+	goToUrl(path);
+}
+
+function pruSearch(id, cat){
+	path = "./" + id;
+	if ((cat != null) && (cat != "")) {
+	   path = path + "?c=" + cat;
+	}
+	goToUrl(path);
+}
+
+function getQuery(){
+	return document.getElementById('search-input').value;
+}
+
+function checkEnterKeypress(event){
+	if (event.keyCode == 13) {
+		document.getElementById("search-button").click();
+	}
+}
+
+function toggleDropListTable(id, button){
+   button.button('toggle');
+   dl = $("#droplist-" + id);
+   if (dl.css("height") == "0px"){
+	   dl.css("height", dl.data("height"));
+	   button.parent().closest("tr").attr("class", "info");
+   }
+   else {
+	   dl.css("height", "0px");
+	   button.parent().closest("tr").attr("class", "");
+   }
+}
+
+function addFormRow(){
+	collectionHolder = $('#form-collection')
+	    
+	prototype = collectionHolder.data('prototype');
+	index = collectionHolder.data('index');
+	collectionHolder.data('index', index + 1);
+	newForm = prototype.replace(/__name__/g, index);
+	collectionHolder.append(newForm);
+	$(".count-td").last().html(index + 1);
+}
+
+function removeFormRow(button){
+   collectionHolder = $('#form-collection')
+   index = collectionHolder.data('index');
+   collectionHolder.data('index', index - 1);
+
+   button.parentElement.parentElement.remove();
+   
+   count = 1;
+   $(".count-td").each(function(){
+      this.innerHTML = count;
+      count++;
+   });
+}
+
+function toggleAsist(item, idPar){
+	itemData = $(item).attr("id").split("-");
+    if (itemData[0] == "asistCB"){
+       cb = $(item);
+       li = $("#asistLI-" + itemData[1]);
+    } else if (itemData[0] == "asistLI") {
+       cb = $("#asistCB-" + itemData[1]);
+       li = $(item);
+       cb.prop("checked", !cb.prop("checked"));
+    }
+    if (cb.prop("checked") == true){
+        li.html("<span class=\"glyphicon glyphicon-check\"></span> Asistencia [SI]")
+    } else {
+        li.html("<span class=\"glyphicon glyphicon-unchecked\"></span> Asistencia [NO]")
+    }
+	$.ajax({
+       type: "post",
+	   url: "../asistencia",
+	   data: {par: idPar, val: cb.prop("checked")},
+	   success: function(data) {
+          console.log(data);
+	   }
+    });
+}
+
+function selectEntorno(index){
+	$("table").each(function(){
+		$(this).addClass("hidden");
+	});
+	$("#tabla-entorno-" + index).removeClass("hidden");
+}
+
+function addAutoComplete(selector, data){
+	if (data != null) autoCompleteData = data;
+	$(selector).autoComplete({
+	    minChars: 1,
+	    source: function(term, suggest){
+	        term = term.toLowerCase();
+	        var choices = autoCompleteData;
+	        var matches = [];
+	        for (i=0; i<choices.length; i++)
+	              if (choices[i].toLowerCase().indexOf(term))
+	                    matches.push(choices[i]);
+	        suggest(matches);
+	    }
+    });
+}
+	
+function checkIdAtl(path, id){
+	$.getJSON(path + "?id=" + id, function(data, status){
+	   if (status == "success"){
+	      if (data.success == true){
+		     $("#idatl-help").attr("class", "text-info");
+	         $("#idatl-help").html("<p style=\"margin-top: 5px\"><span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\"></span> " + data.atl + "</p>");
+	      } else {
+    	     $("#idatl-help").attr("class", "text-danger");
+	         $("#idatl-help").html("<p style=\"margin-top: 5px\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> " + data.atl + "</p>");
+	      }
+	   } else {
+	      $("#idatl-help").html("Error");
+	   }
+	});
+}
+
+function clearUsu(){
+    $('#atl_usu_nombre').val("");
+    $('#atl_usu_contra').val("");
+    $('#atl_usu_rol').val("");
+    $('#usu_nombre_display').html("<em class=\"text-muted\">Ninguno</em>");
+    $('#clear_usu').addClass("hidden");
+}
+
+function updateUsuRow(id){
+	$.getJSON("./" + id + "/" + "checkusu", function(data, status){
+       if (status == "success"){
+	      if (data.success == true){
+	    	  if (data.usu != null){
+	    		  nombreHTML = "<span id=\"nombre_usu\">" + data.usu.nombre + "</span>";
+	    		  if (data.usu.rol === "coordinador"){
+	    			  nombreHTML = nombreHTML + " <strong class=\"text-info\">Coordinador</strong>";
+	    		  }
+		    	  $("#usu_nombre_display").html(nombreHTML);
+		    	  $("#asig_usu").addClass("hidden");
+		    	  $("#del_usu").removeClass("hidden");
+		    	  $("#edi_usu").removeClass("hidden");
+	    	  } else {
+		    	  $("#usu_nombre_display").html("<em class=\"text-muted\">Ninguno</em>");
+		    	  $("#asig_usu").removeClass("hidden");
+		    	  $("#del_usu").addClass("hidden");
+		    	  $("#edi_usu").addClass("hidden");
+	    	  } 
+	      } else {
+	    	  $("#usu_nombre_display").html("No existe el atleta")
+	      }
+	   } else {
+          $("#usu_nombre_display").html("Error");
+	   }
+	});
+}
+
+function toggleIndexBtn(item, label){
+	itemData = $(item).attr("id").split("-");
+	type = itemData[1];
+	id = itemData[2];
+	activate = -1;
+    if (($(item).hasClass("btn-default")) && (!$(item).hasClass("active"))){ //ON
+       $(item).addClass("active");
+       activate = 1;
+	} else if (!($(item).hasClass("btn-default")) && ($(item).hasClass("active"))) { //OFF
+	   $(item).removeClass("active");
+	   activate = 0;	
+	}
+    if (activate == -1) return;
+    if (type == "vis"){
+       $.getJSON("./competiciones/flags?com=" + id + "&t=vis&v=" + activate, function(data, status){
+          ok = false;
+          if (status == "success"){
+       	     if (data.success == true){
+       	     	if (activate == 1){
+       	     		html = "<span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>SI</strong>";
+       	    		$(item).html(html);
+       	    		$(item).attr("title", "Visible");
+       	    		$(item).tooltip('fixTitle');
+       	   	        $(item).removeClass("btn-default");
+       	      		$(item).addClass("btn-info");
+       	      	} else {
+       	     		html = "<span class=\"glyphicon glyphicon-eye-close\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>NO</strong>";
+       	      		$(item).html(html);
+       	    		$(item).attr("title", "Oculto");
+       	    		$(item).tooltip('fixTitle');
+       	      		$(item).removeClass("btn-info");
+       	      		$(item).addClass("btn-default");       	 
+       	       	}
+       	     	
+       	      	ok = true;
+       	     }
+          }
+          if (!ok){
+             if (activate == 1) $(item).removeClass("active");
+             else $(item).addClass("active");    	   
+          }
+       });
+    } else if (type == "ins"){
+       $.getJSON("./competiciones/flags?com=" + id + "&t=ins&v=" + activate, function(data, status){
+    	  ok = false;
+          if (status == "success"){
+      	     if (data.success == true){
+            	if (activate == 1){
+       	     		html = "<span class=\"glyphicon glyphicon-thumbs-up\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>Abie.</strong>";
+            		$(item).html(html);
+       	    		$(item).attr("title", "Inscripciones abiertas");
+       	    		$(item).tooltip('fixTitle');
+          	        $(item).removeClass("btn-default");
+            		$(item).addClass("btn-info");
+            	} else {
+       	     		html = "<span class=\"glyphicon glyphicon-lock\" aria-hidden=\"true\"></span>";
+       	     		if (label) html = html + " <strong>Cerr.</strong>";
+            		$(item).html(html);
+       	    		$(item).attr("title", "Inscripciones cerradas");
+       	    		$(item).tooltip('fixTitle');
+            		$(item).removeClass("btn-info");
+            		$(item).addClass("btn-default");       	        		
+            	}
+            	ok = true;
+      	     }
+          }
+          if (!ok){
+             if (activate == 1) $(item).removeClass("active");
+          	 else $(item).addClass("active");    	   
+          }
+       });
+    }
+}
+
+function checkboxGroup(item){
+	itemData = $(item).attr("id").split("-");
+	type = itemData[0];
+	id = itemData[1];
+	if (type == "cball"){
+		$(".group-"+id).prop('checked', $(item).is(":checked"));
+	} else {
+		groupData = $(item).attr("class").split("-");
+        group = groupData[1];
+		$("#cball-"+group).prop('checked', true);
+		$(".group-"+group).each(function (){
+			if ($(this).is(":checked") == false){
+				$("#cball-"+group).prop('checked', false);
+				return;
+			}
+		});
+	}
+}
+
+var selIns = [];
+function selectIns(){
+	selIns = [];
+	$(".droplist :checkbox").each(function(){
+		itemData = $(this).attr("id").split("-");
+		id = itemData[1];
+		if ($(this).is(":checked")){
+			selIns.push(id);			
+		}
+	});
+	$(".paybtn").prop("disabled", (selIns.length == 0));
+}
+
+function sendPaidIns(){
+	$.ajax({
+	   type: "post",
+	   url: "./pagos/marcar",
+	   data: {selIns: selIns},
+	   success: function(data) {
+	      console.log(data);
+	      location.reload();
+	   }
+	});
+}
+
+function toggleHistView(view){
+	btnExten = $('#btn-exten');
+	btnCompa = $('#btn-compa');
+	divExten = $('#exten-view');
+	divCompa = $('#compa-view');
+	switch(view){
+	   case 'exten': {
+		   $(btnExten).removeClass('btn-default');
+		   $(btnExten).addClass('btn-info');
+		   $(btnCompa).removeClass('btn-info');
+		   $(btnCompa).addClass('btn-default');
+		   $(btnExten).addClass("active");
+		   $(btnCompa).removeClass("active");
+		   $(divCompa).css("display", "none");
+		   $(divExten).css("display", "");
+	   } break;
+	   case 'compa': {
+		   $(btnCompa).removeClass('btn-default');
+		   $(btnCompa).addClass('btn-info');
+		   $(btnExten).removeClass('btn-info');
+		   $(btnExten).addClass('btn-default');
+		   $(btnCompa).addClass("active");
+		   $(btnExten).removeClass("active");
+		   $(divExten).css("display", "none");
+		   $(divCompa).css("display", "");		   
+	   } break;
+	   default: break;
+	}
+}
+
+$(document).ready(function(){
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		  $('abbr').tooltip()
+          $('.dropdown-toggle').dropdown()
+    });
+	$('.droplist').each(function (){
+		$(this).data("height", $(this).height());
+		$(this).css("height", "0px");
+	});
+	/*$(window).keydown(function(event){
+	   if(event.keyCode == 13) {
+	      event.preventDefault();
+	      return false;
+       }
+	});*/
+	$('input:checkbox').each(function(){
+		$(this).prop("checked", this.hasAttribute("checked"));
+	})
+})
+
+$(window).resize(function(){
+   $('.droplist').each(function (){
+	  if ($(this).css("height") == "0px") hide = true;
+	  else hide = false;
+      $(this).css("height", "auto");
+      $(this).data("height", $(this).height());
+	  if (hide){
+         $(this).css("height", "0px");
+	  }
+	});
+})
+
+
+
+
+var usuPath = "./configuracion/usuario";
+
+function toggleContent(tab){   
+    $("#config-nav li").removeClass("active");
+    $(".tabcontent").css("display", "none");
+    
+    $("#navtab-" + tab).addClass("active");
+    $("#tabcontent-" + tab).css("display", "inline");
+    $(".updater").attr("disabled", true);
+    if ((tab == "usu") ||(tab == "tp") || (tab == "cat")){
+        $("#updater-"+tab).attr("disabled", false);
+    	loadViews(tab);
+    }
+}
+
+function loadViews(content){
+   icon = $(".updater");
+   icon.removeClass("hidden");
+
+   switch (content){
+      case "usu": {
+         $.get(usuPath, function(data, status){
+            if (status == "success"){
+               $("#usu-table").html(data);
+       		   $('[data-toggle="tooltip"]').tooltip()
+               $('abbr').tooltip()
+       		   $('.dropdown-toggle').dropdown()
+             } else {
+                $("#tabcontent-usu").html("Error al cargar datos");
+             }
+             icon.addClass("hidden");      
+         });      
+      } break;
+      case "tp": {
+        $.get("./configuracion/tipoprueba", function(data, status){
+           if (status == "success"){
+              $("#tpr-table").html(data);
+          	  $('.droplist').each(function (){
+        		$(this).data("height", $(this).height());
+        		$(this).css("height", "0px");
+        	  });
+      		  $('[data-toggle="tooltip"]').tooltip()
+              $('abbr').tooltip()
+    		  $('.dropdown-toggle').dropdown()
+           } else {
+              $("#tabcontent-tp").html("Error al cargar datos");
+           }
+           icon.addClass("hidden");      
+        });      
+      } break;
+      case "cat": {
+    	 route = routeCatData($("#cat-showOutdated").is(':checked'));
+         $.get(route, function(data, status){
+            if (status == "success"){
+                $("#cat-table").html(data);
+                $('[data-toggle="tooltip"]').tooltip()
+                $('abbr').tooltip()
+                $('.dropdown-toggle').dropdown()
+             } else {
+                $("#tabcontent-cat").html("Error al cargar datos");
+            }
+            icon.addClass("hidden");      
+          });break;
+         
+      } break;
+      default: break;
+   }
+}
+
+//USUARIOS
+function usuSearch(str){
+	if ((str != null) && (str != "")) {
+	   usuPath = "./configuracion/usuario?q=" + str;
+	} else {
+	   usuPath = "./configuracion/usuario";
+	}
+	loadViews("usu");
+}
+
+
+//CATEGORIAS
+function routeCatData(outdated){
+	if (outdated == true) return "./configuracion/categoria?outd=true";
+	else return "./configuracion/categoria?outd=false";
+}
+
+
+//AJUSTES
+function changeSettings(){
+	  icon = $("#ajSendBtn").find("span");
+      icon.removeClass("glyphicon-save");
+      icon.addClass("glyphicon-refresh spinning");
+	  var values = {};
+	  form = $('#cfg-form');
+	  $.each( form.serializeArray(), function(i, field) {
+	    values[field.name] = field.value;
+	  });
+	  $.ajax({
+	    type        : form.attr( 'method' ),
+	    url         : form.attr( 'action' ),
+	    data        : values,
+	    success     : function(data) {
+	  	    $('#tabcontent-aj').html(data.message);
+	  	    $("#cfg_jumbotron").click(function(){
+	  		   $("#cfg_jumbolin1").prop("disabled", !$(this).is(":checked"));
+	  		   $("#cfg_jumbolin2").prop("disabled", !$(this).is(":checked"));
+	  	    });	
+	        icon.removeClass("glyphicon-refresh spinning");
+	        icon.addClass("glyphicon-save");
+	    }
+	  });
+}
+
+//COMANDOS
+function sendAction(path, icon){
+	   alerthtml_preok = "<div class=\"alert alert-info alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Hecho: </strong><span>";
+	   alerthtml_preerr = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
+	   alerthtml_pos = "</span></div>";
+	   $.getJSON(path, function(data, status){
+	        if (status == "success"){
+	           if (data.success == true){
+	             $("#alert-div-comm").append(alerthtml_preok + data.message + alerthtml_pos);
+	           } else {
+	             $("#alert-div-comm").append(alerthtml_preerr + data.message + alerthtml_pos);
+	           }
+	        } else {
+	          $("#alert-div-comm").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);
+	        }
+	       icon.removeClass("spinning");
+	   });
+	}
+
+
+$(document).ready(function(){
+   $("#cfg_jumbotron").click(function(){
+	   $("#cfg_jumbolin1").prop("disabled", !$(this).is(":checked"));
+	   $("#cfg_jumbolin2").prop("disabled", !$(this).is(":checked"));
+   });	
+
+   $("#btn_poblarbd").click(function(){
+	  if (confirm("¿Rellenar la base de datos con datos de prueba?")){
+	      icon = $(this).find("span");
+	      icon.addClass("spinning");
+	      sendAction("./configuracion/poblarbd", icon);		  
+	  }
+   });
+
+   $("#btn_borrarbd").click(function(){
+	  if (confirm("¿Borrar todos los datos de la base de datos?\n" +
+	  		"¡ATENCIÓN!: Esta operación no se puede deshacer.\n" +
+	  		"Se creará el usuario por defecto \"admin\" con la contraseña \"adminpass\"")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/borrarbd", icon);
+         location.reload();
+	  }
+   });
+   
+   $("#btn_rehacerbd").click(function(){
+      if (confirm("¿Destruir y rehacer la base de datos?\n" +
+      		"¡ATENCIÓN!: Esta operación borrará todos los datos almacenados actualmente y no se puede deshacer.\n" + 
+      		"Se creará el usuario por defecto \"admin\" con la contraseña \"adminpass\"")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/rehacerbd", icon);
+         location.reload();
+      }
+   });
+    
+   $("#btn_limpiarcache").click(function(){
+      if (confirm("¿Confirmar la operación de borrado de la cache? (cache:clear)")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/limpiarcache", icon);
+      }
+   });
+    
+   $("#btn_asseticdump").click(function(){
+      if (confirm("¿Confirmar la operación assetic:dump?")){
+         icon = $(this).find("span");
+         icon.addClass("spinning");
+         sendAction("./configuracion/asseticdump", icon);
+      }
+   });
+});

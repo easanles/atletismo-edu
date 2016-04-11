@@ -13,6 +13,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Entity\Categoria;
 use Easanles\AtletismoBundle\Entity\Ronda;
 use Doctrine\Common\Collections\ArrayCollection;
+use Easanles\AtletismoBundle\Form\Type\PruNewType;
+use Easanles\AtletismoBundle\Helpers\Helpers;
 
 class PruebaController extends Controller {
 	
@@ -103,6 +105,7 @@ class PruebaController extends Controller {
    }
     
    public function crearPruebaAction($sidCom, Request $request) {
+   	$logger = $this->get("logger");
    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repoCom->find($sidCom);
    	if ($com == null){
@@ -117,8 +120,9 @@ class PruebaController extends Controller {
    	$pru->addRonda($ron);
    	$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
    	$pru->setId($repoPru->maxId($sidCom) + 1);
-   	$doctrine = $this->getDoctrine();
-   	$form = $this->createForm(new PruType($doctrine, null), $pru);
+   	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+   	$pru->setIdCat($repoCat->findOneBy(array("esTodos" => true)));
+   	$form = $this->createForm(new PruNewType($this->getDoctrine(), null), $pru);
    	
    	$form->handleRequest($request);
    	
@@ -126,13 +130,8 @@ class PruebaController extends Controller {
    		try {
    			if ($pru->getSidTprm() == null) {
    				throw new Exception("Selecciona un tipo de prueba y una modalidad");
-   				//TODO: Mejorable. Mostrar error en el campo concreto.
    			}
-   			if ($pru->getIdCat()->getTFinVal() != null){
-   				throw new Exception("Categoría caducada");
-   			}
-   			if ($pru->getRondas()->count() == 0)
-   				throw new Exception("Introduce al menos una ronda");
+   			if ($pru->getRondas()->count() == 0) throw new Exception("Introduce al menos una ronda");
    		   $rondas = $pru->getRondas();
    		   $rondasUsadas = array();
    		   $rondaFinal = 0;
@@ -148,10 +147,45 @@ class PruebaController extends Controller {
     					throw new Exception("La número de la ronda final es ".$rondaFinal." y no hay ninguna ronda ".$i);
     				}
     			}
-    			
+    			$listaCats = $form->get("listaCat")->getData();
+    			if (count($listaCats) == 0){
+    				throw new Exception("Seleccione al menos una categoría");
+    			}
+    			$idCount = $pru->getId();
    			$em = $this->getDoctrine()->getManager();
-   			$em->persist($pru);
+    			foreach($listaCats as $cat){
+    				if (($cat->getTFinVal() != null)
+    						&& ($cat->getTFinVal() < Helpers::getCurrentTemp($this->getDoctrine()))){
+    					throw new Exception("Categoría \"".$cat->getNombre()."\" caducada");
+    				}
+    				if ($idCount == $pru->getId()){
+    					$pru->setIdCat($cat);
+    					$em->persist($pru);
+    				} else {
+    					$clonePru = new Prueba();
+    					$clonePru
+    					      ->setId($idCount)
+    					      ->setSidCom($com)
+    					      ->setCoste($pru->getCoste())
+    					      ->setIdCat($cat)
+    					      ->setSidTprm($pru->getSidTprm());
+    				   foreach($rondas as $ron){
+       					$cloneRon = new Ronda();
+    					   $cloneRon
+     					         ->setId($ron->getId())
+        					      ->setSidPru($ron->getSidPru())
+     					         ->setNum($ron->getNum())
+    					         ->setNombre($ron->getNombre());
+    					   $em->persist($cloneRon);
+    					   $clonePru->addRonda($ron);
+    				   }
+    				   $em->persist($clonePru);
+    				}
+    				$idCount = $idCount + 1;
+    			}
+    			$logger->info("antes");
    			$em->flush();
+   			$logger->info("despues");
    		} catch (\Exception $e) {
    			$exception = $e->getMessage();
    			return new JsonResponse([
@@ -226,7 +260,6 @@ class PruebaController extends Controller {
    		try {
    			if ($pru->getSidTprm() == null) {
    				throw new Exception("Selecciona un tipo de prueba y una modalidad");
-   				//Mejorable. Mostrar error en el campo concreto.
    			}
    			if ($pru->getIdCat()->getTFinVal() != null){
    				throw new Exception("Categoría caducada");

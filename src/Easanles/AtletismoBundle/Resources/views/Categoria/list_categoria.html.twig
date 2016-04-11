@@ -15,7 +15,7 @@
                      <td>
                         {{ cat.tIniVal }}/{{ (cat.tIniVal + 1)|slice(2, 2) }}
                         {% if outdated != 'true' and cat.tFinVal is not null %}
-                           <span class="label label-danger">Caduca en {{ cat.tFinVal }}</span>
+                           <span class="label label-danger">Caduca en {{ cat.tFinVal + 1 }}</span>
                         {% endif %}
                      </td>
                      {% if outdated == 'true' %}
@@ -28,19 +28,19 @@
                            <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                            <ul class="dropdown-menu pull-right">
                               <li><a href="#" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-pencil"></span> Editar</a></li>
-                              {% if outdated == 'true' %}
-                                 <li><a href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-remove-circle"></span> Cambiar temporada de fin</a></li>
+                              {% if cat.tFinVal is not null %}
+                                 <li><a href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, true)"><span class="glyphicon glyphicon-remove-circle"></span> Cambiar temporada de fin</a></li>
                               {% else %}
-                                 <li><a class="bg-danger" href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Marcar como caducado</div></a></li>
+                                 <li><a class="bg-danger" href="#" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, false)"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Marcar como caducado</div></a></li>
                               {% endif %}
                            </ul>
                         </div>
                         <div class="hidden-xs">
                            <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-pencil"></span></button>
                            {% if cat.tFinVal is not null %}                           
-                              <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Cambiar temporada de fin" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                              <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Cambiar temporada de fin" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, true)"><span class="glyphicon glyphicon-remove-circle"></span></button>
                            {% else %}
-                              <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, null)"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                              <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Marcar como caducado" onClick="showModal('cadCAT', '{{ cat.nombre }}', {{ cat.id }}, false)"><span class="glyphicon glyphicon-remove-circle"></span></button>
                            {% endif %}
                         </div>
                      </td>

@@ -40,7 +40,7 @@
     <h1 id="container_title" class="row page-header">Inscribir atletas <small> - {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</small></h1>
    
    {% if exception is defined %}
-   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span>{{ exception }}</span></div>
+   <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <strong>Error: </strong><span class="glyphicon glyphicon-exclamation-sign"></span> {{ exception }}</div>
    {% endif %}
 
    {% if warning is defined %}
