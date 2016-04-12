@@ -104,24 +104,22 @@ class InscripcionController extends Controller {
     	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$com = $repoCom->find($sidCom);
     	$parametros = array('com' => $com);
-    	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    	//TODO: Codigo copiado de Atleta:listadoAtletas
-    	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    	//Codigo copiado de Atleta:listadoAtletas
     	$cat = $request->query->get('cat');
     	$query = $request->query->get('q');
     	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
     	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	
     	if (($cat == null) && ($query == null)){
-    		$atletas = $repoAtl->findAllOrdered(true);
+    		$atletas = $repoAtl->findAllOrdered(true, 0, null);
     	} else {
     		$catObj = $repoCat->findOneBy(array("id" => $cat));
     		if ($catObj == null) {
-    			$atletas = $repoAtl->searchByParameters(null, null, $query, true);
+    			$atletas = $repoAtl->searchByParameters(null, null, $query, true, 0, null);
     		} else {
     			$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
     			$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
-    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, true);
+    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, true, 0, null);
     		}
     	}
     	$parametros['atletas'] = $atletas;    	
@@ -172,9 +170,9 @@ class InscripcionController extends Controller {
     	 $entornos = $repoCom->getComEntornos($sidCom);
        $cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-    	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']); // Misma categoria
+    	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null); // Misma categoria
     	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-    	 $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId());
+    	 $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId(), 0, null);
     	 foreach($listaPruTodos as $pru){
     	    $listaPru[] = $pru;
     	 }
@@ -187,7 +185,7 @@ class InscripcionController extends Controller {
     	 	 $checkIns = $repoIns->findOneBy(array("idAtl" => $idAtl, "sidPru" => $pruArr['sid']));
     	 	 if ($checkIns != null) continue; // Atleta ya inscrito a esta prueba
     	 	 
-    	 	 //TODO: Otras restricciones
+    	 	 //Otras restricciones
     	 	 $pruFeder = $pruObj->getSidCom()->getEsFeder();
     	 	 if (($pruFeder == false) ||  //Pruebas federadas solo para atletas FGA
     	 	 	(($pruFeder == true) && (($atl->getLfga() != null) && ($atl->getLfga() != "")))){

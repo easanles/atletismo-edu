@@ -19,8 +19,15 @@ use Easanles\AtletismoBundle\Helpers\Helpers;
 class PruebaController extends Controller {
 	
     public function listadoPruebasAction($sidCom, Request $request) {
-    	$selcat = $request->query->get('c');
+    	$selcat = $request->query->get('cat');
     	
+    	$from = $request->query->get('from');
+    	if (($from == null) || ($from == "")) $from = 0;
+    	else $from = intval($from);
+    	if ($from < 0) $from = 0;
+    	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
+    	 
     	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$com = $repoCom->find($sidCom);
     	if ($com == null){
@@ -37,12 +44,12 @@ class PruebaController extends Controller {
   	   	$listaCats[$key]['nombre'] = $cat->getNombre();
   	   }
   	   $entornos = $repoCom->getComEntornos($sidCom);
-  		$parametros = array('com' => $com, 'categorias' => $listaCats, 'entornos' => $entornos);
+  		$parametros = array('com' => $com, 'categorias' => $listaCats, 'entornos' => $entornos, 'from' => $from, 'numResultados' => $numResultados);
   		if ($selcat != null){
   	   	$parametros['selcat'] = $selcat;
-  			$pruebas = $repoPru->searchByParameters($sidCom, $selcat);
+  			$pruebas = $repoPru->searchByParameters($sidCom, $selcat, $from, $numResultados);
   		} else {
-  			$pruebas = $repoPru->findAllFor($sidCom);
+  			$pruebas = $repoPru->findAllFor($sidCom, $from, $numResultados);
   		}
   		$repoRon = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Ronda');
   		$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
@@ -105,7 +112,6 @@ class PruebaController extends Controller {
    }
     
    public function crearPruebaAction($sidCom, Request $request) {
-   	$logger = $this->get("logger");
    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
    	$com = $repoCom->find($sidCom);
    	if ($com == null){
@@ -158,6 +164,10 @@ class PruebaController extends Controller {
     						&& ($cat->getTFinVal() < Helpers::getCurrentTemp($this->getDoctrine()))){
     					throw new Exception("Categoría \"".$cat->getNombre()."\" caducada");
     				}
+    				$checkPru = $repoPru->findOneBy(array("sidCom" => $com, "sidTprm" => $pru->getSidTprm(), "idCat" => $cat));
+    				if (count($checkPru) != 0){
+    					throw new Exception("Ya existe esta prueba para la categoría ".$cat->getNombre());
+    				}
     				if ($idCount == $pru->getId()){
     					$pru->setIdCat($cat);
     					$em->persist($pru);
@@ -183,9 +193,7 @@ class PruebaController extends Controller {
     				}
     				$idCount = $idCount + 1;
     			}
-    			$logger->info("antes");
    			$em->flush();
-   			$logger->info("despues");
    		} catch (\Exception $e) {
    			$exception = $e->getMessage();
    			return new JsonResponse([
@@ -252,6 +260,8 @@ class PruebaController extends Controller {
    	foreach ($pru->getRondas() as $ron) {
    		$originalRons->add($ron);
    	}
+   	$prevSidTprm = $pru->getSidTprm();
+   	$prevCat = $pru->getIdCat();
       $form = $this->createForm(new PruType($this->getDoctrine(), $pru->getSidTprm()), $pru);
      
    	$form->handleRequest($request);
@@ -261,11 +271,18 @@ class PruebaController extends Controller {
    			if ($pru->getSidTprm() == null) {
    				throw new Exception("Selecciona un tipo de prueba y una modalidad");
    			}
-   			if ($pru->getIdCat()->getTFinVal() != null){
+   			if ($pru->getIdCat()->getTFinVal() != null 
+   					&& ($pru->getIdCat()->getTFinVal() < Helpers::getCurrentTemp($this->getDoctrine()))){
    				throw new Exception("Categoría caducada");
    			}
    			if ($pru->getRondas()->count() == 0)
    				throw new Exception("Introduce al menos una ronda");
+   			if (($pru->getIdCat() != $prevCat) || ($pru->getSidTprm() != $prevSidTprm)){
+   			   $checkPru = $repoPru->findOneBy(array("sidCom" => $com, "sidTprm" => $pru->getSidTprm(), "idCat" => $pru->getIdCat()));
+   			   if (count($checkPru) != 0){
+   				   throw new Exception("Ya existe esta prueba para la categoría ".$pru->getIdCat()->getNombre());
+   			   }   				
+   			}
    			$rondas = $pru->getRondas();
    			$rondasUsadas = array();
    			$rondaFinal = 0;

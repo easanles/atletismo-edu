@@ -185,6 +185,9 @@ class Helpers {
 		$leyenda = new Config();
 		$leyenda->setClave("leyenda")->setValor("");
 		$em->persist($leyenda);
+		$numResultados = new Config();
+		$numResultados->setClave("numresultados")->setValor("30");
+		$em->persist($numResultados);
 		$jumbotron = new Config();
 		$jumbotron->setClave("jumbotron")->setValor("1");
 		$em->persist($jumbotron);
@@ -810,7 +813,7 @@ class Helpers {
 		
 		$usu = new Usuario();
 		$usu->setNombre("coordinador")
-		->setContra('$2a$04$9jIBy4sJT/qCpXNcJYHOMek..3ZA.EIqF7zrzYIzQrHwaTjUwvt9q')
+		->setContra('$2a$04$2d5OXU3foU3HgpC70sLNjeubFQ6jy.OTsAjWl.UkdmHrN8VArbs2S')
 		->setRol("coordinador")
 		->setIdAtl($atl9);
 		$em->persist($usu);

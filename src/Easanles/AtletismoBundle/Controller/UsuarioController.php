@@ -15,10 +15,18 @@ class UsuarioController extends Controller {
    public function listadoUsuarioAction(Request $request) {
    	$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
    	$query = $request->query->get('q');
+   	
+   	$from = $request->query->get('from');
+   	if (($from == null) || ($from == "")) $from = 0;
+   	else $from = intval($from);
+   	if ($from < 0) $from = 0;
+   	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+   	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
+   	
    	if (($query != null) && ($query !== "")){
-   		$usuarios = $repoUsu->searchByParameter($query);
+   		$usuarios = $repoUsu->searchByParameter($query, $from, $numResultados);
    	} else {
-   		$usuarios = $repoUsu->findAllOrdered();
+   		$usuarios = $repoUsu->findAllOrdered($from, $numResultados);
    	}
    	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
    	foreach($usuarios as $key => $usu){
@@ -26,9 +34,8 @@ class UsuarioController extends Controller {
    			$usuarios[$key]['atl'] = $repoAtl->find($usu['idAtl']);
    		}
    	}
-   	   	
       return $this->render('EasanlesAtletismoBundle:Usuario:list_usuario.html.twig',
-      		array("usuarios" => $usuarios));
+      		array("usuarios" => $usuarios, 'from' => $from, 'numResultados' => $numResultados));
    }
 
    public function crearUsuarioAction(Request $request) {

@@ -43,7 +43,7 @@
    <h1 id="container_title" class="row page-header">Listado de competiciones</h1>
    <div id="container_header" class="row">
       <div class="col-xs-8 col-sm-6">
-         <select class="form-control" onChange="comSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
+         <select class="form-control" onChange="comSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, null)">
             <option value="" {% if temp is not defined %}selected{% endif %}>Todas las temporadas</option>
             {% for row in temporadas %}
             <option value="{{ row.temp }}" {% if temp is defined %}{% if temp == row.temp %}selected{% endif %}{% endif %}>Temporada {{ row.temp }}/{{ (row.temp + 1)|slice(2, 2)}}</option>
@@ -53,7 +53,7 @@
       <a class="btn btn-primary" href="{{ path('crear_competicion') }}"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
       <div class="input-group col-xs-6 col-sm-4 pull-right">
          <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
-         <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
+         <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, getQuery(), null)"><span class="glyphicon glyphicon-search"></span></button></div>
       </div>
    </div>
    <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
@@ -70,7 +70,7 @@
          {% for com in competiciones %}
          <tr>
             <td class="clickable{% if temp is defined %} hidden-xs{% endif %}" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>
-            <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.nombre }}{% if com.esVisible == 0 %} <span class="glyphicon glyphicon-eye-close text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Oculto"></span>{% endif %}</td>
+            <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.nombre }}{% if com.esVisible == 0 %} <span class="glyphicon glyphicon-eye-close text-muted" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Oculto"></span>{% endif %}{% if com.fecha < hoy and com.fechaFin > ayer %} <span class="label label-primary">HOY</span>{% endif %}</td>
             <td class="clickable" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">
 {% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
             <td class="clickable hidden-xs" onClick="goToUrl('{{ path('ver_competicion', {'id': com.sid}) }}')">{{ com.sede }}</td>
@@ -97,7 +97,26 @@
          {% endfor %}
       </tbody>
    </table>
-   
+<nav>
+  <ul class="pager">
+     {% if from == 0 %}
+     <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+     {% else %}
+     <li class="previous"><a href="#" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+     {% endif %}
+     {% if competiciones|length < numResultados %}
+        <li class="next disabled"><a href="#">Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+     {% else %}
+        <li class="next"><a href="#" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, {{ from + numResultados }})">Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+     {% endif %}
+     {% if numResultados > 0 and from is divisible by (numResultados) %}
+     <p class="text-center text-info">Página {{ (from / numResultados) + 1 }}</p>
+     {% else %}
+     <p class="text-center text-info">Mostrando desde el resultado {{ from + 1 }}</p>
+     {% endif %}
+  </ul>
+</nav>
+
 {% endblock %}
 
 {% block js %}

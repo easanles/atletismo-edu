@@ -58,12 +58,12 @@
       </div>
       <div class="pull-right">
          <div class="btn-group" role="group" aria-label="Mostrar">
-            <button id="btn-grid" type="button" class="btn btn-info active" onClick="toggleView('grid')"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Cuadrícula</button>
-            <button id="btn-list" type="button" class="btn btn-default" onClick="toggleView('list')"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Lista</button>
+            <button id="btn-grid" type="button" class="btn {% if selView == "grid" %}btn-info active{% else %}btn-default{% endif %}" onClick="toggleView('grid')"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Cuadrícula</button>
+            <button id="btn-list" type="button" class="btn {% if selView == "list" %}btn-info active{% else %}btn-default{% endif %}" onClick="toggleView('list')"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Lista</button>
          </div>
       </div>
    </div>
-   <div id="coms-grid" class="row">
+   <div id="coms-grid" class="row"{% if selView == "list" %} style="display: none"{% endif %}>
       {% for com in coms %}
          <div class="col-xs-6 col-sm-4 col-md-3">
             {% if com.cartel is not null %}
@@ -74,7 +74,7 @@
                {% endimage %}
                <h5 class="grid-comname">{{ com.nombre }}</h5>
             {% endif %}
-            {% if com.fecha <= ayer %}
+            {% if com.fechaFin <= ayer %}
                <a type="button" class="btn btn-lg btn-primary btn-block grid-btn" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
             {% elseif com.inscrito == true %}
                {% if com.esOficial == false %}
@@ -108,7 +108,7 @@
          </div>
       {% endfor %}
    </div>
-   <div id="coms-list" class="row" style="display: none">
+   <div id="coms-list" class="row"{% if selView == "grid" %} style="display: none"{% endif %}>
       {% for com in coms %}
          <div class="row list-row{% if com.eshoy %}-hoy{% endif %}">
             <div class="col-xs-3 col-sm-2 col-lg-offset-1">
@@ -121,9 +121,9 @@
                {% endif %}
             </div>
             <div class="col-xs-6 col-sm-7 col-md-7 col-lg-5">
-               <h3 class="hidden-xs">{{ com.nombre }}</h3>
-               <h4 class="visible-xs">{{ com.nombre }}</h4>
-               <p>{% if com.fecha is null %}<em>Sin fecha</em>{% elseif com.eshoy %}<strong>HOY</strong>{% else %}{{ com.fecha|date('d/m/Y') }}{% endif %}{% if com.sede is not null %}{% if com.sede != "" %} - {{ com.sede }}{% endif %}{% endif %}</p>
+               <h3 class="hidden-xs">{{ com.nombre }}{% if com.eshoy %} <span class="label label-primary">HOY</span>{% endif %}</h3>
+               <h4 class="visible-xs">{{ com.nombre }}{% if com.eshoy %} <span class="label label-primary">HOY</span>{% endif %}</h4>
+               <p>{% if com.fecha is null %}<em>Sin fecha</em>{% elseif com.fecha == com.fechaFin %}{{ com.fecha|date('d/m/Y') }}{% else %}{{ com.fecha|date('d/m/Y') }} - {{ com.fechaFin|date('d/m/Y') }}{% endif %}{% if com.sede is not null %}{% if com.sede != "" %} - {{ com.sede }}{% endif %}{% endif %}</p>
                {% if com.web is not null %}<p><a href="{{ com.web }}">{{ com.web }}</a></p>{% endif %}
                <p class="visible-md visible-lg">
                   {{ com.desc|nl2br|converturls }}
@@ -137,7 +137,7 @@
                {% else %}
                   <p class="text-center"><strong class="visible-xs">NO OFICIAL</strong><strong class="hidden-xs">COMPETICIÓN NO OFICIAL</strong></p>
                {% endif %}
-               {% if com.fecha <= ayer %}
+               {% if com.fechaFin <= ayer %}
                   <p class="text-center">Finalizada</p>
                   <a type="button" class="btn btn-default btn-block" href="{% if app.user is not null and is_granted('ROLE_ADMIN') %}{{ path('pantalla_resultados', {"com": com.sid}) }}{% else %}{{ path('users_pantalla_resultados', {"com": com.sid}) }}{% endif %}"><span class="visible-xs">Resultados</span><span class="hidden-xs">Ver resultados</span></a>
                   {% if com.esOficial == false %}<a type="button" class="btn btn-primary btn-block" href="{{ path("users_marcas", {"sidCom": com.sid}) }}"><span class="visible-xs visible-sm">Marcas</span><span class="hidden-xs hidden-sm">{% if app.user.idAtl.esAlta %}Registrar marca{% else %}Ver marcas{% endif %}</span></a>{% endif %}

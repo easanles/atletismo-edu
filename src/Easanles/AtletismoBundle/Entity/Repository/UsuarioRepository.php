@@ -7,13 +7,15 @@ use Easanles\AtletismoBundle\EasanlesAtletismoBundle;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class UsuarioRepository extends EntityRepository {
-	public function findAllOrdered() {
+	public function findAllOrdered($from, $numResultados) {
 		return $this->getEntityManager()
 		->createQuery('SELECT usu.nombre, usu.rol, IDENTITY(usu.idAtl) as idAtl FROM EasanlesAtletismoBundle:Usuario usu ORDER BY usu.rol ASC, usu.nombre ASC')
+		->setFirstResult($from)
+		->setMaxResults($numResultados)
 		->getResult();
 	}
 	
-	public function searchByParameter($query) {
+	public function searchByParameter($query, $from, $numResultados) {
 		return $this->getEntityManager()
 		->createQuery('SELECT usu.nombre, usu.rol, IDENTITY(usu.idAtl) as idAtl
 				 FROM EasanlesAtletismoBundle:Usuario usu
@@ -23,6 +25,8 @@ class UsuarioRepository extends EntityRepository {
 				 OR atl.apellidos LIKE :query
 				 ORDER BY usu.rol ASC, usu.nombre ASC')
 	   ->setParameter("query", "%".$query."%")
+	   ->setFirstResult($from)
+	   ->setMaxResults($numResultados)
 		->getResult();
 	}
 	

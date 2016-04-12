@@ -69,12 +69,21 @@ function loadViews(content){
 }
 
 //USUARIOS
-function usuSearch(str){
-	if ((str != null) && (str != "")) {
-	   usuPath = "./configuracion/usuario?q=" + str;
-	} else {
-	   usuPath = "./configuracion/usuario";
+function usuSearch(query, from){
+	path = "./configuracion/usuario";
+	params = {};
+	if ((query != null) && (query != "")) {
+       params['q'] = query
 	}
+	if ((from != null) && (from != "")) {
+	   if (parseInt(from) < 0) from = 0;
+	   params['from'] = from;
+	}
+	paramsString = decodeURIComponent($.param(params));
+	if (paramsString.length > 0){
+	   path = path + "?" + paramsString;		
+	}
+	usuPath = path;
 	loadViews("usu");
 }
 
@@ -106,6 +115,8 @@ function changeSettings(){
 	  		   $("#cfg_jumbolin1").prop("disabled", !$(this).is(":checked"));
 	  		   $("#cfg_jumbolin2").prop("disabled", !$(this).is(":checked"));
 	  	    });	
+	  	    usuPath = "./configuracion/usuario"
+	  	    $("#search-input").val("");
 	        icon.removeClass("glyphicon-refresh spinning");
 	        icon.addClass("glyphicon-save");
 	    }

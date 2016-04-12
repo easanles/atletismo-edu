@@ -1,3 +1,4 @@
+            <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
                <tbody>
                   <tr>
                      <th>Usuario</th>
@@ -35,4 +36,24 @@
                   </tr>
                   {% endfor %}
                </tbody>
+            </table>
+         <nav>
+            <ul class="pager">
+               {% if from == 0 %}
+               <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+               {% else %}
+               <li class="previous"><a href="#" onClick="usuSearch($('#search-input').val(), {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+               {% endif %}
+               {% if usuarios|length < numResultados %}
+                  <li class="next disabled"><a href="#">Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+               {% else %}
+                  <li class="next"><a href="#" onClick="usuSearch($('#search-input').val(), {{ from + numResultados }})">Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+               {% endif %}
+               {% if numResultados > 0 and from is divisible by (numResultados) %}
+               <p class="text-center text-info">Página {{ (from / numResultados) + 1 }}</p>
+               {% else %}
+               <p class="text-center text-info">Mostrando desde el resultado {{ from + 1 }}</p>
+               {% endif %}
+            </ul>
+         </nav>
 

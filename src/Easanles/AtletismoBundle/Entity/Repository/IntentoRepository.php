@@ -157,4 +157,5 @@ class IntentoRepository extends EntityRepository {
 		->setMaxResults(1)
 		->getResult();
 	}
+	
 }

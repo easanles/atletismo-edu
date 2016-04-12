@@ -30,14 +30,12 @@ class DefaultController extends Controller{
     
     public function adminIndexAction(){
     	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	 $hoy = new \DateTime();
-    	 $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
-    	 $sigComs = $repoCom->findComsBetween($hoy, null);
-    	 $hoyComs = $repoCom->findComsBetween($ayer, $hoy);
+    	 $sigComs = $repoCom->findComsTimedList("sig", null);
+    	 $hoyComs = $repoCom->findComsTimedList("hoy", null);
     	 $repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
     	 $verMeses = $repoCfg->find("vermeses")->getValor();
     	 $prevDia = (new \DateTime())->sub(new \DateInterval("P".$verMeses."M"));
-    	 $prevComs = $repoCom->findComsBetween($prevDia, $ayer);
+    	 $prevComs = $repoCom->findComsTimedList("pre", $prevDia);
     	 return $this->render('EasanlesAtletismoBundle:Default:adminIndex.html.twig', array(
     	 		'sigComs' => $sigComs,
     	 		'hoyComs' => $hoyComs,

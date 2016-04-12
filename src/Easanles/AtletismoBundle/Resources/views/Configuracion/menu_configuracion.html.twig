@@ -54,12 +54,10 @@
             <button id="updater-usu" class="btn btn-default updater hidden" onClick="loadViews('usu')"><span class="glyphicon glyphicon-refresh spinning"></span></button>
             <div class="input-group col-xs-6 col-sm-4 pull-right">
                <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %} onkeydown="checkEnterKeypress(event)">
-               <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="usuSearch($('#search-input').val())"><span class="glyphicon glyphicon-search"></span></button></div>
+               <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="usuSearch($('#search-input').val(), null)"><span class="glyphicon glyphicon-search"></span></button></div>
             </div>
          </div>
-         <div class="row">
-            <table id="usu-table" class="table table-hover table-bordered table-condensed table-striped table-responsive"></table>
-         </div>
+         <div id="usu-table" class="row"></div>
       </div>
    
       <div id="tabcontent-tp" class="tabcontent" style="display:none">

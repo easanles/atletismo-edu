@@ -609,8 +609,15 @@ function addListeners(name){
 function submitDialogForm(){
 	  var values = {};
 	  form = $('.modal-dialog form');
+	  count = 0;
 	  $.each( form.serializeArray(), function(i, field) {
-	    values[field.name] = field.value;
+		 if (field.name.substr(field.name.length - 2) == "[]"){
+			 values[field.name.substring(0, field.name.length - 2) + "[" + count + "]"] = field.value;
+			 count++;
+		 }
+		 else {
+			 values[field.name] = field.value;
+		 }
 	  });
 	 
 	  $.ajax({

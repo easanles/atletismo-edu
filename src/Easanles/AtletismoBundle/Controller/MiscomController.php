@@ -9,6 +9,7 @@ use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Entity\Inscripcion;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class MiscomController extends Controller{
     public function portadaAction(Request $request){
@@ -28,7 +29,6 @@ class MiscomController extends Controller{
     	 	return $response;
     	 }
     	 $temps = $repoCom->findTemps("user");
-    	 
     	 $tempComs = $repoCom->findTempComs($temp, "user");
     	 $listaComInscritos = $repoCom->findAtlComs($user->getIdAtl()->getId(), $temp);
     	 $listaComs = array();
@@ -38,7 +38,7 @@ class MiscomController extends Controller{
     	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	 $todosCat = $repoCat->findOneBy(array("esTodos" => true));
     	 foreach ($tempComs as $com){
-    	 	 $com['eshoy'] = (($com['fecha'] > $ayer) && ($com['fecha'] < $hoy));
+    	 	 $com['eshoy'] = (($com['fecha'] < $hoy) && ($com['fechaFin'] > $ayer));
     	    if (in_array($com['sid'], $listaComInscritos)){
     	    	$com['inscrito'] = true;
     	    } else {
@@ -54,7 +54,7 @@ class MiscomController extends Controller{
     	          }
     	       }
     	    }
-    	    if ((($user->getIdAtl()->getEsAlta() == true) && ($com['fecha'] >= $ayer)) || ($com['inscrito'] == true)) {
+    	    if ((($user->getIdAtl()->getEsAlta() == true) && ($com['fechaFin'] >= $ayer)) || ($com['inscrito'] == true)) {
     	    	if ($com['numpruebas'] == 1){
     	    		$comObj = $repoCom->find($com['sid']);
     	    		$pru = $comObj->getPruebas()->first();
@@ -68,9 +68,17 @@ class MiscomController extends Controller{
     	    	$listaComs[] = $com;
     	    }
     	 }
-    	 $parametros = array("temp" => $temp, "temporadas" => $temps, "coms" => $listaComs, "ayer" => $ayer, "hoy" => $hoy);
-
-       return $this->render('EasanlesAtletismoBundle:Miscom:portada_miscom.html.twig', $parametros);
+    	 $cookies = $request->cookies;
+    	 if ($cookies->has('SELECTED_VIEW')) {
+    	 	 $selView = $cookies->get('SELECTED_VIEW');
+    	 } else {
+    	 	 $selView = "grid";
+    	 }
+    	 $parametros = array(
+    	 		"temp" => $temp, "temporadas" => $temps, "coms" => $listaComs, "ayer" => $ayer, "hoy" => $hoy, "selView" => $selView);
+       $response = new Response($this->render('EasanlesAtletismoBundle:Miscom:portada_miscom.html.twig', $parametros)->getContent());
+       $response->headers->setCookie(new Cookie('SELECTED_VIEW', $selView));
+       return $response;
     }
     
    public function operacionesInscripcionAction(Request $request, $comando){
@@ -133,8 +141,8 @@ class MiscomController extends Controller{
    				'message' => "Esta es una competición oficial del club. Consulta al coordinador del club"
    		]);
    	}
-   	$hoy = (new \DateTime())->sub(new \DateInterval("P1D"));
-   	if ($com->getFecha() < $hoy){
+   	$ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
+   	if ($com->getFechaFin() < $ayer){
    		return new JsonResponse([
    				'success' => false,
    				'message' => "Esta competición ya ha terminado"
@@ -207,6 +215,14 @@ class MiscomController extends Controller{
    						'message' => $message
    				]);
    			}
+   			$repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+   			$checkInt = $repoInt->findLastMarcaFor($atl->getId(), $pru->getSid());
+   			if (count($checkInt) > 0){
+   				return new JsonResponse([
+   						'success' => false,
+   						'message' => "No puedes desinscribirte teniendo marcas ya registradas en esta prueba"
+   				]);
+   			}
    		} break;
    	}
    	try {
@@ -265,24 +281,29 @@ class MiscomController extends Controller{
    	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
    	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
       $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-      $listaPru = $repoPru->searchByParameters($sidCom, $cat['id']);
+      $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null);
       $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-      $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId());
+      $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId(), 0, null);
       foreach ($listaPruTodos as $pru){
       	$listaPru[] = $pru;
       }
       $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
       $inss = $repoIns->findForAtl($sidCom, $atl->getId());
-      $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
       $hoy = new \DateTime();
+      $ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
       $prus = array();
+      $repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
       foreach($listaPru as $pru){
       	$pru['inscrito'] = false;
       	$pru['coste'] = null;
       	$pru['estado'] = "No inscrito";
       	if ($atl->getEsAlta() == true){
       	   $pru['activarMarcas'] = ($com->getFecha() < $hoy);
-      	   $pru['activarInscripciones'] = (($com->getEsInscrib() == true) && ($com->getFecha() > $ayer));
+      	   $pru['activarInscripciones'] = (($com->getEsInscrib() == true) && ($com->getFechaFin() > $ayer));
+      	   $checkInt = $repoInt->findLastMarcaFor($atl->getId(), $pru['sid']);
+      	   if (count($checkInt) > 0){
+      	   	$pru['bloquearDesinscripcion'] = true;
+      	   }
       	} else {
       		$pru['activarMarcas'] = false;
       		$pru['activarInscripciones'] = false;

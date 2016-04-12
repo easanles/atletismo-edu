@@ -325,6 +325,14 @@ class Competicion {
 		if ($this->esOficial == true){
 			$this->esInscrib = false;
 		}
+		if (($this->getFecha() != null) && ($this->getFechaFin() == null)){
+			$this->fechaFin = $this->fecha;
+		}
+		if (($this->getFecha() == null) && ($this->getFechaFin() != null)){
+			$context->buildViolation("Indicar también la fecha de inicio")
+			->atPath('fecha')
+			->addViolation();
+		}
 		if (($this->getFecha() != null) && ($this->getFechaFin() != null)){
 			if ($this->getFechaFin() < $this->getFecha()) {
 				$context->buildViolation("La fecha de fin es anterior a la fecha de inicio")

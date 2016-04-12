@@ -5,54 +5,70 @@ function goToUrl(path){
 	window.location.href = path;
 }
 
-function comSearch(temp, query){
-	path = "./competiciones";
+function comSearch(temp, query, from){
+	path = "./competiciones"
+    params = {};
 	if ((temp != null) && (temp != "")){
-		if ((query != null) && (query != "")){
-			path = path + "?temp=" + temp + "&q=" + query;
-		} else {
-			path = path + "?temp=" + temp;
-		}
-	} else {
-		if ((query != null) && (query != "")) {
-			path = path + "?q=" + query;
-		}
+       params['temp'] = temp;
+	}
+	if ((query != null) && (query != "")) {
+	   params['q'] = query
+	}
+	if ((from != null) && (from != "")) {
+	   if (parseInt(from) < 0) from = 0;
+	   params['from'] = from;
+	}
+	paramsString = decodeURIComponent($.param(params));
+	if (paramsString.length > 0){
+	   path = path + "?" + paramsString;		
 	}
 	goToUrl(path);
 }
 
-function atlSearchParam(cat, query){
+function atlSearchParam(cat, query, from){
 	result = '';
+	params = {};
 	if ((cat != null) && (cat != "")){
-		if ((query != null) && (query != "")){
-			result = result + "?cat=" + cat + "&q=" + query;
-		} else {
-			result = result + "?cat=" + cat;
-		}
-	} else {
-		if ((query != null) && (query != "")) {
-			result = result + "?q=" + query;
-		}
+	   params['cat'] = cat;
 	}
-	return result;
+	if ((query != null) && (query != "")) {
+	   params['q'] = query
+	}
+	if ((from != null) && (from != "")) {
+	   if (parseInt(from) < 0) from = 0;
+	   params['from'] = from;
+	}
+	paramsString = decodeURIComponent($.param(params));
+	if (paramsString.length > 0){
+	   return "?" + paramsString;		
+	} else return "";
 }
 
-function atlSearch(url, cat, query){
+function atlSearch(url, cat, query, from){
 	path = url;
-	path = path + atlSearchParam(cat, query);
+	path = path + atlSearchParam(cat, query, from);
 	goToUrl(path);
 }
 
-function pruSearch(id, cat){
+function pruSearch(id, cat, from){
 	path = "./" + id;
-	if ((cat != null) && (cat != "")) {
-	   path = path + "?c=" + cat;
+	params = {};
+	if ((cat != null) && (cat != "")){
+	   params['cat'] = cat;
+    }
+	if ((from != null) && (from != "")) {
+	   if (parseInt(from) < 0) from = 0;
+	   params['from'] = from;
+	}
+	paramsString = decodeURIComponent($.param(params));
+	if (paramsString.length > 0){
+	   path = path + "?" + paramsString;
 	}
 	goToUrl(path);
 }
 
 function getQuery(){
-	return document.getElementById('search-input').value;
+	return $('#search-input').val();
 }
 
 function checkEnterKeypress(event){

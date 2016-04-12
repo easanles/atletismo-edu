@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 
 class AtletaRepository extends EntityRepository {
-	public function findAllOrdered($alta)	{
+	public function findAllOrdered($alta, $from, $numResultados) {
 		$altaVal = $alta == true ? 1 : 0;
 		return $this->getEntityManager()
 		->createQuery('SELECT atl.id, atl.nombre, atl.apellidos, atl.nick, atl.fnac, atl.sexo, atl.lfga, atl.lxogade, usu.nombre AS nombreUsu, usu.rol
@@ -17,10 +17,12 @@ class AtletaRepository extends EntityRepository {
 				 WHERE atl.esAlta = :alta
 				 ORDER BY atl.fnac DESC, atl.id ASC')
 		->setParameter("alta", $altaVal)
+		->setFirstResult($from)
+		->setMaxResults($numResultados)
 		->getResult();
 	}
 	
-	public function searchByParameters($fnacIni, $fnacFin, $string, $alta) {
+	public function searchByParameters($fnacIni, $fnacFin, $string, $alta, $from, $numResultados) {
 		$altaVal = $alta == true ? 1 : 0;
 		$qb = $this->getEntityManager()->createQueryBuilder('atl')->where('atl.esAlta = :alta')->setParameter('alta', $altaVal);
 		if (($string != null) || ($string != "")){
@@ -52,8 +54,10 @@ class AtletaRepository extends EntityRepository {
 		->leftJoin('atl.nombreUsu', 'usu')
 		->orderBy('atl.fnac', 'DESC')
 		->orderBy('atl.id', 'ASC')
-		->getQuery()->getResult();
-		
+		->getQuery()
+	   ->setFirstResult($from)
+		->setMaxResults($numResultados)
+		->getResult();
 		return $result;
 	}
 	

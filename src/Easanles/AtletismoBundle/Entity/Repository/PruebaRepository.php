@@ -7,10 +7,12 @@ use Easanles\AtletismoBundle\EasanlesAtletismoBundle;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class PruebaRepository extends EntityRepository {
-	public function findAllFor($sidCom) {
+	public function findAllFor($sidCom, $from, $numResultados) {
 		return $this->getEntityManager()
 		->createQuery('SELECT pru.sid, pru.id, IDENTITY(pru.sidTprm) AS tprm, IDENTITY(pru.idCat) AS cat, pru.coste FROM EasanlesAtletismoBundle:Prueba pru WHERE IDENTITY(pru.sidCom) LIKE :sidcom ORDER BY pru.idCat ASC, pru.id ASC')
 		->setParameter("sidcom", $sidCom)
+		->setFirstResult($from)
+		->setMaxResults($numResultados)
 		->getResult();
 	}
 	
@@ -37,7 +39,7 @@ class PruebaRepository extends EntityRepository {
 		else return max($query)['id'];
 	}
 	
-	public function searchByParameters($sidCom, $idCat) {
+	public function searchByParameters($sidCom, $idCat, $from, $numResultados) {
 		$qb = $this->getEntityManager()->createQueryBuilder('pru')
 		      ->where('IDENTITY(pru.sidCom) LIKE :sidcom')
 		      ->setParameter('sidcom', $sidCom);
@@ -52,7 +54,10 @@ class PruebaRepository extends EntityRepository {
 		          ->join('tprm_.sidTprf', 'tprf')
 		          ->orderBy("pru.idCat", "ASC")
 		          ->orderBy("pru.id", "ASC")
-		          ->getQuery()->getResult();
+		          ->getQuery()
+				    ->setFirstResult($from)
+		          ->setMaxResults($numResultados)
+		          ->getResult();
 	}
 	
 }

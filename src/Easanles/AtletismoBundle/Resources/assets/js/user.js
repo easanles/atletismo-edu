@@ -25,6 +25,7 @@ function toggleView(view){
 		   $(btnList).removeClass("active");
 		   $(divList).css("display", "none");
 		   $(divGrid).css("display", "");
+		   document.cookie = 'SELECTED_VIEW=grid';
 	   } break;
 	   case 'list': {
 		   $(btnList).removeClass('btn-default');
@@ -34,7 +35,8 @@ function toggleView(view){
 		   $(btnList).addClass("active");
 		   $(btnGrid).removeClass("active");
 		   $(divGrid).css("display", "none");
-		   $(divList).css("display", "");		   
+		   $(divList).css("display", "");
+		   document.cookie = 'SELECTED_VIEW=list';
 	   } break;
 	   default: break;
 	}

@@ -86,7 +86,7 @@
                <label for="select-pru">Pruebas disponibles</label>
                <select id="select-pru" class="form-control" onChange="loadRonsTable()">
                   {% for pru in prus %}
-                  <option value="{{ pru.sid }}"{% if selectedPru is defined %}{% if selectedPru == pru.sid %} selected{% endif %}{% endif %}>{{ pru.sidTprm.sidTprf.nombre }}{% if pru.sidTprm.sexo == 0 %}, masculino{% elseif pru.sidTprm.sexo == 1 %}, femenino{% endif %}{% if entornos|length > 1 %}. {{ pru.sidTprm.entorno }}{% endif %}</option>
+                  <option value="{{ pru.sid }}"{% if selectedPru is defined %}{% if selectedPru == pru.sid %} selected{% endif %}{% endif %}>{{ pru.sidTprm.sidTprf.nombre }}{% if pru.sidTprm.sexo == 0 %}, masculino{% elseif pru.sidTprm.sexo == 1 %}, femenino{% endif %}{% if entornos|length > 1 %}. {{ pru.sidTprm.entorno }}{% endif %}{% if pru.idCat.esTodos == false %}. {{ pru.idCat.nombre }}{% endif %}</option>
                   {% endfor %}
                </select>
             </div>

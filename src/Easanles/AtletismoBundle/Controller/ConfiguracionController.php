@@ -24,6 +24,7 @@ class ConfiguracionController extends Controller {
       //$nombreApp = $repository->findOneBy(array("clave" => "nombreapp"));
       $catAsig = $repository->findOneBy(array("clave" => "catAsig"));
       $leyenda = $repository->findOneBy(array("clave" => "leyenda"));
+      $numResultados = $repository->findOneBy(array("clave" => "numresultados"));
       $jumbotron = $repository->findOneBy(array("clave" => "jumbotron"));
       $jumboLinea1 = $repository->findOneBy(array("clave" => "jumbolin1"));
       $jumboLinea2 = $repository->findOneBy(array("clave" => "jumbolin2"));
@@ -34,6 +35,7 @@ class ConfiguracionController extends Controller {
     			"fIniTemp" => $fIniTempVal,
     			"catAsig" => $catAsig->getValor(),
     			"leyenda" => $leyenda->getValor(),
+      		"numResultados" => $numResultados->getValor(),
       		"jumbotron" => intval($jumbotron->getValor()),
       		"jumboLinea1" => $jumboLinea1->getValor(),
       		"jumboLinea2" => $jumboLinea2->getValor(),
@@ -109,6 +111,19 @@ class ConfiguracionController extends Controller {
     	 } else {
     	    $parametros["leyenda"] = $leyendaObj->getValor();
     	 }
+    	 
+    	 //NUMERO DE RESULTADOS POR PAGINA
+    	 $numResultadosObj = $repository->findOneBy(array("clave" => "numresultados"));
+    	 $numResultadosString = $request->request->get('numresultados');
+    	 if ((is_numeric($numResultadosString)) && (intval($numResultadosString) >= 1)){
+    	 	if (intval($numResultadosString) != $numResultadosObj->getValor()){
+    	 		$parametros["okNumResultados"] = true;
+    	 		$numResultadosObj->setValor($numResultadosString);
+    	 	}
+    	 } else {
+    	 	$parametros["errNumResultados"] = "Introduzca un valor entero mayor o igual que 1";
+    	 }
+    	 $parametros["numResultados"] = $numResultadosString;
     	 
     	 //ACTIVAR JUMBOTRON
     	 $jumbotronObj = $repository->findOneBy(array("clave" => "jumbotron"));

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Easanles\AtletismoBundle\Entity\Config;
 
 
 class CompeticionController extends Controller {
@@ -17,15 +18,26 @@ class CompeticionController extends Controller {
     public function listadoCompeticionesAction(Request $request) {
     	$temp = $request->query->get('temp');
     	$query = $request->query->get('q');
-    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	$temporadas = $repository->findTemps("admin");
     	
+    	$from = $request->query->get('from');
+    	if (($from == null) || ($from == "")) $from = 0;
+      else $from = intval($from);
+    	if ($from < 0) $from = 0;
+    	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
+    	
+    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$temporadas = $repoCom->findTemps("admin");
     	if (($temp == null) && ($query == null)){
-    		$competiciones = $repository->findAllOrdered();
+    		$competiciones = $repoCom->findAllOrdered($from, $numResultados);
     	} else {
-    		$competiciones = $repository->searchByParameters($temp, $query);
+    		$competiciones = $repoCom->searchByParameters($temp, $query, $from, $numResultados);
     	}
-    	$parametros = array('competiciones' => $competiciones, 'temporadas' => $temporadas);
+    	$hoy = new \DateTime();
+    	$ayer = (new \DateTime())->sub(new \DateInterval("P1D"));
+    	$parametros = array(
+    			'competiciones' => $competiciones, 'temporadas' => $temporadas,
+    			'hoy' => $hoy, 'ayer' => $ayer, 'from' => $from, 'numResultados' => $numResultados);
     	if ($temp != null) $parametros['temp'] = $temp;
     	if ($query != null) $parametros['query'] = $query;
     	return $this->render('EasanlesAtletismoBundle:Competicion:list_competicion.html.twig', $parametros);

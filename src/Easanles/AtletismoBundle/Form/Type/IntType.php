@@ -12,7 +12,7 @@ class IntType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
     	    ->add('validez', 'checkbox', array('label' => 'Vál.', 'required' => false))
-    	    ->add('premios', 'text', array('label' => 'Premios','required' => false));
+    	    ->add('premios', 'text', array('label' => 'Notas','required' => false));
         if ($this->unidades == "segundos"){
         	  $builder->add('marca', 'hidden', array('required' => false));
         } else {

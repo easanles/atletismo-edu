@@ -66,7 +66,10 @@
                <tr><td><strong>Ubicacion:</strong></td><td>{{ com.ubicacion }}</td></tr>
                <tr><td colspan="2"><strong>Descripción:</strong></td></tr>
                <tr><td colspan="2"><p>{{ com.desc|nl2br|converturls }}</p></td></tr>
-               <tr><td><strong>Fecha de comienzo:</strong></td><td>{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %}</td></tr>
+               <tr>
+                  <td><strong>Fecha de inicio: </strong>{% if com.fecha is null %} <em>Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %}</td>
+                  <td><strong>Fecha de fin: </strong>{% if com.fechaFin is null %} <em>Sin fecha</em> {% else %} {{ com.fechaFin|date('d/m/Y') }} {% endif %}</td>
+               </tr>
                <tr><td><strong>Página web:</strong></td><td><strong>Correo electrónico de contacto:</strong></td></tr>
                <tr><td><a href="{{ com.web }}">{{ com.web }}</a></td><td><a href="mailto:{{ com.email }}">{{ com.email }}</a></td></tr>
             </tbody>

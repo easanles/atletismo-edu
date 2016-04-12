@@ -99,7 +99,11 @@
                   {% else %}
                      {% if pru.activarInscripciones %}
                         {% if pru.inscrito %}
-                           <td><button id="btn-ins-{{ pru.sid }}" type="button" class="btn btn-sm btn-info btn-block active" onClick="toggleIns(this)">Inscrito</button></td>
+                           <td>
+                              {% if pru.bloquearDesinscripcion is defined %}<div title="No puedes desinscribirte porque tienes marcas registradas en esta prueba" data-toggle="tooltip" data-placement="right">{% endif %}
+                              <button id="btn-ins-{{ pru.sid }}" type="button" class="btn btn-sm btn-info btn-block active" onClick="toggleIns(this)"{% if pru.bloquearDesinscripcion is defined %} disabled{% endif %}>Inscrito</button>
+                              {% if pru.bloquearDesinscripcion is defined %}</div>{% endif %}
+                           </td>
                         {% else %}
                            <td><button id="btn-ins-{{ pru.sid }}" type="button" class="btn btn-sm btn-default btn-block" onClick="toggleIns(this)">Inscribirse</button></td>
                         {% endif %}

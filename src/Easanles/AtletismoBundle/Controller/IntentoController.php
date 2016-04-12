@@ -135,6 +135,15 @@ class IntentoController extends Controller {
 						'message' => "La competición de esta prueba está ahora oculta"
 				]);
 			}
+			$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+			$checkIns = $repoIns->findBy(array("idAtl" => $atl, "sidPru" => $ron->getSidPru()));
+			if (count($checkIns) == 0){
+				return new JsonResponse([
+						'success' => false,
+						'preErr' => true,
+						'message' => "No estás inscrito a esta prueba"
+				]);
+			}
 			$idAtl = $atl->getId();
 		} else {
 			$idAtl = $request->query->get('atl');
@@ -209,9 +218,13 @@ class IntentoController extends Controller {
 				}
 				if ($numIntentos == 1){
 					if (count($data) > 0){
-						$data[0]->setOrigen($this->getUser()->getNombre());
-						$data[0]->setNum(1);
-						$em->persist($data[0]);
+						if ($data[0]->getMarca() == 0){
+							$em->remove($data[0]);
+						} else {
+						   $data[0]->setOrigen($this->getUser()->getNombre());
+						   $data[0]->setNum(1);
+						   $em->persist($data[0]);
+						}
 					}
 				} else {
 					$count = 1;

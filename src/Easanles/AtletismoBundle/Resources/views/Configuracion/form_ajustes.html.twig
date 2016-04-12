@@ -45,6 +45,21 @@
                      {% endif %}
                   </div>
                </div>
+               <div class="form-group{% if errNumResultados is defined %} has-error has-feedback{% endif %}{% if okNumResultados is defined %} has-success has-feedback{% endif %}">
+                  <label for="cfg_numresultados" class="col-xs-12 col-sm-4 control-label">Resultados por página</label>
+                  <div class="col-xs-12 col-sm-6">
+                     <input type="number" min="1" step="1" class="form-control" id="cfg_numresultados" name="numresultados" value="{{ numResultados }}">
+                     {% if okNumResultados is defined %}
+                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+                     {% endif %}
+                     {% if errNumResultados is defined %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block">
+                           <span class="glyphicon glyphicon-exclamation-sign"></span> {{ errNumResultados }}
+                        </span>
+                     {% endif %}
+                  </div>
+               </div>
                <div class="form-group{% if errVerMeses is defined %} has-error has-feedback{% endif %}{% if okVerMeses is defined %} has-success has-feedback{% endif %}">
                   <label for="cfg_vermeses" class="col-xs-12 col-sm-4 control-label">Ver meses previos</label>
                   <div class="col-xs-12 col-sm-6">

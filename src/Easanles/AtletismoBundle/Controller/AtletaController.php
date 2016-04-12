@@ -19,33 +19,37 @@ class AtletaController extends Controller {
 	public function listadoAtletasAction(Request $request, $alta) {
 		$cat = $request->query->get('cat');
 		$query = $request->query->get('q');
+		
+		$from = $request->query->get('from');
+    	if (($from == null) || ($from == "")) $from = 0;
+      else $from = intval($from);
+    	if ($from < 0) $from = 0;
+    	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
+    	
 		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-		
 		if (($cat == null) && ($query == null)){
-			$atletas = $repoAtl->findAllOrdered($alta);
+			$atletas = $repoAtl->findAllOrdered($alta, $from, $numResultados);
 		} else {
 			$catObj = $repoCat->findOneBy(array("id" => $cat));
 			if ($catObj == null) {
-				$atletas = $repoAtl->searchByParameters(null, null, $query, $alta);
+				$atletas = $repoAtl->searchByParameters(null, null, $query, $alta, $from, $numResultados);
 			} else {
 				$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
 				$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
-				$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query, $alta);
+				$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query, $alta, $from, $numResultados);
 			}
 		}
-		$parametros = array('atletas' => $atletas, 'estadoAlta' => $alta);
-		
+		$parametros = array('atletas' => $atletas, 'estadoAlta' => $alta, 'from' => $from, 'numResultados' => $numResultados);
 		$vigentes = $repoCat->findAllCurrent();
 		$parametros['vigentes'] = $vigentes;
-		
 		$categorias = array();
 		$fechaRefCat = Helpers::getFechaRefCat($this->getDoctrine());
 		foreach ($atletas as $atl){
 			$categorias[] = Helpers::getCategoria($vigentes, $fechaRefCat, $atl['fnac']);
 		}
 		$parametros['categorias'] = $categorias;
-		
 		if ($cat != null) $parametros['cat'] = $cat;
 		if ($query != null) $parametros['query'] = $query;
 		return $this->render('EasanlesAtletismoBundle:Atleta:list_atleta.html.twig', $parametros);
