@@ -186,7 +186,7 @@ class Helpers {
 		$leyenda->setClave("leyenda")->setValor("");
 		$em->persist($leyenda);
 		$numResultados = new Config();
-		$numResultados->setClave("numresultados")->setValor("30");
+		$numResultados->setClave("numresultados")->setValor("50");
 		$em->persist($numResultados);
 		$jumbotron = new Config();
 		$jumbotron->setClave("jumbotron")->setValor("1");
@@ -210,9 +210,9 @@ class Helpers {
 <li>A aplicación debe ser completamente xestionable a través dunha interface web.</li>
 </ul>");
 		$em->persist($bienvenida);
-		$nombreApp = new Config();
-		$nombreApp->setClave("nombreapp")->setValor("Atletismo");
-		$em->persist($nombreApp);
+		//$nombreApp = new Config();
+		//$nombreApp->setClave("nombreapp")->setValor("Atletismo");
+		//$em->persist($nombreApp);
 		$verMeses = new Config();
 		$verMeses->setClave("vermeses")->setValor("2");
 		$em->persist($verMeses);

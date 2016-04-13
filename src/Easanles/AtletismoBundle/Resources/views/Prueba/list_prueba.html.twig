@@ -138,8 +138,10 @@
 <nav>
   <ul class="pager">
      {% if from == 0 %}
+     <li class="previous disabled"><a href="#">Inicio</a></li>
      <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
      {% else %}
+     <li class="previous"><a href="#" onClick="pruSearch({{ com.sid }}, $('#select-cat').val(), 0)">Inicio</a></li>
      <li class="previous"><a href="#" onClick="pruSearch({{ com.sid }}, $('#select-cat').val(), {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</a></li>
      {% endif %}
      {% if pruebas|length < numResultados %}

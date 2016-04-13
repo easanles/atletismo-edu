@@ -399,4 +399,25 @@ $(window).resize(function(){
 	});
 })
 
+function installBD(){
+	alerthtml_pre = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
+	alerthtml_pos = "</span></div>";
+	$("#install-btn").attr("disabled", true);
+	$("#loading-icon").css("display", "inline");
+	$.getJSON("./instalar/crearbd", function(data, status){
+	     if (status == "success"){
+	        if (data.success == true){
+	           location.reload();
+	        } else {
+	           $("#install-btn").attr("disabled", false);
+	           $("#loading-icon").css("display", "none");
+	           $("#alert-div").append(alerthtml_pre + data.message + alerthtml_pos);
+	        }
+	     } else {
+	        $("#install-btn").attr("disabled", false);
+	        $("#loading-icon").css("display", "none");
+	        $("#alert-div").append(alerthtml_pre + "Error" + alerthtml_pos);
+	     }
+	});
+}
 

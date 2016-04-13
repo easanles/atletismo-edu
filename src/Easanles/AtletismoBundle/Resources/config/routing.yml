@@ -398,6 +398,12 @@ homepage_admin: #portada admins
 cuenta:
     path: /cuenta
     defaults: {_controller: "EasanlesAtletismoBundle:Default:pantallaCuenta"}
+instalar:
+    path: /instalar
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:instalar"}
+instalar_crearbd:
+    path: /instalar/crearbd
+    defaults: {_controller: "EasanlesAtletismoBundle:Default:crearBD"}
 login:
     path: /login
     defaults: {_controller: "EasanlesAtletismoBundle:Default:login"}

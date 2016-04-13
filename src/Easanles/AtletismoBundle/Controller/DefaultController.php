@@ -7,9 +7,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Easanles\AtletismoBundle\Form\Type\UserUsuType;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class DefaultController extends Controller{
+	 private function checkDatabase(){
+	 	$schemaManager = $this->getDoctrine()->getConnection()->getSchemaManager();
+	 	if ($schemaManager->tablesExist(
+	 	      array('atl','cat','cfg','com','ins','int_','par','pru','ron','tprf','tprm','usu')) == false) {
+	 		return $this->redirect($this->generateUrl("instalar"));
+	 	}
+	 	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+	 	$checkConfig = $repoCfg->findAll();
+	 	if (count($checkConfig) != 9){
+	 		return $this->redirect($this->generateUrl("instalar"));
+	 	}
+	 	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+	 	$checkCat = $repoCat->findBy(array("esTodos" => true));
+	 	if (count($checkCat) != 1){
+	 		return $this->redirect($this->generateUrl("instalar"));
+	 	}
+	 	$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
+	 	$checkUsu = $repoUsu->findBy(array("rol" => "coordinador"));
+	 	if (count($checkUsu) == 0){
+	 		return $this->redirect($this->generateUrl("instalar"));
+	 	}
+	 	return true;
+	 }
+	 
     public function indexAction(){
+    	 if (in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    	    $checks = $this->checkDatabase();
+    	    if ($checks !== true) return $checks;
+    	 }
     	 if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
     		 return $this->redirect($this->generateUrl("homepage_admin"));
     	 } else if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -29,6 +61,10 @@ class DefaultController extends Controller{
     }
     
     public function adminIndexAction(){
+       if (in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    	    $checks = $this->checkDatabase();
+    	    if ($checks !== true) return $checks;
+    	 }
     	 $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	 $sigComs = $repoCom->findComsTimedList("sig", null);
     	 $hoyComs = $repoCom->findComsTimedList("hoy", null);
@@ -77,6 +113,118 @@ class DefaultController extends Controller{
     	}
     	$parametros['form'] = $form->createView();
     	return $this->render('EasanlesAtletismoBundle:Default:pant_cuenta.html.twig', $parametros);
+    }
+    
+    public function instalarAction(){
+    	 if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    	 	 throw new AccessDeniedHttpException();
+    	 }
+    	 $schemaManager = $this->getDoctrine()->getConnection()->getSchemaManager();
+    	 $nombreTablas = array('atl','cat','cfg','com','ins','int_','par','pru','ron','tprf','tprm','usu');
+    	 $todoOk = true;
+    	 $tablasPerdidas = array();
+    	 $rehacerConfig = false;
+    	 $rehacerCatTodos = false;
+    	 $crearUsuAdmin = false;
+    	 foreach ($nombreTablas as $tabla){
+    	 	 if ($schemaManager->tablesExist(array($tabla)) == false) {
+    	 	    $tablasPerdidas[] = $tabla;
+    	 	    $todoOk = false;
+    	 	 }
+    	 }
+    	 if (count($tablasPerdidas) == 12){
+    	 	 $rehacerBDEntera = true;
+    	 	 $todoOk = false;
+    	 }
+    	 else $rehacerBDEntera = false;
+    	 if (!in_array('cfg', $tablasPerdidas)){
+    	 	 $repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	 	 $checkConfig = $repoCfg->findAll();
+    	 	 if (count($checkConfig) != 9) {
+    	 	    $rehacerConfig = true;
+    	 		 $todoOk = false;
+    	 	 }
+    	 }
+    	 if (!in_array('cat', $tablasPerdidas)){
+    	    $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+    	    $checkCat = $repoCat->findBy(array("esTodos" => true));
+    	    if (count($checkCat) == 0){
+    	 	    $rehacerCatTodos = true;
+    	 	    $todoOk = false;
+    	    }
+    	 }
+    	 if (!in_array('usu', $tablasPerdidas)){
+    	    $repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
+    	    $checkUsu = $repoUsu->findBy(array("rol" => "coordinador"));
+    	    if (count($checkUsu) == 0) {
+       	 	 $crearUsuAdmin = true;
+    	 	    $todoOk = false;
+    	    }
+    	 }
+    	 $parametros = array(
+    	 		"todoOK" => $todoOk,
+    	 		"tablasPerdidas" => $tablasPerdidas,
+    	 		"rehacerBDEntera" => $rehacerBDEntera,
+    	 		"rehacerConfig" => $rehacerConfig,
+    	 		"rehacerCatTodos" => $rehacerCatTodos,
+    	 		"crearUsuAdmin" => $crearUsuAdmin
+    	 );
+    	 /*if ($rehacerBDEntera){
+    	 	 $ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
+    	 			"fIniTemp" => "01/11",
+    	 			"catAsig" => "year",
+    	 			"leyenda" => "",
+    	 			"numResultados" => "50",
+    	 			"jumbotron" => 1,
+    	 			"jumboLinea1" => "Atletismo",
+    	 			"jumboLinea2" => "Sistema de gestión de un club de atletismo",
+    	 			"bienvenida" => "",
+    	 			"verMeses" => "2",
+    	 	 		"instalar" => true
+    	 	))->getContent();
+    	 }
+    	 $parametros['ajContent'] = $ajContent;*/
+    	
+    	 return $this->render('EasanlesAtletismoBundle:Default:pant_instalar.html.twig', $parametros);
+    }
+    
+    public function crearBDAction(Request $request){
+    	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    		return new JsonResponse([
+    				'success' => false,
+    				'message' => "Acceso denegado",
+    		]);
+    	}
+    	try{
+    		$kernel = $this->get('kernel');
+    		$application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+    		$application->setAutoExit(false);
+    		$options = array('command' => 'doctrine:database:create');
+    		$application->run(new ArrayInput($options))." ";
+    		$options = array('command' => 'doctrine:schema:update',"--force" => true);
+    		$application->run(new ArrayInput($options))." ";
+    		$options = array('command' => 'doctrine:fixtures:load','--append' => true);
+    		$application->run(new ArrayInput($options));
+    	
+    		$em = $this->getDoctrine()->getManager();
+    		Helpers::defaultBDValues($em);
+    		 
+    		$response = new JsonResponse([
+    				'success' => true,
+    				'message' => 'Base de datos creada',
+    		]);
+    	} catch(\Doctrine\ORM\ORMException $e) {
+    		$response = new JsonResponse([
+    				'success' => false,
+    				'message' => $this->get('logger')->error($e->getMessage()),
+    		]);
+    	} catch(\Exception $e){
+    		$response = new JsonResponse([
+    				'success' => false,
+    				'message' => $e->getMessage(),
+    		]);
+    	}
+    	return $response;
     }
     
     public function loginAction(Request $request){

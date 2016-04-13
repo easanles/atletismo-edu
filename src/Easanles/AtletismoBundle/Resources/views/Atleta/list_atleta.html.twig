@@ -128,8 +128,10 @@
 <nav>
   <ul class="pager">
      {% if from == 0 %}
+     <li class="previous disabled"><a href="#">Inicio</a></li>
      <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
      {% else %}
+     <li class="previous"><a href="#" onClick="goToUrl('{% if estadoAlta == true %}{{ path('listado_atletas') }}{% else %}{{ path('listado_atletas_bajas') }}{% endif %}' + atlSearchParam({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery(), 0))">Inicio</a></li>
      <li class="previous"><a href="#" onClick="goToUrl('{% if estadoAlta == true %}{{ path('listado_atletas') }}{% else %}{{ path('listado_atletas_bajas') }}{% endif %}' + atlSearchParam({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery(), {{ from - numResultados }}))"><span aria-hidden="true">&larr;</span> Anterior</a></li>
      {% endif %}
      {% if atletas|length < numResultados %}

@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ConfiguracionController extends Controller {
 	
     public function menu_configuracionAction() {
+    	if (in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    		$accDebug = true;
+    	} else $accDebug = false;
     	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
     	$fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
     	if ($fIniTempObj == null) $fIniTempVal = "";
@@ -44,7 +47,7 @@ class ConfiguracionController extends Controller {
     	))->getContent();
     	
     	return $this->render('EasanlesAtletismoBundle:Configuracion:menu_configuracion.html.twig', array(
-    			"ajustesContent" => $ajContent
+    			"ajustesContent" => $ajContent, "accDebug" => $accDebug
     	));		 
     }
     
@@ -193,6 +196,12 @@ class ConfiguracionController extends Controller {
     }
     
     public function poblar_bdAction(){
+    	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    		return new JsonResponse([
+    				'success' => false,
+    				'message' => "Acceso denegado",
+    		]);
+    	}
     	try{
     	   $em = $this->getDoctrine()->getManager();
     	   
@@ -218,6 +227,12 @@ class ConfiguracionController extends Controller {
     }
     
     public function borrar_bdAction(){
+    	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    		return new JsonResponse([
+    				'success' => false,
+    				'message' => "Acceso denegado",
+    		]);
+    	}
     	try{
     	   $em = $this->getDoctrine()->getManager();
     	   $sql = '
@@ -258,6 +273,12 @@ class ConfiguracionController extends Controller {
     }
     
     public function rehacer_bdAction(){
+    	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+    		return new JsonResponse([
+    				'success' => false,
+    				'message' => "Acceso denegado",
+    		]);
+    	}
     	try{
        	$kernel = $this->get('kernel');
     	   $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);

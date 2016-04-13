@@ -100,8 +100,10 @@
 <nav>
   <ul class="pager">
      {% if from == 0 %}
+     <li class="previous disabled"><a href="#">Inicio</a></li>
      <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
      {% else %}
+     <li class="previous"><a href="#" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, 0)">Inicio</a></li>
      <li class="previous"><a href="#" onClick="comSearch({% if temp is defined %}{{temp}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</a></li>
      {% endif %}
      {% if competiciones|length < numResultados %}

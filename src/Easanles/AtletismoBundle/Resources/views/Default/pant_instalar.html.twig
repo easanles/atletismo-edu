@@ -1,0 +1,48 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Instalar {{ gl_appname }}{% endblock %}
+
+{% block navbar %}
+    <li class="active"><a href="#">Instalación</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+   <li class="active">Instalación</li>
+{% endblock %}
+
+{% block container %}   
+   <h1 id="container_title" class="row page-header">Instalación</h1>
+   {% if todoOK %}
+      <div class="alert alert-success col-xs-offset-1 col-xs-10" role="alert">
+         <h3><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> La base de datos está correctamente configurada.</h3>
+         <a href="{{ path('homepage') }}">Acceder a la portada</a>
+      </div>
+   {% else %}
+      {% if rehacerBDEntera %}
+         <div class="alert alert-info col-xs-offset-1 col-xs-10" role="alert">
+            <h4><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> La base de datos está vacía</h4>
+         </div>
+         <div class="clearfix"></div>
+         <p class="text-center">Haga clic para crear la base de datos con los valores por defecto</p>
+         <button id="install-btn" class="btn btn-lg btn-primary col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6" onClick="installBD(this)"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Crear base de datos</button>
+         <div class="clearfix"></div>
+         <div id="loading-icon" class="col-xs-offset-5 col-xs-2" style="display: none">
+            <h2 class="text-center"><span class="glyphicon glyphicon-refresh spinning" aria-hidden="true"></span></h2>
+         </div>
+         <div id="alert-div"></div>
+      {% else %}
+         <div class="alert alert-warning col-xs-offset-1 col-xs-10" role="alert">
+            <h4><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> La base de datos contiene los siguientes errores:</h4>
+         </div>
+      {% endif %}
+   {% endif %}
+{% endblock %}
+
+{% block js %}
+   {% javascripts
+      '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' filter='?uglifyjs2' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
+{% endblock %}
+

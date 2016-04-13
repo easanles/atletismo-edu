@@ -40,8 +40,10 @@
          <nav>
             <ul class="pager">
                {% if from == 0 %}
+               <li class="previous disabled"><a href="#">Inicio</a></li>
                <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
                {% else %}
+               <li class="previous"><a href="#" onClick="usuSearch($('#search-input').val(), 0)">Inicio</a></li>
                <li class="previous"><a href="#" onClick="usuSearch($('#search-input').val(), {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</a></li>
                {% endif %}
                {% if usuarios|length < numResultados %}
