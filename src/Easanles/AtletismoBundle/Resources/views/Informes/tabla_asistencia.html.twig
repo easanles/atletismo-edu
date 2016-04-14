@@ -11,7 +11,7 @@
                <tr class="row-par">
                   <td>{{ par.apellidos }}, {{ par.nombre }}</td>
                   <td>{{ par.dorsal }}</td>
-                  <td>{{ par.categoria.nombre }}</td>
+                  <td>{% if par.categoria is not null %}{{ par.categoria.nombre }}{% endif %}</td>
                   <td>
                      {% if par.asisten %}
                         <button id="btn-par-{{ par.sid }}" type="button" class="btn btn-sm btn-info btn-block active" onClick="togglePar(this)"><span class="glyphicon glyphicon-check"></span> <strong>SI</strong></button>
@@ -35,7 +35,7 @@
             {% for ins in inss %}
                <tr class="row-par">
                   <td>{{ ins.apellidos }}, {{ ins.nombre }}</td>
-                  <td>{{ ins.categoria.nombre }}</td>
+                  <td>{% if ins.categoria is not null %}{{ ins.categoria.nombre }}{% endif %}</td>
                   <td>
                      <button type="button" class="btn btn-sm btn-default btn-block" onClick="showModal('newPAR', {{ ins.idAtl }}, 'Confirmar participación', {{ sidCom }})"><span class="glyphicon glyphicon-bullhorn"></span> Confirmar</button>
                   </td>

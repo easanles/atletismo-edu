@@ -66,10 +66,11 @@
       {% if (atl.lfga is null or atl.lfga == "") and com.esFeder %}
          <div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Esta es una prueba federada y no tienes asignada una licencia de la FGA </div>
       {% else %}
+         <h4>
          {% if com.esOficial or com.fecha < ayer %}
-            <h4>Categoría {{ cat.nombre }}
+            {% if cat is not null %}Categoría {{ cat.nombre }}{% endif %}
          {% else %}
-            <h4>Pruebas disponibles para la categoría {{ cat.nombre }}
+            Pruebas disponibles{% if cat is not null %} para la categoría {{ cat.nombre }}{% endif %}
          {% endif %}
          {% if par|first %}<span class="pull-right"><strong>Tu dorsal: {{ par|first.dorsal }}</strong></span>{% endif %}
          </h4>
@@ -89,7 +90,7 @@
                      {% set tpr = tpr ~ '. ' ~ pru.entorno %}
                   {% endif %}
                   <td>{{ tpr }}
-                  {% if pru.cat != cat.id %}
+                  {% if cat is not null and pru.cat != cat.id %}
                      <span class="label label-default">TODOS</span>
                   {% endif %}
                   </td>

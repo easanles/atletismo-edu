@@ -281,7 +281,9 @@ class MiscomController extends Controller{
    	$repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
    	$par = $repoPar->findBy(array("sidCom" => $sidCom, "idAtl" => $atl->getId()));
       $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-      $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null);
+      if ($cat != null){
+         $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null);
+      } else $listaPru = null;
       $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
       $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId(), 0, null);
       foreach ($listaPruTodos as $pru){

@@ -69,7 +69,7 @@
                      {% if atl.lxogade is not null and atl.lxogade != "" %}
                         <dt>Licencia XOGADE</dt><dd>{{ atl.lxogade }}</dd>
                      {% endif %}
-                     <dt>Categoría</dt><dd>{{ cat.nombre }}</dd>
+                     <dt>Categoría</dt><dd>{% if cat is not null %}{{ cat.nombre }}{% endif %}</dd>
                   </dl>
                </div>
                <div class="col-sm-3 col-md-2">

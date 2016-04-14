@@ -170,7 +170,9 @@ class InscripcionController extends Controller {
     	 $entornos = $repoCom->getComEntornos($sidCom);
        $cat = Helpers::getAtlCurrentCat($this->getDoctrine(), $atl);
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
-    	 $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null); // Misma categoria
+    	 if ($cat != null){
+    	    $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null); // Misma categoria
+    	 } else $listaPru = null;
     	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	 $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId(), 0, null);
     	 foreach($listaPruTodos as $pru){
@@ -192,7 +194,6 @@ class InscripcionController extends Controller {
     	 	 	 	 $listaPruObj[] = $pruObj;
     	 	 }
     	  }
-    	 
     	 $parametros = array("listaPru" => $listaPruObj, "entornos" => $entornos);
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_pruebas_data.html.twig', $parametros);
     }

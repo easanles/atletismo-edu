@@ -117,6 +117,7 @@ class Helpers {
 			   }
 		   } else return $cat;
 		}
+		return null;
 	}
 	
 	/**

@@ -72,7 +72,7 @@
             {% endif %}
             <td>{{ atl.apellidos }}</td>
             <td>{{ atl.nombre }}</td>
-            <td>{{ atl.categoria }}</td>
+            <td>{% if atl.categoria is not null %}{{ atl.categoria }}{% endif %}</td>
             <td>{{ atl.pruebas|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="toggleDropListTable({{ atl.id }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button></td>
             <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }}€</td>
             <td>{{ atl.estado }}</td>
