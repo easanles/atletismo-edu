@@ -253,7 +253,7 @@ class ConfiguracionController extends Controller {
     	   $stmt = $connection->prepare($sql);
     	   $stmt->execute();
     	   $stmt->closeCursor();
-    	   Helpers::defaultBDValues($em);
+    	   Helpers::defaultBDValues($this->getDoctrine());
        	$response = new JsonResponse([
        			'success' => true,
        			'message' => 'Datos borrados de la base de datos',
@@ -295,8 +295,7 @@ class ConfiguracionController extends Controller {
     	   $options = array('command' => 'doctrine:fixtures:load','--append' => true);
     	   $application->run(new ArrayInput($options));
     	   
-    	   $em = $this->getDoctrine()->getManager();
-    	   Helpers::defaultBDValues($em);
+    	   Helpers::defaultBDValues($this->getDoctrine());
     	
     	   $response = new JsonResponse([
        			'success' => true,

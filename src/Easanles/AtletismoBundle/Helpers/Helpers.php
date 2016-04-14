@@ -172,33 +172,50 @@ class Helpers {
 	}
 
 	/**
-	 * Ajusta los valores iniciales de la base de datos
-	 * @param EntityManager $em El EntityManager
+	 * Ajusta los valores iniciales de la base de datos en caso de no existir previamente
+	 * @param $doctrine El servicio Doctrine
 	 */
-	public static function defaultBDValues($em){
-		$fIniTemp = new Config();
-		$fIniTemp->setClave("fIniTemp")->setValor("01/11");
-		$em->persist($fIniTemp);
-		$catAsig = new Config();
-		$catAsig->setClave("catAsig")->setValor("year"); //Asignacion al inicio del año
-		$em->persist($catAsig);
-		$leyenda = new Config();
-		$leyenda->setClave("leyenda")->setValor("");
-		$em->persist($leyenda);
-		$numResultados = new Config();
-		$numResultados->setClave("numresultados")->setValor("50");
-		$em->persist($numResultados);
-		$jumbotron = new Config();
-		$jumbotron->setClave("jumbotron")->setValor("1");
-		$em->persist($jumbotron);
-	   $jumboLinea1 = new Config();
-		$jumboLinea1->setClave("jumbolin1")->setValor("Atletismo");
-		$em->persist($jumboLinea1);
-		$jumboLinea2 = new Config();
-		$jumboLinea2->setClave("jumbolin2")->setValor("Sistema de gestión de un club de atletismo");
-		$em->persist($jumboLinea2);
-		$bienvenida = new Config();
-		$bienvenida->setClave("bienvenida")->setValor("
+	public static function defaultBDValues($doctrine){
+		$em = $doctrine->getManager();
+		$repoCfg = $doctrine->getRepository('EasanlesAtletismoBundle:Config');
+		if (count($repoCfg->findOneBy(array("clave" => "fIniTemp"))) == 0){
+		   $fIniTemp = new Config();
+		   $fIniTemp->setClave("fIniTemp")->setValor("01/11");
+		   $em->persist($fIniTemp);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "catAsig"))) == 0){
+		   $catAsig = new Config();
+		   $catAsig->setClave("catAsig")->setValor("year"); //Asignacion al inicio del año
+		   $em->persist($catAsig);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "leyenda"))) == 0){
+		   $leyenda = new Config();
+		   $leyenda->setClave("leyenda")->setValor("");
+		   $em->persist($leyenda);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "numresultados"))) == 0){
+		   $numResultados = new Config();
+		   $numResultados->setClave("numresultados")->setValor("50");
+		   $em->persist($numResultados);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "jumbotron"))) == 0){
+		   $jumbotron = new Config();
+		   $jumbotron->setClave("jumbotron")->setValor("1");
+		   $em->persist($jumbotron);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "jumbolin1"))) == 0){
+	      $jumboLinea1 = new Config();
+		   $jumboLinea1->setClave("jumbolin1")->setValor("Atletismo");
+		   $em->persist($jumboLinea1);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "jumbolin2"))) == 0){
+		   $jumboLinea2 = new Config();
+		   $jumboLinea2->setClave("jumbolin2")->setValor("Sistema de gestión de un club de atletismo");
+		   $em->persist($jumboLinea2);
+		}
+		if (count($repoCfg->findOneBy(array("clave" => "bienvenida"))) == 0){
+		   $bienvenida = new Config();
+		   $bienvenida->setClave("bienvenida")->setValor("
 <p>O obxectivo principal do proxecto é dispor dunha alternativa baseada en Software Libre para a xestión das labores administrativas dun club de atletismo.</p>
 <p>Os obxectivos a acadar co proxecto son os seguintes:</p>
 <ul>
@@ -209,22 +226,40 @@ class Helpers {
 <li>Xestión de contabilidade das cotas dos asociados simplificada (ingresos/gastos).</li>
 <li>A aplicación debe ser completamente xestionable a través dunha interface web.</li>
 </ul>");
-		$em->persist($bienvenida);
+		   $em->persist($bienvenida);
+		}
+		//if (count($repoCfg->findOneBy(array("clave" => "nombreapp"))) == 0){
 		//$nombreApp = new Config();
 		//$nombreApp->setClave("nombreapp")->setValor("Atletismo");
 		//$em->persist($nombreApp);
-		$verMeses = new Config();
-		$verMeses->setClave("vermeses")->setValor("2");
-		$em->persist($verMeses);
-		$todosCat = new Categoria();
-		$todosCat->setNombre("TODOS")->setTIniVal(1)->setEsTodos(true);
-		$em->persist($todosCat);
-		$defaultUsu = new Usuario();
-		$defaultUsu->setNombre("admin") //Al menos un administrador. Borrar o cambiar clave despues.
-		   ->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')
-		   ->setRol("coordinador")
-		   ->setIdAtl(null);
-		$em->persist($defaultUsu);
+		//}
+		if (count($repoCfg->findOneBy(array("clave" => "vermeses"))) == 0){
+		   $verMeses = new Config();
+		   $verMeses->setClave("vermeses")->setValor("2");
+		   $em->persist($verMeses);
+		}
+		$repoCat = $doctrine->getRepository('EasanlesAtletismoBundle:Categoria');
+		if (count($repoCat->findOneBy(array("esTodos" => true))) == 0){
+			$todosCat = $repoCat->findOneBy(array("nombre" => "TODOS"));
+			if ($todosCat == null){
+				$todosCat = new Categoria();
+				$todosCat->setNombre("TODOS");
+			}
+		   $todosCat->setTIniVal(1)->setEsTodos(true);
+		   $em->persist($todosCat);
+		}
+		$repoUsu = $doctrine->getRepository('EasanlesAtletismoBundle:Usuario');
+		if (count($repoUsu->findOneBy(array("rol" => "coordinador"))) == 0){
+			$adminUsu = $repoUsu->findOneBy(array("nombre" => "admin"));
+			if ($adminUsu == null){
+		      $adminUsu = new Usuario();
+		      $adminUsu->setNombre("admin");  //Al menos un administrador. Borrar o cambiar clave despues.
+			}
+		   $adminUsu->setContra('$2a$04$DhlYDQ.4c1e7E8HUQLGxReVc0Ug7OhqNoknBPa1kIw02G4TP8cfn.')
+		      ->setRol("coordinador")
+		      ->setIdAtl(null);
+		   $em->persist($adminUsu);
+		}
 		$em->flush();
 	}
 	

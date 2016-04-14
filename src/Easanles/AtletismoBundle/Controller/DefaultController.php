@@ -169,21 +169,6 @@ class DefaultController extends Controller{
     	 		"rehacerCatTodos" => $rehacerCatTodos,
     	 		"crearUsuAdmin" => $crearUsuAdmin
     	 );
-    	 /*if ($rehacerBDEntera){
-    	 	 $ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
-    	 			"fIniTemp" => "01/11",
-    	 			"catAsig" => "year",
-    	 			"leyenda" => "",
-    	 			"numResultados" => "50",
-    	 			"jumbotron" => 1,
-    	 			"jumboLinea1" => "Atletismo",
-    	 			"jumboLinea2" => "Sistema de gestión de un club de atletismo",
-    	 			"bienvenida" => "",
-    	 			"verMeses" => "2",
-    	 	 		"instalar" => true
-    	 	))->getContent();
-    	 }
-    	 $parametros['ajContent'] = $ajContent;*/
     	
     	 return $this->render('EasanlesAtletismoBundle:Default:pant_instalar.html.twig', $parametros);
     }
@@ -205,9 +190,8 @@ class DefaultController extends Controller{
     		$application->run(new ArrayInput($options))." ";
     		$options = array('command' => 'doctrine:fixtures:load','--append' => true);
     		$application->run(new ArrayInput($options));
-    	
-    		$em = $this->getDoctrine()->getManager();
-    		Helpers::defaultBDValues($em);
+    	   
+    		Helpers::defaultBDValues($this->getDoctrine());
     		 
     		$response = new JsonResponse([
     				'success' => true,

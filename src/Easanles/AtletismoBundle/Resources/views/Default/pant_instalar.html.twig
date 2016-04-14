@@ -6,6 +6,7 @@
 {% block navbar %}
     <li class="active"><a href="#">Instalación</a></li>
 {% endblock %}
+{% block userAuth %}{% endblock %}
 
 {% block breadcrumb %}
    <li class="active">Instalación</li>
@@ -25,17 +26,72 @@
          </div>
          <div class="clearfix"></div>
          <p class="text-center">Haga clic para crear la base de datos con los valores por defecto</p>
-         <button id="install-btn" class="btn btn-lg btn-primary col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6" onClick="installBD(this)"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Crear base de datos</button>
+         <p class="text-center">Se creará un usuario coordinador con login "<strong>admin</strong>" y contraseña "<strong>adminpass</strong>" (sin las comillas)</p>
+         <button id="install-btn" class="btn btn-lg btn-primary col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6" onClick="installBD()"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Crear base de datos</button>
          <div class="clearfix"></div>
          <div id="loading-icon" class="col-xs-offset-5 col-xs-2" style="display: none">
             <h2 class="text-center"><span class="glyphicon glyphicon-refresh spinning" aria-hidden="true"></span></h2>
          </div>
-         <div id="alert-div"></div>
       {% else %}
          <div class="alert alert-warning col-xs-offset-1 col-xs-10" role="alert">
             <h4><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> La base de datos contiene los siguientes errores:</h4>
          </div>
+         <div class="clearfix"></div>
+         {% if tablasPerdidas|length > 0 %}
+            <div class="panel panel-danger">
+               <div class="panel-heading">
+                  <h3 class="panel-title">Faltan tablas en la base de datos</h3>
+               </div>
+               <div class="panel-body">
+                  <p>No se han encontrado las siguientes tablas en la base de datos:
+                  {% for tabla in tablasPerdidas %}
+                     <strong>{{ tabla }}</strong>{% if not loop.last %}, {% endif %}
+                  {% endfor %}
+                  </p>
+                  <p>Pulse "Reparar BD" para regenerar las tablas de la base de datos</p>
+                  {% if "usu" in tablasPerdidas|keys %}
+                     <p>Se creará un usuario coordinador con login "<strong>admin</strong>" y contraseña "<strong>adminpass</strong>" (sin las comillas)</p>                  
+                  {% endif %}
+               </div>
+            </div>
+         {% endif %}
+         {% if rehacerConfig %}
+            <div class="panel panel-danger">
+               <div class="panel-heading">
+                  <h3 class="panel-title">Faltan valores de configuración de la aplicación</h3>
+               </div>
+               <div class="panel-body">
+                  <p>Pulse "Reparar BD" para crear los valores de configuración que faltan con los valores por defecto</p>
+               </div>
+            </div>
+         {% endif %}
+         {% if rehacerCatTodos %}
+            <div class="panel panel-danger">
+               <div class="panel-heading">
+                  <h3 class="panel-title">No existe la categoría general para todos los atletas</h3>
+               </div>
+               <div class="panel-body">
+                  <p>Pulse "Reparar BD" para crear la categoría especial TODOS</p>
+               </div>
+            </div>
+         {% endif %}
+         {% if crearUsuAdmin %}
+            <div class="panel panel-danger">
+               <div class="panel-heading">
+                  <h3 class="panel-title">No hay ningún usuario coordinador</h3>
+               </div>
+               <div class="panel-body">
+                  <p>Pulse "Reparar BD" para crear un nuevo usuario con rol de coordinador. Utiliza el login "<strong>admin</strong>" con la contraseña "<strong>adminpass</strong>" (sin las comillas)</p>
+               </div>
+            </div>
+         {% endif %}
+         <button id="install-btn" class="btn btn-lg btn-primary col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6" onClick="installBD()"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Reparar BD</button>
+         <div class="clearfix"></div>
+         <div id="loading-icon" class="col-xs-offset-5 col-xs-2" style="display: none">
+            <h2 class="text-center"><span class="glyphicon glyphicon-refresh spinning" aria-hidden="true"></span></h2>
+         </div>
       {% endif %}
+      <div id="alert-div"></div>
    {% endif %}
 {% endblock %}
 
