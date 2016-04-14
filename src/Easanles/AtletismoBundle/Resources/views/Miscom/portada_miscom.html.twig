@@ -124,7 +124,7 @@
                <h3 class="hidden-xs">{{ com.nombre }}{% if com.eshoy %} <span class="label label-primary">HOY</span>{% endif %}</h3>
                <h4 class="visible-xs">{{ com.nombre }}{% if com.eshoy %} <span class="label label-primary">HOY</span>{% endif %}</h4>
                <p>{% if com.fecha is null %}<em>Sin fecha</em>{% elseif com.fecha == com.fechaFin %}{{ com.fecha|date('d/m/Y') }}{% else %}{{ com.fecha|date('d/m/Y') }} - {{ com.fechaFin|date('d/m/Y') }}{% endif %}{% if com.sede is not null %}{% if com.sede != "" %} - {{ com.sede }}{% endif %}{% endif %}</p>
-               {% if com.web is not null %}<p><a href="{{ com.web }}">{{ com.web }}</a></p>{% endif %}
+               {% if com.web is not null %}<p><a href="{{ com.web }}" target="_blank">{{ com.web }}</a></p>{% endif %}
                <p class="visible-md visible-lg">
                   {{ com.desc|nl2br|converturls }}
                </p>

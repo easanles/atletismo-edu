@@ -71,7 +71,7 @@
                   <td><strong>Fecha de fin: </strong>{% if com.fechaFin is null %} <em>Sin fecha</em> {% else %} {{ com.fechaFin|date('d/m/Y') }} {% endif %}</td>
                </tr>
                <tr><td><strong>Página web:</strong></td><td><strong>Correo electrónico de contacto:</strong></td></tr>
-               <tr><td><a href="{{ com.web }}">{{ com.web }}</a></td><td><a href="mailto:{{ com.email }}">{{ com.email }}</a></td></tr>
+               <tr><td><a href="{{ com.web }}" target="_blank">{{ com.web }}</a></td><td><a href="mailto:{{ com.email }}">{{ com.email }}</a></td></tr>
             </tbody>
          </table>
          <table class="table table-condensed table-responsive">
