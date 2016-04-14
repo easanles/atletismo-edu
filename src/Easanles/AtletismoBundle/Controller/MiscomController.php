@@ -24,8 +24,8 @@ class MiscomController extends Controller{
     	    return $this->redirect($this->generateUrl("login"));
     	 }
     	 if ($user->getIdAtl() == null){
-    	 	$response = new Response('El usuario no tiene un atleta asociado <a href="'.$this->generateUrl('homepage').'">Volver</a>');
-    	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('homepage'));
+    	 	$response = new Response('No tienes un atleta asociado a tu cuenta <a href="'.$this->generateUrl('logout').'">Volver</a>');
+    	 	$response->headers->set('Refresh', '2; url='.$this->generateUrl('logout'));
     	 	return $response;
     	 }
     	 $temps = $repoCom->findTemps("user");
@@ -267,8 +267,8 @@ class MiscomController extends Controller{
    	}
    	$atl = $this->getUser()->getIdAtl();
    	if ($atl == null){
-   		$response = new Response('No tienes un atleta asociado a tu cuenta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
-   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		$response = new Response('No tienes un atleta asociado a tu cuenta');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('logout'));
    		return $response;
    	}
    	if ($com->getEsVisible() == false){
@@ -336,8 +336,8 @@ class MiscomController extends Controller{
    	}
    	$atl = $this->getUser()->getIdAtl();
    	if ($atl == null){
-   		$response = new Response('No tienes un atleta asociado a tu cuenta <a href="'.$this->generateUrl('mis_competiciones').'">Volver</a>');
-   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('mis_competiciones'));
+   		$response = new Response('No tienes un atleta asociado a tu cuenta');
+   		$response->headers->set('Refresh', '3; url='.$this->generateUrl('logout'));
    		return $response;
    	}
    	if ($com->getEsVisible() == false){
