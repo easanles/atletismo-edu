@@ -188,7 +188,7 @@ $(document).ready(function(){
    });
     
    $("#btn_asseticdump").click(function(){
-      if (confirm("¿Confirmar la operación assetic:dump?")){
+      if (confirm("¿Confirmar la operación de Assetic dump? (assetic:dump --env=prod --no-debug)")){
          icon = $(this).find("span");
          icon.addClass("spinning");
          sendAction("./configuracion/asseticdump", icon);

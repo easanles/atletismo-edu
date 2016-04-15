@@ -40,16 +40,16 @@
          <nav>
             <ul class="pager">
                {% if from == 0 %}
-               <li class="previous disabled"><a href="#">Inicio</a></li>
-               <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+               <li class="previous disabled"><span>Inicio</span></li>
+               <li class="previous disabled"><span><span aria-hidden="true">&larr;</span> Anterior</span></li>
                {% else %}
-               <li class="previous"><a href="#" onClick="usuSearch($('#search-input').val(), 0)">Inicio</a></li>
-               <li class="previous"><a href="#" onClick="usuSearch($('#search-input').val(), {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</a></li>
+               <li class="previous"><span class="clickable text-info" onClick="usuSearch($('#search-input').val(), 0)">Inicio</a></li>
+               <li class="previous"><span class="clickable text-info" onClick="usuSearch($('#search-input').val(), {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</span></li>
                {% endif %}
                {% if usuarios|length < numResultados %}
-                  <li class="next disabled"><a href="#">Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+                  <li class="next disabled"><span>Siguiente <span aria-hidden="true">&rarr;</span></span></li>
                {% else %}
-                  <li class="next"><a href="#" onClick="usuSearch($('#search-input').val(), {{ from + numResultados }})">Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+                  <li class="next"><span class="clickable text-info" onClick="usuSearch($('#search-input').val(), {{ from + numResultados }})">Siguiente <span aria-hidden="true">&rarr;</span></span></li>
                {% endif %}
                {% if numResultados > 0 and from is divisible by (numResultados) %}
                <p class="text-center text-info">Página {{ (from / numResultados) + 1 }}</p>

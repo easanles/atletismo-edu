@@ -196,10 +196,10 @@ class ConfiguracionController extends Controller {
     }
     
     public function poblar_bdAction(){
-    	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
+      if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
     		return new JsonResponse([
     				'success' => false,
-    				'message' => "Acceso denegado",
+    				'message' => "Comando disponible solo en modo debug",
     		]);
     	}
     	try{
@@ -227,12 +227,6 @@ class ConfiguracionController extends Controller {
     }
     
     public function borrar_bdAction(){
-    	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
-    		return new JsonResponse([
-    				'success' => false,
-    				'message' => "Acceso denegado",
-    		]);
-    	}
     	try{
     	   $em = $this->getDoctrine()->getManager();
     	   $sql = '
@@ -276,7 +270,7 @@ class ConfiguracionController extends Controller {
     	if (!in_array($this->get('kernel')->getEnvironment(), array('test', 'dev'))) {
     		return new JsonResponse([
     				'success' => false,
-    				'message' => "Acceso denegado",
+    				'message' => "Comando disponible solo en modo debug",
     		]);
     	}
     	try{
@@ -345,7 +339,7 @@ class ConfiguracionController extends Controller {
     	   $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
     	   $application->setAutoExit(false);
     
-       	$options = array('command' => 'assetic:dump');
+       	$options = array('command' => 'assetic:dump --env=prod --no-debug');
     	   $application->run(new ArrayInput($options));
     
        	$response = new JsonResponse([
