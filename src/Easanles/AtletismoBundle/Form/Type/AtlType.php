@@ -28,7 +28,7 @@ class AtlType extends AbstractType{
         		'expanded' => true
         ))
         ->add('tipo', 'text', array('label' => 'Tipo','required' => false))
-        ->add('esalta', 'checkbox', array('label' => 'Dado de alta'))
+        ->add('esalta', 'checkbox', array('label' => 'Dado de alta', 'required' => false))
         ->add('direccion', 'text', array('label' => 'Dirección','required' => false))
         ->add('cp', 'text', array('label' => 'Código Postal','required' => false))
         ->add('localidad', 'text', array('label' => 'Localidad','required' => false))

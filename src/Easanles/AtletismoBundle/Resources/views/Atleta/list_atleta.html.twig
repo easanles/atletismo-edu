@@ -1,7 +1,7 @@
 
 {% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
 
-{% block title %}{% if estadoAlta == true %}Listado de atletas{% else %}Listado de atletas de baja{% endif %}{% endblock %}
+{% block title %}{% if estadoAlta == true %}Listado de atletas{% else %}Listado de bajas{% endif %}{% endblock %}
 
 {% block navbar %}
       {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
@@ -33,7 +33,7 @@
      <li class="active">Atletas</li>
   {% else %}
      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
-     <li class="active">Atletas de baja</li>
+     <li class="active">Bajas</li>
   {% endif %}
 {% endblock %}
    
@@ -42,7 +42,7 @@
    {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
    
 {% block container %}   
-   <h1 id="container_title" class="row page-header">{% if estadoAlta == true %}Listado de atletas{% else %}Listado de atletas de baja{% endif %}</h1>
+   <h1 id="container_title" class="row page-header">{% if estadoAlta == true %}Listado de atletas{% else %}Listado de bajas{% endif %}</h1>
    <div id="container_header" class="row">
       <button class="updater hidden" onClick="location.reload()"></button>
       <div class="col-xs-6 col-sm-4">
@@ -55,7 +55,7 @@
       </div>
       {% if estadoAlta == true %}
          <a class="btn btn-primary" href="{{ path('crear_atleta') }}"><span class="glyphicon glyphicon-plus"></span> Añadir</a>
-         <a class="btn btn-default" href="{{ path('listado_atletas_bajas') }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Ver bajas</a>
+         <a class="btn btn-default" href="{{ path('listado_atletas_bajas') }}"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> <span class="hidden-xs">Ver bajas</span><span class="visible-xs-inline">Bajas</span></a>
       {% else %}
          <a class="btn btn-default" href="{{ path('listado_atletas') }}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Volver</a>
       {% endif %}
@@ -77,7 +77,7 @@
             <th>Nombre</th>
             <th class="hidden-xs"><abbr title="Sexo">H/M</abbr></th>
             <th class="hidden-xs"><abbr title="Fecha de nacimiento" class="visible-xs-block">F. nac.</abbr><div class="hidden-xs">Fecha de nacimiento</div></th>
-            <th>Nick</th>
+            <th class="hidden-xs">Nick</th>
             <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
          {% set catIndex = 0 %}
@@ -95,7 +95,7 @@
          <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.nombre }}</td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.fnac|date('d/m/Y') }}</td>
-         <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
          <td>
             <div class="btn-group visible-xs-block">
                <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>

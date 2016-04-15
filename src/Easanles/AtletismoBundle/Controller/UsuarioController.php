@@ -128,7 +128,6 @@ class UsuarioController extends Controller {
       
    }
     
-    
    public function editarUsuarioAction(Request $request, $nombre){
    	$em = $this->getDoctrine()->getManager();
    	$repoUsu = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Usuario');
