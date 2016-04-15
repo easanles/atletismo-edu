@@ -110,7 +110,7 @@
 {% endblock %}
 
 {% block js %}
-   {% if rol == "admin" %}{% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}{% endif %}
+   {% if rol == "admin" %}{% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}{% endif %}
 
 {% endblock %}
 

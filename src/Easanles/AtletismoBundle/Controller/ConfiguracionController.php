@@ -318,15 +318,22 @@ class ConfiguracionController extends Controller {
     	 
     	   $output = new BufferedOutput();
        	$options = array('command' => 'cache:clear');
-    	   $application->run(new ArrayInput($options), $output);
-    	   $options = array('command' => 'cache:clear','--env=prod' => true);
-    	   $application->run(new ArrayInput($options), $output);
+    	   $code = $application->run(new ArrayInput($options), $output);
+    	   //$options = array('command' => 'cache:clear','--env' => "prod");
+    	   //$application->run(new ArrayInput($options), $output);
     	   $content = $output->fetch();
     	   
-    	   $response = new JsonResponse([
-       			'success' => true,
-       			'message' => 'Cache limpia.<br><strong>Consola</strong>: '.$content,
-       	]);
+    	   if ($code == 0){
+    	      $response = new JsonResponse([
+       		   	'success' => true,
+       			   'message' => 'Cache limpia.<br><strong>Consola</strong>: '.$content,
+       	   ]);
+    	   } else {
+    	   	$response = new JsonResponse([
+    	   			'success' => false,
+    	   			'message' => $content,
+    	   	]);
+    	   }
     	} catch(\Exception $e){
     		$response = new JsonResponse([
     				'success' => false,

@@ -144,11 +144,11 @@
          var autoSelectRon = {{ selRon.sid }};
       {% endif %}
    </script>
-   {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/resultados.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+   {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/resultados.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
    {% if rol == "admin" %}
-      {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+      {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
    {% else %}
-      {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/user.js' filter='?uglifyjs2' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
+      {% javascripts '@EasanlesAtletismoBundle/Resources/assets/js/user.js' %}<script src="{{ asset_url }}"></script>{% endjavascripts %}
    {% endif %}
 {% endblock %}
 
