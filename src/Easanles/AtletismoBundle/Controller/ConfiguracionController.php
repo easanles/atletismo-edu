@@ -13,6 +13,7 @@ use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class ConfiguracionController extends Controller {
 	
@@ -278,13 +279,13 @@ class ConfiguracionController extends Controller {
     	   $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
     	   $application->setAutoExit(false);
     	   $options = array('command' => 'doctrine:database:drop',"--force" => true);
-    	   $application->run(new ArrayInput($options))." ";
+    	   $application->run(new ArrayInput($options));
     	
     	   $this->getDoctrine()->getManager()->getConnection()->close();
     	   $options = array('command' => 'doctrine:database:create');
-    	   $application->run(new ArrayInput($options))." ";
+    	   $application->run(new ArrayInput($options));
        	$options = array('command' => 'doctrine:schema:update',"--force" => true);
-       	$application->run(new ArrayInput($options))." ";
+       	$application->run(new ArrayInput($options));
     	
     	   $options = array('command' => 'doctrine:fixtures:load','--append' => true);
     	   $application->run(new ArrayInput($options));
@@ -315,14 +316,16 @@ class ConfiguracionController extends Controller {
     	   $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
     	   $application->setAutoExit(false);
     	 
+    	   $output = new BufferedOutput();
        	$options = array('command' => 'cache:clear');
-    	   $application->run(new ArrayInput($options));
+    	   $application->run(new ArrayInput($options), $output);
     	   $options = array('command' => 'cache:clear','--env=prod' => true);
-    	   $application->run(new ArrayInput($options));
-    	 
+    	   $application->run(new ArrayInput($options), $output);
+    	   $content = $output->fetch();
+    	   
     	   $response = new JsonResponse([
        			'success' => true,
-       			'message' => 'Cache limpia',
+       			'message' => 'Cache limpia.<br><strong>Consola</strong>: '.$content,
        	]);
     	} catch(\Exception $e){
     		$response = new JsonResponse([
@@ -339,13 +342,23 @@ class ConfiguracionController extends Controller {
     	   $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
     	   $application->setAutoExit(false);
     
-       	$options = array('command' => 'assetic:dump --env=prod --no-debug');
-    	   $application->run(new ArrayInput($options));
-    
-       	$response = new JsonResponse([
-       			'success' => true,
-       			'message' => 'Assetic dump OK',
-       	]);
+       	$options = array('command' => 'assetic:dump', '--env' => "prod", '--no-debug');
+       	$output = new BufferedOutput();
+       	
+    	   $code = $application->run(new ArrayInput($options), $output);
+    	   $content = $output->fetch();
+         
+    	   if ($code == 0){
+    	   	$response = new JsonResponse([
+    	   			'success' => true,
+    	   			'message' => 'Assetic dump OK. Código: '.$code."<br><strong>Consola</strong>: ".$content,
+    	   	]);
+    	   } else {
+       	   $response = new JsonResponse([
+       			   'success' => false,
+       			   'message' => $content,
+       	   ]);
+    	   }
     	} catch(\Exception $e){
     		$response = new JsonResponse([
     				'success' => false,

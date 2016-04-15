@@ -90,7 +90,7 @@
          <div class="row">
             {% if accDebug %}
             <button id="btn_poblarbd" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="INSERT INTO ..."><span class="glyphicon glyphicon-save"></span> Poblar BD</button>
-            <button id="btn_rehacerbd" type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append&#10;INSERT (valores por defecto)"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</button>
+            <button id="btn_rehacerbd" type="button" class="btn btn-danger pull-right" data-toggle="tooltip" data-placement="bottom" title="doctrine:database:drop --force&#10;doctrine:database:create&#10;doctrine:schema:update --force&#10;doctrine:fixtures:load --append&#10;INSERT (valores por defecto)"><span class="glyphicon glyphicon-refresh"></span> Rehacer BD</button>
             {% endif %}
             <button id="btn_limpiarcache" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="cache:clear&#10;cache:clear --env=prod"><span class="glyphicon glyphicon-trash"></span> Limpiar cache</button>
             <button id="btn_asseticdump" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="assetic:dump --env=prod --no-debug"><span class="glyphicon glyphicon-refresh"></span> Assetic dump</button>
