@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="usu")
  * @ORM\Entity(repositoryClass="Easanles\AtletismoBundle\Entity\Repository\UsuarioRepository")
  */
-class Usuario implements UserInterface {
+class Usuario implements UserInterface, \Serializable {
 	
     /**
      * @var string
@@ -111,7 +111,22 @@ class Usuario implements UserInterface {
 	 * @see \Symfony\Component\Security\Core\User\UserInterface::eraseCredentials()
 	 */
 	public function eraseCredentials() {
-
+	}
+	
+	/** @see \Serializable::serialize() */
+	public function serialize(){
+		return serialize(array(
+				$this->nombre,
+				$this->contra,
+		));
+	}
+	
+	/** @see \Serializable::unserialize() */
+	public function unserialize($serialized){
+		list (
+				$this->nombre,
+				$this->contra,
+		) = unserialize($serialized);
 	}
 
 }

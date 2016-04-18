@@ -131,9 +131,9 @@ function sendAction(path, icon){
 	   $.getJSON(path, function(data, status){
 	        if (status == "success"){
 	           if (data.success == true){
-	             $("#alert-div-comm").append(alerthtml_preok + data.message + alerthtml_pos);
+	             $("#alert-div-comm").append(alerthtml_preok + data.message.replace(/\n/g, "<br />") + alerthtml_pos);
 	           } else {
-	             $("#alert-div-comm").append(alerthtml_preerr + data.message + alerthtml_pos);
+	             $("#alert-div-comm").append(alerthtml_preerr + data.message.replace(/\n/g, "<br />") + alerthtml_pos);
 	           }
 	        } else {
 	          $("#alert-div-comm").append(alerthtml_preerr + 'ERROR' + alerthtml_pos);

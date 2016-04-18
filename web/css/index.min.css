@@ -1,1 +1,216 @@
-@charset "UTF-8";html{position:relative;min-height:100%}h1,h2{color:#337ab7}.inactive{cursor:not-allowed;text-decoration:line-through}#container_title{padding-left:.5em}#container_header{margin-bottom:10px}.clickable{cursor:pointer}#data_form{padding:1em .5em}.form_row{margin-bottom:.5em}.subform{display:inline-block;width:100%}.subform .panel-body{max-height:17em;overflow-y:auto}.subform table{border:0;width:100%}.subform th{text-align:center}.config-content{margin:1em .5em}.config-content table{margin-top:.5em}.droplist{overflow:hidden;-webkit-transition:height .2s ease-in;-moz-transition:height .2s ease-in;-ms-transition:height .2s ease-in;-o-transition:height .2s ease-in;transition:height .2s ease-in}.table .table{margin:0}.td-padding{padding-left:3em !important}.licencia{white-space:nowrap;text-transform:uppercase}@media(max-width:767px){table.visible-xs{display:table !important}.scrollable{max-height:13em;overflow-y:auto;margin-bottom:1em}.scrollable table{margin-bottom:0}}.reduceheight{max-height:18em;overflow-y:auto}body{margin-bottom:78px}.footer{background-color:#f5f5f5;bottom:0;height:78px;position:absolute;width:100%}.footer>.container{padding:1em 1em}#login-form{padding:1em}#login-form>input{margin:.5em 0}.glyphicon.spinning{animation:spin 1s infinite linear;-webkit-animation:spin2 1s infinite linear}@keyframes spin{from{transform:scale(1) rotate(0)}to{transform:scale(1) rotate(360deg)}}@-webkit-keyframes spin2{from{-webkit-transform:rotate(0)}to{-webkit-transform:rotate(360deg)}}.nested-group input:first-child{border-bottom-right-radius:0 !important;border-top-right-radius:0 !important;border-top-left-radius:4px !important;border-bottom-left-radius:4px !important}.nested-group input:last-child{border-bottom-right-radius:4px !important;border-top-right-radius:4px !important;border-top-left-radius:0 !important;border-bottom-left-radius:0 !important}.nested-group input{border-radius:0 !important;width:25% !important}.nested-group input.has-error{border-color:#a94442;box-shadow:0 1px 1px rgba(0,0,0,0.075) inset}.nested-group input.has-error:focus{border-color:#843534;box-shadow:0 1px 1px rgba(0,0,0,0.075) inset,0 0 6px #ce8483}.grid-btn{position:relative;top:-65px;opacity:.85}.grid-comname{position:absolute;background-color:black;padding:.5em;color:white;top:-5px;left:20px;width:85%;opacity:.85}.list-row{padding:.5em;margin:.5em;background-color:#f5f5f5;border-radius:4px}.list-row-hoy{padding:.5em;margin:.5em;background-color:#d9edf7;border:#31708f 1px solid;border-radius:4px}
+@CHARSET "UTF-8";
+
+html{
+   position: relative;
+   min-height: 100%;
+}
+
+h1, h2{
+	color: #337ab7;
+}
+
+.inactive {
+	cursor: not-allowed;
+	text-decoration: line-through;
+}
+
+
+#container_title {
+   padding-left: 0.5em;
+}
+
+#container_header {
+	margin-bottom: 10px;
+}
+
+.clickable{
+   cursor: pointer;
+}
+
+#data_form{
+   padding: 1em 0.5em;
+}
+
+.form_row{
+   margin-bottom: 0.5em;
+}
+
+.subform{
+   display: inline-block;
+   width: 100%;
+}
+
+.subform .panel-body {
+   max-height: 17em;
+   overflow-y: auto;
+}
+
+.subform table{
+   border: none;
+   width: 100%;
+}
+
+.subform th{
+   text-align: center;
+}
+
+
+.config-content {
+   margin: 1em 0.5em;
+}
+
+.config-content table {
+   margin-top: 0.5em;
+}
+
+.droplist{
+   overflow: hidden;
+   -webkit-transition: height 0.2s ease-in;
+   -moz-transition: height 0.2s ease-in;
+   -ms-transition: height 0.2s ease-in;
+   -o-transition: height 0.2s ease-in;
+   transition: height 0.2s ease-in;
+}
+
+.table .table {
+   margin: 0;
+}
+
+.td-padding {
+   padding-left: 3em !important;
+}
+
+.licencia{
+   white-space: nowrap;
+   text-transform: uppercase;
+}
+
+/*Bootstrap no asigna display:table a tablas en tamaño xs porque prevalece la regla display:block !important*/
+@media (max-width: 767px) { 
+  table.visible-xs {
+    display: table !important;
+  }
+  
+  .scrollable {
+     max-height: 13em;
+     overflow-y: auto;
+     margin-bottom: 1em;
+  }
+  
+  .scrollable table{
+     margin-bottom: 0px;
+  }
+}
+
+.reduceheight {
+     max-height: 18em;
+     overflow-y: auto;
+}
+
+/*http://getbootstrap.com/examples/sticky-footer-navbar/*/
+
+body {
+   /*padding-top: 50px; Para navbar-fixed*/
+   margin-bottom: 78px;
+}
+
+.footer {
+    background-color: #f5f5f5;
+    bottom: 0;
+    height: 78px;
+    position: absolute;
+    width: 100%;
+}
+
+.footer > .container{
+   padding: 1em 1em;
+}
+
+
+#login-form {
+   padding: 1em;
+}
+
+#login-form > input {
+   margin: 0.5em 0em;
+}
+
+
+/* http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state */
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+
+    .nested-group input:first-child {
+        border-bottom-right-radius: 0px !important;
+        border-top-right-radius: 0px !important;
+        border-top-left-radius: 4px !important;
+        border-bottom-left-radius: 4px !important;
+    }
+
+    .nested-group input:last-child {
+        border-bottom-right-radius: 4px !important;
+        border-top-right-radius: 4px !important;
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+    }
+
+    .nested-group input {
+        border-radius: 0px !important;
+        width: 25% !important;
+    }
+    
+    .nested-group input.has-error {
+       border-color: #a94442;
+       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    }
+    
+    .nested-group input.has-error:focus {
+       border-color: #843534;
+       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #ce8483;
+    }
+    
+.grid-btn {
+   position: relative;
+   top: -65px;
+   opacity: 0.85;
+}
+
+.grid-comname {
+   position: absolute;
+   background-color: black;
+   padding: 0.5em;
+   color: white;
+   top: -5px;
+   left: 20px;
+   width: 85%;
+   opacity: 0.85;
+}
+
+.list-row {
+   padding: 0.5em;
+   margin: 0.5em;
+   background-color: #f5f5f5;
+   border-radius: 4px;
+}
+
+.list-row-hoy {
+   padding: 0.5em;
+   margin: 0.5em;
+   background-color: #d9edf7;
+   border: #31708f 1px solid;
+   border-radius: 4px;
+}
+

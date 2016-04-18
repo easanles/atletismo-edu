@@ -93,7 +93,7 @@
          <td class="clickable{% if cat is defined %} hidden-xs{% endif %}" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if categorias[catIndex] is not null %}{{ categorias[catIndex].nombre }}{% endif %}</td> {% set catIndex = catIndex + 1 %}
          <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.apellidos }}</td>
          <td class="clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.nombre }}</td>
-         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.sexo == false %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == true %}<abbr title="Mujer">M</abbr>{% endif %}</td>
+         <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.sexo == 0 %}<abbr title="Hombre">H</abbr>{% elseif atl.sexo == 1 %}<abbr title="Mujer">M</abbr>{% endif %}</td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{{ atl.fnac|date('d/m/Y') }}</td>
          <td class="hidden-xs clickable" onClick="goToUrl('{{ path('ver_atleta', {'id': atl.id}) }}')">{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
          <td>

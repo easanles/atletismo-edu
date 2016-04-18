@@ -180,23 +180,19 @@ class TipoPruebaController extends Controller {
     	foreach ($modArray as $mod){
     		switch ($mod->getSexo()){
     			case 2: { //Ambos
-    				if ((in_array($mod->getEntorno(), $ambosArray))
-    						|| (in_array($mod->getEntorno(), $masArray))
-    						|| (in_array($mod->getEntorno(), $femArray))) {
+    				if (in_array($mod->getEntorno(), $ambosArray)) {
     				   throw new Exception("Hay una modalidad repetida");
     				}
     				else $ambosArray[] = $mod->getEntorno();
     			} break;
     			case 0: { //Masculino
-    				if ((in_array($mod->getEntorno(), $ambosArray))
-    						|| (in_array($mod->getEntorno(), $masArray))) {
+    				if (in_array($mod->getEntorno(), $masArray)) {
     				   throw new Exception("Hay una modalidad repetida");
     				}
     				else $masArray[] = $mod->getEntorno();
     			} break;
     			case 1: { //Femenino
-    				if ((in_array($mod->getEntorno(), $ambosArray))
-    						|| (in_array($mod->getEntorno(), $femArray))) {
+    				if (in_array($mod->getEntorno(), $femArray)) {
     				   throw new Exception("Hay una modalidad repetida");
     				}
     				else $femArray[] = $mod->getEntorno();
