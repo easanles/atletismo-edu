@@ -57,6 +57,9 @@ class IntentoController extends Controller {
 		         $comDisponibles = $repoCom->findTempComs($temp, "admin");
 				}
 			}
+		} else {
+			$parametros["fixedCom"] = false;
+			$comDisponibles = $repoCom->findTempComs($temp, "admin");
 		}
 		$parametros["coms"] = $comDisponibles;
       return $this->render('EasanlesAtletismoBundle:Intento:pant_intento.html.twig', $parametros);

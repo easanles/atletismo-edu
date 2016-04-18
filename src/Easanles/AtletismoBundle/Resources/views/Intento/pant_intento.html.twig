@@ -64,7 +64,6 @@
                <label for="select-com">Competiciones temporada {{ currentTemp }}/{{ (currentTemp + 1)|slice(2, 2) }}</label>
             {% endif %}
             <select id="select-com" class="form-control" onChange="loadPru(this.value)">
-               {% if fixedCom == false %}<option value=""></option>{% endif %}
                {% for com in coms %}
                   <option value="{{ com.sid }}"{% if selCom is defined %}{% if selCom == com.sid%} selected{% endif %}{% endif %}>{{ com.nombre }}</option>
                {% endfor %}
