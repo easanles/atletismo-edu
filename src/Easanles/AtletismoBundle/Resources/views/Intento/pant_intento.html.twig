@@ -58,9 +58,13 @@
    <div class="row">
       <div class="col-xs-12 col-sm-5">
          <div class="form-group">
-            <label for="select-com">Competiciones temporada {{ currentTemp }}/{{ (currentTemp + 1)|slice(2, 2) }}</label>
+            {% if fixedCom %}
+               <label for="select-com">Competición</label>
+            {% else %}
+               <label for="select-com">Competiciones temporada {{ currentTemp }}/{{ (currentTemp + 1)|slice(2, 2) }}</label>
+            {% endif %}
             <select id="select-com" class="form-control" onChange="loadPru(this.value)">
-               <option value=""></option>
+               {% if fixedCom == false %}<option value=""></option>{% endif %}
                {% for com in coms %}
                   <option value="{{ com.sid }}"{% if selCom is defined %}{% if selCom == com.sid%} selected{% endif %}{% endif %}>{{ com.nombre }}</option>
                {% endfor %}

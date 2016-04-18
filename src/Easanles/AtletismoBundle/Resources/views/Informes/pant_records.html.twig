@@ -72,7 +72,7 @@
    {% endif %}
    
    {% if rol == "admin" %}
-      <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Incluyendo records de competiciones ocultas <a href="{% if tipo == 0 %}{{ path('users_pantalla_records_masc') }}{% elseif tipo == 1 %}{{ path('users_pantalla_records_fem') }}{% endif %}">[Ir a vista de usuarios]</a></p>
+      <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Incluyendo records de competiciones ocultas <a href="{% if tipo == 0 %}{{ path('users_pantalla_records_masc') }}{% elseif tipo == 1 %}{{ path('users_pantalla_records_fem') }}{% endif %}">[Ir a vista de socios]</a></p>
    {% endif %}
    <div class="row">
       <div class="form-group col-sm-5 col-sm-offset-1">
@@ -113,7 +113,7 @@
            <th>Fecha</th>
            <th class="hidden-xs">Sede</th>
         </tr>
-        {% for row in entorno.tabla %}
+        {% for row in entorno.tabla if row.idAtl is not null %}
         <tr{% if destacarAtl is defined %}{% if destacarAtl.id == row.idAtl %} class="text-success"{% endif %}{% endif %}>
            <td>{{ row.prueba }}</td>
            <td>{{ row.premios }}</td>

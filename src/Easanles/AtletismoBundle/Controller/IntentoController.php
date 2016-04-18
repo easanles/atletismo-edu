@@ -37,6 +37,8 @@ class IntentoController extends Controller {
 		} else {
 			$sidCom = $request->query->get('com');
 		}
+		$temp = Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y'));
+		$parametros["currentTemp"] = $temp;
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
 		if (($sidCom != null) && ($sidCom != "")){
 			$com = $repoCom->find($sidCom);
@@ -47,11 +49,15 @@ class IntentoController extends Controller {
 			}
 			else {
 				$parametros["selCom"] = $sidCom;
+				if ($com->getTemp() != $temp){
+					$parametros["fixedCom"] = true;
+					$comDisponibles = array($com);
+				} else {
+					$parametros["fixedCom"] = false;
+		         $comDisponibles = $repoCom->findTempComs($temp, "admin");
+				}
 			}
 		}
-		$temp = Helpers::getTempYear($this->getDoctrine(), date('d'), date('m'), date('Y'));
-		$parametros["currentTemp"] = $temp;
-		$comDisponibles = $repoCom->findTempComs($temp, "admin");
 		$parametros["coms"] = $comDisponibles;
       return $this->render('EasanlesAtletismoBundle:Intento:pant_intento.html.twig', $parametros);
 	}
