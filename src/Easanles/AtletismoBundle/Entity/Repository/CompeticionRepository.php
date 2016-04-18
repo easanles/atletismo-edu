@@ -13,7 +13,10 @@ class CompeticionRepository extends EntityRepository {
 	 */
 	public function findAllOrdered($from, $numResultados)	{
 		$result = $this->getEntityManager()
-		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.fechaFin, com.sede, com.esVisible FROM EasanlesAtletismoBundle:Competicion com ORDER BY com.temp DESC, com.fecha DESC')
+		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.fechaFin, com.sede, com.esVisible,
+				 -(com.fecha) AS HIDDEN _nullFecha
+				 FROM EasanlesAtletismoBundle:Competicion com
+				 ORDER BY com.temp DESC, _nullFecha ASC, com.fecha DESC')
 		->setFirstResult($from)
 		->setMaxResults($numResultados)
 		->getResult();
@@ -88,9 +91,10 @@ class CompeticionRepository extends EntityRepository {
 			$qb = $qb->andWhere('com.temp = :temp')
 			->setParameter('temp', $temp);
 		}
-		$result = $qb->select('com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.fechaFin, com.sede, com.esVisible')
+		$result = $qb->select('com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.fechaFin, com.sede, com.esVisible, -(com.fecha) AS HIDDEN _nullFecha')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
 		->orderBy('com.temp', 'DESC')
+		->addOrderBy('_nullFecha', 'ASC')
 		->addOrderBy('com.fecha', 'DESC')
 		->getQuery()
 		->setFirstResult($from)
