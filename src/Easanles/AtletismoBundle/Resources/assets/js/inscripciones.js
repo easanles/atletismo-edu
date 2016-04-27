@@ -27,7 +27,11 @@ function toggleInsPages(tab){
 
 function nextPill(){
 	if ($("#inspill-atl").hasClass("active")){
-		$('#inspill-pru a').click();
+		if ($("#inspill-pru").hasClass("hidden")){
+		   $('#inspill-confirm a').click();
+		} else {			
+		   $('#inspill-pru a').click();
+		}
 	} else if ($("#inspill-pru").hasClass("active")){
 		$('#inspill-confirm a').click();
 	} else if ($("#inspill-confirm").hasClass("active")){
@@ -177,7 +181,7 @@ function checkSelectedButtons(){
 	});
 }
 
-function toggleCheckButton(item){
+function toggleCheckButton(item, cuotaPru){
 	data = item.id.split("-");
 	type = data[1];
 	id = data[2];
@@ -189,6 +193,9 @@ function toggleCheckButton(item){
 		$(item).html(btnON);
         if (type == "atl"){
     		selAtl.push([id, nombre, catnombre]);
+    		if (cuotaPru != null){
+    			selPru.push([id, cuotaPru]);
+    		}
         } else if (type == "pru"){
         	countPru++;
         	countDiv = $("#count-pru-"+idAtlPruList);

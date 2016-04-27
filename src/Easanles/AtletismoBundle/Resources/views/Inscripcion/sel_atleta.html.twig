@@ -49,7 +49,7 @@
                   <button id="sel-atl-{{ atl.id }}" 
                      data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}"
                      data-catnombre="{% if categorias[catIndex] is not null %}{{ categorias[catIndex].nombre }}{% endif %}"
-                     data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO
+                     data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this, {% if com.esCuota %}'{{ sidCuota }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-unchecked"></span> NO
                   </button>
                </td>
             </tr>

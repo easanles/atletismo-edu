@@ -22,6 +22,7 @@
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
             <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a href="{{ path('pantalla_cuotas') }}">Cuotas</a></li>
             <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
             <li><a href="{{ path('ingresos') }}">Ingresos</a></li>
          </ul>
@@ -52,7 +53,8 @@
                {% if com.cartel is not null %}
                   <span><img id="pic-img" height="30" src="{{ vich_uploader_asset(com, 'cartelFile', 'Easanles\\AtletismoBundle\\Entity\\Competicion') }}" alt="{{ com.nombre }}" /></span>
                {% endif %}
-               {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}) - Total: {{ com.costeCom|number_format(2, ',', '.') }}€
+               {% if com.esCuota %}<span class="label label-default">Cuota</span>{% endif %} {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}) - Total: {{ com.costeCom|number_format(2, ',', '.') }}€
+               
             </h4>
             <table class="table table-hover table-bordered table-condensed table-striped table-responsive">
                <tbody>
@@ -75,7 +77,7 @@
                               <tbody>
                                  {% for ins in atl.inss %}
                                     <tr>
-                                       <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {{ ins.prueba }}</td>
+                                       <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {% if com.esCuota %}Cuota{% else %}{{ ins.prueba }}{% endif %}</td>
                                        <td><span class="hidden-xs">Fecha inscripción: </span>{{ ins.fecha|date('d/m/Y') }}</td>
                                        <td>{{ ins.coste|number_format(2, ',', '.') }}€</td>
                                        <td><input id="cb-{{ ins.sid }}" type="checkbox" class="group-{{ com.sid }}_{{ atl.id }}" onClick="checkboxGroup(this); selectIns()"></td>

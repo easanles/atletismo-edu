@@ -154,6 +154,11 @@ class CompeticionController extends Controller {
        	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('mis_competiciones'));
        	 return $response;
        }
+       if ($com->getEsCuota() == true){
+       	 $response = new Response('El identificador '.$id.' no pertenece a una competición <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
+       	 $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
+       	 return $response;
+       }
        $entornos = $repoCom->getComEntornos($id);
        $entorno = "";
        if (count($entornos) > 1) $entorno = "Varios";

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Console\Input\ArrayInput;
+use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 
 class DefaultController extends Controller{
 	 private function checkDatabase(){
@@ -126,6 +127,7 @@ class DefaultController extends Controller{
     	 $rehacerConfig = false;
     	 $rehacerCatTodos = false;
     	 $crearUsuAdmin = false;
+    	 $crearCuotaTpr = false;
     	 foreach ($nombreTablas as $tabla){
     	 	 if ($schemaManager->tablesExist(array($tabla)) == false) {
     	 	    $tablasPerdidas[] = $tabla;
@@ -161,13 +163,31 @@ class DefaultController extends Controller{
     	 	    $todoOk = false;
     	    }
     	 }
+    	 $repoTprf = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
+    	 if (!in_array('tprf', $tablasPerdidas)){
+    	 	 $checkTprf = $repoTprf->findOneBy(array("esCuota" => true));
+    	 	 if (count($checkTprf) == 0) {
+    	 		 $crearCuotaTpr = true;
+    	 		 $todoOk = false;
+    	 	 }
+    	 }
+    	 if ($crearCuotaTpr == false){
+    	 	 if (!in_array('tprm', $tablasPerdidas)){
+    	 	    $cuotaTprf = $repoTprf->findOneBy(array("esCuota" => true));		
+    	 	    if (count($cuotaTprf->getModalidades()) == 0) {
+    	 		    $crearCuotaTpr = true;
+    	 		    $todoOk = false;
+    	 	    }
+    	 	 }
+    	 }
     	 $parametros = array(
     	 		"todoOK" => $todoOk,
     	 		"tablasPerdidas" => $tablasPerdidas,
     	 		"rehacerBDEntera" => $rehacerBDEntera,
     	 		"rehacerConfig" => $rehacerConfig,
     	 		"rehacerCatTodos" => $rehacerCatTodos,
-    	 		"crearUsuAdmin" => $crearUsuAdmin
+    	 		"crearUsuAdmin" => $crearUsuAdmin,
+    	 		"crearCuotaTpr" => $crearCuotaTpr
     	 );
     	
     	 return $this->render('EasanlesAtletismoBundle:Default:pant_instalar.html.twig', $parametros);

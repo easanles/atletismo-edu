@@ -3,16 +3,15 @@
 Easanles\AtletismoBundle\Entity\Competicion:
   properties:
      nombre:
-        - NotNull: 
-           message: Este dato no debe ser nulo
         - NotBlank: 
            message: Este campo no debe estar en blanco
      temp:
         - Type: 
            type: Integer
            message: Este valor debe ser un número entero
-        - NotNull: 
-           message: Este dato no debe ser nulo
+        - GreaterThan:
+           value: 0
+           message: Introduza un valor mayor que cero
         - NotBlank: 
            message: Este campo no debe estar en blanco
      fecha:

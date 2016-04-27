@@ -17,7 +17,7 @@ class TipoPruebaController extends Controller {
     
    public function listadoTipoPruebaFormatoAction() {
    	$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
-   	$tiposprueba = $repository->findAll();
+   	$tiposprueba = $repository->findBy(array("esCuota" => false));
    	   	
       return $this->render('EasanlesAtletismoBundle:TipoPrueba:list_tipopruebaformato.html.twig',
       		array("tiposprueba" => $tiposprueba));

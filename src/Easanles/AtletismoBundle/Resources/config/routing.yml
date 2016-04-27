@@ -254,6 +254,20 @@ pantalla_asistencia:
 asistencia_atletas:
    path: /admin/informes/asistencia/participaciones
    defaults: {_controller: "EasanlesAtletismoBundle:Informes:obtenerParticipaciones"}
+   
+#-----------------------Cuotas-----------------------
+pantalla_cuotas:
+   path: /admin/informes/cuotas
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:pantallaCuotas"}
+crear_cuota:
+   path: /admin/informes/cuotas/crear
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:crearCuota"}
+borrar_cuota:
+   path: /admin/informes/cuotas/borrar
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:borrarCuota"}
+editar_cuota:
+   path: /admin/informes/cuotas/editar
+   defaults: {_controller: "EasanlesAtletismoBundle:Informes:editarCuota"}
 
 #------------------Pagos pendientes------------------
 pagos_pendientes:

@@ -16,6 +16,7 @@ class CompeticionRepository extends EntityRepository {
 		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.fechaFin, com.sede, com.esVisible,
 				 -(com.fecha) AS HIDDEN _nullFecha
 				 FROM EasanlesAtletismoBundle:Competicion com
+				 WHERE com.esCuota = 0
 				 ORDER BY com.temp DESC, _nullFecha ASC, com.fecha DESC')
 		->setFirstResult($from)
 		->setMaxResults($numResultados)
@@ -23,6 +24,24 @@ class CompeticionRepository extends EntityRepository {
 		foreach ($result as $key => $com){
 			$numPruebas = $this->find($com['sid'])->getPruebas()->count();
 			$result[$key]['numpruebas'] = $numPruebas;
+			$result[$key]['numatletas'] = count($this->findAtletasIns($com['sid']));
+		}
+		return $result;
+	}
+	
+	/**
+	 * Listado de cuotas
+	 */
+	public function findCuotas($from, $numResultados)	{
+		$result = $this->getEntityManager()
+		->createQuery('SELECT com.sid, com.temp, com.nombre, com.fecha, com.fechaFin
+				 FROM EasanlesAtletismoBundle:Competicion com
+				 WHERE com.esCuota = 1
+				 ORDER BY com.temp DESC')
+					 ->setFirstResult($from)
+					 ->setMaxResults($numResultados)
+					 ->getResult();
+		foreach ($result as $key => $com){
 			$result[$key]['numatletas'] = count($this->findAtletasIns($com['sid']));
 		}
 		return $result;
@@ -38,6 +57,7 @@ class CompeticionRepository extends EntityRepository {
 		} else $qb->orderBy('com.fecha', 'DESC');
 		$result = $qb->select('com.sid, com.nombre, com.temp, com.sede, com.fecha, com.fechaFin, com.desc, com.web, com.cartel, com.esFeder, com.esOficial, com.esInscrib')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->andWhere('com.esCuota = 0')
 		->andWhere('com.temp = :temp')
 		->setParameter('temp', $temp)
 		->getQuery()->getResult();
@@ -93,6 +113,7 @@ class CompeticionRepository extends EntityRepository {
 		}
 		$result = $qb->select('com.sid, com.temp, com.ubicacion, com.nombre, com.fecha, com.fechaFin, com.sede, com.esVisible, -(com.fecha) AS HIDDEN _nullFecha')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->andWhere('com.esCuota = 0')
 		->orderBy('com.temp', 'DESC')
 		->addOrderBy('_nullFecha', 'ASC')
 		->addOrderBy('com.fecha', 'DESC')
@@ -158,6 +179,7 @@ class CompeticionRepository extends EntityRepository {
 		}
 		$result = $qb->select('com.sid, com.nombre, com.temp, com.fecha, com.fechaFin, com.sede, com.ubicacion, com.web, com.desc, com.esFeder, com.esOficial, com.esVisible, com.esInscrib, com.cartel')
 		->from('EasanlesAtletismoBundle:Competicion', 'com')
+		->andWhere('com.esCuota = 0')
 		->orderBy('com.fecha', 'ASC')
 		->getQuery()->getResult();
 		foreach ($result as $key => $com){
@@ -202,7 +224,7 @@ class CompeticionRepository extends EntityRepository {
 				FROM EasanlesAtletismoBundle:Prueba pru
 				JOIN pru.sidTprm tprm
 				WHERE pru.sidCom = :sidcom
-				GROUP BY tprm.entorno ')
+				GROUP BY tprm.entorno')
 		->setParameter('sidcom', $sidCom)
 		->getResult();
 	}

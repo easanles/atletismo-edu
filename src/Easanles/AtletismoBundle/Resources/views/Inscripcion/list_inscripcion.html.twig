@@ -6,7 +6,7 @@
 {% block navbar %}
       {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
       <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
-      <li class="active"><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li{% if com.esCuota == false %} class="active"{% endif %}><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
       <li class="dropdown">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
@@ -15,11 +15,12 @@
             <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
          </ul>
       </li>
-      <li class="dropdown">
+      <li class="dropdown{% if com.esCuota %} active{% endif %}">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
          <ul class="dropdown-menu">
             <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
             <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a href="{{ path('pantalla_cuotas') }}">Cuotas</a></li>
             <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
             <li><a href="{{ path('ingresos') }}">Ingresos</a></li>
          </ul>
@@ -29,9 +30,14 @@
 
 {% block breadcrumb %}
   <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  {% if com.esCuota %}
+     <li>Informes</li>
+     <li><a href="{{ path('pantalla_cuotas') }}">Cuotas</a></li>
+  {% else %}
   <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
   <li><a href="{{ path('ver_competicion', {'id': com.sid}) }}">{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</a></li>
-  <li class="active">Inscripciones</li>
+  {% endif %}
+  <li class="active">Inscripciones{% if com.esCuota %} {{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}){% endif %}</li>
 {% endblock %}
 
    {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
@@ -56,11 +62,11 @@
             <th>Apellidos</th>
             <th>Nombre</th>
             <th><abbr title="Categoría" class="visible-xs">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
-            <th><abbr title="Pruebas" class="visible-xs">Pru.</abbr><div class="hidden-xs">Pruebas</div></th>
+            {% if com.esCuota == false %}<th><abbr title="Pruebas" class="visible-xs">Pru.</abbr><div class="hidden-xs">Pruebas</div></th>{% endif %}
             <th class="hidden-xs">Precio total</th>
             <th>Estado</th>
-            <th class="hidden-xs">Dorsal</th>
-            <th class="hidden-xs">Asistencia</th>
+            {% if com.esCuota == false %}<th class="hidden-xs">Dorsal</th>{% endif %}
+            {% if com.esCuota == false %}<th class="hidden-xs">Asistencia</th>{% endif %}
             <th><abbr title="Acciones" class="visible-xs">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
          </tr>
          {% for atl in atletas %}
@@ -73,11 +79,11 @@
             <td>{{ atl.apellidos }}</td>
             <td>{{ atl.nombre }}</td>
             <td>{% if atl.categoria is not null %}{{ atl.categoria }}{% endif %}</td>
-            <td>{{ atl.pruebas|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="toggleDropListTable({{ atl.id }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button></td>
+            {% if com.esCuota == false %}<td>{{ atl.pruebas|length }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar pruebas inscritas" onClick="toggleDropListTable({{ atl.id }}, $(this))"><span class="glyphicon glyphicon-collapse-down"></span></button></td>{% endif %}
             <td class="hidden-xs">{{ atl.costetotal|number_format(2, ',', '.') }}€</td>
             <td>{{ atl.estado }}</td>
-            <td class="hidden-xs{% if atl.sidPar is not defined %} text-muted{% endif %}">{{ atl.dorsal }}</td>
-            <td class="hidden-xs"><input id="asistCB-{{ atl.id }}" type="checkbox" onClick="toggleAsist(this, {% if atl.sidPar is defined %}{{ atl.sidPar }}{% else %}null{% endif %})"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>
+            {% if com.esCuota == false %}<td class="hidden-xs{% if atl.sidPar is not defined %} text-muted{% endif %}">{{ atl.dorsal }}</td>{% endif %}
+            {% if com.esCuota == false %}<td class="hidden-xs"><input id="asistCB-{{ atl.id }}" type="checkbox" onClick="toggleAsist(this, {% if atl.sidPar is defined %}{{ atl.sidPar }}{% else %}null{% endif %})"{% if atl.sidPar is not defined %} disabled{% endif %}{% if atl.asistencia == true %} checked{% endif %}></td>{% endif %}
             <td>
                <div class="btn-group visible-xs-block">
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
@@ -89,12 +95,13 @@
                   </ul>
                </div>
                <div class="hidden-xs">
-                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="{% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}" onClick="showModal('newPAR', {{ atl.id }}, {% if atl.sidPar is not defined %}'Confirmar participación'{% else %}'Cambiar dorsal'{% endif %}, null)"><span class="glyphicon glyphicon-bullhorn"></span></button>
+                  {% if com.esCuota == false %}<button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="{% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}" onClick="showModal('newPAR', {{ atl.id }}, {% if atl.sidPar is not defined %}'Confirmar participación'{% else %}'Cambiar dorsal'{% endif %}, null)"><span class="glyphicon glyphicon-bullhorn"></span></button>{% endif %}
                   <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediINS', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-pencil"></span></button>
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Desinscribir" onClick="showModal('delINS', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-remove-circle"></span></button>
                </div>
             </td>
          </tr>
+         {% if com.esCuota == false %}
          <tr><td colspan="10" style="padding: 0px">
             <div id="droplist-{{ atl.id }}" class="droplist">
                <table class="table table-responsive table-hover table-bordered">
@@ -106,8 +113,8 @@
                         <th class="hidden-xs">Código de grupo</th>
                         <th class="hidden-xs">Precio</th>
                         <th>Estado</th>
-                        <th>Registros</th>
-                        <th class="hidden-xs">Registrar marcas</th>
+                        {% if com.esCuota == false %}<th>Registros</th>{% endif %}
+                        {% if com.esCuota == false %}<th class="hidden-xs">Registrar marcas</th>{% endif %}
                      </tr>
                      {% for ins in atl.pruebas %}
                         {% if ins.sexo == 0 %}
@@ -127,14 +134,15 @@
                            <td class="hidden-xs">{% if ins.codGrupo is not null %}{{ ins.codGrupo }} <button type="button" class="btn btn-xs btn-default pull-right" data-toggle="tooltip" data-placement="top" title="Mostrar grupo" onClick="showModal('grupINS', {{ ins.codGrupo }}, null, null)"><span class="glyphicon glyphicon-info-sign"></span></button>{% endif %}</td>
                            <td class="hidden-xs">{{ ins.coste|number_format(2, ',', '.') }}€</td>
                            <td>{{ ins.estado }}</td>
-                           <td>{{ ins.numRegistros }} <a type="button" class="btn btn-xs btn-default pull-right visible-xs" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'atl': atl.id, 'pru': ins.sidPru}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
-                           <td class="hidden-xs"><a type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'atl': atl.id, 'pru': ins.sidPru}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>
+                           {% if com.esCuota == false %}<td>{{ ins.numRegistros }} <a type="button" class="btn btn-xs btn-default pull-right visible-xs" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'atl': atl.id, 'pru': ins.sidPru}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>{% endif %}
+                           {% if com.esCuota == false %}<td class="hidden-xs"><a type="button" class="btn btn-xs btn-block btn-default" data-toggle="tooltip" data-placement="top" title="Registrar marcas" href="{{ path('registrar_intentos', {'atl': atl.id, 'pru': ins.sidPru}) }}"><span class="glyphicon glyphicon-dashboard" aria-label="Registrar marcas"></span></a></td>{% endif %}
                         </tr>
                      {% endfor %}
                   </tbody>
                </table>
             </div>
          </td></tr>
+         {% endif %}
          {% endfor %}
       </tbody>
    </table>

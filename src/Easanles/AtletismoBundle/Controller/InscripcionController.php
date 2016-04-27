@@ -134,6 +134,9 @@ class InscripcionController extends Controller {
     	
     	if ($cat != null) $parametros['cat'] = $cat;
     	if ($query != null) $parametros['query'] = $query;
+    	if ($com->getEsCuota() == true){
+    		$parametros['sidCuota'] = $com->getPruebas()[0]->getSid();
+    	}
     	return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_atleta.html.twig', $parametros);
     }
     
@@ -230,7 +233,6 @@ class InscripcionController extends Controller {
     	 	 $codGrupo = $repoIns->maxCodGrupo() + 1;
     	 	 $parametros['codGrupo'] = $codGrupo;
     	 }
-    	 
     	 return $this->render('EasanlesAtletismoBundle:Inscripcion:sel_confirmar.html.twig', $parametros);
     }
     

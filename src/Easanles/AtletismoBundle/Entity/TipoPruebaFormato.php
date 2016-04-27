@@ -40,7 +40,13 @@ class TipoPruebaFormato {
 	  * @var integer
 	  * @ORM\Column(name="numinttpr", type="smallint", options={"default":1})
 	  */
-	 private $numint = 1;
+	 private $numint;
+	 
+	 /**
+	  * @var boolean
+	  * @ORM\Column(name="escuotatpr", type="boolean", options={"default":0})
+	  */
+	 private $esCuota;
 
 	 /********************* FOREIGN KEYS *****************************/
 	 
@@ -51,6 +57,8 @@ class TipoPruebaFormato {
 	 private $modalidades;
 	 
 	 public function __construct() {
+	 	$this->numint = 1;
+	 	$this->esCuota = false;
 	 	$this->modalidades = new ArrayCollection();
 	 }
 	  
@@ -98,6 +106,13 @@ class TipoPruebaFormato {
 		$this->numint = $numint;
 		return $this;
 	}
+	public function getEsCuota() {
+		return $this->esCuota;
+	}
+	public function setEsCuota($esCuota) {
+		$this->esCuota = $esCuota;
+		return $this;
+	}
 
 	/**
 	 * @Assert\Callback
@@ -105,5 +120,7 @@ class TipoPruebaFormato {
 	public function validate(ExecutionContextInterface $context) {
 		$this->nombre = strip_tags($this->nombre);
 	}
+
+	
 	
 }

@@ -136,6 +136,12 @@ class Competicion {
    */
    private $esInscrib;
    
+   /**
+    * @var boolean
+    * @ORM\Column(name="escuotacom", type="boolean", options={"default":0})
+    */
+   private $esCuota;
+   
    /********************* FOREIGN KEYS *****************************/
      
    /**
@@ -155,6 +161,7 @@ class Competicion {
    	$this->esOficial = false;
    	$this->esVisible = false;
    	$this->esInscrib = false;
+   	$this->esCuota = false;
    	$this->pruebas = new ArrayCollection();
    	$this->participaciones = new ArrayCollection();
    }
@@ -311,7 +318,14 @@ class Competicion {
 		$this->esInscrib = $esInscrib;
 		return $this;
 	}
-	
+	public function getEsCuota() {
+		return $this->esCuota;
+	}
+	public function setEsCuota($esCuota) {
+		$this->esCuota = $esCuota;
+		return $this;
+	}
+		
 	/********************** VALIDACION ***********************/
 	
 	/**
@@ -327,6 +341,12 @@ class Competicion {
 		}
 		if (($this->getFecha() != null) && ($this->getFechaFin() == null)){
 			$this->fechaFin = $this->fecha;
+		}
+		if ($this->esCuota == true){
+			$this->esFeder = false;
+			$this->esOficial = false;
+			$this->esVisible = false;
+			$this->esInscrib = false;
 		}
 		if (($this->getFecha() == null) && ($this->getFechaFin() != null)){
 			$context->buildViolation("Indicar también la fecha de inicio")

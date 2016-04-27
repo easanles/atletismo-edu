@@ -9,6 +9,9 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Easanles\AtletismoBundle\Helpers\Helpers;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
+use Easanles\AtletismoBundle\Entity\Competicion;
+use Easanles\AtletismoBundle\Form\Type\CuotaType;
+use Easanles\AtletismoBundle\Entity\Prueba;
 
 class InformesController extends Controller {
 
@@ -335,6 +338,170 @@ class InformesController extends Controller {
    }
    
 //##########################################################################
+//########################### PANTALLA DE CUOTAS ###########################
+//##########################################################################
+
+   public function pantallaCuotasAction(Request $request){
+   	$from = $request->query->get('from');
+    	if (($from == null) || ($from == "")) $from = 0;
+      else $from = intval($from);
+    	if ($from < 0) $from = 0;
+    	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
+    	
+    	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	$cuotas = $repoCom->findCuotas($from, $numResultados);
+    	$parametros = array(
+    			'cuotas' => $cuotas, 'from' => $from, 'numResultados' => $numResultados);
+    	return $this->render('EasanlesAtletismoBundle:Informes:list_cuotas.html.twig', $parametros);
+   }
+   
+   public function crearCuotaAction(Request $request){
+   	$cuota = new Competicion();
+   	$cuota->setTemp(Helpers::getCurrentTemp($this->getDoctrine()))->setEsCuota(true);
+   	$form = $this->createForm(new CuotaType(), $cuota);
+   	
+   	$form->handleRequest($request);
+   	 
+   	if ($form->isValid()) {
+   		try {
+   			$nombre = $form->getData()->getNombre();
+   			$temp = $form->getData()->getTemp();
+   			$repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   			$testResult = $repository->checkData($nombre, $temp);
+   			if ($testResult) throw new Exception("Ya existe la cuota \"".$nombre."\" para la temporada ".$temp);
+   			$em = $this->getDoctrine()->getManager();
+   			$em->persist($cuota);
+   			$pru = new Prueba();
+   			$coste = $form->get('coste')->getData();
+   			if (($coste == null) || ($coste == "")) $coste = 0;
+   			$pru->setId(0)
+   			->setCoste($coste)
+   			->setSidCom($cuota);
+   			$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
+   			$pru->setIdCat($repoCat->findOneBy(array("esTodos" => true)));
+   			$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+   			$sidTprm = $repoTprm->findTprmCuota()[0];
+   			$pru->setSidTprm($repoTprm->find($sidTprm['sid']));
+   			$em->persist($pru);
+   			$em->flush();
+   		} catch (\Exception $e) {
+   			$exception = $e->getMessage();
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => $this->render('EasanlesAtletismoBundle:Informes:form_cuota.html.twig',
+   							array('form' => $form->createView(), 'mode' => 'new', 'exception' => $exception))->getContent()
+   			]);
+   		}
+   		return new JsonResponse([
+   				'success' => true,
+   				'message' => "OK"
+   		]);
+   	}
+   	
+   	return new JsonResponse([
+   			'success' => false,
+   			'message' => $this->render('EasanlesAtletismoBundle:Informes:form_cuota.html.twig',
+   					array('form' => $form->createView(), 'mode' => 'new'))->getContent()
+   	]);
+   }
+   
+   public function borrarCuotaAction(Request $request){
+      $sidCom = $request->query->get('i');
+   	if(($sidCom == null) || ($sidCom === "")){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "No se ha recibido el parámetro necesario."
+   		]);
+   	}
+   	$em = $this->getDoctrine()->getManager();
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$cuota = $repoCom->find($sidCom);
+   	if ($cuota == null){
+         return new JsonResponse([
+   		   'success' => false,
+   		   'message' => "No existe la cuota con identificador \"".$sidCom."\"."
+   	   ]);
+   	} else {		 
+   		try {
+   			if ($cuota->getEsCuota() == 0){
+   				throw new Exception("El identificador ".$sidCom." no pertenece a una cuota.");
+   			}
+   		   $em->remove($cuota);
+   			$em->flush();
+   		} catch (\Exception $e) {
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => $e->getMessage()
+   			]);
+   		}
+   		return new JsonResponse([
+   		   'success' => true,
+   		   'message' => "OK"
+   	   ]);
+   	}
+      
+   }
+   
+   public function editarCuotaAction(Request $request){
+   	$sidCom = $request->query->get('i');
+   	if(($sidCom == null) || ($sidCom === "")){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "No se ha recibido el parámetro necesario."
+   		]);
+   	}
+   	$em = $this->getDoctrine()->getManager();
+   	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+   	$cuota = $repoCom->find($sidCom);
+   	if ($cuota == null){
+   		return new JsonResponse([
+   				'success' => false,
+   				'message' => "No existe la cuota con identificador \"".$sidCom."\"."
+   		]);
+   	}
+   	$prevNombre = $cuota->getNombre();
+   	$prevTemp = $cuota->getTemp();
+   	$prevCoste = $cuota->getPruebas()[0]->getCoste();
+   	$form = $this->createForm(new CuotaType(), $cuota);
+   	$form->get('coste')->setData($prevCoste);
+   
+   	$form->handleRequest($request);
+   	 
+   	if ($form->isValid()) {
+   		try {
+   		   $nombre = $cuota->getNombre();
+    	   	$temp = $cuota->getTemp();
+    	   	$testResult = $repoCom->checkData($nombre, $temp);
+    	      if ($testResult && !(($prevNombre == $nombre) && ($prevTemp == $temp))) {
+    	      	throw new Exception("Ya existe la competición \"".$nombre."\" para la temporada ".$temp);
+    	      }
+    	      $pru = $cuota->getPruebas()[0];
+    	      $pru->setCoste($form->get('coste')->getData());
+   			$em->flush();
+   		} catch (\Exception $e) {
+   			$exception = $e->getMessage();
+   			return new JsonResponse([
+   					'success' => false,
+   					'message' => $this->render('EasanlesAtletismoBundle:Informes:form_cuota.html.twig',
+   							array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom, 'exception' => $exception))->getContent()
+   			]);
+   		}
+   		return new JsonResponse([
+   				'success' => true,
+   				'message' => "OK"
+   		]);
+   	}
+   
+   	return new JsonResponse([
+   			'success' => false,
+   			'message' => $this->render('EasanlesAtletismoBundle:Informes:form_cuota.html.twig',
+   					array('form' => $form->createView(), 'mode' => 'edit', 'sidCom' => $sidCom))->getContent()
+   	]);
+   }
+     
+   
+//##########################################################################
 //############################ PAGOS PENDIENTES ############################
 //##########################################################################
    
@@ -367,6 +534,7 @@ class InformesController extends Controller {
    						"nombre" => $listaIns[$key-1]['nombrecom'],
    						"temp" => $listaIns[$key-1]['temp'],
    						"cartel" => $listaIns[$key-1]['cartel'],
+   						"esCuota" => $listaIns[$key-1]['esCuota'],
    						"costeCom" => $costeCom,
    						"atls" => $atlsArray
    				);
@@ -417,6 +585,7 @@ class InformesController extends Controller {
    				"nombre" => $listaIns[count($listaIns)-1]['nombrecom'],
    				"temp" => $listaIns[count($listaIns)-1]['temp'],
    				"cartel" => $listaIns[count($listaIns)-1]['cartel'],
+   				"esCuota" => $listaIns[count($listaIns)-1]['esCuota'],
    				"costeCom" => $costeCom,
    				"atls" => $atlsArray
    		);

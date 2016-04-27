@@ -64,7 +64,7 @@ class InscripcionRepository extends EntityRepository {
 	
 	public function findInsPendientes(){
 		return $this->getEntityManager()
-		->createQuery("SELECT ins.sid, ins.fecha, ins.coste, IDENTITY(ins.idAtl) AS idAtl, atl.apellidos, atl.nombre AS nombreatl, IDENTITY(ins.sidPru) AS sidPru, IDENTITY(pru.sidCom) AS sidCom, com.nombre AS nombrecom, com.temp, com.cartel, tprm.sexo, tprm.entorno, tprf.nombre AS nombretprf, cat.nombre AS nombrecat
+		->createQuery("SELECT ins.sid, ins.fecha, ins.coste, IDENTITY(ins.idAtl) AS idAtl, atl.apellidos, atl.nombre AS nombreatl, IDENTITY(ins.sidPru) AS sidPru, IDENTITY(pru.sidCom) AS sidCom, com.nombre AS nombrecom, com.temp, com.cartel, com.esCuota, tprm.sexo, tprm.entorno, tprf.nombre AS nombretprf, cat.nombre AS nombrecat
 				 FROM EasanlesAtletismoBundle:Inscripcion ins
 				 JOIN ins.idAtl atl
 				 JOIN ins.sidPru pru
@@ -89,7 +89,7 @@ class InscripcionRepository extends EntityRepository {
 	
 	public function findInsPagados($temp){
 		return $this->getEntityManager()
-		->createQuery("SELECT ins.sid, ins.fecha, ins.coste, IDENTITY(ins.idAtl) AS idAtl, atl.apellidos, atl.nombre AS nombreatl, IDENTITY(ins.sidPru) AS sidPru, IDENTITY(pru.sidCom) AS sidCom, com.nombre AS nombrecom, com.temp, com.cartel, tprm.sexo, tprm.entorno, tprf.nombre AS nombretprf, cat.nombre AS nombrecat
+		->createQuery("SELECT ins.sid, ins.fecha, ins.coste, IDENTITY(ins.idAtl) AS idAtl, atl.apellidos, atl.nombre AS nombreatl, IDENTITY(ins.sidPru) AS sidPru, IDENTITY(pru.sidCom) AS sidCom, com.nombre AS nombrecom, com.temp, com.cartel, com.esCuota, tprm.sexo, tprm.entorno, tprf.nombre AS nombretprf, cat.nombre AS nombrecat
 				 FROM EasanlesAtletismoBundle:Inscripcion ins
 				 JOIN ins.idAtl atl
 				 JOIN ins.sidPru pru

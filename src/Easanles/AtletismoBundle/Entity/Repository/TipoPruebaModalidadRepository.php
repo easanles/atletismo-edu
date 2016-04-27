@@ -16,7 +16,11 @@ class TipoPruebaModalidadRepository extends EntityRepository {
 	
 	public function findAllEntornos(){
 		return $this->getEntityManager()
-   	->createQuery('SELECT tprm.entorno FROM EasanlesAtletismoBundle:TipoPruebaModalidad tprm GROUP BY tprm.entorno')
+   	->createQuery('SELECT tprm.entorno
+   			 FROM EasanlesAtletismoBundle:TipoPruebaModalidad tprm
+   			 JOIN tprm.sidTprf tprf
+   			 WHERE tprf.esCuota = 0
+   			 GROUP BY tprm.entorno')
    	->getResult();
 	}
 	
@@ -31,15 +35,12 @@ class TipoPruebaModalidadRepository extends EntityRepository {
 		->getResult();
 	}
 	
-	/*
-	public function countFor($tprf) {
+	public function findTprmCuota(){
 		return $this->getEntityManager()
-		->createQuery('SELECT count(tprm.sid) AS cuenta FROM EasanlesAtletismoBundle:TipoPruebaModalidad tprm WHERE tprm.sidTprf LIKE :sidtprf')
-		->setParameter("sidtprf", $tprf)
+		->createQuery('SELECT tprm.sid
+				 FROM EasanlesAtletismoBundle:TipoPruebaModalidad tprm
+				 JOIN tprm.sidTprf tprf
+				 WHERE tprf.esCuota = 1')
 		->getResult();
 	}
-	
-	public function checkData($nombre){
-      return (false);
-	}*/
 }

@@ -261,6 +261,22 @@ class Helpers {
 		      ->setIdAtl(null);
 		   $em->persist($adminUsu);
 		}
+		$repoTprf = $doctrine->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
+		$cuotaTprf = $repoTprf->findOneBy(array("esCuota" => true));
+		if (count($cuotaTprf) == 0){
+			$cuotaTprf = $repoTprf->findOneBy(array("nombre" => "CUOTA"));
+			if ($cuotaTprf == null){
+				$cuotaTprf = new TipoPruebaFormato();
+				$cuotaTprf->setNombre("CUOTA");
+			}
+		   $cuotaTprf->setUnidades("segundos")->setEsCuota(true);
+		   $em->persist($cuotaTprf);
+		}
+		if (count($cuotaTprf->getModalidades()) == 0){;
+			$cuotaTprm = new TipoPruebaModalidad();
+			$cuotaTprm->setSexo(2)->setEntorno("CUOTA")->setSidTprf($cuotaTprf);
+			$em->persist($cuotaTprm);
+		}
 		$em->flush();
 	}
 	

@@ -1,0 +1,114 @@
+
+{% extends 'EasanlesAtletismoBundle:Default:index.html.twig' %}
+
+{% block title %}Cuotas{% endblock %}
+
+{% block navbar %}
+      {% if app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
+      <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+      <li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>
+      <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            {% if app.user.idAtl is not null %}<li><a href="{{ path('users_pantalla_records_propios') }}">Mis records</a></li>{% endif %}
+            <li><a href="{{ path('pantalla_records_masc') }}">Records masculinos</a></li>
+            <li><a href="{{ path('pantalla_records_fem') }}">Records femeninos</a></li>
+         </ul>
+      </li>
+      <li class="dropdown active">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Informes <span class="caret"></span></a>
+         <ul class="dropdown-menu">
+            <li><a href="{{ path('pantalla_resultados') }}">Resultados</a></li>
+            <li><a href="{{ path('pantalla_asistencia') }}">Asistencia a eventos</a></li>
+            <li><a href="{{ path('pantalla_cuotas') }}">Cuotas</a></li>
+            <li><a href="{{ path('pagos_pendientes') }}">Pagos pendientes</a></li>
+            <li><a href="{{ path('ingresos') }}">Ingresos</a></li>
+         </ul>
+      </li>
+      <li><a href="{{ path('configuracion') }}">Configuración</a></li>
+{% endblock %}
+
+{% block breadcrumb %}
+  <li><a href="{{ path('homepage_admin') }}">Portada Admin</a></li>
+  <li>Informes</li>
+  <li class="active">Cuotas</li>
+{% endblock %}
+
+   {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
+   {% block modalbody %}<div id="dialog-body"></div>{% endblock %}
+   {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
+
+{% block container %}   
+   <h1 id="container_title" class="row page-header">Cuotas</h1>
+   <button class="updater hidden" onClick="location.reload()"></button>
+   <div id="container_header">
+      <button class="btn btn-primary" onClick="showModal('newCUOTA', null, null, null)"><span class="glyphicon glyphicon-plus"></span> Añadir</button>
+   </div>
+   <table id="primary_table" class="table table-hover table-bordered table-condensed table-striped table-responsive">
+      <tbody>
+         <tr>
+            <th><abbr title="Temporada" class="visible-xs-block">Temp.</abbr><div class="hidden-xs">Temporada</div></th>
+            <th>Nombre cuota</th>
+            <th class="hidden-xs">Fecha inicio</th>
+            <th class="hidden-xs">Fecha fin</th>
+            <th><abbr title="Atletas inscritos" class="visible-xs-block">Atl.</abbr><div class="hidden-xs">Atletas inscritos</div></th>
+            <th><abbr title="Acciones" class="visible-xs-block">Acc.</abbr><div class="hidden-xs">Acciones</div></th>
+         </tr>
+         {% for com in cuotas %}
+         <tr>
+            <td>{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}</td>
+            <td>{{ com.nombre }}</td>
+            <td class="hidden-xs">{% if com.fecha is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fecha|date('d/m/Y') }} {% endif %} </td>
+            <td class="hidden-xs">{% if com.fechaFin is null %} <em class="text-muted">Sin fecha</em> {% else %} {{ com.fechaFin|date('d/m/Y') }} {% endif %} </td>
+            <td{% if com.numatletas == 0 %} class="warning text-warning"{% endif %}>{{ com.numatletas }} <a type="button" class="btn btn-xs btn-{% if com.numatletas == 0 %}warning{% else %}default{% endif %} pull-right" data-toggle="tooltip" data-placement="top" title="Inscribir atletas" href="{{ path('listado_inscripciones', {'sidCom': com.sid}) }}"><span class="glyphicon glyphicon-user"></span></a></td>
+            <td>
+               <div class="btn-group visible-xs-block">
+                  <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>
+                  <ul class="dropdown-menu pull-right">
+                     <li><a href="#" onClick="showModal('ediCUOTA', {{ com.sid }}, {{ com.sid }}, '{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}')"><span class="glyphicon glyphicon-pencil"></span> Editar</a></li>
+                     <li><a class="bg-danger" href="#" onClick="showModal('delCUOTA', {{ com.sid }}, {{ com.nombre }}, '{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}')"><div class="text-danger"><span class="glyphicon glyphicon-remove"></span> Borrar</div></a></li>
+                  </ul>
+               </div>
+               <div class="hidden-xs">
+                  <button type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" onClick="showModal('ediCUOTA', {{ com.sid }}, {{ com.sid }}, '{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}')"><span class="glyphicon glyphicon-pencil"></span></a>
+                  <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onClick="showModal('delCUOTA', {{ com.sid }}, '{{ com.nombre }}', '{{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }}')"><span class="glyphicon glyphicon-remove"></span></button>
+               </div>
+            </td>
+         </tr>
+         {% endfor %}
+      </tbody>
+   </table>
+<nav>
+  <ul class="pager">
+     {% if from == 0 %}
+     <li class="previous disabled"><span>Inicio</span></li>
+     <li class="previous disabled"><span><span aria-hidden="true">&larr;</span> Anterior</span></li>
+     {% else %}
+     <li class="previous"><span class="clickable text-info" onClick="comSearch(null, null, 0)">Inicio</span></li>
+     <li class="previous"><span class="clickable text-info" onClick="comSearch(null, null, {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</span></li>
+     {% endif %}
+     {% if cuotas|length < numResultados %}
+        <li class="next disabled"><span href="#">Siguiente <span aria-hidden="true">&rarr;</span></span></li>
+     {% else %}
+        <li class="next"><span class="clickable text-info" onClick="comSearch(null, null, {{ from + numResultados }})">Siguiente <span aria-hidden="true">&rarr;</span></span></li>
+     {% endif %}
+     {% if numResultados > 0 and from is divisible by (numResultados) %}
+     <p class="text-center text-info">Página {{ (from / numResultados) + 1 }}</p>
+     {% else %}
+     <p class="text-center text-info">Mostrando desde el resultado {{ from + 1 }}</p>
+     {% endif %}
+  </ul>
+</nav>
+
+{% endblock %}
+
+{% block js %}
+   {% javascripts
+      '@EasanlesAtletismoBundle/Resources/assets/js/modals.js' 
+      '@EasanlesAtletismoBundle/Resources/assets/js/scripts.js' %}
+      <script src="{{ asset_url }}"></script>
+   {% endjavascripts %}
+{% endblock %}
+
+
+

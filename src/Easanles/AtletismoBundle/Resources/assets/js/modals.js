@@ -346,6 +346,38 @@ function showModal(type, data1, data2, data3){
     	   });
        } break;
        
+       case ("newCUOTA"): { //Nueva cuota
+    	   $('#dialog-label').html("Nueva cuota");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Crear</button>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   $.getJSON("./cuotas/crear", function(data, status){
+    		  if (status == "success"){
+    		     $("#dialog-body").html(data.message);
+    	      } else {
+    			 $("#dialog-body").html("Error al cargar datos");
+    	      }	
+    	   });
+       } break;
+       
+	   case ("delCUOTA"): { //Borrar cuota
+    	   $('#dialog-label').html("Borrar cuota");
+    	   $("#dialog-body").html("¿Está seguro de borrar la cuota <strong>" + data2 + "</strong> de la temporada <strong>" + data3 + "</strong>?<br>Se borrarán todos los registros sobre esta cuota");
+		   $("#dialog-btn").html("<button type=\"button\" class=\"btn btn-danger\" onClick=\"submitDialogAction('./cuotas/borrar?i=" + data1 + "')\"><span class=\"glyphicon glyphicon-remove\"></span> Borrar</button>");           
+	   } break;
+	   
+       case ("ediCUOTA"): { //Editar cuota
+    	   $('#dialog-label').html("Editar cuota <small> - " + data2 + " (" + data3 + ")</small>");
+    	   $('#dialog-btn').html("<button class=\"btn btn-primary\" onClick=\"submitDialogForm()\"><span class=\"glyphicon glyphicon-save\"></span> Guardar</button>");
+    	   $("#dialog-body").html("<span class=\"glyphicon glyphicon-refresh spinning pull-center\"></span>");
+    	   $.getJSON("./cuotas/editar?i=" + data1, function(data, status){
+    		  if (status == "success"){
+    		     $("#dialog-body").html(data.message);
+    	      } else {
+    			 $("#dialog-body").html("Error al cargar datos");
+    	      }	
+    	   });
+       } break;
+       
 	   default: break;
 	}
 	
