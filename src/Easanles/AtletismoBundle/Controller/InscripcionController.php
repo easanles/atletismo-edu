@@ -126,6 +126,18 @@ class InscripcionController extends Controller {
     			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query, true, $from, $numResultados);
     		}
     	}
+    	if ($com->getEsCuota() == true){
+    		$arrayAtlValidos = array();
+    		$pru = $com->getPruebas()[0];
+    		$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    		foreach($atletas as $atl){
+    			$checkIns = $repoIns->findOneBy(array("idAtl" => $atl["id"], "sidPru" => $pru));
+    			if ($checkIns == null){
+    				$arrayAtlValidos[] = $atl;
+    			}
+    		}
+    		$atletas = $arrayAtlValidos;
+    	}
     	$parametros = array('com' => $com, 'atletas' => $atletas, 'from' => $from, 'numResultados' => $numResultados);
     	$vigentes = $repoCat->findAllCurrent();
     	$parametros['vigentes'] = $vigentes;    	
@@ -226,11 +238,11 @@ class InscripcionController extends Controller {
     	    	 if ($pru != null){
     	    	   if ($temp == null) $temp = $entrada[0];
     	    	   else if ($temp != $entrada[0]) $inscripcionGrupal = true;  	    	
-    	    	 	$entradas[] = array("atl" => $atl, "pru" => $pru);
+    	    	 	$entradas[] = array("atl" => $atl, "pru" => $pru, "cat" => Helpers::getAtlCurrentCat($this->getDoctrine(), $atl)['nombre']);
     	    	 }
     	    }
     	 }
-    	 $parametros = array("entradas" => $entradas, "entornos" => $entornos);
+    	 $parametros = array("entradas" => $entradas, "entornos" => $entornos, "com" => $com);
     	 if ($inscripcionGrupal == true){
     	 	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 	 $codGrupo = $repoIns->maxCodGrupo() + 1;

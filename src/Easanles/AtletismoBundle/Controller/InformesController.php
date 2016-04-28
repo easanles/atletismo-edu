@@ -12,6 +12,7 @@ use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
 use Easanles\AtletismoBundle\Entity\Competicion;
 use Easanles\AtletismoBundle\Form\Type\CuotaType;
 use Easanles\AtletismoBundle\Entity\Prueba;
+use Easanles\AtletismoBundle\Entity\Inscripcion;
 
 class InformesController extends Controller {
 
@@ -351,6 +352,13 @@ class InformesController extends Controller {
     	
     	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$cuotas = $repoCom->findCuotas($from, $numResultados);
+    	$repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
+    	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	foreach($cuotas as &$cuota){
+    		$pru = $repoPru->findOneBy(array("sidCom" => $cuota["sid"]));
+    		$insPendientes = $repoIns->findBy(array("sidPru" => $pru, "estado" => "Pendiente"));
+    		$cuota["pagosPend"] = count($insPendientes);
+    	}
     	$parametros = array(
     			'cuotas' => $cuotas, 'from' => $from, 'numResultados' => $numResultados);
     	return $this->render('EasanlesAtletismoBundle:Informes:list_cuotas.html.twig', $parametros);

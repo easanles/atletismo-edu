@@ -89,7 +89,7 @@
                   <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal" aria-label="Acciones"></span></button>
                   <ul class="dropdown-menu pull-right">
                      {% if atl.sidPar is defined %}<li><a id="asistLI-{{ atl.id }}" href="#" onClick="toggleAsist(this, {{ atl.sidPar }})">{% if atl.asistencia == true %}<span class="glyphicon glyphicon-check"></span> Asistencia [SI]{% else %}<span class="glyphicon glyphicon-unchecked"></span> Asistencia [NO]{% endif %}</a></li>{% endif %}
-                     <li><a href="#" onClick="showModal('newPAR', {{ atl.id }}, {% if atl.sidPar is not defined %}'Confirmar participación'{% else %}'Cambiar dorsal'{% endif %}, null)"><span class="glyphicon glyphicon-bullhorn"></span> {% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}</a></li>
+                     {% if com.esCuota == false %}<li><a href="#" onClick="showModal('newPAR', {{ atl.id }}, {% if atl.sidPar is not defined %}'Confirmar participación'{% else %}'Cambiar dorsal'{% endif %}, null)"><span class="glyphicon glyphicon-bullhorn"></span> {% if atl.sidPar is not defined %}Confirmar participación{% else %}Cambiar dorsal{% endif %}</a></li>{% endif %}
                      <li><a href="#" onClick="showModal('ediINS', {{ atl.id }}, null, null)"><span class="glyphicon glyphicon-pencil"></span> Editar</a></li>
                      <li><a class="bg-danger" href="#" onClick="showModal('delINS', {{ atl.id }}, null, null)"><div class="text-danger"><span class="glyphicon glyphicon-remove-circle"></span> Desinscribir</div></a></li>
                   </ul>

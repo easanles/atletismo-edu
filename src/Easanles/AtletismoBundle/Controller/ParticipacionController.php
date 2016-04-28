@@ -15,23 +15,31 @@ class ParticipacionController extends Controller {
     public function confirmarParticipacionAction($sidCom, Request $request) {
     	  $idAtl = $request->query->get('atl');
     	  
-    	  $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
-    	  $com = $repository->find($sidCom);
+    	  $repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
+    	  $com = $repoCom->find($sidCom);
     	  if ($com == null) {
-    	  	$response = new Response('No existe la competicion con el identificador "'.$sidCom.'" <a href="'.$this->generateUrl('listado_competiciones').'">Volver</a>');
-    	  	$response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_competiciones'));
-    	  	return $response;
+    	     return new JsonResponse([
+    	  			'success' => false,
+    	  			'message' => 'No existe la competición con el identificador "'.$sidCom.'"'
+    	     ]);
     	  }
-    	  $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
-    	  $atl = $repository->find($idAtl);
+    	  if ($com->getEsCuota() == true){
+    	  	  return new JsonResponse([
+    	  			'success' => false,
+    	  			'message' => 'El identificador '.$sidCom.' no corresponde a una competición'
+    	  	  ]);
+    	  }
+    	  $repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
+    	  $atl = $repoAtl->find($idAtl);
     	  if ($atl == null) {
-    	  	  $response = new Response('No existe el atleta con identificador "'.$idAtl.'" <a href="'.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)).'">Volver</a>');
-    	  	  $response->headers->set('Refresh', '2; url='.$this->generateUrl('listado_inscripciones', array('sidCom' => $sidCom)));
-    	  	  return $response;
+    	     return new JsonResponse([
+    	  			'success' => false,
+    	  			'message' => 'No existe el atleta con identificador "'.$idAtl.'"'
+    	  	  ]);
     	  }
     	  $em = $this->getDoctrine()->getManager();
-    	  $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
-    	  $par = $repository->findOneBy(array("sidCom" => $sidCom, 'idAtl' => $idAtl));
+    	  $repoPar = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Participacion');
+    	  $par = $repoPar->findOneBy(array("sidCom" => $sidCom, 'idAtl' => $idAtl));
     	  if ($par == null){
     	  	  $par = new Participacion();
     	  	  $par->setSidCom($com);
