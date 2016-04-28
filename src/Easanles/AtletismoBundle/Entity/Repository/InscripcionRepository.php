@@ -111,7 +111,8 @@ class InscripcionRepository extends EntityRepository {
 				JOIN pru.sidTprm tprm
 				JOIN tprm.sidTprf tprf
 				JOIN pru.idCat cat
-				WHERE ins.idAtl = :idatl";
+				WHERE ins.idAtl = :idatl
+				AND com.esCuota = 0";
 	   if (($temp != null) && ($temp != "")){
 			$sql = $sql." AND com.temp = :temp";
 		}

@@ -19,14 +19,12 @@ class AtletaController extends Controller {
 	public function listadoAtletasAction(Request $request, $alta) {
 		$cat = $request->query->get('cat');
 		$query = $request->query->get('q');
-		
 		$from = $request->query->get('from');
     	if (($from == null) || ($from == "")) $from = 0;
       else $from = intval($from);
     	if ($from < 0) $from = 0;
     	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
     	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
-    	
 		$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
 		$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
 		if (($cat == null) && ($query == null)){

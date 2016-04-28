@@ -103,26 +103,30 @@ class InscripcionController extends Controller {
     public function seleccionAtletasAction($sidCom, Request $request){
     	$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
     	$com = $repoCom->find($sidCom);
-    	$parametros = array('com' => $com);
     	//Codigo copiado de Atleta:listadoAtletas
     	$cat = $request->query->get('cat');
     	$query = $request->query->get('q');
+    	$from = $request->query->get('from');
+    	if (($from == null) || ($from == "")) $from = 0;
+    	else $from = intval($from);
+    	if ($from < 0) $from = 0;
+    	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	$numResultados = $repoCfg->findOneBy(array("clave" => "numresultados"))->getValor();
     	$repoAtl = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Atleta');
     	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
-    	
     	if (($cat == null) && ($query == null)){
-    		$atletas = $repoAtl->findAllOrdered(true, 0, null);
+    		$atletas = $repoAtl->findAllOrdered(true, $from, $numResultados);
     	} else {
     		$catObj = $repoCat->findOneBy(array("id" => $cat));
     		if ($catObj == null) {
-    			$atletas = $repoAtl->searchByParameters(null, null, $query, true, 0, null);
+    			$atletas = $repoAtl->searchByParameters(null, null, $query, true, $from, $numResultados);
     		} else {
     			$fnacIni = Helpers::getCatIniDate($this->getDoctrine(), $catObj);
     			$fnacFin = Helpers::getCatFinDate($this->getDoctrine(), $catObj);
-    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, true, 0, null);
+    			$atletas = $repoAtl->searchByParameters($fnacIni, $fnacFin, $query, true, $from, $numResultados);
     		}
     	}
-    	$parametros['atletas'] = $atletas;    	
+    	$parametros = array('com' => $com, 'atletas' => $atletas, 'from' => $from, 'numResultados' => $numResultados);
     	$vigentes = $repoCat->findAllCurrent();
     	$parametros['vigentes'] = $vigentes;    	
     	$categorias = array();
@@ -131,7 +135,6 @@ class InscripcionController extends Controller {
     		$categorias[] = Helpers::getCategoria($vigentes, $fechaRefCat, $atl['fnac']);
     	}
     	$parametros['categorias'] = $categorias;
-    	
     	if ($cat != null) $parametros['cat'] = $cat;
     	if ($query != null) $parametros['query'] = $query;
     	if ($com->getEsCuota() == true){
@@ -175,7 +178,7 @@ class InscripcionController extends Controller {
     	 $repoPru = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Prueba');
     	 if ($cat != null){
     	    $listaPru = $repoPru->searchByParameters($sidCom, $cat['id'], 0, null); // Misma categoria
-    	 } else $listaPru = null;
+    	 } else $listaPru = array();
     	 $repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
     	 $listaPruTodos = $repoPru->searchByParameters($sidCom, $repoCat->findOneBy(array("esTodos" => true))->getId(), 0, null);
     	 foreach($listaPruTodos as $pru){

@@ -1,6 +1,6 @@
       <div class="row" style="margin-bottom: 1em">
          <div class="col-xs-4 col-sm-6">
-            <select class="form-control" onChange="insAtlSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %})">
+            <select class="form-control" onChange="insAtlSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, null)">
                <option value="" {% if cat is not defined %}selected{% endif %}>Todas las categorías</option>
                {% for row in vigentes %}
                <option value="{{ row.id }}" {% if cat is defined %}{% if cat == row.id %}selected{% endif %}{% endif %}>{{ row.nombre }}{% if row.edadMax is not null %} ({{ row.edadMax }}){% endif %}</option>
@@ -9,7 +9,7 @@
          </div>
          <div class="input-group col-xs-4 col-sm-4">
             <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)">
-            <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery())"><span class="glyphicon glyphicon-search"></span></button></div>
+            <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery(), null)"><span class="glyphicon glyphicon-search"></span></button></div>
          </div>
       </div>
       
@@ -58,4 +58,26 @@
          {% endfor %}
       </tbody>
    </table>
+   
+<nav>
+  <ul class="pager">
+     {% if from == 0 %}
+     <li class="previous disabled"><span>Inicio</span></li>
+     <li class="previous disabled"><span><span aria-hidden="true">&larr;</span> Anterior</span></li>
+     {% else %}
+     <li class="previous"><span class="clickable text-info" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, 0)">Inicio</span></li>
+     <li class="previous"><span class="clickable text-info" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, {{ from - numResultados }})"><span aria-hidden="true">&larr;</span> Anterior</span></li>
+     {% endif %}
+     {% if atletas|length < numResultados %}
+        <li class="next disabled"><span>Siguiente <span aria-hidden="true">&rarr;</span></a></li>
+     {% else %}
+        <li class="next"><span class="clickable text-info" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, {{ from + numResultados }})">Siguiente <span aria-hidden="true">&rarr;</span></span></li>
+     {% endif %}
+     {% if numResultados > 0 and from is divisible by (numResultados) %}
+     <p class="text-center text-info">Página {{ (from / numResultados) + 1 }}</p>
+     {% else %}
+     <p class="text-center text-info">Mostrando desde el resultado {{ from + 1 }}</p>
+     {% endif %}
+  </ul>
+</nav>
       

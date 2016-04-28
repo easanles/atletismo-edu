@@ -138,9 +138,9 @@ function loadViews(tab){
    $('abbr').tooltip();
 }
 
-function insAtlSearch(cat, query){
+function insAtlSearch(cat, query, from){
 	$("#inspage-atl").html(loadingIcon);
-    $.get("./inscribir/atl" + atlSearchParam(cat, query), function(data, status){           
+    $.get("./inscribir/atl" + atlSearchParam(cat, query, from), function(data, status){           
         if (status == "success"){
            $("#inspage-atl").html(data);
            checkSelectedButtons();

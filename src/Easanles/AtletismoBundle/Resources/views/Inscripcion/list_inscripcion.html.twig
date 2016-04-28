@@ -45,7 +45,7 @@
    {% block modalprimary %}<span id="dialog-btn"></span>{% endblock %}
 
 {% block container %}   
-   <h1 id="container_title" class="row page-header">Atletas inscritos <small>{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</small></h1>
+   <h1 id="container_title" class="row page-header">Atletas inscritos <small>{{ com.nombre }} ({{ com.temp }}/{{ (com.temp + 1)|slice(2, 2) }})</small>{% if com.esCuota %} <span class="text-muted pull-right">Cuota</span>{% endif %}</h1>
    <div id="container_header" class="row">
       <a type="button" class="btn btn-m btn-default hidden-xs" href="javascript:history.back()"><span class="glyphicon glyphicon-menu-left"></span> Volver</a>
       <button class="updater hidden" onClick="location.reload()"></button>
