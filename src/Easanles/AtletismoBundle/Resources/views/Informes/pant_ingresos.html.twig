@@ -81,6 +81,7 @@
                                     <tr>
                                        <td class="td-padding"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> {% if com.esCuota %}Cuota{% else %}{{ ins.prueba }}{% endif %}</td>
                                        <td><span class="hidden-xs">Fecha inscripción: </span>{{ ins.fecha|date('d/m/Y') }}</td>
+                                       {% if ins.fechaPago is not null %}<td><span class="hidden-xs">Fecha pago: </span>{{ ins.fechaPago|date('d/m/Y') }}</td>{% endif %}
                                        <td>{{ ins.coste|number_format(2, ',', '.') }}€</td>
                                     </tr>
                                  {% endfor %}

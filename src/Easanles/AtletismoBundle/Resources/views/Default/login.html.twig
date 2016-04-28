@@ -51,7 +51,7 @@
       {% if (error.messageKey|trans(error.messageData, 'security')) == "Invalid credentials." %}
          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Usuario o contraseña no válidos.
       {% else %}
-         <strong>Error:</strong> {{ error.messageKey|trans(error.messageData, 'security') }}
+         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{ error.messageKey|trans(error.messageData, 'security') }}
       {% endif %}
       </span></div>
    {% endif %}

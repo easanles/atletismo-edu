@@ -236,6 +236,7 @@ class MiscomController extends Controller{
    				->setOrigen($this->getUser()->getNombre())
    				->setFecha(new \DateTime())
    				->setEstado("Pagado")
+   				->setFechaPago(new \DateTime())
    				->setCodGrupo(null);
    				$em->persist($ins);
    			} break;

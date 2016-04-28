@@ -746,7 +746,8 @@ class Helpers {
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(1.20)
-		->setEstado("Pagado");
+		->setEstado("Pagado")
+		->setFechaPago(new \DateTime());
 		$em->persist($ins);
 		
 		$ins = new Inscripcion();
@@ -755,7 +756,8 @@ class Helpers {
 		->setFecha(new \DateTime)
 		->setOrigen("test")
 		->setCoste(4.00)
-		->setEstado("Pagado");
+		->setEstado("Pagado")
+		->setFechaPago(new \DateTime());
 		$em->persist($ins);
 		
 		$par = new Participacion();

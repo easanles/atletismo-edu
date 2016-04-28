@@ -288,6 +288,7 @@ class InscripcionController extends Controller {
     	 		 ->setCodGrupo($codGrupo);
     	 		 if ($elem['coste'] == 0){
     	 		 	$ins->setEstado("Pagado");
+    	 		 	$ins->setFechaPago(new \DateTime());
     	 		 } else $ins->setEstado("Pendiente");
     	 		 $em->persist($ins);
     	 	 }
@@ -319,9 +320,11 @@ class InscripcionController extends Controller {
     	$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	$listaIns = $repoIns->findForAtl($sidCom, $idAtl);
     	$inscripciones = array();
+    	$prevEstado = array();
     	foreach ($listaIns as $insArr){
     		$ins = $repoIns->findOneBy(array('sid' => $insArr['sid']));
     		$inscripciones[] = $ins;
+    		$prevEstado[$insArr['sid']] = $ins->getEstado();
     	}
     	 
     	$form = $this->createForm(new InsTypeGroup($inscripciones));
@@ -329,13 +332,19 @@ class InscripcionController extends Controller {
     	
     	if ($form->isValid()) {
     		try {
+    			$posIns = $form->get('inscripciones')->getData();
+    			foreach ($posIns as $ins){
+    				if (($prevEstado[$ins->getSid()] == "Pendiente") && ($ins->getEstado() == "Pagado")){
+    					$ins->setFechaPago(new \DateTime());
+    				}
+    			}
     			$em = $this->getDoctrine()->getManager();
     			$em->flush();
     		} catch (\Exception $e) {
     			$exception = $e->getMessage();
     			return new JsonResponse([
     					'success' => false,
-    					'message' => $this->render('EasanlesAtletismoBundle:TipoPrueba:edit_inscripcion.html.twig',
+    					'message' => $this->render('EasanlesAtletismoBundle:Inscripcion:edit_inscripcion.html.twig',
     							array('form' => $form->createView(),
     									'sidCom' => $sidCom,
     									'idAtl' => $idAtl,

@@ -564,6 +564,7 @@ class InformesController extends Controller {
    				"sid" => $ins['sid'],
    				"coste" => $ins['coste'],
    				"fecha" => $ins['fecha'],
+   				"fechaPago" => $ins['fechaPago'],
    				"prueba" => $nombrePrueba
    		);
    		$costeTotal = $costeTotal + $ins['coste'];
@@ -610,6 +611,7 @@ class InformesController extends Controller {
    		$ins = $repoIns->find($sidIns);
    		if ($ins != null){
    			$ins->setEstado("Pagado");
+   			$ins->setFechaPago(new \DateTime());
    		   $em->persist($ins);
    		}
    	}

@@ -401,7 +401,7 @@ $(window).resize(function(){
 })
 
 function installBD(){
-	alerthtml_pre = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <strong>Error: </strong><span>";
+	alerthtml_pre = "<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> <span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span> <span>";
 	alerthtml_pos = "</span></div>";
 	$("#install-btn").attr("disabled", true);
 	$("#loading-icon").css("display", "inline");

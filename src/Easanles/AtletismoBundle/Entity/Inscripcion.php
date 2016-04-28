@@ -54,6 +54,12 @@ class Inscripcion {
     private $estado;
     
     /**
+     * @var \DateTime
+     * @ORM\Column(name="fechapagoins", type="datetime", nullable=true)
+     */
+    private $fechaPago;
+    
+    /**
      * @var string
      * @ORM\Column(name="costeins", type="decimal", precision=10, scale=2, options={"default":0.00})
      */
@@ -116,6 +122,13 @@ class Inscripcion {
 		$this->estado = $estado;
 		return $this;
 	}
+	public function getFechaPago() {
+		return $this->fechaPago;
+	}
+	public function setFechaPago(\DateTime $fechaPago) {
+		$this->fechaPago = $fechaPago;
+		return $this;
+	}
 	public function getCoste() {
 		return $this->coste;
 	}
@@ -130,13 +143,14 @@ class Inscripcion {
 		$this->codGrupo = $codGrupo;
 		return $this;
 	}
-	
+		
 	/**
 	 * @Assert\Callback
 	 */
 	public function validate(ExecutionContextInterface $context) {
       if ($this->coste == 0){
       	$this->estado = "Pagado";
+      	$this->fechaPago = $this->fecha;
       }
 	}
 }

@@ -476,7 +476,7 @@ function submitDialogForm(){
 }
 
 function submitDialogAction(url){
-   alerthtml_pre = "<div class=\"alert alert-danger\" role=\"alert\"><strong>Error: </strong><span>";
+   alerthtml_pre = "<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span> <span>";
    alerthtml_pos = "</span></div>";
    $.ajax({
       type        : "GET",
