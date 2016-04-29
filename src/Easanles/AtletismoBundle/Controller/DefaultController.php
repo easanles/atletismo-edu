@@ -189,6 +189,16 @@ class DefaultController extends Controller{
     	 		"crearUsuAdmin" => $crearUsuAdmin,
     	 		"crearCuotaTpr" => $crearCuotaTpr
     	 );
+    	 
+    	 if ($rehacerBDEntera == true){ //Borrar cache y hacer assets de Assetic primero
+    	 	$kernel = $this->get('kernel');
+    	 	$application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+    	 	$application->setAutoExit(false);
+    	 	$options = array('command' => 'cache:clear');
+    	 	$application->run(new ArrayInput($options));
+    	 	$options = array('command' => 'assetic:dump', '--env' => "prod", '--no-debug');
+    	 	$application->run(new ArrayInput($options));
+    	 }
     	
     	 return $this->render('EasanlesAtletismoBundle:Default:pant_instalar.html.twig', $parametros);
     }

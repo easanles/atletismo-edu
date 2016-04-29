@@ -344,7 +344,7 @@ class Competicion {
 		}
 		if ($this->esCuota == true){
 			$this->esFeder = false;
-			$this->esOficial = false;
+			$this->esOficial = true;
 			$this->esVisible = false;
 			$this->esInscrib = false;
 		}

@@ -1,5 +1,5 @@
       <div class="row" style="margin-bottom: 1em">
-         <div class="col-xs-4 col-sm-6">
+         <div class="col-xs-6 col-sm-6">
             <select class="form-control" onChange="insAtlSearch(this.value, {% if query is defined %}'{{query}}'{% else %}null{% endif %}, null)">
                <option value="" {% if cat is not defined %}selected{% endif %}>Todas las categorías</option>
                {% for row in vigentes %}
@@ -7,7 +7,7 @@
                {% endfor %}
             </select>
          </div>
-         <div class="input-group col-xs-4 col-sm-4">
+         <div class="input-group col-xs-6 col-sm-4">
             <input id="search-input" type="search" class="form-control" placeholder="Buscar"{% if query is defined %} value="{{query}}"{% endif %}) onkeydown="checkEnterKeypress(event)">
             <div class="input-group-btn"><button id="search-button" class="btn btn-default" type="button" onClick="insAtlSearch({% if cat is defined %}{{cat}}{% else %}null{% endif %}, getQuery(), null)"><span class="glyphicon glyphicon-search"></span></button></div>
          </div>
