@@ -30,7 +30,6 @@
          </tr>
          {% set catIndex = 0 %}
          {% for atl in atletas %}
-            {% if com.esFeder == false or (com.esFeder == true and (atl.lfga is not null and atl.lfga != "")) %}
             <tr>
                <td class="hidden-xs">{{ atl.id }}</td>
                <td class="visible-xs">
@@ -46,14 +45,17 @@
                <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
                <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
                <td>
+                  {% if com.esFeder == false or (com.esFeder == true and (atl.lfga is not null and atl.lfga != "")) %}
                   <button id="sel-atl-{{ atl.id }}" 
                      data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}"
                      data-catnombre="{% if categorias[catIndex] is not null %}{{ categorias[catIndex].nombre }}{% endif %}"
                      data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this, {% if com.esCuota %}'{{ sidCuota }}'{% else %}null{% endif %})"><span class="glyphicon glyphicon-unchecked"></span> NO
                   </button>
+                  {% else %}
+                     <em class="text-danger">Sin licencia FGA</em>
+                  {% endif %}
                </td>
             </tr>
-         {% endif %}
          {% set catIndex = catIndex + 1 %}
          {% endfor %}
       </tbody>

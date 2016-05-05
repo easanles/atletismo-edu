@@ -123,7 +123,7 @@ class IntentoRepository extends EntityRepository {
 				 JOIN int.idAtl atl
 				 WHERE tprm.entorno LIKE :entorno AND int.validez = 1 AND com.esOficial = 1';
 		if ($rol == "user") $sql = $sql.' AND com.esVisible = 1';
-		if ($tipo == 2) $sql = $sql.' AND IDENTITY(int.idAtl) LIKE :idatl';
+		if (($tipo == 2) || ($tipo == 3)) $sql = $sql.' AND IDENTITY(int.idAtl) LIKE :idatl';
 		else $sql = $sql.' AND atl.sexo LIKE :sexo';
 	   if (($temp != null) && ($temp != "")){
 			$sql = $sql.' AND com.temp LIKE :temp';
@@ -135,7 +135,7 @@ class IntentoRepository extends EntityRepository {
 		->setParameter("entorno", $entorno)
 		->setParameter("sidtprf", $tprf['sid'])
 		->setMaxResults(1);
-		if ($tipo == 2) $query = $query->setParameter("idatl", $idAtl);
+		if (($tipo == 2) || ($tipo == 3)) $query = $query->setParameter("idatl", $idAtl);
 		else $query = $query->setParameter("sexo", $tipo);
 		if (($temp != null) && ($temp != "")){
 			$query = $query->setParameter("temp", $temp);

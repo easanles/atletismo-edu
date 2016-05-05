@@ -5,6 +5,7 @@
    {% if tipo == 0 %}Records masculinos
    {% elseif tipo == 1 %}Records femeninos
    {% elseif tipo == 2 %}Mis records
+   {% elseif tipo == 3 %}Records de {% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}
    {% endif %}
 {% endblock %}
 
@@ -12,9 +13,9 @@
 
 {% block navbar %}
       {% if app.user is not null and app.user.idAtl is not null %}<li><a href="{{ path('mis_competiciones') }}">Mis competiciones</a></li>{% endif %}
-      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
+      {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li{% if tipo == 3 %} class="active"{% endif %}><a href="{{ path('listado_atletas') }}">Atletas</a></li>{% endif %}
       {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li><a href="{{ path('listado_competiciones') }}">Competiciones</a></li>{% endif %}
-      <li class="dropdown active">
+      <li class="dropdown{% if tipo != 3 %} active{% endif %}">
          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Records <span class="caret"></span></a>
          <ul class="dropdown-menu">
             {% if app.user is not null and app.user.idAtl is not null %}<li><a href="{{ path('users_pantalla_records_propios') }}">Mis records</a></li>{% endif %}
@@ -47,13 +48,24 @@
   {% else %}
      <li><a href="{{ path('homepage') }}">Portada</a></li>
   {% endif %}
-  {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li>Records</li>{% endif %}
-  <li class="active">
-     {% if tipo == 0 %}Records masculinos
-     {% elseif tipo == 1 %}Records femeninos
-     {% elseif tipo == 2 %}Mis records
+  {% if tipo == 3 %}
+     {% if atl.esAlta == true %}
+        <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+     {% else %}
+        <li><a href="{{ path('listado_atletas') }}">Atletas</a></li>
+        <li><a href="{{ path('listado_atletas_bajas') }}">Atletas de baja</a></li>
      {% endif %}
-  </li>
+     <li><a href="{{ path('ver_atleta', {'id': atl.id}) }}">{% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</a></li>
+     <li class="active">Mejores marcas</li>
+  {% else %}
+     {% if app.user is not null and is_granted('ROLE_ADMIN') %}<li>Records</li>{% endif %}
+     <li class="active">
+        {% if tipo == 0 %}Records masculinos
+        {% elseif tipo == 1 %}Records femeninos
+        {% elseif tipo == 2 %}Mis records
+        {% endif %}
+     </li>
+  {% endif %}
 {% endblock %}
 
    {% block modallabel %}<div id="dialog-label"></div>{% endblock %}
@@ -65,6 +77,7 @@
       {% if tipo == 0 %}Records masculinos
       {% elseif tipo == 1 %}Records femeninos
       {% elseif tipo == 2 %}Mis records <small> - {{ atl.apellidos }}, {{ atl.nombre }}</small>
+      {% elseif tipo == 3 %}Mejores marcas <small> - {% if atl.nick is not null %}{{ atl.nick }}{% else %}{{atl.apellidos}}, {{atl.nombre}}{% endif %}</small>
       {% endif %}
    </h1>
 
@@ -72,7 +85,7 @@
    <div class="alert alert-danger alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="glyphicon glyphicon-exclamation-sign"></span> {{ exception }}</div>
    {% endif %}
    
-   {% if rol == "admin" %}
+   {% if rol == "admin" and tipo != 3 %}
       <p class="text-info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Incluyendo records de competiciones ocultas <a href="{% if tipo == 0 %}{{ path('users_pantalla_records_masc') }}{% elseif tipo == 1 %}{{ path('users_pantalla_records_fem') }}{% endif %}">[Ir a vista de socios]</a></p>
    {% endif %}
    <div class="row">
@@ -109,7 +122,7 @@
            <th>Prueba</th>
            <th><abbr class="visible-xs" title="Notas">P.</abbr><div class="hidden-xs">Notas</div></th>
            <th>Marca</th>
-           {% if tipo != 2 %}<th>Atleta</th>{% endif %}
+           {% if tipo != 2 and tipo != 3%}<th>Atleta</th>{% endif %}
            <th><abbr class="visible-xs" title="Categoría">Cat.</abbr><div class="hidden-xs">Categoría</div></th>
            <th>Fecha</th>
            <th class="hidden-xs">Sede</th>
@@ -126,7 +139,7 @@
            {% elseif row.unidades == "puntosasc" %}{{ row.marca|number_format(0, ',', '.') }} ptos.
            {% endif %}
            </strong></td>
-           {% if tipo != 2 %}<td>{% if destacarAtl is defined and destacarAtl.id == row.idAtl %}<strong>{{ row.atleta }}</strong>{% else %}{{ row.atleta }}{% endif %}</td>{% endif %}
+           {% if tipo != 2 and tipo != 3 %}<td>{% if destacarAtl is defined and destacarAtl.id == row.idAtl %}<strong>{{ row.atleta }}</strong>{% else %}{{ row.atleta }}{% endif %}</td>{% endif %}
            <td>{{ row.categoria }}</td>
            <td>{% if row.fecha is null %} <em class="text-muted">Sin fecha</em> {% elseif row.fecha != "" %} {{ row.fecha|date('d/m/Y') }} {% endif %}</td>
            <td class="hidden-xs">{{ row.sede }}</td>

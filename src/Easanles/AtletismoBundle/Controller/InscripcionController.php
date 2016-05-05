@@ -198,6 +198,7 @@ class InscripcionController extends Controller {
     	 }
     	 $listaPruObj = array();
     	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
+    	 $repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
     	 foreach($listaPru as $pruArr){
     	 	 $pruObj = $repoPru->find($pruArr['sid']);
     	 	 if (($pruObj->getSidTprm()->getSexo() != 2) 
@@ -209,7 +210,12 @@ class InscripcionController extends Controller {
     	 	 $pruFeder = $pruObj->getSidCom()->getEsFeder();
     	 	 if (($pruFeder == false) ||  //Pruebas federadas solo para atletas FGA
     	 	 	(($pruFeder == true) && (($atl->getLfga() != null) && ($atl->getLfga() != "")))){
-    	 	 	 	 $listaPruObj[] = $pruObj;
+    	 	 	    $tprfArr = array(
+    	 	 	    		"unidades" => $pruObj->getSidTprm()->getSidTprf()->getUnidades(),
+    	 	 	    		"sid" => $pruObj->getSidTprm()->getSidTprf()->getSid()
+    	 	 	    );
+    	 	 	    $record = $repoInt->findRecordFor(3, $pruObj->getSidTprm()->getEntorno(), $tprfArr, "admin", $atl->getId(), null)[0];
+    	 	 	 	 $listaPruObj[] = array("pru" => $pruObj, "unidades" => $pruObj->getSidTprm()->getSidTprf()->getUnidades(), "marca" => $record['marca']);
     	 	 }
     	  }
     	 $parametros = array("listaPru" => $listaPruObj, "entornos" => $entornos);

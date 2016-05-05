@@ -102,6 +102,7 @@
                <button type="button" class="btn btn-xs btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-horizontal"></span></button>
                <ul class="dropdown-menu pull-right">
                   <li><a href="{{ path('historial_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-time"></span> Historial</a></li>
+                  <li><a href="{{ path('pantalla_records_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-certificate"></span> Mejores marcas</a></li>
                   <li><a href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a></li>
                   {% if estadoAlta == true %}
                      <li><a class="bg-danger" href="#" onClick="showModal('estATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('estado_atleta', {'id': atl.id, 'op': "baja"}) }}', 'baja')"><div class="text-danger"><span class="glyphicon glyphicon-remove-sign"></span> Dar de baja</div></a></li>
@@ -113,6 +114,7 @@
             </div>
             <div class="hidden-xs">
                <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Historial" href="{{ path('historial_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-time"></span></a>
+               <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Mejores marcas" href="{{ path('pantalla_records_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-certificate"></span></a>
                <a type="button" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" title="Editar" href="{{ path('editar_atleta', {'id': atl.id}) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                {% if estadoAlta == true %}
                   <button type="button" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="top" title="Dar de baja" onClick="showModal('estATL', '{{ atl.apellidos }}, {{ atl.nombre }}', '{{ path('estado_atleta', {'id': atl.id, 'op': "baja"}) }}', 'baja')"><span class="glyphicon glyphicon-remove-sign"></span></button>

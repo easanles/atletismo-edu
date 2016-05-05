@@ -1,24 +1,35 @@
             <tbody>
                <tr>
                   <th>Prueba</th>
+                  <th><abbr title="Record personal" class="visible-xs-block">Record</abbr><div class="hidden-xs">Record personal</div></th>
                   <th class="hidden-xs">Precio</th>
                   <th><abbr title="Selección" class="visible-xs-block">Selec.</abbr><div class="hidden-xs">Selección</div></th>
                </tr>
-               {% for pru in listaPru %}
-                  {% if pru.sidTprm.sexo == 0 %}
-                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ ', masculino' %}
-                  {% elseif pru.sidTprm.sexo == 1 %}
-                     {% set tpr = pru.sidTprm.sidTprf.nombre ~ ', femenino' %}
-                  {% elseif pru.sidTprm.sexo == 2 %}
-                     {% set tpr = pru.sidTprm.sidTprf.nombre %}
+               {% for row in listaPru %}
+                  {% if row.pru.sidTprm.sexo == 0 %}
+                     {% set tpr = row.pru.sidTprm.sidTprf.nombre ~ ', masculino' %}
+                  {% elseif row.pru.sidTprm.sexo == 1 %}
+                     {% set tpr = row.pru.sidTprm.sidTprf.nombre ~ ', femenino' %}
+                  {% elseif row.pru.sidTprm.sexo == 2 %}
+                     {% set tpr = row.pru.sidTprm.sidTprf.nombre %}
                   {% endif %}
                   {% if entornos|length > 1 %}
-                     {% set tpr = tpr ~ '. ' ~ pru.sidTprm.entorno %}
+                     {% set tpr = tpr ~ '. ' ~ row.pru.sidTprm.entorno %}
                   {% endif %}
                   <tr>
                      <td>{{ tpr }}</td>
-                     <td class="hidden-xs">{{ pru.coste|number_format(2, ',', '.') }}€</td>
-                     <td><button id="sel-pru-{{ pru.sid }}" type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button></td>
+                     <td><strong>
+                     {% if row.marca != 0 %}
+                        {% if row.unidades == "segundos" %}
+                           {{ (row.marca / 3600)|round(0, "floor") }}{% set resto = row.marca - ((row.marca / 3600)|round(0, "floor") * 3600) %}:{{ "%02d"|format((resto / 60)|round(0, "floor")) }}{% set resto = resto - ((resto / 60)|round(0, "floor") * 60) %}:{{ "%06.3f"|format(resto) }}
+                        {% elseif row.unidades == "metros" %}{{ row.marca|number_format(3, ',', '.') }} m.
+                        {% elseif row.unidades == "puntosdesc" %}{{ row.marca|number_format(0, ',', '.') }} ptos.
+                        {% elseif row.unidades == "puntosasc" %}{{ row.marca|number_format(0, ',', '.') }} ptos.
+                        {% endif %}
+                     {% endif %}
+                     </strong></td>
+                     <td class="hidden-xs">{{ row.pru.coste|number_format(2, ',', '.') }}€</td>
+                     <td><button id="sel-pru-{{ row.pru.sid }}" type="checkbox" data-toggle="button" class="btn btn-xs btn-block btn-default sel-btn" onClick="toggleCheckButton(this)"><span class="glyphicon glyphicon-unchecked"></span> NO</button></td>
                   </tr>
                {% endfor %}
             </tbody>

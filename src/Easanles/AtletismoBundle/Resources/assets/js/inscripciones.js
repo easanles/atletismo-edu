@@ -76,6 +76,7 @@ function loadViews(tab){
          $.get("./inscribir/atl", function(data, status){           
             if (status == "success"){
                $("#inspage-atl").html(data);
+               $('abbr').tooltip();
                checkSelectedButtons();
             } else {
                $("#inspage-atl").html("Error al cargar datos");
@@ -126,6 +127,7 @@ function loadViews(tab){
     		success: function(data, status) {
                 if (status == "success"){
                     $("#inspage-confirm").html(data);
+                    $('abbr').tooltip();
                  } else {
                     $("#inspage-confirm").html("Error al cargar datos");
                  }
@@ -144,6 +146,7 @@ function insAtlSearch(cat, query, from){
         if (status == "success"){
            $("#inspage-atl").html(data);
            checkSelectedButtons();
+           $('abbr').tooltip();
         } else {
            $("#inspage-atl").html("Error al cargar datos");
         }
