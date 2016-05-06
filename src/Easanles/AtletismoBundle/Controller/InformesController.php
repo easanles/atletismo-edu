@@ -13,6 +13,7 @@ use Easanles\AtletismoBundle\Entity\Competicion;
 use Easanles\AtletismoBundle\Form\Type\CuotaType;
 use Easanles\AtletismoBundle\Entity\Prueba;
 use Easanles\AtletismoBundle\Entity\Inscripcion;
+use Easanles\AtletismoBundle\Entity\Config;
 
 class InformesController extends Controller {
 
@@ -239,6 +240,9 @@ class InformesController extends Controller {
 			}
 			$parametros['atl'] = $atl;
 		}
+		$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+		$noOficiales = $repoCfg->find("nooficiales")->getValor();
+		$mostrarNoOficiales = intval($noOficiales) == 1 ? true : false;
 		$selTemp = $request->query->get("t");
 		$parametros['selTemp'] = $selTemp;		
 		$repoCom = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Competicion');
@@ -254,9 +258,9 @@ class InformesController extends Controller {
 			$listaTprfs = $repoTprm->findUsedTprfsFor($entorno['entorno']);
 			foreach($listaTprfs as $tprf){
 				if (($tipo == 2) || ($tipo == 3)){
-			      $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, $parametros['atl']->getId(), $selTemp);
+			      $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, $parametros['atl']->getId(), $selTemp, $mostrarNoOficiales);
 				}
-				else $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, null, $selTemp);
+				else $query = $repoInt->findRecordFor($tipo, $entorno['entorno'], $tprf, $rol, null, $selTemp, $mostrarNoOficiales);
 				if ($query != null){
 					$datos = array("premios" => $query[0]['premios'],
 							"marca" => $query[0]['marca'],

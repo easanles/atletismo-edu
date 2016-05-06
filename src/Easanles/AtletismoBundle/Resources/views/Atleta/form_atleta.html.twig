@@ -72,7 +72,7 @@
 
 {{ form_start(form) }}
     {{ form_errors(form) }}
-
+    
     <div class="row">
        <div class="form_row col-xs-12 col-sm-6">
           {{ form_row(form.apellidos) }}
@@ -198,6 +198,7 @@
               <a type="button" class="btn btn-m btn-default col-xs-3" href="{{ path('listado_atletas') }}"><span class="glyphicon glyphicon-menu-left"></span> Cancelar</a>
               <button type="submit" class="btn btn-m btn-primary col-xs-offset-1 col-xs-8"><span class="glyphicon glyphicon-save"></span> Guardar</button>
               {% endif %}
+              <em class="pull-right">* Obligatorio</em>
           </div>
        </div>
     </div>

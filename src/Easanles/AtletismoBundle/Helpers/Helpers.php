@@ -199,6 +199,11 @@ class Helpers {
 		   $numResultados->setClave("numresultados")->setValor("50");
 		   $em->persist($numResultados);
 		}
+		if (count($repoCfg->findOneBy(array("clave" => "nooficiales"))) == 0){
+			$noOficiales = new Config();
+			$noOficiales->setClave("nooficiales")->setValor("0");
+			$em->persist($noOficiales);
+		}
 		if (count($repoCfg->findOneBy(array("clave" => "jumbotron"))) == 0){
 		   $jumbotron = new Config();
 		   $jumbotron->setClave("jumbotron")->setValor("1");
@@ -229,11 +234,6 @@ class Helpers {
 </ul>");
 		   $em->persist($bienvenida);
 		}
-		//if (count($repoCfg->findOneBy(array("clave" => "nombreapp"))) == 0){
-		//$nombreApp = new Config();
-		//$nombreApp->setClave("nombreapp")->setValor("Atletismo");
-		//$em->persist($nombreApp);
-		//}
 		if (count($repoCfg->findOneBy(array("clave" => "vermeses"))) == 0){
 		   $verMeses = new Config();
 		   $verMeses->setClave("vermeses")->setValor("2");

@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Console\Input\ArrayInput;
 use Easanles\AtletismoBundle\Entity\TipoPruebaModalidad;
+use Easanles\AtletismoBundle\Entity\TipoPruebaFormato;
 
 class DefaultController extends Controller{
 	 private function checkDatabase(){
@@ -22,7 +23,7 @@ class DefaultController extends Controller{
 	 	}
 	 	$repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
 	 	$checkConfig = $repoCfg->findAll();
-	 	if (count($checkConfig) != 9){
+	 	if (count($checkConfig) != 10){
 	 		return $this->redirect($this->generateUrl("instalar"));
 	 	}
 	 	$repoCat = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Categoria');
@@ -34,6 +35,17 @@ class DefaultController extends Controller{
 	 	$checkUsu = $repoUsu->findBy(array("rol" => "coordinador"));
 	 	if (count($checkUsu) == 0){
 	 		return $this->redirect($this->generateUrl("instalar"));
+	 	}
+	 	$repoTprf = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaFormato');
+	 	$checkTprf = $repoTprf->findBy(array("esCuota" => true));
+	 	if (count($checkTprf) == 0){
+	 		return $this->redirect($this->generateUrl("instalar"));
+	 	} else {
+	 		$repoTprm = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:TipoPruebaModalidad');
+	 		$checkTprm = $repoTprm->findBy(array("sidTprf" => $checkTprf));
+	 		if (count($checkTprm) == 0){
+	 		   return $this->redirect($this->generateUrl("instalar"));
+	 		}
 	 	}
 	 	return true;
 	 }
@@ -54,7 +66,6 @@ class DefaultController extends Controller{
     	 $parametros['jumbolin1'] = $repoCfg->find("jumbolin1")->getValor();
     	 $parametros['jumbolin2'] = $repoCfg->find("jumbolin2")->getValor();
     	 $parametros['bienvenida'] = $repoCfg->find("bienvenida")->getValor();
-    	 //$parametros['nombreapp'] = $repoCfg->find("nombreapp")->getValor();
     	 $authenticationUtils = $this->get('security.authentication_utils');
     	 $parametros['error'] = $authenticationUtils->getLastAuthenticationError();
     	 $parametros['last_username'] = $authenticationUtils->getLastUsername();
@@ -142,7 +153,7 @@ class DefaultController extends Controller{
     	 if (!in_array('cfg', $tablasPerdidas)){
     	 	 $repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
     	 	 $checkConfig = $repoCfg->findAll();
-    	 	 if (count($checkConfig) != 9) {
+    	 	 if (count($checkConfig) != 10) {
     	 	    $rehacerConfig = true;
     	 		 $todoOk = false;
     	 	 }

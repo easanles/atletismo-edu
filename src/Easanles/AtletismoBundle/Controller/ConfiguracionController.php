@@ -25,21 +25,21 @@ class ConfiguracionController extends Controller {
     	$fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
     	if ($fIniTempObj == null) $fIniTempVal = "";
       else $fIniTempVal = $fIniTempObj->getValor();
-      //$nombreApp = $repository->findOneBy(array("clave" => "nombreapp"));
       $catAsig = $repository->findOneBy(array("clave" => "catAsig"));
       $leyenda = $repository->findOneBy(array("clave" => "leyenda"));
       $numResultados = $repository->findOneBy(array("clave" => "numresultados"));
+      $noOficiales = $repository->findOneBy(array("clave" => "nooficiales"));
       $jumbotron = $repository->findOneBy(array("clave" => "jumbotron"));
       $jumboLinea1 = $repository->findOneBy(array("clave" => "jumbolin1"));
       $jumboLinea2 = $repository->findOneBy(array("clave" => "jumbolin2"));
       $bienvenida = $repository->findOneBy(array("clave" => "bienvenida"));
       $verMeses = $repository->findOneBy(array("clave" => "vermeses"));
       $ajContent = $this->render('EasanlesAtletismoBundle:Configuracion:form_ajustes.html.twig', array(
-      		//"nombreApp" => $nombreApp->getValor(),
     			"fIniTemp" => $fIniTempVal,
     			"catAsig" => $catAsig->getValor(),
     			"leyenda" => $leyenda->getValor(),
       		"numResultados" => $numResultados->getValor(),
+      		"noOficiales" => $noOficiales->getValor(),
       		"jumbotron" => intval($jumbotron->getValor()),
       		"jumboLinea1" => $jumboLinea1->getValor(),
       		"jumboLinea2" => $jumboLinea2->getValor(),
@@ -56,17 +56,6 @@ class ConfiguracionController extends Controller {
     	 $parametros = array();
     	 $repository = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
     	 $em = $this->getDoctrine()->getManager();
-    	 
-    	 //NOMBRE DE LA APLICACION
-    	 /*$nombreAppObj = $repository->findOneBy(array("clave" => "nombreapp"));
-    	 $nombreAppString = $request->request->get('nombreapp');
-    	 if (!(strcmp($nombreAppString, $nombreAppObj->getValor()) == 0)){
-    	 	$parametros["okNombreApp"] = true;
-    	 	$nombreAppObj->setValor($nombreAppString);
-    	 	$parametros["nombreApp"] = $nombreAppString;
-    	 } else {
-    	 	$parametros["nombreApp"] = $nombreAppObj->getValor();
-    	 }*/
     	 
     	 //DIA Y MES DE INICIO DE LAS TEMPORADAS
     	 $fIniTempObj = $repository->findOneBy(array("clave" => "fIniTemp"));
@@ -115,7 +104,7 @@ class ConfiguracionController extends Controller {
     	 } else {
     	    $parametros["leyenda"] = $leyendaObj->getValor();
     	 }
-    	 
+    	   	 
     	 //NUMERO DE RESULTADOS POR PAGINA
     	 $numResultadosObj = $repository->findOneBy(array("clave" => "numresultados"));
     	 $numResultadosString = $request->request->get('numresultados');
@@ -128,6 +117,20 @@ class ConfiguracionController extends Controller {
     	 	$parametros["errNumResultados"] = "Introduzca un valor entero mayor o igual que 1";
     	 }
     	 $parametros["numResultados"] = $numResultadosString;
+    	 
+    	 //MOSTRAR MARCAS NO OFICIALES EN LAS TABLAS DE RECORDS
+    	 $noOficialesObj = $repository->findOneBy(array("clave" => "nooficiales"));
+    	 $noOficialesString = $request->request->get('nooficiales');
+       if (($noOficialesString == "on"))
+    	 	    $noOficialesVal = 1;
+    	 else $noOficialesVal = 0;
+    	 if ($noOficialesVal != $noOficialesObj->getValor()){
+    	 	$parametros["okNoOficiales"] = true;
+    	 	$noOficialesObj->setValor($noOficialesVal);
+    	 	$parametros["noOficiales"] = $noOficialesVal;
+    	 } else {
+    	 	$parametros["noOficiales"] = $noOficialesObj->getValor();
+    	 }
     	 
     	 //ACTIVAR JUMBOTRON
     	 $jumbotronObj = $repository->findOneBy(array("clave" => "jumbotron"));

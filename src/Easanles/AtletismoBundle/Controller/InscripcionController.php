@@ -199,6 +199,9 @@ class InscripcionController extends Controller {
     	 $listaPruObj = array();
     	 $repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
     	 $repoInt = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Intento');
+    	 $repoCfg = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Config');
+    	 $noOficiales = $repoCfg->find("nooficiales")->getValor();
+    	 $mostrarNoOficiales = intval($noOficiales) == 1 ? true : false;
     	 foreach($listaPru as $pruArr){
     	 	 $pruObj = $repoPru->find($pruArr['sid']);
     	 	 if (($pruObj->getSidTprm()->getSexo() != 2) 
@@ -214,7 +217,7 @@ class InscripcionController extends Controller {
     	 	 	    		"unidades" => $pruObj->getSidTprm()->getSidTprf()->getUnidades(),
     	 	 	    		"sid" => $pruObj->getSidTprm()->getSidTprf()->getSid()
     	 	 	    );
-    	 	 	    $record = $repoInt->findRecordFor(3, $pruObj->getSidTprm()->getEntorno(), $tprfArr, "admin", $atl->getId(), null)[0];
+    	 	 	    $record = $repoInt->findRecordFor(3, $pruObj->getSidTprm()->getEntorno(), $tprfArr, "admin", $atl->getId(), null, $mostrarNoOficiales)[0];
     	 	 	 	 $listaPruObj[] = array("pru" => $pruObj, "unidades" => $pruObj->getSidTprm()->getSidTprf()->getUnidades(), "marca" => $record['marca']);
     	 	 }
     	  }

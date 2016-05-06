@@ -1,15 +1,5 @@
          <div class="row">
             <form id="cfg-form" class="form-horizontal" action="{{ path("configuracion_cambiar_ajustes") }}" method="post">
-               {#<div class="form-group{% if okNombreApp is defined %} has-success has-feedback{% endif %}">
-                  <label for="cfg_nombreapp" class="col-xs-12 col-sm-4 control-label">Nombre de la aplicación</label>
-                  <div class="col-xs-12 col-sm-6">
-                     <input type="text" class="form-control" id="cfg_nombreapp" name="nombreapp" value="{{ nombreApp }}"></input>
-                     <span class="help-block">Aparece en la barra de navegación</span>
-                     {% if okNombreApp is defined %}
-                        <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                     {% endif %}
-                  </div>
-               </div>#}
                <div class="form-group{% if errFIniTemp is defined %} has-error has-feedback{% endif %}{% if okFIniTemp is defined %} has-success has-feedback{% endif %}">
                   <label for="cfg_fIniTemp" class="col-xs-12 col-sm-4 control-label">Día y mes de inicio de las temporadas</label>
                   <div class="col-xs-12 col-sm-6">
@@ -74,6 +64,12 @@
                            <span class="glyphicon glyphicon-exclamation-sign"></span> {{ errVerMeses }}
                         </span>
                      {% endif %}
+                  </div>
+               </div>
+               <div class="form-group{% if okNoOficiales is defined %} has-success{% endif %}">
+                  <label for="cfg_nooficiales" class="col-xs-12 col-sm-4 control-label">Mostrar marcas no oficiales en las tablas de records del club</label>
+                  <div class="col-xs-12 col-sm-6">
+                     <input type="checkbox" id="cfg_nooficiales" name="nooficiales" {% if noOficiales == 1 %}checked{% endif %}></input>
                   </div>
                </div>
                <div class="panel panel-default">

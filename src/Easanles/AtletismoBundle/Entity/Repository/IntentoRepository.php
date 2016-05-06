@@ -105,7 +105,7 @@ class IntentoRepository extends EntityRepository {
 		->getResult();
 	}
 	
-	public function findRecordFor($tipo, $entorno, $tprf, $rol, $idAtl, $temp){
+	public function findRecordFor($tipo, $entorno, $tprf, $rol, $idAtl, $temp, $mostrarNoOficiales){
 		switch($tprf['unidades']){
 			case "segundos": $orden = "ASC"; break;
 			case "metros": $orden = "DESC"; break;
@@ -121,7 +121,8 @@ class IntentoRepository extends EntityRepository {
 				 JOIN pru.sidCom com
 				 JOIN pru.sidTprm tprm
 				 JOIN int.idAtl atl
-				 WHERE tprm.entorno LIKE :entorno AND int.validez = 1 AND com.esOficial = 1';
+				 WHERE tprm.entorno LIKE :entorno AND int.validez = 1';
+		if ($mostrarNoOficiales == false) $sql = $sql.' AND com.esOficial = 1';
 		if ($rol == "user") $sql = $sql.' AND com.esVisible = 1';
 		if (($tipo == 2) || ($tipo == 3)) $sql = $sql.' AND IDENTITY(int.idAtl) LIKE :idatl';
 		else $sql = $sql.' AND atl.sexo LIKE :sexo';
