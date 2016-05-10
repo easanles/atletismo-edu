@@ -82,7 +82,8 @@ class InscripcionRepository extends EntityRepository {
 		->createQuery('SELECT atl.id, atl.apellidos, atl.nombre, atl.nick
 				FROM EasanlesAtletismoBundle:Inscripcion ins
 				JOIN ins.idAtl atl
-				WHERE ins.codGrupo LIKE :codgrupo')
+				WHERE ins.codGrupo LIKE :codgrupo
+				GROUP BY atl.id')
 		->setParameter("codgrupo", $codigo)
 		->getResult();
 	}
