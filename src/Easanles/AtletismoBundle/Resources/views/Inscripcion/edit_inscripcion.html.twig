@@ -5,8 +5,6 @@
 
    <div id="data_form" class="row">
 
-{#{ form_start(form, {'action': path('crear_tipopruebaformato'), 'attr': {'novalidate': 'novalidate'}}) }#}
-
 {{ form_start(form, {'action': path('editar_inscripcion', {'sidCom': sidCom, 'atl': idAtl})}) }}
 
     {{ form_errors(form) }}
@@ -20,8 +18,8 @@
                 {% for ins in form.inscripciones %}
                 <tr class="subform-row">
                    <td>{{ ins.vars.value.sidPru.sidTprm.sidTprf.nombre }}{% if ins.vars.value.sidPru.sidTprm.sexo == 0 %}, masculino{% elseif ins.vars.value.sidPru.sidTprm.sexo == 1 %}, femenino{% endif %}{% if entornos|length > 1 %}. {{ ins.vars.value.sidPru.sidTprm.entorno }}{% endif %}</td>
-                   <td>{{ form_widget(ins.coste) }}{{ form_errors(ins.coste) }}</td>
-                   <td>{{ form_widget(ins.estado) }}{{ form_errors(ins.estado) }}</td>
+                   <td style="max-width: 12em"{{ form_widget(ins.coste) }}{{ form_errors(ins.coste) }}</td>
+                   <td style="min-width: 9em">{{ form_widget(ins.estado) }}{{ form_errors(ins.estado) }}</td>
                 </tr>
                 {% endfor %}
              </tbody>
