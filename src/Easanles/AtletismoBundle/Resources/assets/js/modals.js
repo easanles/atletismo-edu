@@ -261,16 +261,20 @@ function showModal(type, data1, data2, data3){
     		     collectionHolder = $('#form-collection');
  		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
  		         if (data3 == true) checkIntentos(); //marcas.js
- 		 	     if ($("#intGroup_intentos_0_marca").val() != ""){
- 		 	    	 aux = $("#intGroup_intentos_0_marca").val();
- 		 	    	 $("#marca-horas").val(Math.floor(aux / 3600));
- 		 	    	 aux = aux - (Math.floor(aux / 3600) * 3600);
- 		 	    	 $("#marca-minutos").val(Math.floor(aux / 60));
- 		 	    	 aux = aux - (Math.floor(aux / 60) * 60);
- 		 	    	 $("#marca-segundos").val(Math.floor(aux));
- 		 	    	 aux = aux - Math.floor(aux);
- 		 	    	 $("#marca-milesimas").val(Math.round(aux * 1000));
- 		 	     }
+ 		         intGroups = $(".input-group input[type=\"hidden\"]");
+ 		         for (i = 0; i < intGroups.length; i++){
+ 	 		 	     if ($("#intGroup_intentos_" + i + "_marca").val() != ""){
+ 	 		 	    	 fields = $(intGroups[i]).parent().find("input[type=\"number\"]");
+ 	 		 	    	 aux = $("#intGroup_intentos_" + i + "_marca").val();
+ 	 		 	    	 $(fields[0]).val(Math.floor(aux / 3600));
+ 	 		 	    	 aux = aux - (Math.floor(aux / 3600) * 3600);
+ 	 		 	    	 $(fields[1]).val(Math.floor(aux / 60));
+ 	 		 	    	 aux = aux - (Math.floor(aux / 60) * 60);
+ 	 		 	    	 $(fields[2]).val(Math.floor(aux));
+ 	 		 	    	 aux = aux - Math.floor(aux);
+ 	 		 	    	 $(fields[3]).val(Math.round(aux * 1000));
+ 	 		 	     } 		        	 
+ 		         }
    	          } else {
    			     $("#dialog-body").html("Error al cargar datos");
    			  }	
@@ -382,21 +386,6 @@ function showModal(type, data1, data2, data3){
 	}
 	
 	modal.modal();
-}
-
-function autoFocusNextField(id){
-	switch (id){
-	   case ("marca-minutos"): {
-		   if ($("#marca-minutos").val().length == 2){
-		      $("#marca-segundos").focus();
-		   }
-	   } break;
-	   case ("marca-segundos"): {
-		   if ($("#marca-segundos").val().length == 2){
-		      $("#marca-milesimas").focus();
-		   }
-	   } break;
-	}
 }
 
 function modalToggleButton(item){

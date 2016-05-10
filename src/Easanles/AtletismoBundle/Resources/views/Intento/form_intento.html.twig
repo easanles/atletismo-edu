@@ -27,6 +27,12 @@
                       <div class="input-group">
                          {% if unidades == "segundos" %}
                             {{ form_widget(form.intentos.vars.prototype.marca)|e }}
+                            <div class="nested-group" onkeypress="validateFields(this)">
+                               <input type="number" class="form-control marca-horas" min="0" step="1" placeholder="Horas" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)">
+                               <input type="number" class="form-control marca-minutos" min="0" max="59" step="1" maxlength="2" placeholder="Minutos" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)" onkeyup="autoFocusNextField(this)">
+                               <input type="number" class="form-control marca-segundos" min="0" max="59" step="1" maxlength="2" placeholder="Segundos" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)" onkeyup="autoFocusNextField(this)">
+                               <input type="number" class="form-control marca-milesimas" min="0" max="999" step="1" maxlength="3" size="3" pattern="[0-9][0-9][0-9]" placeholder="Milésimas" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)">
+                            </div>
                          {% else %}
                             {{ form_widget(form.intentos.vars.prototype.marca)|e }}
                                <div class="input-group-addon">
@@ -41,7 +47,7 @@
                    </td>
                    <td><div onClick="checkIntentos()">{{ form_widget(form.intentos.vars.prototype.validez) }}</div>{{ form_errors(form.intentos.vars.prototype.validez) }}</td>
                    <td>{{ form_widget(form.intentos.vars.prototype.premios) }}{{ form_errors(form.intentos.vars.prototype.premios) }}</td>
-                   <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this)"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
+                   <td><button type="button" class="btn btn-sm btn-danger" onClick="removeFormRow(this);checkIntentos()"><span class="glyphicon glyphicon-remove" aria-label="Eliminar"></span></button></td>
                 </tr>
              '{% endif %}>
           <tr>
@@ -62,11 +68,11 @@
                       <div class="input-group">
                          {{ form_widget(int.marca) }}
                          {% if unidades == "segundos" %}
-                            <div class="nested-group" onkeypress="validateFields()">
-                               <input type="number" class="form-control" id="marca-horas" min="0" step="1" placeholder="Horas" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()">
-                               <input type="number" class="form-control" id="marca-minutos" min="0" max="59" step="1" maxlength="2" placeholder="Minutos" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()" onkeyup="autoFocusNextField('marca-minutos')">
-                               <input type="number" class="form-control" id="marca-segundos" min="0" max="59" step="1" maxlength="2" placeholder="Segundos" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()" onkeyup="autoFocusNextField('marca-segundos')">
-                               <input type="number" class="form-control" id="marca-milesimas" min="0" max="999" step="1" maxlength="3" size="3" pattern="[0-9][0-9][0-9]" placeholder="Milésimas" onchange="validateFields()" onfocus="this.select()" onblur="validateFields()">
+                            <div class="nested-group" onkeypress="validateFields(this)">
+                               <input type="number" class="form-control marca-horas" min="0" step="1" placeholder="Horas" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)">
+                               <input type="number" class="form-control marca-minutos" min="0" max="59" step="1" maxlength="2" placeholder="Minutos" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)" onkeyup="autoFocusNextField(this)">
+                               <input type="number" class="form-control marca-segundos" min="0" max="59" step="1" maxlength="2" placeholder="Segundos" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)" onkeyup="autoFocusNextField(this)">
+                               <input type="number" class="form-control marca-milesimas" min="0" max="999" step="1" maxlength="3" size="3" pattern="[0-9][0-9][0-9]" placeholder="Milésimas" onchange="validateFields(this)" onfocus="this.select()" onblur="validateFields(this)">
                             </div>
                          {% else %}
                          <div class="input-group-addon">

@@ -310,7 +310,6 @@ function submitData(){
 		url: "./inscribir/submit",
 		data: {data: data},
 		success: function(data, status) {
-           console.log(data);
            if (status == "success"){
               window.location.href = "./inscripciones";
            }
