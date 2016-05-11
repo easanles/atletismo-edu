@@ -31,7 +31,7 @@
                {% if com.esCuota == true %}<td>{{ ent.atl.tipo }}</td>{% endif %}
                {% if com.esCuota == false %}<td>{{ tpr }}</td>{% endif %}
                <td class="hidden-xs">{{ ent.pru.coste|number_format(2, ',', '.') }}€</td>
-               <td><div class="input-group"><input id="coste-{{ ent.atl.id }}-{{ ent.pru.sid }}" type="number" class="form-control coste-ins" value="{{ ent.pru.coste }}" onInput="updateCosteTotal()"><span class="input-group-addon">€</span></div></td>
+               <td style="max-width:10em"><div class="input-group"><input id="coste-{{ ent.atl.id }}-{{ ent.pru.sid }}" type="number" class="form-control coste-ins" value="{{ ent.pru.coste }}" onInput="updateCosteTotal()"><span class="input-group-addon">€</span></div></td>
                <td><input id="cb-{{ ent.atl.id }}-{{ ent.pru.sid }}" type="checkbox" checked onClick="toggleConfRow(this)"></button></td>
             </tr>
          {% endfor %}

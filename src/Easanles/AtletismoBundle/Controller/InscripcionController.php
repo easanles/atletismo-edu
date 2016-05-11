@@ -127,17 +127,16 @@ class InscripcionController extends Controller {
     		}
     	}
     	if ($com->getEsCuota() == true){
-    		$arrayAtlValidos = array();
     		$pru = $com->getPruebas()[0];
     		$repoIns = $this->getDoctrine()->getRepository('EasanlesAtletismoBundle:Inscripcion');
-    		foreach($atletas as $atl){
+    		foreach($atletas as $key => $atl){
     			$checkIns = $repoIns->findOneBy(array("idAtl" => $atl["id"], "sidPru" => $pru));
-    			if ($checkIns == null){
-    				$arrayAtlValidos[] = $atl;
+    			if ($checkIns != null){
+    				$atletas[$key]['yainscrito'] = true;
     			}
     		}
-    		$atletas = $arrayAtlValidos;
     	}
+    	dump($atletas);
     	$parametros = array('com' => $com, 'atletas' => $atletas, 'from' => $from, 'numResultados' => $numResultados);
     	$vigentes = $repoCat->findAllCurrent();
     	$parametros['vigentes'] = $vigentes;    	

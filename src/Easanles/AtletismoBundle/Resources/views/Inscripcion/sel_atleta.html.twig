@@ -45,7 +45,9 @@
                <td class="hidden-xs">{{ atl.fnac|date('d/m/Y') }}</td>
                <td>{% if atl.nick is null or atl.nick == "" %} <em class="text-muted">--</em> {% else %} {{ atl.nick }} {% endif %} </td>
                <td>
-                  {% if com.esFeder == false or (com.esFeder == true and (atl.lfga is not null and atl.lfga != "")) %}
+                  {% if atl.yainscrito is defined and atl.yainscrito == true %}
+                     <em class="text-info">Ya inscrito</em>
+                  {% elseif com.esFeder == false or (com.esFeder == true and (atl.lfga is not null and atl.lfga != "")) %}
                   <button id="sel-atl-{{ atl.id }}" 
                      data-nombre="{{ atl.apellidos }}, {{ atl.nombre }}"
                      data-catnombre="{% if categorias[catIndex] is not null %}{{ categorias[catIndex].nombre }}{% endif %}"
