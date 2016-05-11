@@ -131,56 +131,55 @@ function checkIntentos(){
 	}
 }
 
-function validateFields(){
-	error = false;
-
-	function checkIndivField(id){
-		number = parseInt($(id).val());
-		valid = $(id).prop("validity").valid;
-		if (!valid || (number < 0)
-				|| ( ((id == "#marca-minutos") || (id == "#marca-segundos")) && (number > 59))
-				|| ((id == "#marca-milesimas") && (number > 999))){
-		   $(id).addClass("has-error");
-		   return true;
-		} else {
-		   $(id).removeClass("has-error");
-		   return false;
-		}
+function validateFields(field){
+   error = false;
+   if ($(field).is("div")){  //horas, minutos, segundos, milesimas
+	   fields = $(field).children();
+   } else if ($(field).is("input")){
+	   fields = $(field).parent().children();
+   }
+   rownum = parseInt($(field).closest(".subform-row").children().first().html()) - 1;
+   
+   for(i = 0; i<4; i++){
+	  currField = $(fields[i]);
+      number = parseInt(currField.val());
+	  valid = currField.prop("validity").valid;
+	  if (!valid || (number < 0)
+            || ( ((i == 1) || (i == 2)) && (number > 59))
+		    || ((i == 3) && (number > 999))){
+		 currField.addClass("has-error");
+	     error = true;
+	  } else {
+		 currField.removeClass("has-error");
+	  }
 	}
-	
-	if (checkIndivField("#marca-horas")) error = true;
-	if (checkIndivField("#marca-minutos")) error = true;
-	if (checkIndivField("#marca-segundos")) error = true;
-	if (checkIndivField("#marca-milesimas")) error = true;
 	if (error) {
 	   $("#dialog-btn button").attr("disabled", true);
 	} else {
 	   $("#dialog-btn button").attr("disabled", false);
 	   valor = 0;
-	   aux = parseInt($("#marca-horas").val());
+	   aux = parseInt($(fields[0]).val());
 	   if (!isNaN(aux)) valor += aux * 3600;
-	   aux = parseInt($("#marca-minutos").val());
+	   aux = parseInt($(fields[1]).val());
 	   if (!isNaN(aux)) valor += aux * 60;
-	   aux = parseInt($("#marca-segundos").val());
+	   aux = parseInt($(fields[2]).val());
 	   if (!isNaN(aux)) valor += aux;
-	   aux = parseInt($("#marca-milesimas").val());
+	   aux = parseInt($(fields[3]).val());
 	   if (!isNaN(aux)) valor += aux / 1000;
-	   $("#intGroup_intentos_0_marca").val(valor);
+	   $("#intGroup_intentos_" + rownum + "_marca").val(valor);
 	}
 }
 
-function autoFocusNextField(id){
-	switch (id){
-	   case ("marca-minutos"): {
-		   if ($("#marca-minutos").val().length == 2){
-		      $("#marca-segundos").focus();
-		   }
-	   } break;
-	   case ("marca-segundos"): {
-		   if ($("#marca-segundos").val().length == 2){
-		      $("#marca-milesimas").focus();
-		   }
-	   } break;
+function autoFocusNextField(field){
+	fields = $(field).parent().children();
+	if ($(field).hasClass("marca-minutos")){
+       if ($(field).val().length == 2){
+	      $(fields[2]).focus();
+       }
+	} else if ($(field).hasClass("marca-segundos")){
+	   if ($(field).val().length == 2){
+		  $(fields[3]).focus();
+	   }
 	}
 }
 
@@ -236,16 +235,20 @@ function showModal(type, data1, data2){
    	    		     collectionHolder = $('#form-collection');
    	 		         collectionHolder.data('index', collectionHolder.find('.subform-row').length);
    	 		         if (data2 == true) checkIntentos();
-   	 		 	     if ($("#intGroup_intentos_0_marca").val() != ""){
-   	 		 	    	 aux = $("#intGroup_intentos_0_marca").val();
-   	 		 	    	 $("#marca-horas").val(Math.floor(aux / 3600));
-   	 		 	    	 aux = aux - (Math.floor(aux / 3600) * 3600);
-   	 		 	    	 $("#marca-minutos").val(Math.floor(aux / 60));
-   	 		 	    	 aux = aux - (Math.floor(aux / 60) * 60);
-   	 		 	    	 $("#marca-segundos").val(Math.floor(aux));
-   	 		 	    	 aux = aux - Math.floor(aux);
-   	 		 	    	 $("#marca-milesimas").val(Math.round(aux * 1000));
-   	 		 	     }   		    		 
+   	 		         intGroups = $(".input-group input[type=\"hidden\"]");
+   	 		         for (i = 0; i < intGroups.length; i++){
+   	 	 		 	     if ($("#intGroup_intentos_" + i + "_marca").val() != ""){
+   	 	 		 	    	 fields = $(intGroups[i]).parent().find("input[type=\"number\"]");
+   	 	 		 	    	 aux = $("#intGroup_intentos_" + i + "_marca").val();
+   	 	 		 	    	 $(fields[0]).val(Math.floor(aux / 3600));
+   	 	 		 	    	 aux = aux - (Math.floor(aux / 3600) * 3600);
+   	 	 		 	    	 $(fields[1]).val(Math.floor(aux / 60));
+   	 	 		 	    	 aux = aux - (Math.floor(aux / 60) * 60);
+   	 	 		 	    	 $(fields[2]).val(Math.floor(aux));
+   	 	 		 	    	 aux = aux - Math.floor(aux);
+   	 	 		 	    	 $(fields[3]).val(Math.round(aux * 1000));
+   	 	 		 	     } 		        	 
+   	 		         }		    		 
    		    	 } else {
    		    		$("#dialog-body").html("<div class=\"alert alert-danger\" role=\"alert\"><span class=\"glyphicon glyphicon-alert\" aria-hidden=\"true\"></span> " + data.message + "</div>")
    		    		$('#dialog-btn button').attr("disabled", true);
