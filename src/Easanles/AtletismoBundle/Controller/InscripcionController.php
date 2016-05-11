@@ -136,7 +136,6 @@ class InscripcionController extends Controller {
     			}
     		}
     	}
-    	dump($atletas);
     	$parametros = array('com' => $com, 'atletas' => $atletas, 'from' => $from, 'numResultados' => $numResultados);
     	$vigentes = $repoCat->findAllCurrent();
     	$parametros['vigentes'] = $vigentes;    	
