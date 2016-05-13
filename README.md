@@ -13,7 +13,7 @@ La aplicación permite realizar lo siguiente:
 *    La aplicación es completamente gestionable a través de una interfaz web.
 
 Instalación
-===========
+-----------
 
  1. Disponga de un **servidor web** con interprete de **PHP** y un sistema de gestión de bases de datos instalado.
 Se necesita al menos la versión **5.5.9** de PHP. Las extensiones de PHP, **JSON** y **ctype** deben estar activos. **PDO** debe estar instalado. El archivo de configuración php.ini necesita tener ajustada la variable `date.timezone`.
