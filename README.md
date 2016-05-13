@@ -10,7 +10,7 @@ La aplicación permite realizar lo siguiente:
 *    Controlar las inscripciones de los atletas en las pruebas recomendadas por el club.
 *    Registrar las marcas de los atletas para cada una de las pruebas en las que participe.
 *    Gestión de contabilidad de las cuotas de los asociados simplificada (ingresos/gastos).
-*    La aplicación es completamente gestionable a través de una interface web.
+*    La aplicación es completamente gestionable a través de una interfaz web.
 
 Instalación
 ===========
@@ -26,5 +26,5 @@ el comando `composer install`.
  6. Acceda desde un navegador web a la dirección */web/config.php* . Corrija los problemas de configuración del servidor. En la mayoría de casos indicará un problema con los permisos de los directorios *app/cache* y *app/logs*. Ajuste los permisos para que el servidor
 web pueda escribir en estos directorios, y borre o ajuste los permisos de todos los archivos contenidos en ambas carpetas. Ajuste también los permisos de la carpeta *web* para que la aplicación pueda crear los assets de la aplicación.
  7. Pulse *“Re-check configuration”* para comprobar si la aplicación está configurada correctamente. 
- 8. Acceda a *web/app_dev.php* desde la misma localización en la que está alojado el servidor web. Haga clic en *“Crear base de datos”*. Cuando el proceso termine y se indique el mensaje *“La base de datos está correctamente configurada”* la aplicación está finalmente lista para ser usada. Acceda al entorno de producción entrando en la dirección *web/app.php*.
+ 8. Acceda a *web/app_dev.php* desde la misma localización en la que está alojado el servidor web. Haga clic en *“Crear base de datos”*. Cuando el proceso termine y se indique el mensaje *“La base de datos está correctamente configurada”* la aplicación estará finalmente lista para ser usada. Acceda al entorno de producción entrando en la dirección *web/app.php*.
 
