@@ -311,7 +311,7 @@ function submitDialogAction(url){
 	   url         : url,
 	   success     : function(data) {
           if (data.success == false){
-		     $('#dialog-body').html(alerthtml_pre + data.message + alerthtml_pos);
+		     $('#dialog-body').html(alerthtml_preDanger + data.message + alerthtml_pos);
 		     $("#dialog-btn button").attr("disabled", true);
 	      } else if (data.success == true){
 			 $("#modal-dismiss").click();
