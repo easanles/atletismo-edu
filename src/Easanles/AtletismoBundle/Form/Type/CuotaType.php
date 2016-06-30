@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+# Copyright (c) 2016 Eduardo Alonso Sanlés
+# Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 
 namespace Easanles\AtletismoBundle\Form\Type;
  

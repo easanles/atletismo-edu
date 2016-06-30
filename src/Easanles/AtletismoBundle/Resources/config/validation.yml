@@ -1,4 +1,6 @@
 
+# Copyright (c) 2016 Eduardo Alonso Sanlés
+# Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 
 Easanles\AtletismoBundle\Entity\Competicion:
   properties:
@@ -188,4 +190,5 @@ Easanles\AtletismoBundle\Entity\Usuario:
            message: Este campo no debe estar en blanco
      rol:
         - NotNull: 
-           message: Seleccione un rol         
+           message: Seleccione un rol
+           

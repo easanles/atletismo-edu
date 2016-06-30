@@ -28,3 +28,8 @@ web pueda escribir en estos directorios, y borre o ajuste los permisos de todos 
  7. Pulse *“Re-check configuration”* para comprobar si la aplicación está configurada correctamente. 
  8. Acceda a *web/app_dev.php* desde la misma localización en la que está alojado el servidor web. Haga clic en *“Crear base de datos”*. Cuando el proceso termine y se indique el mensaje *“La base de datos está correctamente configurada”* la aplicación estará finalmente lista para ser usada. Acceda al entorno de producción entrando en la dirección *web/app.php*.
 
+Licencia
+--------
+
+Ver archivo LICENSE
+

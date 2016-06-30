@@ -1,5 +1,8 @@
 <?php
 
+# Copyright (c) 2016 Eduardo Alonso Sanlés
+# Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+
 namespace Easanles\AtletismoBundle\Service;
 
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -13,7 +16,7 @@ class AtletismoVersionCollector extends DataCollector{
 	 * @see \Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface::collect()
 	 */
 	public function collect(Request $request, Response $response, \Exception $exception = null) {
-		$VERSION = 'v1.0';
+		$VERSION = 'v1.1';
 		$ITERATION = '';
 		
        $this->data = array(
